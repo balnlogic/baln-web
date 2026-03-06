@@ -1,42 +1,33 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <script>
-  (function() {
-    if (location.pathname.startsWith('/en') || location.pathname.startsWith('/ja')) return;
-    if (localStorage.getItem('baln-lang')) return;
-    var lang = navigator.language || navigator.userLanguage;
-    if (lang.startsWith('ja')) { location.href = '/ja/'; }
-    else if (!lang.startsWith('ko')) { location.href = '/en/'; }
-  })();
-  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>baln (발른) - 매일 5분, 바른 투자 습관</title>
-  <meta name="description" content="매일 시장 맥락을 읽고 예측에 참여하며 자기만의 투자 기준을 만드는 투자 교육 앱. 공포가 이해로 바뀝니다.">
-  <meta name="keywords" content="투자, 투자교육, 리밸런싱, 포트폴리오, AI분석, 맥락카드, 예측게임">
+  <title>baln - 毎日5分、正しい投資習慣を身につける</title>
+  <meta name="description" content="毎日マーケットの文脈を読み、予測に参加し、自分だけの投資基準を作る投資教育アプリ。パニックが理解に変わります。">
+  <meta name="keywords" content="投資, 投資教育, ポートフォリオ, AI分析, コンテキストカード, 予測ゲーム, マーケットマインドフルネス">
   <meta name="robots" content="index,follow">
   <meta name="theme-color" content="#0A0A0A">
-  <link rel="canonical" href="https://baln.app/">
+  <link rel="canonical" href="https://baln.app/ja/">
   <link rel="alternate" hreflang="ko" href="https://baln.app/">
   <link rel="alternate" hreflang="en" href="https://baln.app/en/">
   <link rel="alternate" hreflang="ja" href="https://baln.app/ja/">
   <link rel="alternate" hreflang="x-default" href="https://baln.app/en/">
-  <meta property="og:locale" content="ko_KR">
-  <meta property="og:title" content="baln - 매일 5분, 바른 투자 습관">
-  <meta property="og:description" content="시장 맥락을 읽으면 공포가 이해로 바뀝니다. AI가 분석하고, 당신은 성장합니다.">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="og:title" content="baln - 毎日5分、正しい投資習慣を身につける">
+  <meta property="og:description" content="マーケットの文脈を読めば、パニックが理解に変わります。AIが分析し、あなたが成長します。">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://baln.app/">
+  <meta property="og:url" content="https://baln.app/ja/">
   <meta property="og:site_name" content="baln">
   <meta property="og:image" content="https://baln.app/og-image.svg">
-  <meta property="og:image:alt" content="baln - 매일 5분, 바른 투자 습관">
+  <meta property="og:image:alt" content="baln - 毎日5分、正しい投資習慣を身につける">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="baln - 매일 5분, 바른 투자 습관">
-  <meta name="twitter:description" content="시장 맥락을 읽으면 공포가 이해로 바뀝니다. AI가 분석하고, 당신은 성장합니다.">
+  <meta name="twitter:title" content="baln - 毎日5分、正しい投資習慣を身につける">
+  <meta name="twitter:description" content="マーケットの文脈を読めば、パニックが理解に変わります。AIが分析し、あなたが成長します。">
   <meta name="twitter:image" content="https://baln.app/og-image.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -44,8 +35,8 @@
       "name": "baln",
       "applicationCategory": "FinanceApplication",
       "operatingSystem": "iOS",
-      "description": "매일 시장 맥락을 읽고 예측에 참여하며 자기만의 투자 기준을 만드는 투자 교육 앱.",
-      "url": "https://baln.app/"
+      "description": "毎日マーケットの文脈を読み、予測に参加し、自分だけの投資基準を作る投資教育アプリ。",
+      "url": "https://baln.app/ja/"
     }
   </script>
   <style>
@@ -71,7 +62,7 @@
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
       background: var(--bg);
       color: var(--text2);
       line-height: 1.7;
@@ -1103,388 +1094,388 @@
 </head>
 <body id="top">
 
-  <!-- ═══ NAV ═══ -->
-  <nav aria-label="주요 메뉴">
+  <!-- NAV -->
+  <nav aria-label="メインメニュー">
     <div class="nav-inner">
       <a href="#top" class="nav-logo">baln</a>
-      <button class="mobile-menu-btn" type="button" onclick="toggleMenu()" aria-label="메뉴" aria-controls="navLinks" aria-expanded="false">&#9776;</button>
+      <button class="mobile-menu-btn" type="button" onclick="toggleMenu()" aria-label="メニュー" aria-controls="navLinks" aria-expanded="false">&#9776;</button>
       <ul class="nav-links" id="navLinks">
-        <li><a href="#features">기능</a></li>
-        <li><a href="#context">맥락카드</a></li>
-        <li><a href="#pricing">요금</a></li>
+        <li><a href="#features">機能</a></li>
+        <li><a href="#context">コンテキストカード</a></li>
+        <li><a href="#pricing">料金</a></li>
         <li><a href="#faq">FAQ</a></li>
-        <li><a href="#download" class="nav-cta js-app-download-link" data-cta-location="nav">앱 다운로드</a></li>
+        <li><a href="#download" class="nav-cta js-app-download-link" data-cta-location="nav">アプリをダウンロード</a></li>
         <li class="lang-switch" style="display:flex;gap:8px;align-items:center;font-size:13px;">
-          <a href="/" onclick="localStorage.setItem('baln-lang','ko')" style="color:var(--green);font-weight:700;text-decoration:none;">KO</a>
+          <a href="/" onclick="localStorage.setItem('baln-lang','ko')" style="color:var(--text2);text-decoration:none;">KO</a>
           <span style="color:var(--text3);">|</span>
           <a href="/en/" onclick="localStorage.setItem('baln-lang','en')" style="color:var(--text2);text-decoration:none;">EN</a>
           <span style="color:var(--text3);">|</span>
-          <a href="/ja/" onclick="localStorage.setItem('baln-lang','ja')" style="color:var(--text2);text-decoration:none;">JA</a>
+          <a href="/ja/" onclick="localStorage.setItem('baln-lang','ja')" style="color:var(--green);font-weight:700;text-decoration:none;">JA</a>
         </li>
       </ul>
     </div>
   </nav>
 
   <main id="main-content">
-  <!-- ═══ HERO ═══ -->
+  <!-- HERO -->
   <section class="hero">
     <div class="hero-content">
-      <span class="hero-badge">AI 기반 투자 교육 앱</span>
-      <h1 id="hero-headline">매일 5분,<br><span class="highlight">바른 투자 습관</span></h1>
+      <span class="hero-badge">AI搭載マーケットマインドフルネス</span>
+      <h1 id="hero-headline">毎日5分。<br><span class="highlight">パニックしない。理解する。</span></h1>
       <p class="hero-desc" id="hero-subcopy">
-        시장이 흔들려도 흔들리지 않는 투자자가 되세요.<br>
-        AI가 맥락을 분석하고, 당신은 매일 성장합니다.
+        マーケットが揺れても、揺れない投資家になりましょう。<br>
+        AIが文脈を分析し、あなたは毎日成長します。
       </p>
       <div class="hero-actions">
         <a href="#waitlist" class="btn-primary js-app-download-link" data-cta-location="hero-primary">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-          <span class="js-cta-text">출시 알림 받기</span>
+          <span class="js-cta-text">早期アクセスを申し込む</span>
         </a>
-        <a href="#features" class="btn-secondary">기능 둘러보기</a>
+        <a href="#features" class="btn-secondary">機能を見る</a>
       </div>
     </div>
   </section>
 
-  <!-- ═══ Phone Mockup ═══ -->
+  <!-- Phone Mockup -->
   <div class="phone-section">
     <div class="phone-mockup">
       <div class="phone-screen">
         <div class="mock-header">
           <div id="mock-date" style="font-size:11px; color:var(--text3);"></div>
-          <div style="font-size:20px; font-weight:800; color:var(--text); margin-top:4px;">오늘</div>
+          <div style="font-size:20px; font-weight:800; color:var(--text); margin-top:4px;">今日</div>
         </div>
         <div class="mock-pulse">
-          <div class="mock-pulse-title">총 자산</div>
-          <div class="mock-pulse-value">5,230만원</div>
-          <div class="mock-pulse-sub">건강 A+ | 어제 대비 +0.8%</div>
+          <div class="mock-pulse-title">総資産</div>
+          <div class="mock-pulse-value">&yen;5,230,000</div>
+          <div class="mock-pulse-sub">ヘルス A+ | 前日比 +0.8%</div>
         </div>
         <div class="mock-card">
-          <div class="mock-card-label">오늘의 맥락 카드</div>
-          <div class="mock-card-title">미국 CPI 발표, 시장은 왜 흔들릴까?</div>
-          <div class="mock-card-desc">2008년에도 비슷한 패턴이 있었습니다. 외국인은 리밸런싱 중...</div>
+          <div class="mock-card-label">今日のコンテキストカード</div>
+          <div class="mock-card-title">米国CPI発表、なぜマーケットは揺れるのか？</div>
+          <div class="mock-card-desc">2008年にも似たパターンがありました。外国人投資家はリバランス中...</div>
         </div>
         <div class="mock-vote">
-          <div class="mock-vote-q">내일 코스피 방향은?</div>
+          <div class="mock-vote-q">明日の日経平均の方向は？</div>
           <div class="mock-vote-btn">
-            <span class="up">상승</span>
-            <span class="down">하락</span>
+            <span class="up">上昇</span>
+            <span class="down">下落</span>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ═══ Stats ═══ -->
+  <!-- Stats -->
   <div class="stats-bar reveal">
     <div class="stat-item">
-      <h3>5분</h3>
-      <p>하루 투자 시간</p>
+      <h3>5分</h3>
+      <p>1日の投資時間</p>
     </div>
     <div class="stat-item">
-      <h3>4겹</h3>
-      <p>맥락 분석 레이어</p>
+      <h3>4層</h3>
+      <p>コンテキスト分析の深さ</p>
     </div>
     <div class="stat-item">
       <h3>AI</h3>
-      <p>Gemini 기반 분석</p>
+      <p>Gemini搭載分析</p>
     </div>
     <div class="stat-item">
       <h3>FREE</h3>
-      <p>기본 기능 무료</p>
+      <p>基本機能は永久無料</p>
     </div>
   </div>
 
-  <!-- ═══ FEATURES ═══ -->
+  <!-- FEATURES -->
   <section id="features" class="reveal">
     <div class="section-center">
       <div class="section-label">Features</div>
-      <h2 class="section-title">당신의 투자를 바꿀 6가지</h2>
+      <h2 class="section-title">あなたの投資を変える6つの機能</h2>
       <p class="section-desc">
-        복잡한 시장을 쉽게. AI가 분석하고, 당신은 판단합니다.
+        複雑なマーケットをシンプルに。AIが分析し、あなたが判断します。
       </p>
     </div>
     <div class="features-grid">
       <div class="feature-card">
         <div class="feature-icon">&#128240;</div>
-        <h3>맥락 카드</h3>
-        <p>역사적 맥락 &middot; 거시경제 체인 &middot; 기관 행동 &middot; 내 포트폴리오 영향까지 4겹 분석으로 5분 안에 이해합니다. 3시간마다 자동 업데이트.</p>
+        <h3>コンテキストカード</h3>
+        <p>歴史的文脈 &middot; マクロ経済チェーン &middot; 機関投資家の行動 &middot; あなたのポートフォリオへの影響。4層の分析を5分で理解。3時間ごとに自動更新。</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">&#127919;</div>
-        <h3>예측 게임</h3>
-        <p>매일 3개 시장 예측 질문에 YES/NO로 투표하고 다음날 결과와 해설을 복기하며 투자 감각을 키웁니다. 적중 시 크레딧 획득.</p>
+        <h3>予測ゲーム</h3>
+        <p>毎日3つのマーケット予測にYES/NOで投票。翌日に結果と解説を振り返り、投資感覚を磨きます。的中でクレジット獲得。</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">&#129302;</div>
-        <h3>AI 건강 진단</h3>
-        <p>분산도 &middot; 변동성 &middot; 집중도 등 7가지 요소로 포트폴리오를 A+~F 등급 진단. 구체적 처방전과 개선 방향을 제시합니다.</p>
+        <h3>AIヘルスチェック</h3>
+        <p>分散度・ボラティリティ・集中度など7つの要素でポートフォリオをA+~Fで診断。具体的な処方箋と改善方向を提示します。</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">&#128161;</div>
-        <h3>투자 거장 인사이트</h3>
-        <p>버핏 &middot; 달리오 &middot; 캐시 우드 &middot; 드러킨밀러 등 세계적 투자자의 철학을 AI가 오늘 시장에 적용한 분석을 매일 제공합니다.</p>
+        <h3>投資の巨匠インサイト</h3>
+        <p>バフェット、ダリオ、キャシー・ウッド、ドラッケンミラーなど。AIが伝説的投資家の哲学を今日のマーケットに適用し、毎日お届けします。</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">&#127793;</div>
-        <h3>습관 루프</h3>
-        <p>읽기 &rarr; 예측 &rarr; 복기를 매일 반복하며 자기만의 투자 기준을 형성합니다. 연속 출석 스트릭과 뱃지로 동기를 유지합니다.</p>
+        <h3>習慣ループ</h3>
+        <p>読む &rarr; 予測する &rarr; 振り返る。毎日の繰り返しで自分だけの投資コンパスを形成。連続ログインとバッジでモチベーションを維持。</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">&#128176;</div>
-        <h3>크레딧 보상</h3>
-        <p>출석 2C &middot; 예측 적중 3C &middot; 공유 5C. 1크레딧 = &#8361;100 가치로 AI 분석 추가, Premium 체험 등 마켓플레이스에서 사용합니다.</p>
+        <h3>クレジット報酬</h3>
+        <p>ログイン2C &middot; 予測的中3C &middot; シェア5C。1クレジット = &yen;12相当。マーケットプレイスでAI分析追加、プレミアム体験などに使用可能。</p>
       </div>
     </div>
   </section>
 
-  <!-- ═══ CONTEXT CARD ═══ -->
+  <!-- CONTEXT CARD -->
   <section id="context" class="reveal">
     <div class="context-detail">
       <div>
         <div class="section-label">Killing Feature</div>
-        <h2 class="section-title">맥락을 읽으면<br>공포가 이해로 바뀝니다</h2>
+        <h2 class="section-title">文脈を読めば、<br>パニックが理解に変わる</h2>
         <p class="section-desc">
-          "오늘 주가가 빠진 건 내 탓이 아니라 매크로 때문이구나"
-          — 그 깨달음이 패닉셀을 막습니다.
+          「今日の下落は自分のせいじゃない、マクロ環境のせいだ」
+          ── その気づきがパニック売りを防ぎます。
         </p>
       </div>
       <div class="context-layers">
         <div class="context-layer">
           <div class="layer-num">1</div>
           <div class="layer-info">
-            <h4>역사적 맥락</h4>
-            <p>2008년에도 이런 패턴이 있었고 6개월 후 회복했습니다</p>
+            <h4>歴史的文脈</h4>
+            <p>2008年にも同様のパターンがあり、6ヶ月後に回復しました</p>
           </div>
         </div>
         <div class="context-layer">
           <div class="layer-num">2</div>
           <div class="layer-info">
-            <h4>거시경제 체인</h4>
-            <p>미국 CPI &rarr; 금리 인상 우려 &rarr; 기술주 하락 연쇄</p>
+            <h4>マクロ経済チェーン</h4>
+            <p>米国CPI &rarr; 利上げ懸念 &rarr; テック株売り連鎖</p>
           </div>
         </div>
         <div class="context-layer">
           <div class="layer-num">3</div>
           <div class="layer-info">
-            <h4>기관 행동</h4>
-            <p>외국인 3일 연속 순매도 중 (패닉 아닌 리밸런싱)</p>
+            <h4>機関投資家の行動</h4>
+            <p>外国人投資家3日連続の売越し（パニックではなくリバランス）</p>
           </div>
         </div>
         <div class="context-layer">
           <div class="layer-num">4</div>
           <div class="layer-info">
-            <h4>내 포트폴리오 영향</h4>
-            <p>당신의 포트폴리오 -1.2% 영향, 건강 점수 변동 없음</p>
+            <h4>あなたのポートフォリオへの影響</h4>
+            <p>あなたのポートフォリオ -1.2%の影響、ヘルススコア変動なし</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ═══ HABIT LOOP ═══ -->
+  <!-- HABIT LOOP -->
   <section class="reveal">
     <div class="loop-section">
       <div class="section-center">
         <div class="section-label">Habit Loop</div>
-        <h2 class="section-title">매일 반복하면, 기준이 생깁니다</h2>
+        <h2 class="section-title">毎日繰り返せば、基準が生まれる</h2>
         <p class="section-desc" style="margin-bottom:0">
-          12개월 후 "시장이 -5% 빠져도 맥락을 이해하니 패닉셀 안 한다" — 그게 목표입니다.
+          12ヶ月後：「マーケットが-5%下がっても、文脈を理解しているからパニック売りしない」── それが目標です。
         </p>
       </div>
       <div class="loop-steps">
         <div class="loop-step">
           <div class="loop-step-circle">&#128218;</div>
-          <h4>맥락 읽기</h4>
-          <p>아침 5분</p>
+          <h4>文脈を読む</h4>
+          <p>朝5分</p>
         </div>
         <div class="loop-arrow">&rarr;</div>
         <div class="loop-step">
           <div class="loop-step-circle">&#127919;</div>
-          <h4>예측 투표</h4>
-          <p>감각 훈련</p>
+          <h4>予測する</h4>
+          <p>感覚トレーニング</p>
         </div>
         <div class="loop-arrow">&rarr;</div>
         <div class="loop-step">
           <div class="loop-step-circle">&#128270;</div>
-          <h4>복기 학습</h4>
-          <p>다음날 결과 확인</p>
+          <h4>振り返る</h4>
+          <p>翌日結果確認</p>
         </div>
         <div class="loop-arrow">&rarr;</div>
         <div class="loop-step">
           <div class="loop-step-circle">&#127775;</div>
-          <h4>기준 형성</h4>
-          <p>나만의 투자 원칙</p>
+          <h4>基準を形成</h4>
+          <p>自分だけの投資原則</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ═══ Quote ═══ -->
+  <!-- Quote -->
   <div class="quote-section reveal">
     <p class="quote-text">
-      "중요한 건 맞고 틀리는 빈도가 아니라,<br>맞았을 때 얼마나 버느냐다."
+      「重要なのは当たり外れの頻度ではなく、<br>当たった時にどれだけ稼ぐかだ。」
     </p>
-    <p class="quote-author">— 스탠리 드러킨밀러 (Stanley Druckenmiller)</p>
+    <p class="quote-author">── スタンレー・ドラッケンミラー (Stanley Druckenmiller)</p>
     <p style="font-size:13px; color:var(--text3); margin-top:16px;">
-      baln은 버핏 &middot; 달리오 &middot; 캐시 우드 &middot; 드러킨밀러의 투자 철학에서 영감을 받았습니다
+      balnはバフェット、ダリオ、キャシー・ウッド、ドラッケンミラーの投資哲学からインスピレーションを受けています
     </p>
   </div>
 
-  <!-- ═══ PRICING ═══ -->
+  <!-- PRICING -->
   <section id="pricing" class="reveal">
     <div class="section-center">
       <div class="section-label">Pricing</div>
-      <h2 class="section-title">심플한 요금제</h2>
+      <h2 class="section-title">シンプルな料金プラン</h2>
       <p class="section-desc">
-        기본 기능은 영원히 무료. 더 깊은 분석이 필요할 때 Premium.
+        基本機能は永久無料。より深い分析が必要な時にプレミアム。
       </p>
     </div>
     <div class="pricing-grid">
       <div class="pricing-card">
-        <div class="pricing-plan">무료</div>
-        <div class="pricing-price">0원</div>
-        <div class="pricing-desc">투자 습관의 시작</div>
+        <div class="pricing-plan">無料</div>
+        <div class="pricing-price">&yen;0</div>
+        <div class="pricing-desc">投資習慣のスタート</div>
         <ul class="pricing-features">
-          <li>맥락 카드 요약</li>
-          <li>예측 투표 3문제/일</li>
-          <li>AI 건강 진단 1회/일</li>
-          <li>크레딧 보상 시스템</li>
-          <li>투자 거장 인사이트</li>
-          <li class="disabled">기관 행동 분석</li>
-          <li class="disabled">예측 해설 + 복기</li>
-          <li class="disabled">또래 비교 전체 등급</li>
+          <li>コンテキストカード要約</li>
+          <li>予測投票 3問/日</li>
+          <li>AIヘルスチェック 1回/日</li>
+          <li>クレジット報酬システム</li>
+          <li>投資の巨匠インサイト</li>
+          <li class="disabled">機関投資家行動分析</li>
+          <li class="disabled">予測解説 + 振り返り</li>
+          <li class="disabled">同世代比較 全ランク</li>
         </ul>
-        <a href="#download" class="pricing-btn secondary">무료로 시작</a>
+        <a href="#download" class="pricing-btn secondary">無料で始める</a>
       </div>
       <div class="pricing-card featured">
-        <div class="pricing-plan">Premium</div>
-        <div class="pricing-price">4,900원 <span>/월</span></div>
-        <div class="pricing-desc">프로 투자자의 선택</div>
+        <div class="pricing-plan">プレミアム</div>
+        <div class="pricing-price">&yen;480 <span>/月</span></div>
+        <div class="pricing-desc">プロ投資家の選択</div>
         <ul class="pricing-features">
-          <li>맥락 카드 전체 4겹 분석</li>
-          <li>예측 투표 + 해설 + 복기</li>
-          <li>AI 건강 진단 3회/일</li>
-          <li>기관 행동 분석</li>
-          <li>또래 비교 전체 등급</li>
-          <li>투자 거장 심층 인사이트</li>
-          <li>매월 30C 보너스 (&#8361;3,000)</li>
+          <li>コンテキストカード 全4層分析</li>
+          <li>予測投票 + 解説 + 振り返り</li>
+          <li>AIヘルスチェック 3回/日</li>
+          <li>機関投資家行動分析</li>
+          <li>同世代比較 全ランク</li>
+          <li>投資の巨匠 深堀りインサイト</li>
+          <li>毎月30Cボーナス (&yen;360)</li>
         </ul>
-        <a href="#download" class="pricing-btn primary">Premium 시작</a>
+        <a href="#download" class="pricing-btn primary">プレミアムを始める</a>
       </div>
     </div>
   </section>
 
-  <!-- ═══ FAQ ═══ -->
+  <!-- FAQ -->
   <section id="faq" class="reveal">
     <div class="section-center">
       <div class="section-label">FAQ</div>
-      <h2 class="section-title">자주 묻는 질문</h2>
+      <h2 class="section-title">よくある質問</h2>
     </div>
     <div class="faq-list" style="margin-top:40px;">
       <div class="faq-item">
-        <button class="faq-question" type="button" id="faq-q-1" aria-controls="faq-a-1" onclick="toggleFaq(this)">baln은 어떤 앱인가요?</button>
+        <button class="faq-question" type="button" id="faq-q-1" aria-controls="faq-a-1" onclick="toggleFaq(this)">balnとはどんなアプリですか？</button>
         <div class="faq-answer" id="faq-a-1" role="region" aria-labelledby="faq-q-1" hidden>
-          <div class="faq-answer-inner">매일 5분씩 시장 맥락을 읽고, 예측에 참여하고, 복기하면서 자기만의 투자 기준을 만들어가는 투자 교육 앱입니다. 직접 매매를 하는 앱이 아니라, 투자 판단력을 키우는 습관 앱입니다.</div>
+          <div class="faq-answer-inner">balnは毎日5分でマーケットの文脈を読み、予測に参加し、振り返ることで自分だけの投資基準を作るマーケットマインドフルネスアプリです。売買を行うアプリではなく、投資判断力を育てる習慣形成ツールです。</div>
         </div>
       </div>
       <div class="faq-item">
-        <button class="faq-question" type="button" id="faq-q-2" aria-controls="faq-a-2" onclick="toggleFaq(this)">투자 초보자도 사용할 수 있나요?</button>
+        <button class="faq-question" type="button" id="faq-q-2" aria-controls="faq-a-2" onclick="toggleFaq(this)">初心者でも使えますか？</button>
         <div class="faq-answer" id="faq-a-2" role="region" aria-labelledby="faq-q-2" hidden>
-          <div class="faq-answer-inner">네, 오히려 투자 초보자를 위해 만들었습니다. 복잡한 시장 상황을 쉽게 이해할 수 있도록 AI가 맥락을 분석해서 카드 형태로 제공합니다. 전문 용어 없이도 "오늘 왜 이런 일이 일어났는지" 이해할 수 있습니다.</div>
+          <div class="faq-answer-inner">はい、むしろ投資初心者のために作りました。複雑なマーケット状況をAIが分析し、わかりやすいカード形式で提供します。専門用語なしで「今日なぜこうなったのか」を理解できます。</div>
         </div>
       </div>
       <div class="faq-item">
-        <button class="faq-question" type="button" id="faq-q-3" aria-controls="faq-a-3" onclick="toggleFaq(this)">크레딧은 어떻게 사용하나요?</button>
+        <button class="faq-question" type="button" id="faq-q-3" aria-controls="faq-a-3" onclick="toggleFaq(this)">クレジットはどう使いますか？</button>
         <div class="faq-answer" id="faq-a-3" role="region" aria-labelledby="faq-q-3" hidden>
-          <div class="faq-answer-inner">1크레딧 = &#8361;100 가치입니다. 매일 출석(2C), 예측 적중(3C), 공유(5C), 가입 환영 보너스(10C) 등으로 무료 획득 가능합니다. 마켓플레이스에서 AI 분석 추가(1C), 예측 해설(1C), Premium 3일 체험(5C) 등에 사용할 수 있습니다.</div>
+          <div class="faq-answer-inner">1クレジット = &yen;12相当の価値です。毎日ログイン(2C)、予測的中(3C)、シェア(5C)、ウェルカムボーナス(10C)で無料獲得可能。マーケットプレイスでAI分析追加(1C)、予測解説(1C)、プレミアム3日体験(5C)などに使用できます。</div>
         </div>
       </div>
       <div class="faq-item">
-        <button class="faq-question" type="button" id="faq-q-4" aria-controls="faq-a-4" onclick="toggleFaq(this)">내 투자 정보는 안전한가요?</button>
+        <button class="faq-question" type="button" id="faq-q-4" aria-controls="faq-a-4" onclick="toggleFaq(this)">データは安全ですか？</button>
         <div class="faq-answer" id="faq-a-4" role="region" aria-labelledby="faq-q-4" hidden>
-          <div class="faq-answer-inner">제로 지식(Zero-Knowledge) 원칙으로 운영합니다. 증권사 비밀번호나 계좌번호를 절대 수집하지 않습니다. 모든 데이터는 TLS 1.3 전송 암호화 + AES-256 저장 암호화로 보호됩니다. SOC 2 Type II 인증을 받은 Supabase를 사용하며, 계정 삭제 시 30일 내 모든 데이터가 완전 삭제됩니다.</div>
+          <div class="faq-answer-inner">はい。ゼロ知識（Zero-Knowledge）原則で運営しています。証券会社のパスワードや口座番号は一切収集しません。全データはTLS 1.3転送暗号化 + AES-256保存暗号化で保護。SOC 2 Type II認証済みのSupabaseを使用し、アカウント削除後30日以内に全データを完全削除します。</div>
         </div>
       </div>
       <div class="faq-item">
-        <button class="faq-question" type="button" id="faq-q-5" aria-controls="faq-a-5" onclick="toggleFaq(this)">iOS만 지원하나요?</button>
+        <button class="faq-question" type="button" id="faq-q-5" aria-controls="faq-a-5" onclick="toggleFaq(this)">iOSのみですか？</button>
         <div class="faq-answer" id="faq-a-5" role="region" aria-labelledby="faq-q-5" hidden>
-          <div class="faq-answer-inner">현재 iOS(iPhone 14 이상, iOS 16+) 버전을 우선 제공하며, Android 버전은 추후 지원 예정입니다.</div>
+          <div class="faq-answer-inner">現在はiOS（iPhone 14以降、iOS 16以上）のみ対応です。Android版は今後対応予定です。</div>
         </div>
       </div>
       <div class="faq-item">
-        <button class="faq-question" type="button" id="faq-q-6" aria-controls="faq-a-6" onclick="toggleFaq(this)">투자 자문을 제공하나요?</button>
+        <button class="faq-question" type="button" id="faq-q-6" aria-controls="faq-a-6" onclick="toggleFaq(this)">投資助言を提供していますか？</button>
         <div class="faq-answer" id="faq-a-6" role="region" aria-labelledby="faq-q-6" hidden>
-          <div class="faq-answer-inner">아닙니다. baln은 투자 자문이 아니라 투자 <strong>교육</strong> 앱입니다. 시장 맥락을 이해하고 스스로 판단할 수 있도록 돕는 습관 형성 도구입니다. 모든 투자 판단의 책임은 사용자에게 있습니다.</div>
+          <div class="faq-answer-inner">いいえ。balnは投資助言ではなく、投資<strong>教育</strong>アプリです。マーケットの文脈を理解し、自分で判断できるよう支援する習慣形成ツールです。全ての投資判断の責任はユーザーにあります。</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ═══ FINAL CTA ═══ -->
+  <!-- FINAL CTA -->
   <section class="final-cta" id="download">
     <div class="final-cta-content reveal">
-      <h2>오늘부터 시작하세요</h2>
-      <p>매일 5분이 12개월 후 당신의 투자를 바꿉니다</p>
+      <h2>今日から始めましょう</h2>
+      <p>毎日5分が、12ヶ月後のあなたの投資を変えます</p>
       <a href="#waitlist" class="btn-primary js-app-download-link" data-cta-location="final-primary" style="font-size:18px; padding:18px 48px;">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-        <span class="js-cta-text">iOS 출시 알림 받기</span>
+        <span class="js-cta-text">App Storeでダウンロード</span>
       </a>
     </div>
   </section>
 
   <section id="waitlist" class="waitlist-section reveal">
     <div class="waitlist-card">
-      <h2 class="waitlist-title">iOS 출시 알림 우선 신청</h2>
-      <p class="waitlist-desc">정식 출시, 베타 초대, 핵심 업데이트를 가장 먼저 받아보세요.</p>
-      <p class="waitlist-meta" id="waitlist-meta">우선 신청 진행 중</p>
+      <h2 class="waitlist-title">早期アクセスを申し込む</h2>
+      <p class="waitlist-desc">正式リリース、ベータ招待、重要アップデートを最初にお届けします。</p>
+      <p class="waitlist-meta" id="waitlist-meta">早期アクセス受付中</p>
       <form id="waitlist-form" class="waitlist-form" novalidate>
-        <label for="waitlist-email" class="sr-only">이메일</label>
-        <input class="waitlist-input" type="email" id="waitlist-email" placeholder="이메일 주소" autocomplete="email" required>
-        <button class="waitlist-submit" type="submit" id="waitlist-submit">알림 신청</button>
+        <label for="waitlist-email" class="sr-only">メールアドレス</label>
+        <input class="waitlist-input" type="email" id="waitlist-email" placeholder="メールアドレス" autocomplete="email" required>
+        <button class="waitlist-submit" type="submit" id="waitlist-submit">通知を受け取る</button>
       </form>
       <label class="waitlist-consent" for="waitlist-consent">
         <input type="checkbox" id="waitlist-consent">
-        <span>출시/업데이트 안내 메일 수신 및 개인정보 수집(이메일) 동의</span>
+        <span>リリース・アップデートのメール通知とメールアドレスの収集に同意します</span>
       </label>
       <p id="waitlist-feedback" class="waitlist-feedback" aria-live="polite"></p>
     </div>
   </section>
   </main>
 
-  <!-- ═══ FOOTER ═══ -->
+  <!-- FOOTER -->
   <footer>
     <div class="footer-inner">
       <div class="footer-brand">
         <h3>baln</h3>
-        <p>매일 5분, 바른 투자 습관<br>바른(바른) + 빠른(빠른) + 발라낸다(분석)</p>
+        <p>毎日5分、正しい投資習慣を身につける<br>baln = balanced + fast + analyzed</p>
       </div>
       <div class="footer-links">
         <div class="footer-col">
-          <h4>서비스</h4>
-          <a href="#features">주요 기능</a>
-          <a href="#pricing">요금제</a>
-          <a href="#faq">자주 묻는 질문</a>
+          <h4>サービス</h4>
+          <a href="#features">主な機能</a>
+          <a href="#pricing">料金プラン</a>
+          <a href="#faq">よくある質問</a>
         </div>
         <div class="footer-col">
-          <h4>법적 고지</h4>
-          <a href="./privacy.html">개인정보처리방침</a>
-          <a href="./terms.html">이용약관</a>
-          <a href="./licenses.html">오픈소스 라이선스</a>
+          <h4>法的事項</h4>
+          <a href="/privacy.html">プライバシーポリシー</a>
+          <a href="/terms.html">利用規約</a>
+          <a href="/licenses.html">オープンソースライセンス</a>
         </div>
         <div class="footer-col">
-          <h4>문의</h4>
+          <h4>お問い合わせ</h4>
           <a href="mailto:baln.logic@gmail.com">baln.logic@gmail.com</a>
-          <a href="mailto:privacy@baln.app">개인정보 문의</a>
+          <a href="mailto:privacy@baln.app">プライバシーに関するお問い合わせ</a>
         </div>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>&copy; 2026 발른 주식회사 (baln Inc.). All rights reserved.</p>
-      <p style="font-size:11px; color:var(--text3);">본 앱은 투자 자문을 제공하지 않습니다. 투자 판단의 책임은 사용자에게 있습니다.</p>
+      <p>&copy; 2026 baln Inc. All rights reserved.</p>
+      <p style="font-size:11px; color:var(--text3);">本アプリは投資助言を提供しません。投資判断の責任はユーザーにあります。</p>
     </div>
   </footer>
 
-  <script src="./baln-config.js"></script>
+  <script src="/baln-config.js"></script>
   <script>
     const BALN_CONFIG = window.BALN_CONFIG || {};
     const EVENTS_ENDPOINT = BALN_CONFIG.eventsEndpoint || '';
@@ -1561,54 +1552,6 @@
     }
 
     const utm = getUtm();
-    const experimentDefinitions = {
-      hero_copy: {
-        param: 'exp_hero',
-        variants: {
-          a: {
-            headline: '매일 5분,<br><span class="highlight">바른 투자 습관</span>',
-            subcopy: '시장 맥락을 읽고 예측에 참여하며<br>패닉이 아닌 기준으로 투자하세요.'
-          },
-          b: {
-            headline: '시장 공포를,<br><span class="highlight">투자 기준</span>으로 바꾸세요',
-            subcopy: '매일 5분 학습 루프로 흔들리지 않는 투자 판단력을 만듭니다.'
-          }
-        }
-      },
-      cta_copy: {
-        param: 'exp_cta',
-        variants: {
-          a: { label: 'iOS 출시 알림 받기' },
-          b: { label: '무료 베타 우선 초대 받기' }
-        }
-      }
-    };
-
-    function getExperimentAssignments() {
-      const params = new URLSearchParams(window.location.search);
-      const stored = readStorage(STORAGE_KEYS.experiments, {});
-      const resolved = {};
-
-      Object.entries(experimentDefinitions).forEach(([key, def]) => {
-        const variants = Object.keys(def.variants);
-        const override = params.get(def.param);
-        if (override && variants.includes(override)) {
-          resolved[key] = override;
-          return;
-        }
-        if (stored[key] && variants.includes(stored[key])) {
-          resolved[key] = stored[key];
-          return;
-        }
-        const index = hashString(`${sessionId}:${key}`) % variants.length;
-        resolved[key] = variants[index];
-      });
-
-      writeStorage(STORAGE_KEYS.experiments, resolved);
-      return resolved;
-    }
-
-    const experiments = getExperimentAssignments();
 
     function getContext() {
       const referrerHost = document.referrer ? (() => {
@@ -1626,7 +1569,7 @@
         user_agent: navigator.userAgent,
         referrer_host: referrerHost,
         utm,
-        experiments
+        lang: 'ja'
       };
     }
 
@@ -1682,27 +1625,7 @@
       const uniqueLocal = new Set(localWaitlist.map(w => String(w.email || '').toLowerCase())).size;
       const displayCount = WAITLIST_BASE_COUNT + uniqueLocal;
       const meta = document.getElementById('waitlist-meta');
-      meta.textContent = `현재 ${displayCount.toLocaleString()}명 우선 신청`;
-    }
-
-    function applyExperiments() {
-      const heroVariant = experiments.hero_copy;
-      const ctaVariant = experiments.cta_copy;
-
-      const heroConfig = experimentDefinitions.hero_copy.variants[heroVariant];
-      const ctaConfig = experimentDefinitions.cta_copy.variants[ctaVariant];
-
-      document.getElementById('hero-headline').innerHTML = heroConfig.headline;
-      document.getElementById('hero-subcopy').innerHTML = heroConfig.subcopy;
-      document.querySelectorAll('.js-cta-text').forEach(el => {
-        el.textContent = ctaConfig.label;
-      });
-    }
-
-    function trackExperimentExposure() {
-      Object.entries(experiments).forEach(([name, variant]) => {
-        trackEvent('experiment_exposure', { experiment_name: name, variant });
-      });
+      meta.textContent = `${displayCount.toLocaleString()}人が早期アクセスを申込済み`;
     }
 
     function initDownloadLinks() {
@@ -1712,14 +1635,15 @@
           const locationName = link.dataset.ctaLocation || 'unknown';
           trackEvent('landing_cta_click', {
             location: locationName,
-            target: APP_DOWNLOAD_URL.startsWith('#') ? 'onsite' : 'app_store'
+            target: APP_DOWNLOAD_URL.startsWith('#') ? 'onsite' : 'app_store',
+            lang: 'ja'
           });
         });
       });
 
       document.querySelectorAll('.pricing-btn').forEach(link => {
         link.addEventListener('click', () => {
-          trackEvent('pricing_cta_click', { label: link.textContent.trim() });
+          trackEvent('pricing_cta_click', { label: link.textContent.trim(), lang: 'ja' });
         });
       });
     }
@@ -1736,27 +1660,27 @@
 
         const email = emailInput.value.trim().toLowerCase();
         if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-          feedback.textContent = '올바른 이메일 주소를 입력해 주세요.';
+          feedback.textContent = '正しいメールアドレスを入力してください。';
           feedback.className = 'waitlist-feedback error';
           return;
         }
         if (!consent.checked) {
-          feedback.textContent = '알림 수신 및 개인정보 수집 동의가 필요합니다.';
+          feedback.textContent = '通知の受信とデータ収集への同意が必要です。';
           feedback.className = 'waitlist-feedback error';
           return;
         }
 
         submitBtn.disabled = true;
-        feedback.textContent = '신청을 처리하고 있습니다...';
+        feedback.textContent = '申請を処理中です...';
         feedback.className = 'waitlist-feedback';
 
         const payload = {
           email,
           consent: true,
           created_at: new Date().toISOString(),
-          source: 'landing_waitlist',
+          source: 'landing_waitlist_ja',
           utm,
-          experiments
+          lang: 'ja'
         };
 
         const emailDomain = email.split('@')[1] || '';
@@ -1779,10 +1703,11 @@
 
         await trackEvent('waitlist_submit', {
           channel: resultChannel,
-          email_domain: emailDomain
+          email_domain: emailDomain,
+          lang: 'ja'
         });
 
-        feedback.textContent = '신청 완료되었습니다. 출시 소식을 가장 먼저 알려드릴게요.';
+        feedback.textContent = '申し込み完了しました。リリース情報をいち早くお届けします。';
         feedback.className = 'waitlist-feedback success';
         form.reset();
         submitBtn.disabled = false;
@@ -1798,7 +1723,7 @@
           const sectionId = entry.target.id || entry.target.className || 'unnamed';
           if (seen.has(sectionId)) return;
           seen.add(sectionId);
-          trackEvent('section_view', { section: sectionId });
+          trackEvent('section_view', { section: sectionId, lang: 'ja' });
         });
       }, { threshold: 0.35 });
 
@@ -1867,20 +1792,18 @@
 
     // Keep mock date current
     const mockDate = document.getElementById('mock-date');
-    mockDate.textContent = new Intl.DateTimeFormat('ko-KR', {
+    mockDate.textContent = new Intl.DateTimeFormat('ja-JP', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
       weekday: 'long'
     }).format(new Date());
 
-    applyExperiments();
     initDownloadLinks();
     initWaitlistForm();
     initSectionTracking();
     updateWaitlistMeta();
-    trackEvent('landing_view');
-    trackExperimentExposure();
+    trackEvent('landing_view', { lang: 'ja' });
     flushEventQueue();
     window.addEventListener('online', flushEventQueue);
   </script>

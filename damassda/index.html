@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>다맛다 - 카메라로 찍으면 가격이 담긴다</title>
+  <meta name="description" content="장보기할 때 가격표를 찍으면 상품명과 가격을 자동 인식. 할인가 우선 적용, 실시간 합계 확인. 예산 안에서 똑똑하게 장보기.">
+  <meta name="theme-color" content="#0A0A0A">
+  <link rel="canonical" href="https://baln.app/damassda/">
+  <meta property="og:title" content="다맛다 - 카메라로 찍으면 가격이 담긴다">
+  <meta property="og:description" content="가격표를 찍으면 상품명과 가격을 자동 인식. 할인가 우선 적용, 예산 관리까지.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://baln.app/damassda/">
+  <meta property="og:site_name" content="baln">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0A0A0A;
+      --surface: #141414;
+      --surface2: #1C1C1C;
+      --surface3: #242424;
+      --border: #2A2A2A;
+      --green: #4CAF50;
+      --green-light: #66BB6A;
+      --green-dark: #388E3C;
+      --green-glow: rgba(76, 175, 80, 0.15);
+      --blue: #0A84FF;
+      --blue-glow: rgba(10, 132, 255, 0.15);
+      --text: #F5F5F5;
+      --text2: #B0B0B0;
+      --text3: #777;
+      --red: #FF453A;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text2);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--green);
+      text-decoration: none;
+      letter-spacing: -1px;
+    }
+
+    .nav-back {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text2);
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-back:hover { color: var(--text); }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--blue-glow) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 8px 20px;
+      font-size: 13px;
+      color: var(--text2);
+      margin-bottom: 32px;
+    }
+
+    .hero-badge span {
+      color: var(--blue);
+      font-weight: 700;
+    }
+
+    .hero h1 {
+      font-size: clamp(36px, 7vw, 64px);
+      font-weight: 900;
+      color: var(--text);
+      line-height: 1.2;
+      letter-spacing: -2px;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, #0A84FF, #5AC8FA);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-desc {
+      font-size: 18px;
+      color: var(--text2);
+      max-width: 520px;
+      margin: 0 auto 48px;
+      line-height: 1.8;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--blue);
+      color: #FFF;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 16px 36px;
+      border-radius: 100px;
+      transition: all 0.2s;
+    }
+
+    .hero-cta:hover {
+      transform: scale(1.03);
+      box-shadow: 0 8px 32px rgba(10, 132, 255, 0.3);
+    }
+
+    /* ── Sections ── */
+    section {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 100px 24px;
+    }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--blue);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -1.5px;
+      line-height: 1.3;
+      margin-bottom: 20px;
+    }
+
+    .section-desc {
+      font-size: 16px;
+      color: var(--text2);
+      max-width: 560px;
+      line-height: 1.8;
+      margin-bottom: 48px;
+    }
+
+    /* ── How it works ── */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px 28px;
+      text-align: center;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .step:hover {
+      border-color: rgba(10, 132, 255, 0.2);
+      transform: translateY(-4px);
+    }
+
+    .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--blue-glow);
+      color: var(--blue);
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
+
+    .step-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .step h3 {
+      color: var(--text);
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .step p {
+      font-size: 14px;
+      color: var(--text2);
+      line-height: 1.7;
+    }
+
+    /* ── Features ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px 28px;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .feature-card:hover {
+      border-color: rgba(10, 132, 255, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .feature-icon {
+      font-size: 36px;
+      margin-bottom: 16px;
+    }
+
+    .feature-card h3 {
+      color: var(--text);
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      color: var(--text2);
+      line-height: 1.7;
+    }
+
+    /* ── Highlight ── */
+    .highlight-card {
+      background: linear-gradient(135deg, var(--surface), var(--surface2));
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 48px;
+      display: flex;
+      align-items: center;
+      gap: 48px;
+    }
+
+    .highlight-visual {
+      flex-shrink: 0;
+      width: 200px;
+      height: 200px;
+      background: var(--blue-glow);
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
+    }
+
+    .highlight-content h3 {
+      color: var(--text);
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    .highlight-content p {
+      font-size: 15px;
+      color: var(--text2);
+      line-height: 1.8;
+      margin-bottom: 24px;
+    }
+
+    .highlight-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .highlight-tag {
+      background: var(--surface3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 13px;
+      color: var(--text2);
+      font-weight: 500;
+    }
+
+    /* ── CTA Section ── */
+    .cta-section {
+      text-align: center;
+      padding: 80px 24px;
+    }
+
+    .cta-section h2 {
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -1px;
+      margin-bottom: 16px;
+    }
+
+    .cta-section p {
+      font-size: 16px;
+      color: var(--text2);
+      margin-bottom: 36px;
+    }
+
+    /* ── Footer ── */
+    footer {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: var(--text3);
+    }
+
+    footer a {
+      color: var(--text3);
+      transition: color 0.2s;
+    }
+
+    footer a:hover { color: var(--text2); }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .steps {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+      .highlight-card {
+        flex-direction: column;
+        padding: 32px 24px;
+        text-align: center;
+      }
+      .highlight-visual {
+        width: 140px;
+        height: 140px;
+        font-size: 56px;
+      }
+      .highlight-tags { justify-content: center; }
+      footer {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ NAV ═══ -->
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">baln</a>
+      <a href="/" class="nav-back">&larr; baln 홈으로</a>
+    </div>
+  </nav>
+
+  <!-- ═══ HERO ═══ -->
+  <section class="hero">
+    <div>
+      <div class="hero-badge">
+        <span>NEW</span> baln 기타 서비스
+      </div>
+      <h1>찍으면 <em>가격</em>이<br>담긴다</h1>
+      <p class="hero-desc">
+        가격표를 카메라로 찍으면 상품명과 가격을 자동 인식.<br>
+        할인가가 있으면 할인가로, 예산 안에서 똑똑하게 장보기.
+      </p>
+      <a href="https://apps.apple.com/app/id6740487612" class="hero-cta">
+        App Store에서 다운로드
+      </a>
+    </div>
+  </section>
+
+  <!-- ═══ HOW IT WORKS ═══ -->
+  <section>
+    <p class="section-label">How it works</p>
+    <h2 class="section-title">3단계로 끝나는 장보기</h2>
+    <p class="section-desc">
+      복잡한 계산기 앱 필요 없이, 카메라 한 번이면 됩니다.
+    </p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-icon">📸</div>
+        <h3>가격표 촬영</h3>
+        <p>카메라로 가격표를 찍으면<br>AI가 텍스트를 자동 인식합니다.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-icon">🏷️</div>
+        <h3>상품 자동 등록</h3>
+        <p>상품명과 가격을 자동 추출.<br>할인가가 있으면 할인가를 적용합니다.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-icon">🧮</div>
+        <h3>실시간 합계</h3>
+        <p>담은 상품의 합계를 실시간으로 확인.<br>예산 초과 시 경고해줍니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FEATURES ═══ -->
+  <section>
+    <p class="section-label">Features</p>
+    <h2 class="section-title">장보기가 편해지는 기능들</h2>
+    <p class="section-desc">
+      가격 인식부터 예산 관리까지, 장보기에 필요한 것만 담았습니다.
+    </p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📷</div>
+        <h3>가격표 OCR 인식</h3>
+        <p>카메라로 가격표를 촬영하면 온디바이스 AI가 상품명과 가격을 자동으로 읽어냅니다. 인터넷 없이도 동작합니다.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💰</div>
+        <h3>할인가 자동 적용</h3>
+        <p>할인, 행사, 세일 등 할인 키워드를 감지하면 자동으로 할인가를 우선 적용합니다.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>실시간 예산 관리</h3>
+        <p>설정한 예산 대비 현재 합계를 실시간으로 보여주고, 초과 위험 시 단계별로 경고합니다.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⌨️</div>
+        <h3>빠른 수동 입력</h3>
+        <p>가격표가 인식되지 않을 때는 하단 키패드로 직접 가격을 입력할 수 있습니다.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">↩️</div>
+        <h3>실수 방지</h3>
+        <p>잘못 담은 상품은 실행 취소 토스트로 바로 되돌릴 수 있습니다.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎁</div>
+        <h3>1+1 / 2+1 할인</h3>
+        <p>같은 상품 2개 이상 담으면 1+1, 2+1 행사 적용을 자동으로 제안합니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ HIGHLIGHT ═══ -->
+  <section>
+    <div class="highlight-card">
+      <div class="highlight-visual">🔒</div>
+      <div class="highlight-content">
+        <h3>완전한 오프라인, 완전한 프라이버시</h3>
+        <p>
+          모든 가격 인식은 기기 내에서 처리됩니다. 서버에 사진을 보내지 않고, 장보기 데이터는 기기에만 저장됩니다.
+          인터넷이 안 되는 마트 지하에서도 문제없이 동작합니다.
+        </p>
+        <div class="highlight-tags">
+          <span class="highlight-tag">온디바이스 AI</span>
+          <span class="highlight-tag">오프라인 동작</span>
+          <span class="highlight-tag">데이터 기기 저장</span>
+          <span class="highlight-tag">서버 전송 없음</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CTA ═══ -->
+  <section class="cta-section">
+    <h2>장보기, 이제 찍기만 하세요</h2>
+    <p>다맛다는 무료로 사용할 수 있습니다.</p>
+    <a href="https://apps.apple.com/app/id6740487612" class="hero-cta">
+      App Store에서 다운로드
+    </a>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer>
+    <div>&copy; 2026 baln. All rights reserved.</div>
+    <div class="footer-links">
+      <a href="/privacy.html">개인정보처리방침</a>
+      <a href="/terms.html">이용약관</a>
+      <a href="/">baln 홈</a>
+    </div>
+  </footer>
+
+</body>
+</html>

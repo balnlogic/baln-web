@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>끌림 - 운동하는 사람들의 프리미엄 데이팅</title>
+  <meta name="description" content="InBody 인증, 바디프로필, 셀피 인증으로 검증된 프로필. 매칭 즉시 전화번호 공개. 운동을 사랑하는 사람들을 위한 데이팅 앱.">
+  <meta name="theme-color" content="#0D0D0D">
+  <link rel="canonical" href="https://baln.app/kkeullim/">
+  <link rel="alternate" hreflang="ko" href="https://baln.app/kkeullim/">
+  <link rel="alternate" hreflang="en" href="https://baln.app/kkeullim/en/">
+  <link rel="alternate" hreflang="ja" href="https://baln.app/kkeullim/ja/">
+  <meta property="og:title" content="끌림 - 운동하는 사람들의 프리미엄 데이팅">
+  <meta property="og:description" content="InBody 인증으로 검증된 프로필. 매칭 즉시 연락처 공개. 채팅 없이 바로 만남.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://baln.app/kkeullim/">
+  <meta property="og:site_name" content="baln">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#0D0D0D;--surface:#161616;--surface2:#1E1E1E;--surface3:#282828;--border:#2A2A2A;
+      --green:#4CAF50;--accent:#FF2D55;--accent-glow:rgba(255,45,85,0.15);--gold:#D4AF37;
+      --text:#F5F5F5;--text2:#B0B0B0;--text3:#777;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+    body{font-family:'Noto Sans KR',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text2);line-height:1.7;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+
+    nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(13,13,13,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+    .nav-inner{max-width:1200px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between}
+    .nav-logo{font-size:24px;font-weight:800;color:var(--green);letter-spacing:-1px}
+    .nav-back{display:flex;align-items:center;gap:8px;color:var(--text2);font-size:14px;font-weight:500;transition:color 0.2s}
+    .nav-back:hover{color:var(--text)}
+    .nav-lang{display:flex;align-items:center;gap:12px;font-size:13px}
+    .nav-lang a{color:var(--text3);transition:color 0.2s}
+    .nav-lang a:hover{color:var(--text2)}
+    .nav-lang a.active{color:var(--accent);font-weight:700}
+
+    .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px;position:relative;overflow:hidden}
+    .hero::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,var(--accent-glow) 0%,transparent 70%);pointer-events:none}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid var(--border);border-radius:100px;padding:8px 20px;font-size:13px;color:var(--text2);margin-bottom:32px}
+    .hero-badge span{color:var(--accent);font-weight:700}
+    .hero h1{font-size:clamp(36px,7vw,64px);font-weight:900;color:var(--text);line-height:1.2;letter-spacing:-2px;margin-bottom:24px}
+    .hero h1 em{font-style:normal;background:linear-gradient(135deg,#FF2D55,#FF6B81);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero-desc{font-size:18px;color:var(--text2);max-width:520px;margin:0 auto 48px;line-height:1.8}
+    .hero-cta{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#FFF;font-size:16px;font-weight:700;padding:16px 36px;border-radius:100px;transition:all 0.2s}
+    .hero-cta:hover{transform:scale(1.03);box-shadow:0 8px 32px rgba(255,45,85,0.3)}
+
+    section{max-width:1000px;margin:0 auto;padding:100px 24px}
+    .section-label{font-size:12px;font-weight:700;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+    .section-title{font-size:clamp(28px,5vw,42px);font-weight:800;color:var(--text);letter-spacing:-1.5px;line-height:1.3;margin-bottom:20px}
+    .section-desc{font-size:16px;color:var(--text2);max-width:560px;line-height:1.8;margin-bottom:48px}
+
+    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+    .step{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:36px 28px;text-align:center;transition:border-color 0.3s,transform 0.3s}
+    .step:hover{border-color:rgba(255,45,85,0.2);transform:translateY(-4px)}
+    .step-num{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:12px;background:var(--accent-glow);color:var(--accent);font-size:16px;font-weight:800;margin-bottom:20px}
+    .step-icon{font-size:48px;margin-bottom:16px}
+    .step h3{color:var(--text);font-size:18px;font-weight:700;margin-bottom:10px}
+    .step p{font-size:14px;color:var(--text2);line-height:1.7}
+
+    .features-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+    .feature-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:32px 28px;transition:border-color 0.3s,transform 0.3s}
+    .feature-card:hover{border-color:rgba(255,45,85,0.15);transform:translateY(-2px)}
+    .feature-icon{font-size:36px;margin-bottom:16px}
+    .feature-card h3{color:var(--text);font-size:17px;font-weight:700;margin-bottom:8px}
+    .feature-card p{font-size:14px;color:var(--text2);line-height:1.7}
+
+    .highlight-card{background:linear-gradient(135deg,var(--surface),var(--surface2));border:1px solid var(--border);border-radius:24px;padding:48px;display:flex;align-items:center;gap:48px}
+    .highlight-visual{flex-shrink:0;width:200px;height:200px;background:var(--accent-glow);border-radius:24px;display:flex;align-items:center;justify-content:center;font-size:80px}
+    .highlight-content h3{color:var(--text);font-size:24px;font-weight:800;margin-bottom:12px;letter-spacing:-0.5px}
+    .highlight-content p{font-size:15px;color:var(--text2);line-height:1.8;margin-bottom:24px}
+    .highlight-tags{display:flex;flex-wrap:wrap;gap:8px}
+    .highlight-tag{background:var(--surface3);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-size:13px;color:var(--text2);font-weight:500}
+
+    .cta-section{text-align:center;padding:80px 24px}
+    .cta-section h2{font-size:clamp(24px,4vw,36px);font-weight:800;color:var(--text);letter-spacing:-1px;margin-bottom:16px}
+    .cta-section p{font-size:16px;color:var(--text2);margin-bottom:36px}
+    .cta-sub{font-size:13px;color:var(--text3);margin-top:16px}
+
+    footer{max-width:1000px;margin:0 auto;padding:40px 24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--text3)}
+    footer a{color:var(--text3);transition:color 0.2s}
+    footer a:hover{color:var(--text2)}
+    .footer-links{display:flex;gap:24px}
+
+    @media(max-width:768px){
+      .steps{grid-template-columns:1fr;gap:16px}
+      .features-grid{grid-template-columns:1fr}
+      .highlight-card{flex-direction:column;padding:32px 24px;text-align:center}
+      .highlight-visual{width:140px;height:140px;font-size:56px}
+      .highlight-tags{justify-content:center}
+      footer{flex-direction:column;gap:16px;text-align:center}
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">baln</a>
+      <a href="/" class="nav-back">&larr; baln 홈으로</a>
+      <div class="nav-lang">
+        <a href="/kkeullim/" class="active">KO</a>
+        <span style="color:var(--text3);">|</span>
+        <a href="/kkeullim/en/">EN</a>
+        <span style="color:var(--text3);">|</span>
+        <a href="/kkeullim/ja/">JA</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div>
+      <div class="hero-badge"><span>COMING SOON</span> baln 기타 서비스</div>
+      <h1><em>끌리는</em> 사람을<br>만나다</h1>
+      <p class="hero-desc">
+        건강한 몸이 가장 솔직한 자기소개.<br>
+        InBody 인증, 바디프로필, 셀피 인증으로 검증된 프로필.<br>
+        매칭되면 채팅 없이 바로 연락처 공개.
+      </p>
+      <a href="#notify" class="hero-cta">출시 알림 받기</a>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">How it works</p>
+    <h2 class="section-title">인증 → 스와이프 → 만남</h2>
+    <p class="section-desc">어색한 채팅은 없습니다. 서로 끌리면 바로 만나세요.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-icon">🏋️</div>
+        <h3>프로필 인증</h3>
+        <p>InBody 점수, 셀피 인증, 바디프로필로<br>진짜 나를 증명합니다.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-icon">💘</div>
+        <h3>스와이프 매칭</h3>
+        <p>운동을 사랑하는 사람들 사이에서<br>끌리는 상대를 찾으세요.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-icon">📱</div>
+        <h3>연락처 공개</h3>
+        <p>서로 좋아요를 누르면 매칭 성사.<br>채팅 없이 전화번호가 바로 공개됩니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Features</p>
+    <h2 class="section-title">스펙이 아닌, 라이프스타일로</h2>
+    <p class="section-desc">연봉·학력 검증 대신 운동과 자기 관리로 매력을 증명합니다.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>InBody 인증</h3>
+        <p>체성분 결과지를 제출하면 운영팀이 검수. 실제 운동하는 사람인지 검증된 배지를 획득합니다.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🤳</div>
+        <h3>실시간 셀피 인증</h3>
+        <p>실시간 촬영으로 프로필 사진과 AI 대조. 사진 도용을 원천 차단합니다.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📸</div>
+        <h3>바디프로필 갤러리</h3>
+        <p>운동 결과물을 당당하게 공개. 바디프로필, 운동 인증샷, OOTD를 공유하세요.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📞</div>
+        <h3>채팅 없이 바로 연락</h3>
+        <p>골드스푼 모델: 매칭 즉시 전화번호 공개. 앱 안에서 어색한 채팅 없이 바로 만남.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🚫</div>
+        <h3>지인 차단</h3>
+        <p>연락처를 동기화하면 지인을 자동 차단. SHA-256 해시로 번호 원본은 저장하지 않습니다.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🛡️</div>
+        <h3>3단계 안전 시스템</h3>
+        <p>셀피 인증 + 부적절 콘텐츠 자동 감지 + 24시간 모니터링. 허위 프로필을 차단합니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="highlight-card">
+      <div class="highlight-visual">🔒</div>
+      <div class="highlight-content">
+        <h3>개인정보, 철벽 보호</h3>
+        <p>
+          인증 완료 후 원본 서류는 즉시 영구 삭제. 배지만 저장합니다.
+          사진 업로드 시 GPS·기기 정보(EXIF)를 자동 제거하고, 프로필 화면은 스크린샷이 차단됩니다.
+        </p>
+        <div class="highlight-tags">
+          <span class="highlight-tag">인증 서류 즉시 삭제</span>
+          <span class="highlight-tag">EXIF 자동 제거</span>
+          <span class="highlight-tag">스크린샷 차단</span>
+          <span class="highlight-tag">연락처 해시 저장</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section" id="notify">
+    <h2>끌리는 사람을 만날 준비 되셨나요?</h2>
+    <p>끌림은 곧 출시됩니다. 가장 먼저 만나보세요.</p>
+    <a href="https://apps.apple.com/app/kkeullim" class="hero-cta">출시 알림 받기</a>
+    <p class="cta-sub">iOS 17+ · 만 18세 이상</p>
+  </section>
+
+  <footer>
+    <div>&copy; 2026 baln. All rights reserved.</div>
+    <div class="footer-links">
+      <a href="/privacy.html">개인정보처리방침</a>
+      <a href="/terms.html">이용약관</a>
+      <a href="/">baln 홈</a>
+    </div>
+  </footer>
+
+</body>
+</html>

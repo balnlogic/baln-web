@@ -1,16 +1,19 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>다맛다 - 카메라로 찍으면 가격이 담긴다</title>
-  <meta name="description" content="장보기할 때 가격표를 찍으면 상품명과 가격을 자동 인식. 할인가 우선 적용, 실시간 합계 확인. 예산 안에서 똑똑하게 장보기.">
+  <title>Damassda - Snap a Price Tag, Add to Cart</title>
+  <meta name="description" content="Point your camera at a price tag and instantly recognize the product name and price. Discount prices are applied automatically. Smart grocery shopping within your budget.">
   <meta name="theme-color" content="#0A0A0A">
-  <link rel="canonical" href="https://baln.app/damassda/">
-  <meta property="og:title" content="다맛다 - 카메라로 찍으면 가격이 담긴다">
-  <meta property="og:description" content="가격표를 찍으면 상품명과 가격을 자동 인식. 할인가 우선 적용, 예산 관리까지.">
+  <link rel="canonical" href="https://baln.app/damassda/en/">
+  <link rel="alternate" hreflang="ko" href="https://baln.app/damassda/">
+  <link rel="alternate" hreflang="en" href="https://baln.app/damassda/en/">
+  <link rel="alternate" hreflang="ja" href="https://baln.app/damassda/ja/">
+  <meta property="og:title" content="Damassda - Snap a Price Tag, Add to Cart">
+  <meta property="og:description" content="Camera-based price tag recognition with automatic discount detection and real-time budget tracking.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://baln.app/damassda/">
+  <meta property="og:url" content="https://baln.app/damassda/en/">
   <meta property="og:site_name" content="baln">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,7 +41,7 @@
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: var(--bg);
       color: var(--text2);
       line-height: 1.7;
@@ -86,6 +89,21 @@
     }
 
     .nav-back:hover { color: var(--text); }
+
+    .nav-lang {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+    }
+
+    .nav-lang a {
+      color: var(--text3);
+      transition: color 0.2s;
+    }
+
+    .nav-lang a:hover { color: var(--text2); }
+    .nav-lang a.active { color: var(--blue); font-weight: 700; }
 
     /* ── Hero ── */
     .hero {
@@ -428,14 +446,14 @@
   <!-- ═══ NAV ═══ -->
   <nav>
     <div class="nav-inner">
-      <a href="/" class="nav-logo">baln</a>
-      <a href="/" class="nav-back">&larr; baln 홈으로</a>
-      <div style="display:flex;align-items:center;gap:12px;font-size:13px;">
-        <a href="/damassda/" style="color:var(--blue);font-weight:700;text-decoration:none;">KO</a>
+      <a href="/en/" class="nav-logo">baln</a>
+      <a href="/en/" class="nav-back">&larr; Back to baln</a>
+      <div class="nav-lang">
+        <a href="/damassda/">KO</a>
         <span style="color:var(--text3);">|</span>
-        <a href="/damassda/en/" style="color:var(--text3);text-decoration:none;">EN</a>
+        <a href="/damassda/en/" class="active">EN</a>
         <span style="color:var(--text3);">|</span>
-        <a href="/damassda/ja/" style="color:var(--text3);text-decoration:none;">JA</a>
+        <a href="/damassda/ja/">JA</a>
       </div>
     </div>
   </nav>
@@ -444,15 +462,15 @@
   <section class="hero">
     <div>
       <div class="hero-badge">
-        <span>NEW</span> baln 기타 서비스
+        <span>NEW</span> baln Services
       </div>
-      <h1>찍으면 <em>가격</em>이<br>담긴다</h1>
+      <h1>Snap a <em>Price</em>,<br>Add to Cart</h1>
       <p class="hero-desc">
-        가격표를 카메라로 찍으면 상품명과 가격을 자동 인식.<br>
-        할인가가 있으면 할인가로, 예산 안에서 똑똑하게 장보기.
+        Point your camera at a price tag to instantly recognize<br>
+        the product name and price. Discounts detected automatically.
       </p>
       <a href="https://apps.apple.com/app/id6740487612" class="hero-cta">
-        App Store에서 다운로드
+        Download on the App Store
       </a>
     </div>
   </section>
@@ -460,28 +478,28 @@
   <!-- ═══ HOW IT WORKS ═══ -->
   <section>
     <p class="section-label">How it works</p>
-    <h2 class="section-title">3단계로 끝나는 장보기</h2>
+    <h2 class="section-title">Grocery Shopping in 3 Steps</h2>
     <p class="section-desc">
-      복잡한 계산기 앱 필요 없이, 카메라 한 번이면 됩니다.
+      No complicated calculator apps needed. Just one snap with your camera.
     </p>
     <div class="steps">
       <div class="step">
         <div class="step-num">1</div>
         <div class="step-icon">📸</div>
-        <h3>가격표 촬영</h3>
-        <p>카메라로 가격표를 찍으면<br>AI가 텍스트를 자동 인식합니다.</p>
+        <h3>Snap the Price Tag</h3>
+        <p>Point your camera at the price tag<br>and AI reads the text instantly.</p>
       </div>
       <div class="step">
         <div class="step-num">2</div>
         <div class="step-icon">🏷️</div>
-        <h3>상품 자동 등록</h3>
-        <p>상품명과 가격을 자동 추출.<br>할인가가 있으면 할인가를 적용합니다.</p>
+        <h3>Auto-Register Item</h3>
+        <p>Product name and price are extracted<br>automatically. Discount prices are preferred.</p>
       </div>
       <div class="step">
         <div class="step-num">3</div>
         <div class="step-icon">🧮</div>
-        <h3>실시간 합계</h3>
-        <p>담은 상품의 합계를 실시간으로 확인.<br>예산 초과 시 경고해줍니다.</p>
+        <h3>Real-Time Total</h3>
+        <p>See your running total in real time.<br>Get alerts when you're near your budget.</p>
       </div>
     </div>
   </section>
@@ -489,40 +507,40 @@
   <!-- ═══ FEATURES ═══ -->
   <section>
     <p class="section-label">Features</p>
-    <h2 class="section-title">장보기가 편해지는 기능들</h2>
+    <h2 class="section-title">Everything You Need for Smarter Shopping</h2>
     <p class="section-desc">
-      가격 인식부터 예산 관리까지, 장보기에 필요한 것만 담았습니다.
+      From price recognition to budget management — only what matters.
     </p>
     <div class="features-grid">
       <div class="feature-card">
         <div class="feature-icon">📷</div>
-        <h3>가격표 OCR 인식</h3>
-        <p>카메라로 가격표를 촬영하면 온디바이스 AI가 상품명과 가격을 자동으로 읽어냅니다. 인터넷 없이도 동작합니다.</p>
+        <h3>Price Tag OCR</h3>
+        <p>On-device AI reads product names and prices from price tags. Works offline — no internet required.</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">💰</div>
-        <h3>할인가 자동 적용</h3>
-        <p>할인, 행사, 세일 등 할인 키워드를 감지하면 자동으로 할인가를 우선 적용합니다.</p>
+        <h3>Auto Discount Detection</h3>
+        <p>Detects sale, discount, and promotion keywords to automatically apply the lowest price.</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">📊</div>
-        <h3>실시간 예산 관리</h3>
-        <p>설정한 예산 대비 현재 합계를 실시간으로 보여주고, 초과 위험 시 단계별로 경고합니다.</p>
+        <h3>Real-Time Budget Tracking</h3>
+        <p>See your spending vs. budget in real time with progressive warnings as you approach your limit.</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">⌨️</div>
-        <h3>빠른 수동 입력</h3>
-        <p>가격표가 인식되지 않을 때는 하단 키패드로 직접 가격을 입력할 수 있습니다.</p>
+        <h3>Quick Manual Entry</h3>
+        <p>When OCR can't read the tag, use the built-in keypad to enter prices manually.</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">↩️</div>
-        <h3>실수 방지</h3>
-        <p>잘못 담은 상품은 실행 취소 토스트로 바로 되돌릴 수 있습니다.</p>
+        <h3>Undo Mistakes</h3>
+        <p>Accidentally added an item? Tap undo to remove it instantly.</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">🎁</div>
-        <h3>1+1 / 2+1 할인</h3>
-        <p>같은 상품 2개 이상 담으면 1+1, 2+1 행사 적용을 자동으로 제안합니다.</p>
+        <h3>BOGO / 2+1 Deals</h3>
+        <p>When you add 2+ of the same item, the app suggests applying buy-one-get-one or 2+1 promotions.</p>
       </div>
     </div>
   </section>
@@ -532,16 +550,16 @@
     <div class="highlight-card">
       <div class="highlight-visual">🔒</div>
       <div class="highlight-content">
-        <h3>완전한 오프라인, 완전한 프라이버시</h3>
+        <h3>Fully Offline. Fully Private.</h3>
         <p>
-          모든 가격 인식은 기기 내에서 처리됩니다. 서버에 사진을 보내지 않고, 장보기 데이터는 기기에만 저장됩니다.
-          인터넷이 안 되는 마트 지하에서도 문제없이 동작합니다.
+          All price recognition happens on your device. No photos are sent to any server,
+          and your shopping data stays on your phone. Works even in basement supermarkets with no signal.
         </p>
         <div class="highlight-tags">
-          <span class="highlight-tag">온디바이스 AI</span>
-          <span class="highlight-tag">오프라인 동작</span>
-          <span class="highlight-tag">데이터 기기 저장</span>
-          <span class="highlight-tag">서버 전송 없음</span>
+          <span class="highlight-tag">On-Device AI</span>
+          <span class="highlight-tag">Works Offline</span>
+          <span class="highlight-tag">Local Data Only</span>
+          <span class="highlight-tag">No Server Upload</span>
         </div>
       </div>
     </div>
@@ -549,10 +567,10 @@
 
   <!-- ═══ CTA ═══ -->
   <section class="cta-section">
-    <h2>장보기, 이제 찍기만 하세요</h2>
-    <p>다맛다는 무료로 사용할 수 있습니다.</p>
+    <h2>Just Snap and Shop</h2>
+    <p>Damassda is free to use.</p>
     <a href="https://apps.apple.com/app/id6740487612" class="hero-cta">
-      App Store에서 다운로드
+      Download on the App Store
     </a>
   </section>
 
@@ -560,9 +578,9 @@
   <footer>
     <div>&copy; 2026 baln. All rights reserved.</div>
     <div class="footer-links">
-      <a href="/privacy.html">개인정보처리방침</a>
-      <a href="/terms.html">이용약관</a>
-      <a href="/">baln 홈</a>
+      <a href="/privacy.html">Privacy Policy</a>
+      <a href="/terms.html">Terms of Service</a>
+      <a href="/en/">baln Home</a>
     </div>
   </footer>
 

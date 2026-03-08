@@ -3,15 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>끌림 - 운동하는 사람들의 프리미엄 데이팅</title>
-  <meta name="description" content="InBody 인증, 바디프로필, 셀피 인증으로 검증된 프로필. 매칭 즉시 전화번호 공개. 운동을 사랑하는 사람들을 위한 데이팅 앱.">
+  <title>끌림 - 자기관리하는 사람들의 진짜 만남</title>
+  <meta name="description" content="48시간 심사를 통과한 사람만 만날 수 있습니다. 채팅 없이 매칭 즉시 연락처 공개. 자기관리하는 사람들의 프리미엄 데이팅 앱.">
   <meta name="theme-color" content="#0D0D0D">
   <link rel="canonical" href="https://baln.app/kkeullim/">
   <link rel="alternate" hreflang="ko" href="https://baln.app/kkeullim/">
   <link rel="alternate" hreflang="en" href="https://baln.app/kkeullim/en/">
-  <link rel="alternate" hreflang="ja" href="https://baln.app/kkeullim/ja/">
-  <meta property="og:title" content="끌림 - 운동하는 사람들의 프리미엄 데이팅">
-  <meta property="og:description" content="InBody 인증으로 검증된 프로필. 매칭 즉시 연락처 공개. 채팅 없이 바로 만남.">
+  <meta property="og:title" content="끌림 - 자기관리하는 사람들의 진짜 만남">
+  <meta property="og:description" content="48시간 심사를 통과한 사람만. 채팅 없이 매칭 즉시 연락처 공개.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://baln.app/kkeullim/">
   <meta property="og:site_name" content="baln">
@@ -20,78 +19,159 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:#0D0D0D;--surface:#161616;--surface2:#1E1E1E;--surface3:#282828;--border:#2A2A2A;
-      --green:#4CAF50;--accent:#FF2D55;--accent-glow:rgba(255,45,85,0.15);--gold:#D4AF37;
-      --text:#F5F5F5;--text2:#B0B0B0;--text3:#777;
+      --bg:#0D0D0D;--s1:#131313;--s2:#1A1A1A;--s3:#222;--border:#2A2A2A;
+      --accent:#FF2D55;--accent2:#FF6B81;--accent-g:rgba(255,45,85,0.12);
+      --gold:#D4AF37;--gold-g:rgba(212,175,55,0.12);
+      --t:#F5F5F5;--t2:#A0A0A0;--t3:#666;
     }
-    *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
-    body{font-family:'Noto Sans KR',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text2);line-height:1.7;overflow-x:hidden}
+    *{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{font-family:'Noto Sans KR',-apple-system,sans-serif;background:var(--bg);color:var(--t2);line-height:1.7;overflow-x:hidden}
     a{color:inherit;text-decoration:none}
 
-    nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(13,13,13,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
-    .nav-inner{max-width:1200px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between}
-    .nav-logo{font-size:24px;font-weight:800;color:var(--green);letter-spacing:-1px}
-    .nav-back{display:flex;align-items:center;gap:8px;color:var(--text2);font-size:14px;font-weight:500;transition:color 0.2s}
-    .nav-back:hover{color:var(--text)}
-    .nav-lang{display:flex;align-items:center;gap:12px;font-size:13px}
-    .nav-lang a{color:var(--text3);transition:color 0.2s}
-    .nav-lang a:hover{color:var(--text2)}
-    .nav-lang a.active{color:var(--accent);font-weight:700}
+    /* Animations */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+    @keyframes pulse{0%,100%{opacity:0.4;transform:scale(1)}50%{opacity:0.8;transform:scale(1.05)}}
+    @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+    @keyframes glow{0%,100%{box-shadow:0 0 20px rgba(255,45,85,0.2)}50%{box-shadow:0 0 40px rgba(255,45,85,0.4)}}
+    .fade-up{opacity:0;transform:translateY(40px);transition:opacity 0.8s,transform 0.8s}
+    .fade-up.visible{opacity:1;transform:translateY(0)}
 
-    .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px;position:relative;overflow:hidden}
-    .hero::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,var(--accent-glow) 0%,transparent 70%);pointer-events:none}
-    .hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid var(--border);border-radius:100px;padding:8px 20px;font-size:13px;color:var(--text2);margin-bottom:32px}
-    .hero-badge span{color:var(--accent);font-weight:700}
-    .hero h1{font-size:clamp(36px,7vw,64px);font-weight:900;color:var(--text);line-height:1.2;letter-spacing:-2px;margin-bottom:24px}
-    .hero h1 em{font-style:normal;background:linear-gradient(135deg,#FF2D55,#FF6B81);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-    .hero-desc{font-size:18px;color:var(--text2);max-width:520px;margin:0 auto 48px;line-height:1.8}
-    .hero-cta{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#FFF;font-size:16px;font-weight:700;padding:16px 36px;border-radius:100px;transition:all 0.2s}
-    .hero-cta:hover{transform:scale(1.03);box-shadow:0 8px 32px rgba(255,45,85,0.3)}
+    /* Nav */
+    nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(13,13,13,0.8);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,0.06)}
+    .nav-inner{max-width:1100px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between}
+    .nav-brand{font-size:22px;font-weight:800;color:var(--accent);letter-spacing:-1px}
+    .nav-cta{background:var(--accent);color:#FFF;font-size:13px;font-weight:700;padding:10px 24px;border-radius:100px;transition:all 0.2s}
+    .nav-cta:hover{transform:scale(1.05);box-shadow:0 4px 20px rgba(255,45,85,0.3)}
 
-    section{max-width:1000px;margin:0 auto;padding:100px 24px}
-    .section-label{font-size:12px;font-weight:700;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
-    .section-title{font-size:clamp(28px,5vw,42px);font-weight:800;color:var(--text);letter-spacing:-1.5px;line-height:1.3;margin-bottom:20px}
-    .section-desc{font-size:16px;color:var(--text2);max-width:560px;line-height:1.8;margin-bottom:48px}
+    /* Hero */
+    .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:120px 24px 80px;position:relative;overflow:hidden}
+    .hero::before{content:'';position:absolute;top:-300px;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(255,45,85,0.08) 0%,transparent 65%);pointer-events:none}
+    .hero-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:60px}
+    .hero-text{flex:1;min-width:0}
+    .hero-visual{flex:0 0 320px;position:relative}
 
-    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-    .step{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:36px 28px;text-align:center;transition:border-color 0.3s,transform 0.3s}
+    .hero-pill{display:inline-flex;align-items:center;gap:8px;background:var(--s2);border:1px solid var(--border);border-radius:100px;padding:8px 18px;font-size:13px;color:var(--t2);margin-bottom:28px;animation:fadeUp 0.6s ease both}
+    .hero-pill .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite}
+    .hero h1{font-size:clamp(40px,6vw,60px);font-weight:900;color:var(--t);line-height:1.15;letter-spacing:-2.5px;margin-bottom:20px;animation:fadeUp 0.6s 0.1s ease both}
+    .hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero-sub{font-size:18px;color:var(--t2);line-height:1.8;margin-bottom:40px;animation:fadeUp 0.6s 0.2s ease both}
+    .hero-btns{display:flex;gap:16px;align-items:center;animation:fadeUp 0.6s 0.3s ease both}
+    .btn-primary{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:#FFF;font-size:16px;font-weight:700;padding:16px 32px;border-radius:16px;transition:all 0.2s;animation:glow 3s infinite}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(255,45,85,0.3)}
+    .btn-primary svg{width:20px;height:20px;fill:currentColor}
+    .btn-ghost{color:var(--t2);font-size:15px;font-weight:500;padding:16px 8px;transition:color 0.2s}
+    .btn-ghost:hover{color:var(--t)}
+
+    /* Phone mockup */
+    .phone{width:280px;height:580px;background:var(--s1);border-radius:44px;border:3px solid var(--s3);position:relative;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,0.5);animation:float 6s ease-in-out infinite,fadeUp 0.8s 0.4s ease both}
+    .phone-notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:120px;height:32px;background:var(--bg);border-radius:0 0 20px 20px;z-index:2}
+    .phone-screen{position:absolute;inset:3px;border-radius:41px;overflow:hidden;background:var(--bg)}
+    .phone-card{position:absolute;top:60px;left:16px;right:16px;bottom:100px;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#2C2C3E 0%,#1a1a2e 100%)}
+    .phone-card-gradient{position:absolute;bottom:0;left:0;right:0;height:50%;background:linear-gradient(transparent,rgba(0,0,0,0.7));padding:20px;display:flex;flex-direction:column;justify-content:flex-end}
+    .phone-card-name{color:#FFF;font-size:20px;font-weight:700;margin-bottom:2px}
+    .phone-card-meta{color:rgba(255,255,255,0.6);font-size:12px}
+    .phone-card-badges{display:flex;gap:4px;margin-top:8px}
+    .phone-card-badge{background:rgba(255,45,85,0.2);border:1px solid rgba(255,45,85,0.3);color:var(--accent);font-size:10px;font-weight:600;padding:3px 8px;border-radius:20px}
+    .phone-actions{position:absolute;bottom:20px;left:0;right:0;display:flex;justify-content:center;gap:16px}
+    .phone-action{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px}
+    .phone-action-x{border:2px solid #FF3B30;color:#FF3B30;background:transparent}
+    .phone-action-star{border:2px solid var(--gold);color:var(--gold);background:transparent;width:40px;height:40px;font-size:16px}
+    .phone-action-heart{background:var(--accent);color:#FFF;border:none}
+    .phone-shimmer{position:absolute;top:60px;left:16px;right:16px;height:200px;border-radius:20px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.03),transparent);background-size:200% 100%;animation:shimmer 3s infinite}
+
+    /* Stats bar */
+    .stats{max-width:1100px;margin:-40px auto 0;padding:0 24px;position:relative;z-index:1}
+    .stats-inner{background:var(--s1);border:1px solid var(--border);border-radius:20px;padding:32px;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;text-align:center}
+    .stat-num{font-size:28px;font-weight:800;color:var(--t);letter-spacing:-1px;margin-bottom:4px}
+    .stat-num span{color:var(--accent)}
+    .stat-label{font-size:13px;color:var(--t3)}
+
+    /* Section */
+    section{max-width:1100px;margin:0 auto;padding:100px 24px}
+    .sc-label{font-size:12px;font-weight:700;color:var(--accent);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px}
+    .sc-title{font-size:clamp(28px,5vw,40px);font-weight:800;color:var(--t);letter-spacing:-1.5px;line-height:1.3;margin-bottom:16px}
+    .sc-desc{font-size:16px;color:var(--t2);max-width:520px;line-height:1.8;margin-bottom:48px}
+
+    /* Review system highlight */
+    .review-section{background:linear-gradient(180deg,var(--bg) 0%,var(--s1) 100%);padding:100px 24px}
+    .review-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:60px}
+    .review-text{flex:1}
+    .review-visual{flex:0 0 400px}
+    .review-flow{display:flex;flex-direction:column;gap:0}
+    .review-step{display:flex;align-items:flex-start;gap:20px;padding:24px 0}
+    .review-step + .review-step{border-top:1px solid var(--border)}
+    .review-dot{flex-shrink:0;width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800}
+    .review-dot-pending{background:rgba(255,214,10,0.12);color:#FFD60A;border:1px solid rgba(255,214,10,0.2)}
+    .review-dot-check{background:rgba(48,209,88,0.12);color:#30D158;border:1px solid rgba(48,209,88,0.2)}
+    .review-dot-fire{background:var(--accent-g);color:var(--accent);border:1px solid rgba(255,45,85,0.2)}
+    .review-step h4{color:var(--t);font-size:16px;font-weight:700;margin-bottom:4px}
+    .review-step p{font-size:14px;color:var(--t2);line-height:1.7}
+
+    /* How it works */
+    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .step{background:var(--s1);border:1px solid var(--border);border-radius:24px;padding:36px 28px;text-align:center;transition:all 0.3s;position:relative;overflow:hidden}
     .step:hover{border-color:rgba(255,45,85,0.2);transform:translateY(-4px)}
-    .step-num{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:12px;background:var(--accent-glow);color:var(--accent);font-size:16px;font-weight:800;margin-bottom:20px}
-    .step-icon{font-size:48px;margin-bottom:16px}
-    .step h3{color:var(--text);font-size:18px;font-weight:700;margin-bottom:10px}
-    .step p{font-size:14px;color:var(--text2);line-height:1.7}
+    .step::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));opacity:0;transition:opacity 0.3s}
+    .step:hover::after{opacity:1}
+    .step-num{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:12px;background:var(--accent-g);color:var(--accent);font-size:16px;font-weight:800;margin-bottom:24px}
+    .step h3{color:var(--t);font-size:18px;font-weight:700;margin-bottom:10px}
+    .step p{font-size:14px;color:var(--t2);line-height:1.7}
 
-    .features-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
-    .feature-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:32px 28px;transition:border-color 0.3s,transform 0.3s}
-    .feature-card:hover{border-color:rgba(255,45,85,0.15);transform:translateY(-2px)}
-    .feature-icon{font-size:36px;margin-bottom:16px}
-    .feature-card h3{color:var(--text);font-size:17px;font-weight:700;margin-bottom:8px}
-    .feature-card p{font-size:14px;color:var(--text2);line-height:1.7}
+    /* Features */
+    .features{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+    .feat{background:var(--s1);border:1px solid var(--border);border-radius:20px;padding:28px 24px;transition:all 0.3s}
+    .feat:hover{border-color:rgba(255,45,85,0.15);transform:translateY(-2px)}
+    .feat-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:16px}
+    .feat-icon-red{background:var(--accent-g);border:1px solid rgba(255,45,85,0.15)}
+    .feat-icon-gold{background:var(--gold-g);border:1px solid rgba(212,175,55,0.15)}
+    .feat h3{color:var(--t);font-size:16px;font-weight:700;margin-bottom:6px}
+    .feat p{font-size:13px;color:var(--t2);line-height:1.7}
 
-    .highlight-card{background:linear-gradient(135deg,var(--surface),var(--surface2));border:1px solid var(--border);border-radius:24px;padding:48px;display:flex;align-items:center;gap:48px}
-    .highlight-visual{flex-shrink:0;width:200px;height:200px;background:var(--accent-glow);border-radius:24px;display:flex;align-items:center;justify-content:center;font-size:80px}
-    .highlight-content h3{color:var(--text);font-size:24px;font-weight:800;margin-bottom:12px;letter-spacing:-0.5px}
-    .highlight-content p{font-size:15px;color:var(--text2);line-height:1.8;margin-bottom:24px}
-    .highlight-tags{display:flex;flex-wrap:wrap;gap:8px}
-    .highlight-tag{background:var(--surface3);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-size:13px;color:var(--text2);font-weight:500}
+    /* Privacy highlight */
+    .privacy{max-width:1100px;margin:0 auto;padding:0 24px 100px}
+    .privacy-card{background:linear-gradient(135deg,var(--s1),var(--s2));border:1px solid var(--border);border-radius:24px;padding:48px;display:flex;align-items:center;gap:48px}
+    .privacy-icon{flex-shrink:0;width:160px;height:160px;background:linear-gradient(135deg,rgba(255,45,85,0.08),rgba(212,175,55,0.08));border-radius:24px;display:flex;align-items:center;justify-content:center;font-size:64px;border:1px solid var(--border)}
+    .privacy-content h3{color:var(--t);font-size:24px;font-weight:800;margin-bottom:12px;letter-spacing:-0.5px}
+    .privacy-content p{font-size:15px;color:var(--t2);line-height:1.8;margin-bottom:20px}
+    .privacy-tags{display:flex;flex-wrap:wrap;gap:8px}
+    .privacy-tag{background:var(--s3);border:1px solid var(--border);border-radius:10px;padding:8px 16px;font-size:13px;color:var(--t2);font-weight:500;transition:border-color 0.2s}
+    .privacy-tag:hover{border-color:rgba(255,45,85,0.2)}
 
-    .cta-section{text-align:center;padding:80px 24px}
-    .cta-section h2{font-size:clamp(24px,4vw,36px);font-weight:800;color:var(--text);letter-spacing:-1px;margin-bottom:16px}
-    .cta-section p{font-size:16px;color:var(--text2);margin-bottom:36px}
-    .cta-sub{font-size:13px;color:var(--text3);margin-top:16px}
+    /* CTA */
+    .cta{text-align:center;padding:80px 24px 60px;position:relative}
+    .cta::before{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(circle,rgba(255,45,85,0.06) 0%,transparent 65%);pointer-events:none}
+    .cta h2{font-size:clamp(28px,5vw,40px);font-weight:800;color:var(--t);letter-spacing:-1.5px;margin-bottom:14px}
+    .cta p{font-size:16px;color:var(--t2);margin-bottom:36px}
+    .cta-sub{font-size:13px;color:var(--t3);margin-top:16px}
 
-    footer{max-width:1000px;margin:0 auto;padding:40px 24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--text3)}
-    footer a{color:var(--text3);transition:color 0.2s}
-    footer a:hover{color:var(--text2)}
+    /* Footer */
+    footer{max-width:1100px;margin:0 auto;padding:32px 24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--t3)}
+    footer a{color:var(--t3);transition:color 0.2s}
+    footer a:hover{color:var(--t2)}
     .footer-links{display:flex;gap:24px}
 
-    @media(max-width:768px){
-      .steps{grid-template-columns:1fr;gap:16px}
-      .features-grid{grid-template-columns:1fr}
-      .highlight-card{flex-direction:column;padding:32px 24px;text-align:center}
-      .highlight-visual{width:140px;height:140px;font-size:56px}
-      .highlight-tags{justify-content:center}
-      footer{flex-direction:column;gap:16px;text-align:center}
+    /* Responsive */
+    @media(max-width:900px){
+      .hero-inner{flex-direction:column;text-align:center}
+      .hero-visual{flex:none}
+      .hero-btns{justify-content:center}
+      .hero-sub{margin-left:auto;margin-right:auto;max-width:440px}
+      .stats-inner{grid-template-columns:repeat(2,1fr)}
+      .review-inner{flex-direction:column}
+      .review-visual{flex:none;width:100%}
+    }
+    @media(max-width:640px){
+      .steps{grid-template-columns:1fr;gap:12px}
+      .features{grid-template-columns:1fr}
+      .privacy-card{flex-direction:column;padding:32px 24px;text-align:center}
+      .privacy-icon{width:120px;height:120px;font-size:48px}
+      .privacy-tags{justify-content:center}
+      .stats-inner{grid-template-columns:repeat(2,1fr);padding:24px;gap:16px}
+      footer{flex-direction:column;gap:12px;text-align:center}
+      .phone{width:240px;height:500px;border-radius:38px}
+      .phone-notch{width:100px;height:28px;border-radius:0 0 16px 16px}
     }
   </style>
 </head>
@@ -99,129 +179,255 @@
 
   <nav>
     <div class="nav-inner">
-      <a href="/" class="nav-logo">baln</a>
-      <a href="/" class="nav-back">&larr; baln 홈으로</a>
-      <div class="nav-lang">
-        <a href="/kkeullim/" class="active">KO</a>
-        <span style="color:var(--text3);">|</span>
-        <a href="/kkeullim/en/">EN</a>
-        <span style="color:var(--text3);">|</span>
-        <a href="/kkeullim/ja/">JA</a>
-      </div>
+      <a href="/kkeullim/" class="nav-brand">끌림</a>
+      <a href="#download" class="nav-cta">App Store</a>
     </div>
   </nav>
 
+  <!-- Hero -->
   <section class="hero">
-    <div>
-      <div class="hero-badge"><span>COMING SOON</span> baln 기타 서비스</div>
-      <h1><em>끌리는</em> 사람을<br>만나다</h1>
-      <p class="hero-desc">
-        건강한 몸이 가장 솔직한 자기소개.<br>
-        InBody 인증, 바디프로필, 셀피 인증으로 검증된 프로필.<br>
-        매칭되면 채팅 없이 바로 연락처 공개.
-      </p>
-      <a href="#notify" class="hero-cta">출시 알림 받기</a>
-    </div>
-  </section>
-
-  <section>
-    <p class="section-label">How it works</p>
-    <h2 class="section-title">인증 → 스와이프 → 만남</h2>
-    <p class="section-desc">어색한 채팅은 없습니다. 서로 끌리면 바로 만나세요.</p>
-    <div class="steps">
-      <div class="step">
-        <div class="step-num">1</div>
-        <div class="step-icon">🏋️</div>
-        <h3>프로필 인증</h3>
-        <p>InBody 점수, 셀피 인증, 바디프로필로<br>진짜 나를 증명합니다.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">2</div>
-        <div class="step-icon">💘</div>
-        <h3>스와이프 매칭</h3>
-        <p>운동을 사랑하는 사람들 사이에서<br>끌리는 상대를 찾으세요.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <div class="step-icon">📱</div>
-        <h3>연락처 공개</h3>
-        <p>서로 좋아요를 누르면 매칭 성사.<br>채팅 없이 전화번호가 바로 공개됩니다.</p>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <p class="section-label">Features</p>
-    <h2 class="section-title">스펙이 아닌, 라이프스타일로</h2>
-    <p class="section-desc">연봉·학력 검증 대신 운동과 자기 관리로 매력을 증명합니다.</p>
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon">📊</div>
-        <h3>InBody 인증</h3>
-        <p>체성분 결과지를 제출하면 운영팀이 검수. 실제 운동하는 사람인지 검증된 배지를 획득합니다.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🤳</div>
-        <h3>실시간 셀피 인증</h3>
-        <p>실시간 촬영으로 프로필 사진과 AI 대조. 사진 도용을 원천 차단합니다.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">📸</div>
-        <h3>바디프로필 갤러리</h3>
-        <p>운동 결과물을 당당하게 공개. 바디프로필, 운동 인증샷, OOTD를 공유하세요.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">📞</div>
-        <h3>채팅 없이 바로 연락</h3>
-        <p>골드스푼 모델: 매칭 즉시 전화번호 공개. 앱 안에서 어색한 채팅 없이 바로 만남.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🚫</div>
-        <h3>지인 차단</h3>
-        <p>연락처를 동기화하면 지인을 자동 차단. SHA-256 해시로 번호 원본은 저장하지 않습니다.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🛡️</div>
-        <h3>3단계 안전 시스템</h3>
-        <p>셀피 인증 + 부적절 콘텐츠 자동 감지 + 24시간 모니터링. 허위 프로필을 차단합니다.</p>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <div class="highlight-card">
-      <div class="highlight-visual">🔒</div>
-      <div class="highlight-content">
-        <h3>개인정보, 철벽 보호</h3>
-        <p>
-          인증 완료 후 원본 서류는 즉시 영구 삭제. 배지만 저장합니다.
-          사진 업로드 시 GPS·기기 정보(EXIF)를 자동 제거하고, 프로필 화면은 스크린샷이 차단됩니다.
+    <div class="hero-inner">
+      <div class="hero-text">
+        <div class="hero-pill"><span class="dot"></span>자기관리하는 사람들의 데이팅</div>
+        <h1>자기관리하는 사람들의<br><em>진짜</em> 만남</h1>
+        <p class="hero-sub">
+          48시간 심사를 통과한 사람만 만날 수 있습니다.<br>
+          채팅 없이, 매칭 즉시 연락처 공개.
         </p>
-        <div class="highlight-tags">
-          <span class="highlight-tag">인증 서류 즉시 삭제</span>
-          <span class="highlight-tag">EXIF 자동 제거</span>
-          <span class="highlight-tag">스크린샷 차단</span>
-          <span class="highlight-tag">연락처 해시 저장</span>
+        <div class="hero-btns">
+          <a href="#download" class="btn-primary">
+            <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11"/></svg>
+            App Store
+          </a>
+          <a href="#how" class="btn-ghost">어떻게 작동하나요? &darr;</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="phone-card">
+              <div style="position:absolute;top:12px;left:20px;right:20px;display:flex;gap:4px">
+                <div style="flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,0.8)"></div>
+                <div style="flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,0.25)"></div>
+                <div style="flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,0.25)"></div>
+              </div>
+              <div class="phone-shimmer"></div>
+              <div class="phone-card-gradient">
+                <div class="phone-card-badges">
+                  <span class="phone-card-badge">InBody</span>
+                  <span class="phone-card-badge">Selfie</span>
+                </div>
+                <div class="phone-card-name">jiyeon_fit <span style="font-weight:400;opacity:0.7">26</span></div>
+                <div class="phone-card-meta">162cm &middot; 2.3km &middot; 방금 활동</div>
+              </div>
+            </div>
+            <div class="phone-actions">
+              <div class="phone-action phone-action-x">X</div>
+              <div class="phone-action phone-action-star" style="font-size:14px">&#9733;</div>
+              <div class="phone-action phone-action-heart">&#9829;</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="cta-section" id="notify">
-    <h2>끌리는 사람을 만날 준비 되셨나요?</h2>
-    <p>끌림은 곧 출시됩니다. 가장 먼저 만나보세요.</p>
-    <a href="https://apps.apple.com/app/kkeullim" class="hero-cta">출시 알림 받기</a>
-    <p class="cta-sub">iOS 17+ · 만 19세 ~ 45세 이용 가능</p>
+  <!-- Stats -->
+  <div class="stats fade-up">
+    <div class="stats-inner">
+      <div><div class="stat-num"><span>48</span>h</div><div class="stat-label">프로필 심사 시간</div></div>
+      <div><div class="stat-num"><span>6</span>종</div><div class="stat-label">인증 뱃지</div></div>
+      <div><div class="stat-num"><span>0</span>초</div><div class="stat-label">매칭 후 연락까지</div></div>
+      <div><div class="stat-num"><span>100</span>%</div><div class="stat-label">개인정보 보호</div></div>
+    </div>
+  </div>
+
+  <!-- Review System -->
+  <div class="review-section" id="review">
+    <div class="review-inner">
+      <div class="review-text fade-up">
+        <p class="sc-label">Screening</p>
+        <h2 class="sc-title">아무나 들어올 수 없습니다</h2>
+        <p class="sc-desc">모든 신규 회원은 48시간 심사를 거칩니다. 다른 회원들의 반응이 기준입니다.</p>
+        <div class="review-flow">
+          <div class="review-step">
+            <div class="review-dot review-dot-pending">1</div>
+            <div>
+              <h4>프로필 등록</h4>
+              <p>운동복 사진 3장 이상 + 기본 정보를 입력하면 심사가 시작됩니다.</p>
+            </div>
+          </div>
+          <div class="review-step">
+            <div class="review-dot review-dot-check">2</div>
+            <div>
+              <h4>48시간 커뮤니티 검증</h4>
+              <p>기존 회원들에게 프로필이 노출되고, 관심도를 측정합니다. 좋아요 반응이 기준이 됩니다.</p>
+            </div>
+          </div>
+          <div class="review-step">
+            <div class="review-dot review-dot-fire">3</div>
+            <div>
+              <h4>통과 또는 재도전</h4>
+              <p>상위 80%는 승인. 하위 20%는 더 매력적인 사진으로 재도전할 수 있습니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="review-visual fade-up">
+        <div style="background:var(--s2);border:1px solid var(--border);border-radius:24px;padding:40px;text-align:center">
+          <div style="width:80px;height:80px;margin:0 auto 24px;border-radius:50%;border:3px solid var(--accent);display:flex;align-items:center;justify-content:center;position:relative">
+            <div style="position:absolute;inset:-8px;border-radius:50%;border:2px solid rgba(255,45,85,0.2);animation:pulse 2s infinite"></div>
+            <span style="font-size:24px;font-weight:800;color:var(--accent)">...</span>
+          </div>
+          <div style="font-size:22px;font-weight:700;color:var(--t);margin-bottom:8px">프로필 심사중</div>
+          <div style="font-size:14px;color:var(--t2);margin-bottom:28px">회원님의 프로필을 검토하고 있어요</div>
+          <div style="background:var(--s3);border-radius:16px;padding:20px;margin-bottom:20px">
+            <div style="font-size:13px;color:var(--t3);margin-bottom:4px">예상 소요 시간</div>
+            <div style="font-size:20px;font-weight:700;color:var(--t)">약 23시간 남음</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;text-align:left">
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--s3);border-radius:12px">
+              <div style="width:28px;height:28px;border-radius:8px;background:var(--accent-g);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800">1</div>
+              <span style="font-size:13px;color:var(--t2)">프로필 검토</span>
+              <span style="margin-left:auto;color:#30D158;font-size:12px">&#10003;</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--s3);border-radius:12px">
+              <div style="width:28px;height:28px;border-radius:8px;background:rgba(255,214,10,0.12);color:#FFD60A;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800">2</div>
+              <span style="font-size:13px;color:var(--t)">커뮤니티 반응 측정중...</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--s3);border-radius:12px;opacity:0.5">
+              <div style="width:28px;height:28px;border-radius:8px;background:var(--s2);color:var(--t3);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800">3</div>
+              <span style="font-size:13px;color:var(--t3)">승인 완료</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- How it works -->
+  <section id="how">
+    <div class="fade-up">
+      <p class="sc-label">How it works</p>
+      <h2 class="sc-title">인증 &rarr; 스와이프 &rarr; 바로 만남</h2>
+      <p class="sc-desc">어색한 채팅은 없습니다. 서로 끌리면 바로 만나세요.</p>
+    </div>
+    <div class="steps fade-up">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>프로필 인증</h3>
+        <p>InBody, 셀피, 운동 인증, 재학/재직 증명으로<br>진짜 나를 증명합니다.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>스와이프 매칭</h3>
+        <p>운동하는 사람들 사이에서<br>끌리는 상대를 찾으세요.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>연락처 즉시 공개</h3>
+        <p>서로 좋아요를 누르면 매칭 완료.<br>전화번호가 바로 공개됩니다.</p>
+      </div>
+    </div>
   </section>
 
+  <!-- Features -->
+  <section>
+    <div class="fade-up">
+      <p class="sc-label">Features</p>
+      <h2 class="sc-title">스펙이 아닌, 라이프스타일</h2>
+      <p class="sc-desc">연봉이나 학력 대신, 자기관리와 라이프스타일로 매력을 증명합니다.</p>
+    </div>
+    <div class="features fade-up">
+      <div class="feat">
+        <div class="feat-icon feat-icon-red">&#128170;</div>
+        <h3>InBody 인증</h3>
+        <p>체성분 결과지 제출 후 운영팀 검수. 실제 운동하는 사람에게 인증 뱃지를 부여합니다.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon feat-icon-gold">&#128247;</div>
+        <h3>실시간 셀피 인증</h3>
+        <p>실시간 촬영으로 AI가 프로필 사진 대조. 사진 도용을 원천 차단합니다.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon feat-icon-red">&#128293;</div>
+        <h3>OOTD 피드</h3>
+        <p>오늘의 운동 룩을 공유하고, 운동 인증샷으로 일상을 보여주세요.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon feat-icon-gold">&#128222;</div>
+        <h3>채팅 없이 바로 연락</h3>
+        <p>매칭 즉시 전화번호 공개. 앱 안 어색한 채팅 없이 바로 연락하고 만나세요.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon feat-icon-red">&#128683;</div>
+        <h3>지인 차단</h3>
+        <p>연락처 동기화로 지인 자동 차단. SHA-256 해시로 번호 원본은 저장하지 않습니다.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon feat-icon-gold">&#128272;</div>
+        <h3>스크린샷 차단</h3>
+        <p>프로필 화면 스크린샷 방지. 사진 업로드 시 GPS/기기 정보(EXIF) 자동 제거.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon feat-icon-red">&#127947;</div>
+        <h3>운동 인증</h3>
+        <p>헬스장 회원권, PT 영수증, 크로스핏/F45 등록증으로 자기관리를 증명합니다. AI가 자동 검수합니다.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon feat-icon-gold">&#128200;</div>
+        <h3>운동 매칭</h3>
+        <p>운동 종목, 빈도, 시간대, 목표까지. 같은 라이프스타일의 사람을 만나세요.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Privacy -->
+  <div class="privacy fade-up">
+    <div class="privacy-card">
+      <div class="privacy-icon">&#128737;</div>
+      <div class="privacy-content">
+        <h3>개인정보, 철벽 보호</h3>
+        <p>인증 서류는 검수 후 즉시 영구 삭제하고 배지만 남깁니다. 매칭 전까지 연락처는 절대 노출되지 않습니다.</p>
+        <div class="privacy-tags">
+          <span class="privacy-tag">인증 서류 즉시 삭제</span>
+          <span class="privacy-tag">EXIF 자동 제거</span>
+          <span class="privacy-tag">스크린샷 차단</span>
+          <span class="privacy-tag">연락처 SHA-256 해시</span>
+          <span class="privacy-tag">매칭 전 연락처 비공개</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta" id="download">
+    <h2>자기관리하는 사람을 만날 준비 되셨나요?</h2>
+    <p>지금 시작하세요. 48시간 뒤, 새로운 만남이 기다립니다.</p>
+    <a href="https://apps.apple.com/app/kkeullim" class="btn-primary" style="animation:none">
+      <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11"/></svg>
+      App Store에서 다운로드
+    </a>
+    <p class="cta-sub">iOS 17+ &middot; 만 18세 이상</p>
+  </div>
+
   <footer>
-    <div>&copy; 2026 baln. All rights reserved.</div>
+    <div>&copy; 2026 baln Inc.</div>
     <div class="footer-links">
       <a href="/privacy.html">개인정보처리방침</a>
       <a href="/terms.html">이용약관</a>
-      <a href="/">baln 홈</a>
+      <a href="mailto:support@baln.app">문의</a>
     </div>
   </footer>
+
+  <script>
+    // Intersection Observer for fade-up animations
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }});
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+  </script>
 
 </body>
 </html>

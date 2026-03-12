@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>엔카 모닝 브리핑 - baln.logic</title>
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <style>
+    :root {
+      --bg: #0A0A0A;
+      --surface: #141414;
+      --surface2: #1C1C1C;
+      --border: #2A2A2A;
+      --green: #4CAF50;
+      --green-dim: rgba(76, 175, 80, 0.15);
+      --text: #F5F5F5;
+      --text2: #B0B0B0;
+      --text3: #777;
+      --red: #EF5350;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── Login Screen ── */
+    #login-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .login-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 48px 40px;
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+    }
+
+    .login-card h1 {
+      font-size: 22px;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+
+    .login-card p {
+      color: var(--text2);
+      font-size: 14px;
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+
+    .login-card .lock-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .login-error {
+      color: var(--red);
+      font-size: 13px;
+      margin-top: 12px;
+    }
+
+    #g_id_signin {
+      display: flex;
+      justify-content: center;
+    }
+
+    /* ── Topbar ── */
+    .topbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .topbar-left a {
+      color: var(--text3);
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    .topbar-left a:hover { color: var(--green); }
+
+    .topbar h1 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--green);
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .topbar-user {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text2);
+    }
+
+    .topbar-user img {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text2);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-sm:hover {
+      border-color: var(--green);
+      color: var(--text);
+    }
+
+    /* ── Dashboard ── */
+    #dashboard { display: none; }
+
+    .briefing-frame {
+      width: 100%;
+      height: calc(100vh - 52px);
+      border: none;
+    }
+
+    /* ── Status bar ── */
+    .status-bar {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 8px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text3);
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 6px;
+    }
+
+    .status-dot.online { background: var(--green); }
+    .status-dot.offline { background: var(--red); }
+
+    @media (max-width: 640px) {
+      .login-card { padding: 32px 24px; }
+      .topbar { padding: 10px 16px; }
+      .topbar-user span { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Login Screen -->
+  <div id="login-screen">
+    <div class="login-card">
+      <div class="lock-icon">🔒</div>
+      <h1>엔카 모닝 브리핑</h1>
+      <p>이 페이지는 비공개입니다.<br>허가된 구글 계정으로 로그인하세요.</p>
+      <div id="g_id_signin"></div>
+      <div id="login-error" class="login-error"></div>
+    </div>
+  </div>
+
+  <!-- Dashboard (hidden until login) -->
+  <div id="dashboard">
+    <div class="topbar">
+      <div class="topbar-left">
+        <a href="/">← baln.app</a>
+        <h1>엔카 모닝 브리핑</h1>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-user">
+          <img id="user-avatar" src="" alt="">
+          <span id="user-name"></span>
+        </div>
+        <button class="btn-sm" onclick="logout()">로그아웃</button>
+      </div>
+    </div>
+    <iframe
+      id="briefing-frame"
+      class="briefing-frame"
+      src=""
+      sandbox="allow-scripts allow-same-origin allow-forms"
+    ></iframe>
+    <div class="status-bar">
+      <div>
+        <span id="status-dot" class="status-dot offline"></span>
+        <span id="status-text">연결 확인 중...</span>
+      </div>
+      <span>localhost:3000 · 맥북 로컬 전용</span>
+    </div>
+  </div>
+
+  <script>
+    // ── Config ──
+    const ALLOWED_EMAILS = ['nicenoodle@gmail.com'];
+    const BRIEFING_URL = 'http://localhost:3000';
+    const HEALTH_URL = 'http://localhost:8000/health';
+    const GOOGLE_CLIENT_ID = ''; // 아래에서 설정 안내
+
+    // ── Google Sign-In ──
+    function handleCredentialResponse(response) {
+      const payload = parseJwt(response.credential);
+      const email = payload.email;
+      const name = payload.name;
+      const picture = payload.picture;
+
+      if (!ALLOWED_EMAILS.includes(email)) {
+        document.getElementById('login-error').textContent =
+          `${email}은 허가되지 않은 계정입니다.`;
+        return;
+      }
+
+      // Save session
+      sessionStorage.setItem('briefing_user', JSON.stringify({ email, name, picture }));
+      showDashboard({ email, name, picture });
+    }
+
+    function parseJwt(token) {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(
+        atob(base64).split('').map(c =>
+          '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+        ).join('')
+      );
+      return JSON.parse(jsonPayload);
+    }
+
+    function showDashboard(user) {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      document.getElementById('user-name').textContent = user.name;
+      document.getElementById('user-avatar').src = user.picture;
+      document.getElementById('briefing-frame').src = BRIEFING_URL;
+      checkHealth();
+      setInterval(checkHealth, 30000);
+    }
+
+    function logout() {
+      sessionStorage.removeItem('briefing_user');
+      location.reload();
+    }
+
+    async function checkHealth() {
+      const dot = document.getElementById('status-dot');
+      const text = document.getElementById('status-text');
+      try {
+        const resp = await fetch(HEALTH_URL, { mode: 'no-cors' });
+        dot.className = 'status-dot online';
+        text.textContent = '서버 연결됨';
+      } catch {
+        dot.className = 'status-dot offline';
+        text.textContent = '서버 연결 안 됨 — 맥북에서 접속하세요';
+      }
+    }
+
+    // ── Init ──
+    window.onload = function() {
+      // Check existing session
+      const saved = sessionStorage.getItem('briefing_user');
+      if (saved) {
+        showDashboard(JSON.parse(saved));
+        return;
+      }
+
+      // If no Google Client ID configured, use simple email check
+      if (!GOOGLE_CLIENT_ID) {
+        // Fallback: simple password gate
+        const loginCard = document.querySelector('.login-card');
+        loginCard.innerHTML = `
+          <div class="lock-icon">🔒</div>
+          <h1>엔카 모닝 브리핑</h1>
+          <p>비공개 페이지입니다.</p>
+          <input type="password" id="access-code" placeholder="접근 코드 입력"
+            style="width:100%;padding:12px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;margin-bottom:12px;outline:none;">
+          <button onclick="checkCode()"
+            style="width:100%;padding:14px;background:var(--green);color:white;border:none;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;">
+            접속
+          </button>
+          <div id="login-error" class="login-error"></div>
+        `;
+        document.getElementById('access-code').addEventListener('keydown', e => {
+          if (e.key === 'Enter') checkCode();
+        });
+        return;
+      }
+
+      // Google Sign-In button
+      google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: handleCredentialResponse,
+      });
+      google.accounts.id.renderButton(
+        document.getElementById('g_id_signin'),
+        { theme: 'filled_black', size: 'large', width: 280, text: 'signin_with' }
+      );
+    };
+
+    // Simple code fallback (until Google OAuth is configured)
+    function checkCode() {
+      const code = document.getElementById('access-code').value;
+      if (code === 'encar2026') {
+        const user = { email: 'nicenoodle@gmail.com', name: '전상면', picture: '' };
+        sessionStorage.setItem('briefing_user', JSON.stringify(user));
+        showDashboard(user);
+      } else {
+        document.getElementById('login-error').textContent = '접근 코드가 올바르지 않습니다.';
+      }
+    }
+  </script>
+
+</body>
+</html>

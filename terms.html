@@ -4,68 +4,101 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>이용약관 - baln</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background-color: #121212;
       color: #CCCCCC;
-      line-height: 1.7;
-      padding: 20px;
+      line-height: 1.8;
+      padding: 24px 20px;
       max-width: 720px;
       margin: 0 auto;
     }
     header {
       text-align: center;
-      padding: 40px 0 30px;
+      padding: 40px 0 32px;
       border-bottom: 1px solid #2A2A2A;
-      margin-bottom: 30px;
+      margin-bottom: 32px;
     }
-    .logo { font-size: 36px; font-weight: 800; color: #4CAF50; margin-bottom: 8px; }
-    h1 { color: #FFFFFF; font-size: 24px; margin-bottom: 6px; }
+    .logo { font-size: 36px; font-weight: 800; color: #4CAF50; margin-bottom: 8px; letter-spacing: -0.5px; }
+    h1 { color: #FFFFFF; font-size: 24px; font-weight: 700; margin-bottom: 6px; }
     .subtitle { color: #4CAF50; font-size: 14px; font-weight: 600; }
-    .date { color: #888888; font-size: 13px; margin-top: 12px; }
+    .date { color: #888888; font-size: 13px; margin-top: 14px; }
     .banner {
       background-color: #1A2E1A;
       border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 30px;
+      padding: 20px 24px;
+      margin-bottom: 32px;
+      border: 1px solid rgba(76, 175, 80, 0.15);
     }
-    .banner p { color: #AADDAA; font-size: 14px; }
+    .banner p { color: #AADDAA; font-size: 14px; line-height: 1.8; }
     .section {
       background-color: #1E1E1E;
       border-radius: 12px;
-      padding: 20px;
+      padding: 24px;
       margin-bottom: 16px;
     }
-    .section h3 { color: #FFFFFF; font-size: 16px; margin-bottom: 12px; }
-    .section h4 { color: #4CAF50; font-size: 14px; margin: 16px 0 8px; }
-    .section p, .section li { font-size: 14px; line-height: 1.8; color: #BBBBBB; }
-    .section ul, .section ol { padding-left: 20px; margin-bottom: 12px; }
-    .section li { margin-bottom: 4px; }
+    .section h3 { color: #FFFFFF; font-size: 16px; font-weight: 700; margin-bottom: 14px; }
+    .section h4 { color: #4CAF50; font-size: 14px; font-weight: 600; margin: 18px 0 10px; }
+    .section p, .section li { font-size: 14px; line-height: 1.9; color: #BBBBBB; }
+    .section ul, .section ol { padding-left: 22px; margin-bottom: 12px; }
+    .section li { margin-bottom: 6px; }
+    .warning-box {
+      background-color: rgba(207, 102, 121, 0.12);
+      border: 1px solid rgba(207, 102, 121, 0.3);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .warning-box p { color: #CF6679; font-weight: 700; font-size: 14px; }
     .danger-box {
       background-color: #1a0a0a;
       border: 1px solid rgba(207, 102, 121, 0.3);
       border-radius: 12px;
-      padding: 20px;
+      padding: 24px;
       margin-bottom: 16px;
     }
-    .danger-box h3 { color: #CF6679; font-size: 16px; margin-bottom: 12px; }
-    .danger-box p, .danger-box li { font-size: 14px; line-height: 1.8; color: #BBBBBB; }
-    .danger-box ul, .danger-box ol { padding-left: 20px; margin-bottom: 12px; }
-    .danger-box li { margin-bottom: 4px; }
+    .danger-box h3 { color: #CF6679; font-size: 16px; font-weight: 700; margin-bottom: 14px; }
+    .danger-box p, .danger-box li { font-size: 14px; line-height: 1.9; color: #BBBBBB; }
+    .danger-box ul, .danger-box ol { padding-left: 22px; margin-bottom: 12px; }
+    .danger-box li { margin-bottom: 6px; }
     .danger-highlight { color: #CF6679; font-weight: 700; }
+    .credit-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 13px;
+    }
+    .credit-table th {
+      text-align: left;
+      padding: 10px 12px;
+      background-color: #2A2A2A;
+      color: #FFFFFF;
+      font-weight: 600;
+      border-bottom: 1px solid #333;
+    }
+    .credit-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #2A2A2A;
+      color: #BBBBBB;
+    }
+    .credit-table tr:last-child td { border-bottom: none; }
     a { color: #4CAF50; text-decoration: none; }
     a:hover { text-decoration: underline; }
     footer {
       text-align: center;
-      padding: 30px 0;
+      padding: 32px 0;
       border-top: 1px solid #2A2A2A;
-      margin-top: 20px;
+      margin-top: 24px;
     }
-    footer p { color: #666666; font-size: 12px; }
-    .nav-links { margin-top: 12px; }
-    .nav-links a { color: #888888; font-size: 12px; margin: 0 8px; }
+    footer p { color: #666666; font-size: 12px; line-height: 1.8; }
+    .nav-links { margin-top: 14px; }
+    .nav-links a { color: #888888; font-size: 12px; margin: 0 10px; }
   </style>
 </head>
 <body>
@@ -74,68 +107,136 @@
   <div class="logo">baln</div>
   <h1>서비스 이용약관</h1>
   <p class="subtitle">Terms of Service</p>
-  <p class="date">시행일: 2026년 2월 14일</p>
+  <p class="date">시행일: 2026년 2월 24일</p>
 </header>
 
 <div class="banner">
-  <p><strong>baln은 투자 교육 목적 앱</strong>이며, 투자 권유 또는 투자 조언을 제공하지 않습니다. 모든 투자 결정은 사용자 본인의 책임입니다.</p>
+  <p><strong>baln은 투자 교육 목적의 앱</strong>이며, 「자본시장과 금융투자업에 관한 법률」에 따른 투자자문업·투자일임업에 해당하지 않습니다. 투자 권유 또는 투자 조언을 제공하지 않으며, 모든 투자 결정은 사용자 본인의 책임입니다.</p>
 </div>
 
+<!-- 제1조 -->
 <div class="section">
   <h3>제1조 (목적)</h3>
   <p>이 약관은 발른 주식회사(이하 "회사")가 제공하는 투자 교육 및 포트폴리오 관리 서비스 "baln"(이하 "서비스")의 이용조건 및 절차, 회사와 회원 간의 권리, 의무, 책임사항 및 기타 필요한 사항을 규정함을 목적으로 합니다.</p>
 </div>
 
+<!-- 제2조 -->
 <div class="section">
   <h3>제2조 (서비스의 내용)</h3>
   <p>회사가 제공하는 서비스는 다음과 같습니다:</p>
   <ol>
-    <li><strong>오늘 탭</strong>: 매일 맥락 카드, 예측 투표, 시장 요약 (Pulse)</li>
-    <li><strong>분석 탭</strong>: AI 기반 포트폴리오 건강 점수, 종목 딥다이브, What-If 시뮬레이션</li>
-    <li><strong>크레딧 시스템</strong>: 활동 보상 및 AI 기능 이용 결제 수단</li>
-    <li><strong>AI CFO 채팅</strong>: AI 기반 투자 교육 대화</li>
-    <li>기타 포트폴리오 관련 부가 서비스</li>
+    <li><strong>맥락 카드 (Context Card)</strong>: 시장 상황을 역사적 맥락 / 거시경제 체인 / 기관 행동 / 내 포트폴리오 영향, 4개 관점으로 해설하여 투자 맥락을 교육합니다.</li>
+    <li><strong>예측 게임 (Prediction Game)</strong>: AI가 출제하는 투자 퀴즈에 투표하고, 다음 날 결과를 복기하여 투자 판단력을 훈련합니다.</li>
+    <li><strong>습관 루프 (Habit Loop)</strong>: 맥락 카드 읽기 → 예측 투표 → 복기 & 정답 확인 → 자기 기준 형성의 반복을 통해 장기적 투자 습관을 형성합니다.</li>
+    <li><strong>AI 진단 (AI Diagnostics)</strong>: AI 기반 포트폴리오 건강 점수, 리스크 분석, 종목 딥다이브, What-If 시뮬레이션을 제공합니다.</li>
+    <li><strong>Polymarket 예측 시장 피드</strong>: 글로벌 예측 시장(Polymarket) 데이터를 참고 정보로 제공합니다. 이는 제3자 데이터이며, 회사는 정확성을 보장하지 않습니다.</li>
+    <li><strong>투자 거장 인사이트 (Guru Insights)</strong>: 레이 달리오, 워렌 버핏, 캐시 우드, 앙드레 코스톨라니 등 투자 거장의 철학과 전략을 AI 기반으로 해설합니다.</li>
+    <li><strong>크레딧 시스템</strong>: 활동 보상 및 AI 프리미엄 기능 이용을 위한 서비스 내 포인트 (상세: 제5조).</li>
+    <li><strong>커뮤니티 (VIP 라운지)</strong>: 회원 간 투자 의견 교류를 위한 게시판 서비스.</li>
+    <li>기타 포트폴리오 관련 부가 서비스.</li>
   </ol>
 </div>
 
+<!-- 제3조 -->
 <div class="section">
   <h3>제3조 (회원 가입 및 계정)</h3>
   <ol>
     <li>서비스 이용을 위해 이메일 또는 Apple 계정을 통한 회원 가입이 필요합니다.</li>
     <li>회원은 정확한 정보를 제공해야 하며, 타인의 정보를 도용해서는 안 됩니다.</li>
     <li>회원은 앱 내 설정에서 언제든지 계정을 삭제할 수 있으며, 삭제 시 30일 이내에 모든 개인정보가 완전 삭제됩니다.</li>
+    <li>본 서비스는 만 14세 이상의 이용자만 이용할 수 있습니다. 「정보통신망 이용촉진 및 정보보호 등에 관한 법률」 및 「개인정보 보호법」에 따라 만 14세 미만 아동의 개인정보 수집은 법정대리인의 동의가 필요하며, 회사는 만 14세 미만 아동의 회원가입을 제한합니다.</li>
   </ol>
 </div>
 
+<!-- 제4조 -->
 <div class="section">
-  <h3>제4조 (면책조항)</h3>
+  <h3>제4조 (면책조항 및 투자 위험 고지)</h3>
+  <div class="warning-box">
+    <p>원금 손실 위험 경고: 투자 원금의 일부 또는 전부를 잃을 수 있습니다.</p>
+  </div>
   <ol>
-    <li>본 서비스는 <strong>투자 자문 서비스가 아닙니다.</strong></li>
-    <li>맥락 카드, AI 진단, 건강 점수, 딥다이브 분석, What-If 시뮬레이션 등 서비스에서 제공하는 모든 정보는 <strong>참고용</strong>이며, 투자 결정에 대한 책임은 이용자에게 있습니다.</li>
-    <li>회사는 서비스 이용으로 인한 투자 손실에 대해 책임지지 않습니다.</li>
-    <li>AI 분석 결과의 정확성을 100% 보장하지 않습니다.</li>
+    <li>본 서비스는 「자본시장과 금융투자업에 관한 법률」(이하 "자본시장법") 제6조에 따른 금융투자업(투자자문업, 투자일임업, 집합투자업 등)에 해당하지 않으며, <strong>금융위원회에 등록된 투자자문·일임 서비스가 아닙니다.</strong></li>
+    <li>서비스에서 제공하는 모든 정보(AI 분석, 맥락 카드, 리밸런싱 제안, 예측 게임, 거장 인사이트, Polymarket 피드, 세금 계산, 종목 분석 등)는 <strong>일반적인 정보 제공 및 교육 목적</strong>이며, 특정 금융상품에 대한 매수·매도 권유가 아닙니다. 투자 결정에 대한 모든 책임은 이용자 본인에게 있습니다.</li>
+    <li>회사는 서비스 이용으로 인한 직접적·간접적 투자 손실에 대해 어떠한 법적 책임도 부담하지 않습니다.</li>
+    <li>AI 분석 결과는 과거 데이터 및 통계적 모델에 기반하며, 미래 수익을 보장하지 않습니다. 시장 상황에 따라 분석 결과와 실제 결과가 크게 다를 수 있습니다.</li>
+    <li>본 서비스는 「예금자보호법」에 따른 예금보험 대상이 아니며, 투자 원금이 보장되지 않습니다.</li>
+    <li>세금 관련 정보는 참고용이며, 정확한 세무 처리를 위해 세무사 또는 공인 전문가와 상담하시기 바랍니다. 세법은 수시로 변경될 수 있습니다.</li>
     <li>재무 데이터(시가총액, PER 등)는 외부 API에서 제공되며, 실시간 정확성을 보장하지 않습니다.</li>
   </ol>
 </div>
 
+<!-- 제5조 -->
 <div class="section">
-  <h3>제5조 (크레딧 및 인앱 결제)</h3>
+  <h3>제5조 (크레딧 시스템)</h3>
+  <h4>가. 크레딧 개요</h4>
   <ol>
-    <li><strong>크레딧</strong>은 서비스 내 AI 기능 이용을 위한 가상 결제 수단입니다 (1크레딧 = ₩100 상당).</li>
-    <li>크레딧은 출석, 예측 적중, 공유 등 활동을 통해 무료로 획득할 수 있습니다.</li>
-    <li>크레딧은 인앱 결제를 통해 추가 구매할 수 있으며, Apple App Store 결제 정책을 따릅니다.</li>
-    <li>구매한 크레딧은 현금으로 환불되지 않습니다. 단, 관련 법령에 따른 청약 철회 기간 내에는 환불이 가능합니다.</li>
-    <li>AI 기능 호출 실패 시 차감된 크레딧은 자동으로 환불됩니다.</li>
+    <li><strong>크레딧</strong>은 서비스 내 AI 프리미엄 기능을 이용하기 위한 서비스 이용 포인트입니다 (1크레딧 = ₩100 상당).</li>
+    <li>크레딧은 현금으로 환급이 불가합니다. 서비스 내에서만 사용 가능하며, 현금·상품권 등 다른 결제 수단으로 교환하거나 환급받을 수 없습니다.</li>
+    <li>크레딧은 타인에게 양도할 수 없습니다. 회원의 크레딧은 해당 회원의 계정에 귀속되며, 매매·증여·양도 등 어떠한 방법으로도 타인에게 이전할 수 없습니다.</li>
+  </ol>
+
+  <h4>나. 크레딧 획득</h4>
+  <table class="credit-table">
+    <tr><th>활동</th><th>크레딧</th><th>원화 환산</th></tr>
+    <tr><td>매일 출석</td><td>2C</td><td>₩200</td></tr>
+    <tr><td>예측 적중</td><td>3C</td><td>₩300</td></tr>
+    <tr><td>공유</td><td>5C</td><td>₩500</td></tr>
+    <tr><td>환영 보너스 (가입 시)</td><td>10C</td><td>₩1,000</td></tr>
+    <tr><td>Premium 월 보너스</td><td>30C</td><td>₩3,000</td></tr>
+  </table>
+
+  <h4>다. 크레딧 사용처 (마켓플레이스)</h4>
+  <ul>
+    <li>AI 분석 추가 1회: 1C (₩100)</li>
+    <li>예측 해설 보기: 1C (₩100)</li>
+    <li>Premium 3일 체험: 5C (₩500)</li>
+    <li>VIP 라운지 1주일: 3C (₩300)</li>
+    <li>기타 회사가 정하는 서비스 아이템</li>
+  </ul>
+
+  <h4>라. 유효기간 및 환불</h4>
+  <ol>
+    <li>크레딧의 유효기간은 마지막 획득일로부터 1년이며, 유효기간 만료 30일 전 앱 내 알림으로 안내합니다. 유효기간이 경과한 크레딧은 자동으로 소멸됩니다.</li>
+    <li>크레딧 구매 후 미사용 크레딧에 대해 「전자상거래 등에서의 소비자보호에 관한 법률」 제17조에 따라 구매일로부터 7일 이내 청약철회가 가능합니다.</li>
+    <li>이미 사용(차감)된 크레딧, 구독 보너스 크레딧, 프로모션 크레딧은 환불 대상이 아닙니다.</li>
+    <li>AI 분석 실행 중 기술적 오류로 결과를 제공하지 못한 경우, 차감된 크레딧은 자동으로 환불됩니다.</li>
+    <li>환불 신청: <a href="mailto:baln.logic@gmail.com">baln.logic@gmail.com</a> 또는 앱 내 고객센터를 통해 접수합니다.</li>
   </ol>
 </div>
 
+<!-- 제6조 -->
 <div class="section">
-  <h3>제6조 (개인정보 보호)</h3>
+  <h3>제6조 (Premium 구독)</h3>
+  <ol>
+    <li>Premium 구독은 월 ₩4,900의 정기 결제 서비스입니다.</li>
+    <li>구독은 Apple App Store를 통해 결제되며, Apple의 결제 정책을 따릅니다.</li>
+    <li>구독은 해지하지 않는 한 매월 자동 갱신됩니다.</li>
+    <li>구독 해지는 Apple App Store의 구독 관리 메뉴 또는 앱 내 설정에서 언제든지 가능합니다.</li>
+    <li>해지 시 현재 구독 기간이 만료될 때까지 Premium 혜택을 이용할 수 있습니다.</li>
+    <li>Premium 혜택: 맥락 카드 전체 4겹 해설, AI 진단 3회/일, 예측 게임 해설 및 복기, 월 30C 보너스 크레딧, 전체 등급 비교 등.</li>
+  </ol>
+</div>
+
+<!-- 제7조 -->
+<div class="section">
+  <h3>제7조 (개인정보 보호)</h3>
   <p>회사는 관련 법령이 정하는 바에 따라 회원의 개인정보를 보호하며, 개인정보의 보호 및 사용에 대해서는 <a href="./privacy.html">개인정보처리방침</a>을 따릅니다.</p>
 </div>
 
+<!-- 제8조 -->
 <div class="section">
-  <h3>제7조 (서비스 이용 제한)</h3>
+  <h3>제8조 (AI 자동화 의사결정 및 프로파일링)</h3>
+  <ol>
+    <li>회사는 이용자의 포트폴리오 데이터를 기반으로 AI 자동 분석(리스크 평가, 리밸런싱 제안, 세금 계산 등)을 수행합니다.</li>
+    <li>이용자는 「개인정보 보호법」 제37조의2에 따라 완전히 자동화된 의사결정에 대해 거부할 권리가 있으며, 설정 메뉴에서 AI 자동 분석 기능을 비활성화할 수 있습니다.</li>
+    <li>AI 분석은 투자 결정을 자동으로 실행하지 않으며, 최종 투자 판단은 항상 이용자 본인이 직접 수행합니다.</li>
+    <li>이용자의 투자 성향, 자산 규모 등에 기반한 등급(티어) 분류가 이루어지며, 이에 따라 서비스 접근 범위가 달라질 수 있습니다.</li>
+  </ol>
+</div>
+
+<!-- 제9조 -->
+<div class="section">
+  <h3>제9조 (서비스 이용 제한)</h3>
   <p>다음의 경우 서비스 이용이 제한될 수 있습니다:</p>
   <ol>
     <li>타인의 정보 도용</li>
@@ -145,19 +246,20 @@
   </ol>
 </div>
 
+<!-- 제10조 -->
 <div class="danger-box">
-  <h3>제8조 (유사투자자문업 금지)</h3>
+  <h3>제10조 (유사투자자문업 금지)</h3>
   <ol>
     <li>
       회원은 본 서비스를 이용하여 다음 각 호에 해당하는 행위를 하여서는 아니 됩니다.
       <ul style="margin-top: 8px;">
-        <li><span class="danger-highlight">리딩방 운영</span>: 불특정 다수에게 특정 종목의 매수/매도를 지시하거나 유사투자자문 행위를 하는 것</li>
+        <li><span class="danger-highlight">리딩방 운영</span>: 불특정 다수에게 특정 종목의 매수·매도를 지시하거나 유사투자자문 행위를 하는 것</li>
         <li><span class="danger-highlight">수익 보장 표현</span>: "원금 보장", "확정 수익률 OO%", "100% 수익" 등 투자 결과를 보장하는 표현을 사용하는 것</li>
         <li><span class="danger-highlight">외부 채널 유인</span>: 카카오톡, 텔레그램, 라인 등 외부 메신저로 회원을 유도하여 투자 권유 또는 금전을 요구하는 것</li>
         <li><span class="danger-highlight">종목 추천료 수취</span>: 유료 또는 무료를 불문하고, 투자 자문업 등록 없이 종목 추천의 대가를 수취하는 것</li>
       </ul>
     </li>
-    <li>상기 행위는 자본시장과 금융투자업에 관한 법률 제7조(무인가/무등록 금융투자업) 위반에 해당하며, <span class="danger-highlight">5년 이하의 징역 또는 2억원 이하의 벌금</span>에 처해질 수 있습니다.</li>
+    <li>상기 행위는 「자본시장과 금융투자업에 관한 법률」 제7조(무인가·무등록 금융투자업) 위반에 해당하며, <span class="danger-highlight">5년 이하의 징역 또는 2억원 이하의 벌금</span>에 처해질 수 있습니다.</li>
     <li>
       회사는 위반 행위 적발 시 다음의 조치를 즉시 시행합니다.
       <ul style="margin-top: 8px;">
@@ -170,25 +272,45 @@
   </ol>
 </div>
 
+<!-- 제11조 -->
 <div class="section">
-  <h3>제9조 (서비스 변경 및 중단)</h3>
+  <h3>제11조 (VIP 라운지 모임 서비스)</h3>
+  <ol>
+    <li>VIP 라운지 모임은 회원 간의 자발적인 만남을 위한 매칭 플랫폼으로, 회사는 모임의 주최자가 아닙니다.</li>
+    <li>회사는 모임 진행 중 또는 모임으로 인해 발생하는 어떠한 사고, 분쟁, 손해에 대해서도 책임을 지지 않습니다.</li>
+    <li>모임 참가에 따른 모든 위험과 책임은 참가자 본인에게 있습니다.</li>
+    <li>모임 중 발생할 수 있는 인적·물적 피해, 개인정보 유출, 금전적 손실 등에 대해 회사는 일체의 법적 책임을 부담하지 않습니다.</li>
+    <li>유료 모임 참가 시 참가비의 10%가 플랫폼 수수료로 부과됩니다.</li>
+    <li>모임 취소 및 환불 정책은 각 모임의 호스트가 정한 규정을 따릅니다.</li>
+  </ol>
+</div>
+
+<!-- 제12조 -->
+<div class="section">
+  <h3>제12조 (서비스 변경 및 중단)</h3>
   <ol>
     <li>회사는 서비스 개선을 위해 사전 공지 후 서비스 내용을 변경할 수 있습니다.</li>
     <li>천재지변, 시스템 장애 등 불가피한 사유로 서비스가 중단될 수 있으며, 이 경우 가능한 빠르게 복구합니다.</li>
   </ol>
 </div>
 
+<!-- 제13조 -->
 <div class="section">
-  <h3>제10조 (약관의 변경)</h3>
+  <h3>제13조 (약관의 변경)</h3>
   <p>회사는 약관을 변경할 경우 시행일 7일 전부터 앱 공지사항 또는 이메일을 통해 공지합니다. 변경된 약관에 동의하지 않는 회원은 서비스 이용을 중단하고 회원 탈퇴를 할 수 있습니다.</p>
-  <p style="margin-top:8px"><strong>변경 이력</strong>: 2026년 2월 14일 초기 버전 제정</p>
+  <p style="margin-top: 12px;"><strong>변경 이력</strong></p>
+  <ul>
+    <li>2026년 2월 14일: 초기 버전 제정</li>
+    <li>2026년 2월 24일: 서비스 내용 확대 반영 (맥락 카드, 예측 게임, 습관 루프, Polymarket 피드, 투자 거장 인사이트, Premium 구독, AI 자동화 조항, 연령 제한, VIP 라운지 모임 조항 추가)</li>
+  </ul>
 </div>
 
+<!-- 제14조 -->
 <div class="section">
-  <h3>제11조 (분쟁 해결)</h3>
+  <h3>제14조 (분쟁 해결)</h3>
   <ol>
     <li>서비스 이용과 관련한 분쟁은 회사와 회원 간 상호 협의하여 해결합니다.</li>
-    <li>협의가 이루어지지 않을 경우, 대한민국 법률에 따르며, 관할법원은 회사 소재지 관할 법원으로 합니다.</li>
+    <li>본 약관은 대한민국 법률에 따라 해석되며, 협의가 이루어지지 않을 경우 관할법원은 서울중앙지방법원으로 합니다.</li>
   </ol>
 </div>
 

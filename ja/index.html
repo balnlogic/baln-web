@@ -887,78 +887,6 @@
       margin-bottom: 18px;
     }
 
-    .waitlist-meta {
-      font-size: 12px;
-      color: var(--green);
-      margin-bottom: 14px;
-      font-weight: 600;
-    }
-
-    .waitlist-form {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 10px;
-      flex-wrap: wrap;
-    }
-
-    .waitlist-input {
-      flex: 1 1 260px;
-      min-height: 48px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: var(--bg);
-      color: var(--text);
-      padding: 0 14px;
-      font-size: 14px;
-    }
-
-    .waitlist-input:focus-visible {
-      outline: 2px solid var(--green);
-      outline-offset: 1px;
-      border-color: var(--green);
-    }
-
-    .waitlist-submit {
-      min-height: 48px;
-      border-radius: 12px;
-      border: none;
-      padding: 0 18px;
-      font-size: 14px;
-      font-weight: 700;
-      background: var(--green);
-      color: #000;
-      cursor: pointer;
-      transition: transform 0.2s, background 0.2s;
-    }
-
-    .waitlist-submit:hover {
-      transform: translateY(-1px);
-      background: var(--green-light);
-    }
-
-    .waitlist-submit:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .waitlist-consent {
-      display: inline-flex;
-      align-items: flex-start;
-      gap: 8px;
-      font-size: 12px;
-      color: var(--text3);
-      margin-bottom: 8px;
-    }
-
-    .waitlist-feedback {
-      min-height: 20px;
-      font-size: 13px;
-      color: var(--text2);
-    }
-
-    .waitlist-feedback.success { color: var(--green-light); }
-    .waitlist-feedback.error { color: #ff8a80; }
 
     .sr-only {
       position: absolute;
@@ -1094,7 +1022,6 @@
       .nav-dropdown-toggle::after { display:none; }
       .loop-section { padding: 40px 20px; }
       .waitlist-card { padding: 20px; }
-      .waitlist-form { flex-direction: column; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -1517,9 +1444,7 @@
   <script>
     const BALN_CONFIG = window.BALN_CONFIG || {};
     const EVENTS_ENDPOINT = BALN_CONFIG.eventsEndpoint || '';
-    const WAITLIST_ENDPOINT = BALN_CONFIG.waitlistEndpoint || '';
     const PUBLIC_API_KEY = BALN_CONFIG.publicApiKey || '';
-    const WAITLIST_BASE_COUNT = Number(BALN_CONFIG.waitlistBaseCount || 120);
     const APP_DOWNLOAD_URL = BALN_CONFIG.appStoreUrl && String(BALN_CONFIG.appStoreUrl).trim()
       ? String(BALN_CONFIG.appStoreUrl).trim()
       : '#waitlist';
@@ -1528,7 +1453,6 @@
       session: 'baln_session_id',
       events: 'baln_local_events',
       eventQueue: 'baln_event_queue',
-      waitlist: 'baln_local_waitlist',
       experiments: 'baln_experiments'
     };
 
@@ -1658,14 +1582,6 @@
       writeStorage(STORAGE_KEYS.eventQueue, remaining);
     }
 
-    function updateWaitlistMeta() {
-      const localWaitlist = readStorage(STORAGE_KEYS.waitlist, []);
-      const uniqueLocal = new Set(localWaitlist.map(w => String(w.email || '').toLowerCase())).size;
-      const displayCount = WAITLIST_BASE_COUNT + uniqueLocal;
-      const meta = document.getElementById('waitlist-meta');
-      meta.textContent = `${displayCount.toLocaleString()}人が早期アクセスを申込済み`;
-    }
-
     function initDownloadLinks() {
       document.querySelectorAll('.js-app-download-link').forEach(link => {
         link.setAttribute('href', APP_DOWNLOAD_URL);
@@ -1683,73 +1599,6 @@
         link.addEventListener('click', () => {
           trackEvent('pricing_cta_click', { label: link.textContent.trim(), lang: 'ja' });
         });
-      });
-    }
-
-    function initWaitlistForm() {
-      const form = document.getElementById('waitlist-form');
-      const emailInput = document.getElementById('waitlist-email');
-      const consent = document.getElementById('waitlist-consent');
-      const submitBtn = document.getElementById('waitlist-submit');
-      const feedback = document.getElementById('waitlist-feedback');
-
-      form.addEventListener('submit', async e => {
-        e.preventDefault();
-
-        const email = emailInput.value.trim().toLowerCase();
-        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-          feedback.textContent = '正しいメールアドレスを入力してください。';
-          feedback.className = 'waitlist-feedback error';
-          return;
-        }
-        if (!consent.checked) {
-          feedback.textContent = '通知の受信とデータ収集への同意が必要です。';
-          feedback.className = 'waitlist-feedback error';
-          return;
-        }
-
-        submitBtn.disabled = true;
-        feedback.textContent = '申請を処理中です...';
-        feedback.className = 'waitlist-feedback';
-
-        const payload = {
-          email,
-          consent: true,
-          created_at: new Date().toISOString(),
-          source: 'landing_waitlist_ja',
-          utm,
-          lang: 'ja'
-        };
-
-        const emailDomain = email.split('@')[1] || '';
-        let resultChannel = 'local';
-        let remoteOk = false;
-
-        if (WAITLIST_ENDPOINT) {
-          remoteOk = await postJson(WAITLIST_ENDPOINT, payload);
-          if (remoteOk) resultChannel = 'remote';
-        }
-
-        if (!remoteOk) {
-          const localEntries = readStorage(STORAGE_KEYS.waitlist, []);
-          const exists = localEntries.some(item => String(item.email || '').toLowerCase() === email);
-          if (!exists) {
-            localEntries.push(payload);
-            writeStorage(STORAGE_KEYS.waitlist, localEntries);
-          }
-        }
-
-        await trackEvent('waitlist_submit', {
-          channel: resultChannel,
-          email_domain: emailDomain,
-          lang: 'ja'
-        });
-
-        feedback.textContent = '申し込み完了しました。リリース情報をいち早くお届けします。';
-        feedback.className = 'waitlist-feedback success';
-        form.reset();
-        submitBtn.disabled = false;
-        updateWaitlistMeta();
       });
     }
 
@@ -1838,9 +1687,7 @@
     }).format(new Date());
 
     initDownloadLinks();
-    initWaitlistForm();
     initSectionTracking();
-    updateWaitlistMeta();
     trackEvent('landing_view', { lang: 'ja' });
     flushEventQueue();
     window.addEventListener('online', flushEventQueue);

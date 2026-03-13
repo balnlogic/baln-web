@@ -27,3 +27,4 @@ supabase/.cache/
 supabase/.env
 
 .vercel
+.claude/

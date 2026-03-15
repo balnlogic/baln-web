@@ -4,13 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>끌림 - 자기관리하는 사람들의 진짜 만남</title>
-  <meta name="description" content="48시간 심사를 통과한 사람만 만날 수 있습니다. 채팅 없이 매칭 즉시 연락처 공개. 자기관리하는 사람들의 데이팅 앱.">
+  <meta name="description" content="운동하는 사람들의 피트니스 데이팅앱. 48시간 심사를 통과한 사람만 만날 수 있습니다. 매칭 즉시 연락처 공개.">
   <meta name="theme-color" content="#0D0D0D">
   <link rel="canonical" href="https://baln.app/kkeullim/">
   <link rel="alternate" hreflang="ko" href="https://baln.app/kkeullim/">
   <link rel="alternate" hreflang="en" href="https://baln.app/kkeullim/en/">
   <meta property="og:title" content="끌림 - 자기관리하는 사람들의 진짜 만남">
-  <meta property="og:description" content="48시간 심사를 통과한 사람만. 채팅 없이 매칭 즉시 연락처 공개.">
+  <meta property="og:description" content="운동하는 사람들의 피트니스 데이팅앱. 매칭 즉시 연락처 공개.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://baln.app/kkeullim/">
   <meta property="og:site_name" content="baln">
@@ -29,12 +29,12 @@
     body{font-family:'Noto Sans KR',-apple-system,sans-serif;background:var(--bg);color:var(--t2);line-height:1.7;overflow-x:hidden}
     a{color:inherit;text-decoration:none}
 
-    /* Animations */
     @keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
     @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
     @keyframes pulse{0%,100%{opacity:0.4;transform:scale(1)}50%{opacity:0.8;transform:scale(1.05)}}
     @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
     @keyframes glow{0%,100%{box-shadow:0 0 20px rgba(255,45,85,0.2)}50%{box-shadow:0 0 40px rgba(255,45,85,0.4)}}
+    @keyframes scrollX{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
     .fade-up{opacity:0;transform:translateY(40px);transition:opacity 0.8s,transform 0.8s}
     .fade-up.visible{opacity:1;transform:translateY(0)}
 
@@ -64,11 +64,12 @@
     .btn-ghost{color:var(--t2);font-size:15px;font-weight:500;padding:16px 8px;transition:color 0.2s}
     .btn-ghost:hover{color:var(--t)}
 
-    /* Phone mockup */
+    /* Phone mockup with real image */
     .phone{width:280px;height:580px;background:var(--s1);border-radius:44px;border:3px solid var(--s3);position:relative;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,0.5);animation:float 6s ease-in-out infinite,fadeUp 0.8s 0.4s ease both}
     .phone-notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:120px;height:32px;background:var(--bg);border-radius:0 0 20px 20px;z-index:2}
     .phone-screen{position:absolute;inset:3px;border-radius:41px;overflow:hidden;background:var(--bg)}
     .phone-card{position:absolute;top:60px;left:16px;right:16px;bottom:100px;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#2C2C3E 0%,#1a1a2e 100%)}
+    .phone-card img{width:100%;height:100%;object-fit:cover}
     .phone-card-gradient{position:absolute;bottom:0;left:0;right:0;height:50%;background:linear-gradient(transparent,rgba(0,0,0,0.7));padding:20px;display:flex;flex-direction:column;justify-content:flex-end}
     .phone-card-name{color:#FFF;font-size:20px;font-weight:700;margin-bottom:2px}
     .phone-card-meta{color:rgba(255,255,255,0.6);font-size:12px}
@@ -79,7 +80,6 @@
     .phone-action-x{border:2px solid #FF3B30;color:#FF3B30;background:transparent}
     .phone-action-star{border:2px solid var(--gold);color:var(--gold);background:transparent;width:40px;height:40px;font-size:16px}
     .phone-action-heart{background:var(--accent);color:#FFF;border:none}
-    .phone-shimmer{position:absolute;top:60px;left:16px;right:16px;height:200px;border-radius:20px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.03),transparent);background-size:200% 100%;animation:shimmer 3s infinite}
 
     /* Stats bar */
     .stats{max-width:1100px;margin:-40px auto 0;padding:0 24px;position:relative;z-index:1}
@@ -88,13 +88,38 @@
     .stat-num span{color:var(--accent)}
     .stat-label{font-size:13px;color:var(--t3)}
 
+    /* Lifestyle showcase - scrolling gallery */
+    .lifestyle{padding:100px 0 60px;overflow:hidden}
+    .lifestyle-header{max-width:1100px;margin:0 auto;padding:0 24px 48px;text-align:center}
+    .lifestyle-scroll{display:flex;gap:20px;animation:scrollX 30s linear infinite;width:max-content}
+    .lifestyle-scroll:hover{animation-play-state:paused}
+    .lifestyle-card{flex-shrink:0;width:280px;height:420px;border-radius:24px;overflow:hidden;position:relative;border:1px solid var(--border)}
+    .lifestyle-card img{width:100%;height:100%;object-fit:cover;transition:transform 0.5s}
+    .lifestyle-card:hover img{transform:scale(1.05)}
+    .lifestyle-card-overlay{position:absolute;bottom:0;left:0;right:0;padding:24px;background:linear-gradient(transparent,rgba(0,0,0,0.8))}
+    .lifestyle-card-overlay p{color:#FFF;font-size:15px;font-weight:600}
+    .lifestyle-card-overlay span{color:var(--gold);font-size:12px;font-weight:500}
+
+    /* User testimonials / profiles */
+    .profiles{max-width:1100px;margin:0 auto;padding:60px 24px 100px}
+    .profiles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .profile-card{background:var(--s1);border:1px solid var(--border);border-radius:20px;padding:28px;text-align:center;transition:all 0.3s}
+    .profile-card:hover{border-color:rgba(255,45,85,0.2);transform:translateY(-4px)}
+    .profile-avatar{width:80px;height:80px;border-radius:50%;object-fit:cover;margin:0 auto 16px;border:3px solid var(--accent);display:block}
+    .profile-name{color:var(--t);font-size:16px;font-weight:700;margin-bottom:4px}
+    .profile-info{font-size:13px;color:var(--t3);margin-bottom:12px}
+    .profile-tags{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+    .profile-tag{background:var(--accent-g);border:1px solid rgba(255,45,85,0.15);color:var(--accent);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px}
+    .profile-tag-gold{background:var(--gold-g);border:1px solid rgba(212,175,55,0.15);color:var(--gold)}
+    .profile-quote{font-size:13px;color:var(--t2);line-height:1.7;font-style:italic}
+
     /* Section */
     section{max-width:1100px;margin:0 auto;padding:100px 24px}
     .sc-label{font-size:12px;font-weight:700;color:var(--accent);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px}
     .sc-title{font-size:clamp(28px,5vw,40px);font-weight:800;color:var(--t);letter-spacing:-1.5px;line-height:1.3;margin-bottom:16px}
     .sc-desc{font-size:16px;color:var(--t2);max-width:520px;line-height:1.8;margin-bottom:48px}
 
-    /* Review system highlight */
+    /* Review system */
     .review-section{background:linear-gradient(180deg,var(--bg) 0%,var(--s1) 100%);padding:100px 24px}
     .review-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:60px}
     .review-text{flex:1}
@@ -129,7 +154,15 @@
     .feat h3{color:var(--t);font-size:16px;font-weight:700;margin-bottom:6px}
     .feat p{font-size:13px;color:var(--t2);line-height:1.7}
 
-    /* Privacy highlight */
+    /* Lifestyle banner - full width image sections */
+    .banner{position:relative;height:500px;overflow:hidden;margin:0}
+    .banner img{width:100%;height:100%;object-fit:cover}
+    .banner-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(13,13,13,0.85),rgba(13,13,13,0.4));display:flex;align-items:center;justify-content:center;padding:40px}
+    .banner-content{max-width:600px;text-align:center}
+    .banner-content h2{font-size:clamp(28px,5vw,44px);font-weight:900;color:var(--t);letter-spacing:-2px;margin-bottom:16px;line-height:1.2}
+    .banner-content p{font-size:17px;color:var(--t2);line-height:1.8}
+
+    /* Privacy */
     .privacy{max-width:1100px;margin:0 auto;padding:0 24px 100px}
     .privacy-card{background:linear-gradient(135deg,var(--s1),var(--s2));border:1px solid var(--border);border-radius:24px;padding:48px;display:flex;align-items:center;gap:48px}
     .privacy-icon{flex-shrink:0;width:160px;height:160px;background:linear-gradient(135deg,rgba(255,45,85,0.08),rgba(212,175,55,0.08));border-radius:24px;display:flex;align-items:center;justify-content:center;font-size:64px;border:1px solid var(--border)}
@@ -161,6 +194,8 @@
       .stats-inner{grid-template-columns:repeat(2,1fr)}
       .review-inner{flex-direction:column}
       .review-visual{flex:none;width:100%}
+      .profiles-grid{grid-template-columns:1fr}
+      .banner{height:400px}
     }
     @media(max-width:640px){
       .steps{grid-template-columns:1fr;gap:12px}
@@ -172,6 +207,8 @@
       footer{flex-direction:column;gap:12px;text-align:center}
       .phone{width:240px;height:500px;border-radius:38px}
       .phone-notch{width:100px;height:28px;border-radius:0 0 16px 16px}
+      .lifestyle-card{width:220px;height:330px}
+      .banner{height:360px}
     }
   </style>
 </head>
@@ -180,7 +217,7 @@
   <nav>
     <div class="nav-inner">
       <a href="/kkeullim/" class="nav-brand">끌림</a>
-      <a href="#download" class="nav-cta">App Store</a>
+      <a href="#download" class="nav-cta">출시 예정</a>
     </div>
   </nav>
 
@@ -192,12 +229,12 @@
         <h1>자기관리하는 사람들의<br><em>진짜</em> 만남</h1>
         <p class="hero-sub">
           48시간 심사를 통과한 사람만 만날 수 있습니다.<br>
-          채팅 없이, 매칭 즉시 연락처 공개.
+          매칭 즉시 연락처 공개 + 1:1 채팅.
         </p>
         <div class="hero-btns">
           <a href="#download" class="btn-primary">
             <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11"/></svg>
-            App Store
+            출시 예정
           </a>
           <a href="#how" class="btn-ghost">어떻게 작동하나요? &darr;</a>
         </div>
@@ -207,19 +244,19 @@
           <div class="phone-notch"></div>
           <div class="phone-screen">
             <div class="phone-card">
-              <div style="position:absolute;top:12px;left:20px;right:20px;display:flex;gap:4px">
+              <img src="images/user-girl05.jpg" alt="프로필 예시" loading="eager">
+              <div style="position:absolute;top:12px;left:20px;right:20px;display:flex;gap:4px;z-index:1">
                 <div style="flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,0.8)"></div>
                 <div style="flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,0.25)"></div>
                 <div style="flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,0.25)"></div>
               </div>
-              <div class="phone-shimmer"></div>
               <div class="phone-card-gradient">
                 <div class="phone-card-badges">
                   <span class="phone-card-badge">InBody</span>
                   <span class="phone-card-badge">Selfie</span>
                 </div>
-                <div class="phone-card-name">jiyeon_fit <span style="font-weight:400;opacity:0.7">26</span></div>
-                <div class="phone-card-meta">162cm &middot; 2.3km &middot; 방금 활동</div>
+                <div class="phone-card-name">소민 <span style="font-weight:400;opacity:0.7">25</span></div>
+                <div class="phone-card-meta">166cm &middot; 2.3km &middot; 방금 활동</div>
               </div>
             </div>
             <div class="phone-actions">
@@ -243,6 +280,67 @@
     </div>
   </div>
 
+  <!-- Lifestyle Gallery - auto scrolling -->
+  <div class="lifestyle fade-up">
+    <div class="lifestyle-header">
+      <p class="sc-label">Lifestyle</p>
+      <h2 class="sc-title">운동이 곧 매력인 사람들</h2>
+    </div>
+    <div style="overflow:hidden">
+      <div class="lifestyle-scroll">
+        <div class="lifestyle-card">
+          <img src="images/gym.jpg" alt="헬스장" loading="lazy">
+          <div class="lifestyle-card-overlay"><p>매일 만드는 나</p><span>웨이트 트레이닝</span></div>
+        </div>
+        <div class="lifestyle-card">
+          <img src="images/running.jpg" alt="러닝" loading="lazy">
+          <div class="lifestyle-card-overlay"><p>같이 뛰면 더 멀리</p><span>한강 러닝</span></div>
+        </div>
+        <div class="lifestyle-card">
+          <img src="images/cafe.jpg" alt="운동 후 카페" loading="lazy">
+          <div class="lifestyle-card-overlay"><p>운동 끝, 설렘 시작</p><span>운동 후 브런치</span></div>
+        </div>
+        <div class="lifestyle-card">
+          <img src="images/studio-f.jpg" alt="바디프로필" loading="lazy">
+          <div class="lifestyle-card-overlay"><p>자신감이 매력</p><span>바디프로필</span></div>
+        </div>
+        <div class="lifestyle-card">
+          <img src="images/studio-m.jpg" alt="바디프로필" loading="lazy">
+          <div class="lifestyle-card-overlay"><p>자신감이 매력</p><span>바디프로필</span></div>
+        </div>
+        <div class="lifestyle-card">
+          <img src="images/hero-rooftop.jpg" alt="루프탑" loading="lazy">
+          <div class="lifestyle-card-overlay"><p>운동이 연결한 설렘</p><span>피트니스 데이팅</span></div>
+        </div>
+        <!-- duplicate for infinite scroll -->
+        <div class="lifestyle-card">
+          <img src="images/gym.jpg" alt="헬스장" loading="lazy">
+          <div class="lifestyle-card-overlay"><p>매일 만드는 나</p><span>웨이트 트레이닝</span></div>
+        </div>
+        <div class="lifestyle-card">
+          <img src="images/running.jpg" alt="러닝" loading="lazy">
+          <div class="lifestyle-card-overlay"><p>같이 뛰면 더 멀리</p><span>한강 러닝</span></div>
+        </div>
+        <div class="lifestyle-card">
+          <img src="images/cafe.jpg" alt="운동 후 카페" loading="lazy">
+          <div class="lifestyle-card-overlay"><p>운동 끝, 설렘 시작</p><span>운동 후 브런치</span></div>
+        </div>
+        <div class="lifestyle-card">
+          <img src="images/studio-f.jpg" alt="바디프로필" loading="lazy">
+          <div class="lifestyle-card-overlay"><p>자신감이 매력</p><span>바디프로필</span></div>
+        </div>
+        <div class="lifestyle-card">
+          <img src="images/studio-m.jpg" alt="바디프로필" loading="lazy">
+          <div class="lifestyle-card-overlay"><p>자신감이 매력</p><span>바디프로필</span></div>
+        </div>
+        <div class="lifestyle-card">
+          <img src="images/hero-rooftop.jpg" alt="루프탑" loading="lazy">
+          <div class="lifestyle-card-overlay"><p>운동이 연결한 설렘</p><span>피트니스 데이팅</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Review System -->
   <div class="review-section" id="review">
     <div class="review-inner">
@@ -262,23 +360,23 @@
             <div class="review-dot review-dot-check">2</div>
             <div>
               <h4>48시간 커뮤니티 검증</h4>
-              <p>기존 회원들에게 프로필이 노출되고, 관심도를 측정합니다. 좋아요 반응이 기준이 됩니다.</p>
+              <p>기존 회원들에게 프로필이 노출되고, 관심도를 측정합니다.</p>
             </div>
           </div>
           <div class="review-step">
             <div class="review-dot review-dot-fire">3</div>
             <div>
               <h4>통과 또는 재도전</h4>
-              <p>상위 80%는 승인. 하위 20%는 더 매력적인 사진으로 재도전할 수 있습니다.</p>
+              <p>심사를 통과하면 승인. 더 매력적인 사진으로 재도전할 수 있습니다.</p>
             </div>
           </div>
         </div>
       </div>
       <div class="review-visual fade-up">
         <div style="background:var(--s2);border:1px solid var(--border);border-radius:24px;padding:40px;text-align:center">
-          <div style="width:80px;height:80px;margin:0 auto 24px;border-radius:50%;border:3px solid var(--accent);display:flex;align-items:center;justify-content:center;position:relative">
+          <div style="width:80px;height:80px;margin:0 auto 24px;border-radius:50%;border:3px solid var(--accent);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden">
+            <img src="images/user-girl09.jpg" alt="심사중" style="width:100%;height:100%;object-fit:cover">
             <div style="position:absolute;inset:-8px;border-radius:50%;border:2px solid rgba(255,45,85,0.2);animation:pulse 2s infinite"></div>
-            <span style="font-size:24px;font-weight:800;color:var(--accent)">...</span>
           </div>
           <div style="font-size:22px;font-weight:700;color:var(--t);margin-bottom:8px">프로필 심사중</div>
           <div style="font-size:14px;color:var(--t2);margin-bottom:28px">회원님의 프로필을 검토하고 있어요</div>
@@ -311,7 +409,7 @@
     <div class="fade-up">
       <p class="sc-label">How it works</p>
       <h2 class="sc-title">인증 &rarr; 스와이프 &rarr; 바로 만남</h2>
-      <p class="sc-desc">어색한 채팅은 없습니다. 서로 끌리면 바로 만나세요.</p>
+      <p class="sc-desc">서로 끌리면 바로 연락하고 만나세요.</p>
     </div>
     <div class="steps fade-up">
       <div class="step">
@@ -326,8 +424,62 @@
       </div>
       <div class="step">
         <div class="step-num">3</div>
-        <h3>연락처 즉시 공개</h3>
-        <p>서로 좋아요를 누르면 매칭 완료.<br>전화번호가 바로 공개됩니다.</p>
+        <h3>매칭 즉시 연결</h3>
+        <p>서로 좋아요를 누르면 매칭 완료.<br>연락처 공개 + 1:1 채팅 시작.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Banner - Running -->
+  <div class="banner fade-up">
+    <img src="images/running.jpg" alt="함께 달리는 커플" loading="lazy">
+    <div class="banner-overlay">
+      <div class="banner-content">
+        <h2>같이 뛰면,<br>더 멀리 가니까</h2>
+        <p>운동 파트너에서 인생 파트너로.<br>같은 라이프스타일을 가진 사람을 만나세요.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Profiles Showcase -->
+  <section>
+    <div class="fade-up" style="text-align:center;margin-bottom:48px">
+      <p class="sc-label">Community</p>
+      <h2 class="sc-title">이런 사람들이 끌림에 있어요</h2>
+    </div>
+    <div class="profiles-grid fade-up">
+      <div class="profile-card">
+        <img src="images/user-girl01.jpg" alt="유저" class="profile-avatar">
+        <div class="profile-name">소민</div>
+        <div class="profile-info">25세 &middot; 필라테스 강사</div>
+        <div class="profile-tags">
+          <span class="profile-tag">필라테스</span>
+          <span class="profile-tag">요가</span>
+          <span class="profile-tag-gold profile-tag">InBody</span>
+        </div>
+        <p class="profile-quote">"스플릿 도전중! 같이 운동할 사람 찾아요"</p>
+      </div>
+      <div class="profile-card">
+        <img src="images/user-girl13.jpg" alt="유저" class="profile-avatar">
+        <div class="profile-name">새벽헬스</div>
+        <div class="profile-info">28세 &middot; 마케터</div>
+        <div class="profile-tags">
+          <span class="profile-tag">웨이트</span>
+          <span class="profile-tag">크로스핏</span>
+          <span class="profile-tag-gold profile-tag">Selfie</span>
+        </div>
+        <p class="profile-quote">"새벽 6시 헬스가 일상. 꾸준한 사람이 좋아요"</p>
+      </div>
+      <div class="profile-card">
+        <img src="images/user-girl17.jpg" alt="유저" class="profile-avatar">
+        <div class="profile-name">지안</div>
+        <div class="profile-info">26세 &middot; 심리상담사</div>
+        <div class="profile-tags">
+          <span class="profile-tag">러닝</span>
+          <span class="profile-tag">수영</span>
+          <span class="profile-tag-gold profile-tag">운동인증</span>
+        </div>
+        <p class="profile-quote">"한강 10K 완주! 다음은 하프마라톤 도전"</p>
       </div>
     </div>
   </section>
@@ -356,9 +508,9 @@
         <p>오늘의 운동 룩을 공유하고, 운동 인증샷으로 일상을 보여주세요.</p>
       </div>
       <div class="feat">
-        <div class="feat-icon feat-icon-gold">&#128222;</div>
-        <h3>채팅 없이 바로 연락</h3>
-        <p>매칭 즉시 전화번호 공개. 앱 안 어색한 채팅 없이 바로 연락하고 만나세요.</p>
+        <div class="feat-icon feat-icon-gold">&#128172;</div>
+        <h3>매칭 즉시 채팅 + 연락처</h3>
+        <p>매칭되면 1:1 채팅이 열리고 연락처가 공개됩니다. 바로 대화하고 만나세요.</p>
       </div>
       <div class="feat">
         <div class="feat-icon feat-icon-red">&#128683;</div>
@@ -373,18 +525,29 @@
       <div class="feat">
         <div class="feat-icon feat-icon-red">&#127947;</div>
         <h3>운동 인증</h3>
-        <p>헬스장 회원권, PT 영수증, 크로스핏/F45 등록증으로 자기관리를 증명합니다. AI가 자동 검수합니다.</p>
+        <p>헬스장 회원권, PT 영수증, 크로스핏 등록증으로 자기관리를 증명합니다.</p>
       </div>
       <div class="feat">
         <div class="feat-icon feat-icon-gold">&#128200;</div>
-        <h3>운동 매칭</h3>
+        <h3>운동 기반 매칭</h3>
         <p>운동 종목, 빈도, 시간대, 목표까지. 같은 라이프스타일의 사람을 만나세요.</p>
       </div>
     </div>
   </section>
 
+  <!-- Banner - Studio -->
+  <div class="banner fade-up">
+    <img src="images/studio-f.jpg" alt="바디프로필" loading="lazy">
+    <div class="banner-overlay">
+      <div class="banner-content">
+        <h2>바디프로필이<br>프로필이 되는 곳</h2>
+        <p>자신감이 가장 큰 매력.<br>운동으로 만든 나를, 끌림에서 보여주세요.</p>
+      </div>
+    </div>
+  </div>
+
   <!-- Privacy -->
-  <div class="privacy fade-up">
+  <div class="privacy fade-up" style="margin-top:100px">
     <div class="privacy-card">
       <div class="privacy-icon">&#128737;</div>
       <div class="privacy-content">
@@ -405,9 +568,9 @@
   <div class="cta" id="download">
     <h2>자기관리하는 사람을 만날 준비 되셨나요?</h2>
     <p>지금 시작하세요. 48시간 뒤, 새로운 만남이 기다립니다.</p>
-    <a href="https://apps.apple.com/app/kkeullim" class="btn-primary" style="animation:none">
+    <a href="https://apps.apple.com/app/id6760210064" class="btn-primary" style="animation:none;opacity:0.85;">
       <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11"/></svg>
-      App Store에서 다운로드
+      출시 예정 — 사전 등록
     </a>
     <p class="cta-sub">iOS 17+ &middot; 만 18세 이상</p>
   </div>
@@ -417,12 +580,11 @@
     <div class="footer-links">
       <a href="/privacy.html">개인정보처리방침</a>
       <a href="/terms.html">이용약관</a>
-      <a href="mailto:support@baln.app">문의</a>
+      <a href="mailto:baln.logic@gmail.com">문의</a>
     </div>
   </footer>
 
   <script>
-    // Intersection Observer for fade-up animations
     const obs = new IntersectionObserver((entries) => {
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }});
     }, { threshold: 0.15 });

@@ -62,12 +62,24 @@
     .cta-sub{font-size:13px;color:var(--text3);margin-top:16px}
     footer{max-width:1000px;margin:0 auto;padding:40px 24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--text3)}footer a{color:var(--text3);transition:color 0.2s}footer a:hover{color:var(--text2)}.footer-links{display:flex;gap:24px}
     @media(max-width:768px){.steps{grid-template-columns:1fr;gap:16px}.features-grid{grid-template-columns:1fr}.highlight-card{flex-direction:column;padding:32px 24px;text-align:center}.highlight-visual{width:140px;height:140px;font-size:56px}.highlight-tags{justify-content:center}footer{flex-direction:column;gap:16px;text-align:center}}
+    a:focus-visible, button:focus-visible {
+      outline: 2px solid #4CAF50;
+      outline-offset: 2px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
   </style>
 </head>
 <body>
 <a href="#main-content" class="sr-only" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;z-index:9999;">Skip to content</a>
 
   <nav><div class="nav-inner">
+    <a href="https://baln.app" style="font-size:12px;color:#999;margin-right:12px;">&larr; baln.app</a>
     <a href="/en/" class="nav-logo">baln</a>
     <a href="/en/" class="nav-back">&larr; Back to baln</a>
     <div class="nav-lang"><a href="/kkeullim/">KO</a><span style="color:var(--text3);">|</span><a href="/kkeullim/en/" class="active">EN</a></div>
@@ -136,5 +148,17 @@
   </main>
   <footer><div>&copy; 2026 baln. All rights reserved.</div><div class="footer-links"><a href="/privacy.html">Privacy Policy</a><a href="/terms.html">Terms of Service</a><a href="/en/">baln Home</a></div></footer>
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MobileApplication",
+  "name": "Kkeullim",
+  "operatingSystem": "iOS",
+  "applicationCategory": "SocialNetworkingApplication",
+  "description": "Dating app for fitness-minded people with photo verification",
+  "url": "https://baln.app/kkeullim/",
+  "author": {"@type": "Organization", "name": "baln Inc.", "url": "https://baln.app"}
+}
+</script>
 </body>
 </html>

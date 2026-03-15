@@ -130,6 +130,17 @@
       .highlight-tags { justify-content:center; }
       footer { flex-direction:column;gap:16px;text-align:center; }
     }
+    a:focus-visible, button:focus-visible {
+      outline: 2px solid #4CAF50;
+      outline-offset: 2px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -303,5 +314,16 @@
     </div>
   </footer>
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "DocCheck",
+  "applicationCategory": "HealthApplication",
+  "description": "Hospital surgery rate comparison and cost analysis using HIRA public data",
+  "url": "https://baln.app/doccheck/",
+  "author": {"@type": "Organization", "name": "baln Inc.", "url": "https://baln.app"}
+}
+</script>
 </body>
 </html>

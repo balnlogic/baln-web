@@ -102,6 +102,17 @@
       .highlight-tags { justify-content:center; }
       footer { flex-direction:column;gap:16px;text-align:center; }
     }
+    a:focus-visible, button:focus-visible {
+      outline: 2px solid #4CAF50;
+      outline-offset: 2px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -245,5 +256,19 @@
     </div>
   </footer>
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MobileApplication",
+  "name": "SnoreLess",
+  "operatingSystem": "iOS",
+  "applicationCategory": "HealthApplication",
+  "description": "AI-powered snoring detection and vibration correction for better sleep",
+  "url": "https://baln.app/snoreless/",
+  "downloadUrl": "https://apps.apple.com/app/id6760187539",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+  "author": {"@type": "Organization", "name": "baln Inc.", "url": "https://baln.app"}
+}
+</script>
 </body>
 </html>

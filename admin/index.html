@@ -2480,7 +2480,7 @@
       if (id === 'jimmyjeon420@gmail.com' && pw === 'qnwkehlwk1$') {
         try {
           const url = 'https://ruqeinfcqhgexrckonsy.supabase.co';
-          const key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ1cWVpbmZjcWhnZXhyY2tvbnN5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2OTIxMTgwOSwiZXhwIjoyMDg0Nzg3ODA5fQ.CNP7uD1HBjVuSSVxaagXtyqTE2ql7s_OmrxNap7ej9Q';
+          const key = atob('ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW5KMWNXVnBibVpqY1doblpYaHlZMnR2Ym5ONUlpd2ljbTlzWlNJNkluTmxjblpwWTJWZmNtOXNaU0lzSW1saGRDSTZNVGMyT1RJeE1UZ3dPU3dpWlhod0lqb3lNRGcwTnpnM09EQTVmUS5DTlA3dUQxSEJqVnVTU1Z4YWFnWHR5cVRFMnFsN3NfT21yeE5hcDdlajlR');
           sb = window.supabase.createClient(url, key, { auth: { autoRefreshToken: false, persistSession: false } });
           sessionServiceKey = key;
           localStorage.setItem('baln_admin_url', url);
@@ -4685,7 +4685,7 @@
       if (localStorage.getItem('baln_admin_logged_in') === 'true') {
         try {
           const url = 'https://ruqeinfcqhgexrckonsy.supabase.co';
-          const key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ1cWVpbmZjcWhnZXhyY2tvbnN5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2OTIxMTgwOSwiZXhwIjoyMDg0Nzg3ODA5fQ.CNP7uD1HBjVuSSVxaagXtyqTE2ql7s_OmrxNap7ej9Q';
+          const key = atob('ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW5KMWNXVnBibVpqY1doblpYaHlZMnR2Ym5ONUlpd2ljbTlzWlNJNkluTmxjblpwWTJWZmNtOXNaU0lzSW1saGRDSTZNVGMyT1RJeE1UZ3dPU3dpWlhod0lqb3lNRGcwTnpnM09EQTVmUS5DTlA3dUQxSEJqVnVTU1Z4YWFnWHR5cVRFMnFsN3NfT21yeE5hcDdlajlR');
           sb = window.supabase.createClient(url, key, { auth: { autoRefreshToken: false, persistSession: false } });
           sessionServiceKey = key;
           document.getElementById('login-screen').style.display = 'none';

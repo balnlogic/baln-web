@@ -28,3 +28,6 @@ supabase/.env
 
 .vercel
 .claude/
+
+.env
+.env.*

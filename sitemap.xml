@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://baln.app/</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://baln.app/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://baln.app/en/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://baln.app/ja/"/>
+    <lastmod>2026-03-15</lastmod>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://baln.app/en/</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://baln.app/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://baln.app/en/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://baln.app/ja/"/>
+    <lastmod>2026-03-15</lastmod>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://baln.app/ja/</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://baln.app/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://baln.app/en/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://baln.app/ja/"/>
+    <lastmod>2026-03-15</lastmod>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://baln.app/snoreless/</loc>
+    <lastmod>2026-03-15</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://baln.app/kkeullim/</loc>
+    <lastmod>2026-03-15</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://baln.app/career/</loc>
+    <lastmod>2026-03-15</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://baln.app/doccheck/</loc>
+    <lastmod>2026-03-15</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://baln.app/privacy.html</loc>
+    <lastmod>2026-03-15</lastmod>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://baln.app/terms.html</loc>
+    <lastmod>2026-03-15</lastmod>
+    <priority>0.3</priority>
+  </url>
+</urlset>

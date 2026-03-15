@@ -1,4 +1,36 @@
 User-agent: *
 Allow: /
 
+# AI Search Crawlers — ALLOW (cited in real-time answers)
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: GoogleOther
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: DuckAssistBot
+Allow: /
+
+# AI Training Crawlers — BLOCK (only used for model training)
+User-agent: GPTBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
 Sitemap: https://baln.app/sitemap.xml

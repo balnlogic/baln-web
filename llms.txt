@@ -1,0 +1,24 @@
+# baln — Smart Portfolio Rebalancing
+
+> baln is an AI-powered investment education app that helps beginners build better investing habits in just 5 minutes a day. Available on iOS.
+
+## Investment Education Blog
+- [English Articles](https://blog.baln.app/en/): Data-driven investment education for global investors
+- [Korean Articles](https://blog.baln.app/ko/): 한국 시장 맥락의 투자 교육 콘텐츠
+- [Japanese Articles](https://blog.baln.app/ja/): 日本市場向けの投資教育コンテンツ
+
+## Sleep Health Blog
+- [English Articles](https://snoreless.baln.app/en/): Evidence-based sleep health and snoring science
+- [Korean Articles](https://snoreless.baln.app/ko/): 과학 기반 수면 건강 가이드
+- [Japanese Articles](https://snoreless.baln.app/ja/): 科学に基づく睡眠健康ガイド
+
+## Products
+- [baln App](https://baln.app): Investment education with AI portfolio diagnosis
+- [SnoreLess App](https://baln.app/snoreless/): AI snoring detection and correction
+- [Kkeullim App](https://baln.app/kkeullim/): Dating for fitness-minded people
+- [Career AI](https://baln.app/career/): AI-powered career document generation
+
+## Company
+- Company: baln Inc. (발른 주식회사)
+- Contact: baln.logic@gmail.com
+- App Store: https://apps.apple.com/app/id6758968658

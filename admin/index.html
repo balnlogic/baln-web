@@ -2525,12 +2525,12 @@
     async function refreshAutomation() {
       // System status cards
       const systems = [
-        { name: 'Content Engine', id: 'content-engine', color: 'green' },
-        { name: 'Tweet Engine', id: 'tweet-engine', color: 'green' },
-        { name: 'Naver Poster', id: 'naver-poster', color: 'green' },
-        { name: '인스타 릴스', id: 'insta-reels', color: 'green' },
-        { name: 'baln Blog', id: 'baln-blog', color: 'green' },
-        { name: 'snoreless Blog', id: 'snore-blog', color: 'green' },
+        { name: 'Content Engine', id: 'content-engine', color: 'green', status: '정상 작동' },
+        { name: 'Tweet Engine', id: 'tweet-engine', color: 'green', status: '정상 작동' },
+        { name: 'Naver Poster', id: 'naver-poster', color: 'yellow', status: '발행 완료 후 대기' },
+        { name: '인스타 릴스', id: 'insta-reels', color: 'red', status: '품질 미달로 중지' },
+        { name: 'baln Blog', id: 'baln-blog', color: 'green', status: '정상 작동' },
+        { name: 'snoreless Blog', id: 'snore-blog', color: 'green', status: '정상 작동' },
       ];
 
       const statusEl = document.getElementById('system-status');
@@ -2539,7 +2539,7 @@
           <div style="background:var(--surface2);padding:16px;border-radius:12px;text-align:center;">
             <div style="width:12px;height:12px;border-radius:50%;background:var(--${s.color});margin:0 auto 8px;box-shadow:0 0 8px var(--${s.color});"></div>
             <div style="font-size:14px;font-weight:600;">${s.name}</div>
-            <div style="font-size:11px;color:var(--text3);margin-top:4px;">정상 작동</div>
+            <div style="font-size:11px;color:var(--${s.color === 'red' ? 'red' : s.color === 'yellow' ? 'yellow' : 'text3'});margin-top:4px;">${s.status}</div>
           </div>
         `).join('');
       }
@@ -2567,10 +2567,10 @@
 
       // Reel status
       const now = new Date().getHours();
-      document.getElementById('reel-morning').textContent = now >= 8 ? '✅' : '⏳';
-      document.getElementById('reel-afternoon').textContent = now >= 14 ? '✅' : '⏳';
-      document.getElementById('reel-evening').textContent = now >= 19 ? '✅' : '⏳';
-      document.getElementById('reel-night').textContent = now >= 23 ? '✅' : '⏳';
+      document.getElementById('reel-morning').textContent = '⛔ 품질미달';
+      document.getElementById('reel-afternoon').textContent = '⛔ 품질미달';
+      document.getElementById('reel-evening').textContent = '⛔ 품질미달';
+      document.getElementById('reel-night').textContent = '⛔ 품질미달';
 
       // Schedule status based on current time
       const updateSched = (id, hour) => {

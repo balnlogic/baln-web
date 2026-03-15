@@ -2528,7 +2528,7 @@
         { name: 'Content Engine', id: 'content-engine', color: 'green', status: '정상 작동' },
         { name: 'Tweet Engine', id: 'tweet-engine', color: 'green', status: '정상 작동' },
         { name: 'Naver Poster', id: 'naver-poster', color: 'yellow', status: '발행 완료 후 대기' },
-        { name: '인스타 릴스', id: 'insta-reels', color: 'red', status: '품질 미달로 중지' },
+        { name: '인스타 릴스', id: 'insta-reels', color: 'red', status: '잠정 중단' },
         { name: 'baln Blog', id: 'baln-blog', color: 'green', status: '정상 작동' },
         { name: 'snoreless Blog', id: 'snore-blog', color: 'green', status: '정상 작동' },
       ];
@@ -2567,10 +2567,10 @@
 
       // Reel status
       const now = new Date().getHours();
-      document.getElementById('reel-morning').textContent = '⛔ 품질미달';
-      document.getElementById('reel-afternoon').textContent = '⛔ 품질미달';
-      document.getElementById('reel-evening').textContent = '⛔ 품질미달';
-      document.getElementById('reel-night').textContent = '⛔ 품질미달';
+      document.getElementById('reel-morning').textContent = '중단';
+      document.getElementById('reel-afternoon').textContent = '중단';
+      document.getElementById('reel-evening').textContent = '중단';
+      document.getElementById('reel-night').textContent = '중단';
 
       // Schedule status based on current time
       const updateSched = (id, hour) => {

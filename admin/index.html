@@ -2479,13 +2479,11 @@
 
       if (id === 'admin' && pw === 'baln2026!') {
         try {
-          // Use stored Supabase credentials
-          const storedUrl = localStorage.getItem('baln_admin_url') || 'https://yrfjhaqpgtfebdrhijyx.supabase.co';
-          const storedKey = sessionStorage.getItem('baln_admin_key');
-
-          if (storedUrl && storedKey) {
-            sb = window.supabase.createClient(storedUrl, storedKey, { auth: { autoRefreshToken: false, persistSession: false } });
-          }
+          const url = 'https://ruqeinfcqhgexrckonsy.supabase.co';
+          const key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ1cWVpbmZjcWhnZXhyY2tvbnN5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2OTIxMTgwOSwiZXhwIjoyMDg0Nzg3ODA5fQ.CNP7uD1HBjVuSSVxaagXtyqTE2ql7s_OmrxNap7ej9Q';
+          sb = window.supabase.createClient(url, key, { auth: { autoRefreshToken: false, persistSession: false } });
+          sessionServiceKey = key;
+          localStorage.setItem('baln_admin_url', url);
 
           document.getElementById('login-screen').style.display = 'none';
           document.getElementById('dashboard').style.display = 'block';

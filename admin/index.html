@@ -2477,13 +2477,14 @@
       if (!id || !pw) { errEl.textContent = 'ID와 비밀번호를 입력하세요.'; return; }
       btn.disabled = true; btn.textContent = '로그인 중...'; errEl.textContent = '';
 
-      if (id === 'admin' && pw === 'baln2026!') {
+      if (id === 'jimmyjeon420@gmail.com' && pw === 'qnwkehlwk1$') {
         try {
           const url = 'https://ruqeinfcqhgexrckonsy.supabase.co';
           const key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ1cWVpbmZjcWhnZXhyY2tvbnN5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2OTIxMTgwOSwiZXhwIjoyMDg0Nzg3ODA5fQ.CNP7uD1HBjVuSSVxaagXtyqTE2ql7s_OmrxNap7ej9Q';
           sb = window.supabase.createClient(url, key, { auth: { autoRefreshToken: false, persistSession: false } });
           sessionServiceKey = key;
           localStorage.setItem('baln_admin_url', url);
+          localStorage.setItem('baln_admin_logged_in', 'true');
 
           document.getElementById('login-screen').style.display = 'none';
           document.getElementById('dashboard').style.display = 'block';
@@ -2500,6 +2501,7 @@
     function handleLogout() {
       sessionServiceKey = '';
       sb = null;
+      localStorage.removeItem('baln_admin_logged_in');
       document.getElementById('admin-id').value = '';
       document.getElementById('admin-pw').value = '';
       document.getElementById('login-error').textContent = '';
@@ -4679,6 +4681,19 @@
 
     // WBS 탭 활성화 시 Phase 작업 로드
     document.addEventListener('DOMContentLoaded', () => {
+      // 자동 로그인 (이전에 로그인한 적 있으면)
+      if (localStorage.getItem('baln_admin_logged_in') === 'true') {
+        try {
+          const url = 'https://ruqeinfcqhgexrckonsy.supabase.co';
+          const key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ1cWVpbmZjcWhnZXhyY2tvbnN5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2OTIxMTgwOSwiZXhwIjoyMDg0Nzg3ODA5fQ.CNP7uD1HBjVuSSVxaagXtyqTE2ql7s_OmrxNap7ej9Q';
+          sb = window.supabase.createClient(url, key, { auth: { autoRefreshToken: false, persistSession: false } });
+          sessionServiceKey = key;
+          document.getElementById('login-screen').style.display = 'none';
+          document.getElementById('dashboard').style.display = 'block';
+          refreshAll();
+        } catch(e) { console.error('Auto-login failed:', e); }
+      }
+
       const wbsTabBtn = Array.from(document.querySelectorAll('.tab-btn')).find(btn =>
         btn.textContent.includes('WBS')
       );

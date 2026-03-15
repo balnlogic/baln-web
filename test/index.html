@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>나의 투자 성향 테스트 | baln</title>
+<meta property="og:title" content="나의 투자 성향 테스트 | baln">
+<meta property="og:description" content="8개 질문으로 알아보는 나의 투자 DNA. 당신은 워렌 버핏? 레이 달리오?">
+<meta property="og:image" content="https://baln.app/og-image.png">
+<meta property="og:url" content="https://baln.app/test/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="나의 투자 성향 테스트 | baln">
+<meta name="twitter:description" content="8개 질문으로 알아보는 나의 투자 DNA. 당신은 워렌 버핏? 레이 달리오?">
+<meta name="twitter:image" content="https://baln.app/og-image.png">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0A0A0A;--card:#141414;--card-border:#1E1E1E;--green:#4CAF50;--green-dark:#388E3C;--green-glow:rgba(76,175,80,.15);--text:#F5F5F5;--text-sub:#9E9E9E;--text-dim:#616161}
+html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+.container{max-width:480px;margin:0 auto;min-height:100vh;position:relative}
+
+/* Progress Bar */
+.progress-wrap{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--bg);padding:12px 0 8px}
+.progress-inner{max-width:480px;margin:0 auto;padding:0 20px}
+.progress-bar{height:4px;background:#1E1E1E;border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;background:var(--green);border-radius:2px;transition:width .4s cubic-bezier(.4,0,.2,1);width:0}
+.progress-text{font-size:12px;color:var(--text-sub);margin-top:6px;text-align:right}
+
+/* Screens */
+.screen{display:none;padding:20px;min-height:100vh;animation:fadeIn .5s ease}
+.screen.active{display:flex;flex-direction:column}
+@keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideInRight{from{opacity:0;transform:translateX(60px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideOutLeft{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(-60px)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes countUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes popIn{0%{opacity:0;transform:scale(.8)}60%{transform:scale(1.05)}100%{opacity:1;transform:scale(1)}}
+
+/* Landing */
+.landing{justify-content:center;align-items:center;text-align:center;padding:40px 24px}
+.landing-icon{font-size:64px;margin-bottom:24px;animation:pulse 2s ease infinite}
+.landing h1{font-size:32px;font-weight:800;margin-bottom:16px;line-height:1.3}
+.landing .subtitle{font-size:18px;color:var(--text-sub);margin-bottom:8px;line-height:1.5}
+.landing .desc{font-size:14px;color:var(--text-dim);margin-bottom:48px}
+.btn-start{width:100%;padding:18px;font-size:18px;font-weight:700;color:#fff;background:var(--green);border:none;border-radius:16px;cursor:pointer;transition:all .2s;min-height:56px;position:relative;overflow:hidden}
+.btn-start:active{transform:scale(.97);background:var(--green-dark)}
+.btn-start::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent);animation:shimmer 2s infinite}
+.social-proof{margin-top:24px;font-size:13px;color:var(--text-dim);display:flex;align-items:center;justify-content:center;gap:6px}
+.social-proof .dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 1.5s ease infinite}
+
+/* Quiz */
+.quiz-screen{padding-top:60px}
+.question-card{background:var(--card);border:1px solid var(--card-border);border-radius:20px;padding:28px 24px;margin-bottom:20px;animation:slideInRight .4s cubic-bezier(.4,0,.2,1)}
+.q-number{font-size:13px;color:var(--green);font-weight:600;margin-bottom:12px;letter-spacing:.5px}
+.q-text{font-size:20px;font-weight:700;line-height:1.5;margin-bottom:4px}
+.answers{display:flex;flex-direction:column;gap:12px;margin-top:8px}
+.answer-btn{width:100%;text-align:left;padding:16px 20px;font-size:15px;line-height:1.5;color:var(--text);background:var(--bg);border:1px solid var(--card-border);border-radius:14px;cursor:pointer;transition:all .2s;min-height:56px;display:flex;align-items:center;gap:12px;font-family:inherit}
+.answer-btn .letter{width:28px;height:28px;border-radius:8px;background:var(--card);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--text-sub);flex-shrink:0;transition:all .2s}
+.answer-btn:active,.answer-btn.selected{border-color:var(--green);background:var(--green-glow)}
+.answer-btn:active .letter,.answer-btn.selected .letter{background:var(--green);color:#fff}
+
+/* Analyzing */
+.analyzing{justify-content:center;align-items:center;text-align:center;padding:40px 24px}
+.analyzing .spinner{width:48px;height:48px;border:3px solid var(--card-border);border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:24px}
+.analyzing h2{font-size:20px;font-weight:700;margin-bottom:8px}
+.analyzing .dots{color:var(--text-sub);font-size:15px}
+.analyzing .dots::after{content:'';animation:dots 1.5s steps(4,end) infinite}
+@keyframes dots{0%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'...'}}
+
+/* Result */
+.result-screen{padding:20px;padding-bottom:120px}
+.result-card{background:var(--card);border:1px solid var(--card-border);border-radius:24px;padding:36px 24px;text-align:center;animation:popIn .5s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden}
+.result-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--green)}
+.result-emoji{font-size:56px;margin-bottom:16px;display:block}
+.result-label{font-size:13px;color:var(--green);font-weight:600;letter-spacing:1px;margin-bottom:8px;text-transform:uppercase}
+.result-type{font-size:28px;font-weight:800;margin-bottom:4px;line-height:1.3}
+.result-investor{font-size:15px;color:var(--text-sub);margin-bottom:24px}
+.result-desc{text-align:left;margin-bottom:24px}
+.result-desc p{font-size:15px;line-height:1.6;color:var(--text);padding:10px 0;border-bottom:1px solid var(--card-border)}
+.result-desc p:last-child{border-bottom:none}
+.result-study{text-align:left;background:var(--bg);border-radius:14px;padding:20px;margin-bottom:20px}
+.result-study h4{font-size:14px;color:var(--green);font-weight:600;margin-bottom:12px}
+.result-study li{font-size:14px;color:var(--text-sub);line-height:1.6;margin-bottom:6px;list-style:none;padding-left:16px;position:relative}
+.result-study li::before{content:'•';position:absolute;left:0;color:var(--green)}
+.result-match{font-size:13px;color:var(--text-dim);margin-top:16px}
+.result-match span{color:var(--green);font-weight:700}
+
+/* Share & CTA */
+.share-section{margin-top:24px}
+.share-buttons{display:flex;gap:10px;margin-bottom:16px}
+.share-btn{flex:1;padding:14px;font-size:14px;font-weight:600;border:1px solid var(--card-border);background:var(--card);color:var(--text);border-radius:12px;cursor:pointer;transition:all .2s;min-height:48px;font-family:inherit}
+.share-btn:active{transform:scale(.96)}
+.share-btn.kakao{background:#FEE500;color:#191919;border-color:#FEE500}
+.share-btn.twitter{background:#1DA1F2;color:#fff;border-color:#1DA1F2}
+.share-btn.copy{background:var(--card);color:var(--text)}
+.cta-section{margin-top:16px}
+.btn-cta{width:100%;padding:18px;font-size:17px;font-weight:700;color:#fff;background:var(--green);border:none;border-radius:16px;cursor:pointer;transition:all .2s;min-height:56px;font-family:inherit}
+.btn-cta:active{transform:scale(.97);background:var(--green-dark)}
+.cta-sub{text-align:center;margin-top:12px;font-size:12px;color:var(--text-dim)}
+.btn-retry{width:100%;padding:14px;font-size:15px;font-weight:600;color:var(--text-sub);background:transparent;border:1px solid var(--card-border);border-radius:14px;cursor:pointer;margin-top:12px;font-family:inherit;transition:all .2s}
+.btn-retry:active{background:var(--card)}
+
+/* Toast */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:#333;color:#fff;padding:12px 24px;border-radius:12px;font-size:14px;opacity:0;transition:all .3s;z-index:200;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* Watermark on result */
+.watermark{text-align:center;margin-top:20px;padding-top:16px;border-top:1px solid var(--card-border);font-size:12px;color:var(--text-dim)}
+.watermark a{color:var(--green);text-decoration:none}
+</style>
+</head>
+<body>
+<div class="container" id="app">
+  <!-- Landing Screen -->
+  <div class="screen active" id="landing">
+    <div class="landing">
+      <div class="landing-icon">💰</div>
+      <h1>나의 투자 성향은?</h1>
+      <p class="subtitle">5천만원이 생기면<br>당신은 어떻게 할까요?</p>
+      <p class="desc">8개 질문으로 알아보는 나의 투자 DNA</p>
+      <button class="btn-start" id="btnStart" onclick="startQuiz()">테스트 시작하기</button>
+      <div class="social-proof"><span class="dot"></span> 참여자: <span id="participantCount">1,247</span>명</div>
+    </div>
+  </div>
+
+  <!-- Quiz Screen -->
+  <div class="screen quiz-screen" id="quizScreen">
+    <div class="progress-wrap">
+      <div class="progress-inner">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-text" id="progressText">1 / 8</div>
+      </div>
+    </div>
+    <div id="questionArea"></div>
+  </div>
+
+  <!-- Analyzing Screen -->
+  <div class="screen analyzing" id="analyzingScreen">
+    <div class="spinner"></div>
+    <h2>분석 중</h2>
+    <p class="dots">당신의 투자 DNA를 분석하고 있습니다</p>
+  </div>
+
+  <!-- Result Screen -->
+  <div class="screen result-screen" id="resultScreen"></div>
+</div>
+
+<div class="toast" id="toast">링크가 복사되었습니다</div>
+
+<script>
+(function(){
+  // Data
+  var questions = [
+    {q:"삼성전자가 하루에 10% 빠졌다.\n당신의 첫 반응은?",a:[
+      {t:"드디어 왔다! 추가 매수 찬스",c:"A"},
+      {t:"일단 뉴스부터 확인한다",c:"B"},
+      {t:"손절 라인 확인하고 판다",c:"C"},
+      {t:"가만히 있는다. 어차피 장기투자",c:"D"}
+    ]},
+    {q:"투자 정보를 주로 얻는 곳은?",a:[
+      {t:"기업 재무제표, 10-K 보고서",c:"A"},
+      {t:"유튜브, 경제 뉴스레터",c:"B"},
+      {t:"실시간 차트, 호가창",c:"C"},
+      {t:"안 본다. 자동이체만 해놓음",c:"D"}
+    ]},
+    {q:"친구가 \"이 종목 무조건 올라\" 하면?",a:[
+      {t:"직접 조사해보고 판단한다",c:"A"},
+      {t:"어떤 근거인지 물어본다",c:"B"},
+      {t:"일단 소액으로 들어가본다",c:"C"},
+      {t:"\"나는 ETF만 해\" 하고 넘긴다",c:"D"}
+    ]},
+    {q:"이상적인 투자 수익률은?",a:[
+      {t:"연 15-20%. 좋은 기업을 싸게 사면 가능",c:"A"},
+      {t:"연 10-15%. 시장을 이해하면 충분히",c:"B"},
+      {t:"월 5-10%. 단타로 꾸준히",c:"C"},
+      {t:"연 7-8%. 시장 평균이면 만족",c:"D"}
+    ]},
+    {q:"포트폴리오를 확인하는 빈도는?",a:[
+      {t:"주 1-2회. 매일 볼 필요 없다",c:"A"},
+      {t:"매일. 시장 흐름은 알아야지",c:"B"},
+      {t:"하루에도 수십 번",c:"C"},
+      {t:"월 1회 정도?",c:"D"}
+    ]},
+    {q:"비트코인에 대한 생각은?",a:[
+      {t:"내재가치가 없어서 투자 안 한다",c:"A"},
+      {t:"포트폴리오의 5-10%는 가능",c:"B"},
+      {t:"변동성이 크니까 오히려 기회",c:"C"},
+      {t:"잘 모르겠고 관심 없다",c:"D"}
+    ]},
+    {q:"투자에서 가장 중요한 것은?",a:[
+      {t:"기업의 본질적 가치",c:"A"},
+      {t:"거시경제 흐름과 맥락",c:"B"},
+      {t:"타이밍과 기술적 분석",c:"C"},
+      {t:"시간과 복리의 힘",c:"D"}
+    ]},
+    {q:"투자 실패 후 당신의 반응은?",a:[
+      {t:"분석이 틀렸는지 복기한다",c:"A"},
+      {t:"시장 환경이 변했는지 확인한다",c:"B"},
+      {t:"빠르게 다음 기회를 찾는다",c:"C"},
+      {t:"원래 그런 거지 뭐. 장기적으로 보자",c:"D"}
+    ]}
+  ];
+
+  var results = {
+    A:{emoji:"📊",label:"가치투자자",type:"워렌 버핏형",investor:"Warren Buffett",desc:["당신은 숫자 뒤에 숨은 가치를 보는 눈이 있습니다","기업의 본질을 꿰뚫는 당신, 인내심이 최고의 무기","단기 변동에 흔들리지 않는 강철 멘탈의 소유자"],study:["재무제표 읽기","기업 가치 평가","산업 분석"]},
+    B:{emoji:"🌍",label:"매크로 분석가",type:"레이 달리오형",investor:"Ray Dalio",desc:["당신은 큰 그림을 보는 전략가입니다","금리, 환율, 정책... 퍼즐 맞추듯 시장을 읽는 타입","데이터 없이는 움직이지 않는 신중한 분석가"],study:["거시경제","금리 사이클","글로벌 자산배분"]},
+    C:{emoji:"⚡",label:"트레이더",type:"제시 리버모어형",investor:"Jesse Livermore",desc:["당신은 시장의 파도를 타는 서퍼입니다","빠른 판단력과 실행력이 강점, 하지만 리스크 관리가 핵심","기다림보다 행동을 선호하는 능동적 투자자"],study:["리스크 관리","포지션 사이징","심리 통제"]},
+    D:{emoji:"🏔️",label:"인덱스 투자자",type:"존 보글형",investor:"John Bogle",desc:["당신은 투자의 본질을 아는 현명한 사람입니다","복잡한 것을 경계하고, 단순함의 힘을 믿는 타입","시간이 최고의 동맹이라는 걸 아는 진짜 장기투자자"],study:["자산배분","리밸런싱","세금 최적화"]},
+    X:{emoji:"⚖️",label:"균형잡힌 투자자",type:"하이브리드형",investor:"Hybrid Investor",desc:["당신은 하나의 스타일에 얽매이지 않는 유연한 투자자입니다","상황에 따라 전략을 바꿀 줄 아는 적응력의 소유자","다양한 관점을 가지고 있어 성장 가능성이 큽니다"],study:["다양한 투자 전략 이해","자신만의 원칙 정립","포트폴리오 다각화"]}
+  };
+
+  var letters = ["A","B","C","D"];
+  var current = 0;
+  var scores = {A:0,B:0,C:0,D:0};
+
+  // Participant count
+  var baseCount = Math.floor(Math.random()*1000)+1000;
+  var stored = parseInt(localStorage.getItem("baln_test_count")||"0",10);
+  document.getElementById("participantCount").textContent = (baseCount+stored).toLocaleString();
+
+  // Start
+  window.startQuiz = function(){
+    document.getElementById("landing").classList.remove("active");
+    document.getElementById("quizScreen").classList.add("active");
+    current = 0;
+    scores = {A:0,B:0,C:0,D:0};
+    showQuestion();
+  };
+
+  function showQuestion(){
+    var q = questions[current];
+    var pct = ((current)/8*100);
+    document.getElementById("progressFill").style.width = pct+"%";
+    document.getElementById("progressText").textContent = (current+1)+" / 8";
+
+    var html = '<div class="question-card">';
+    html += '<div class="q-number">Q'+(current+1)+'</div>';
+    html += '<div class="q-text">'+q.q.replace(/\n/g,"<br>")+'</div>';
+    html += '</div>';
+    html += '<div class="answers">';
+    for(var i=0;i<q.a.length;i++){
+      html += '<button class="answer-btn" data-choice="'+q.a[i].c+'" onclick="selectAnswer(this)">';
+      html += '<span class="letter">'+letters[i]+'</span>';
+      html += '<span>'+q.a[i].t+'</span>';
+      html += '</button>';
+    }
+    html += '</div>';
+
+    var area = document.getElementById("questionArea");
+    area.style.animation = "none";
+    area.offsetHeight;
+    area.innerHTML = html;
+    area.style.animation = "slideInRight .4s cubic-bezier(.4,0,.2,1)";
+  }
+
+  window.selectAnswer = function(btn){
+    if(btn.classList.contains("selected")) return;
+    var btns = document.querySelectorAll(".answer-btn");
+    for(var i=0;i<btns.length;i++){btns[i].style.pointerEvents="none";}
+    btn.classList.add("selected");
+
+    var choice = btn.getAttribute("data-choice");
+    scores[choice]++;
+
+    setTimeout(function(){
+      current++;
+      if(current < 8){
+        showQuestion();
+      } else {
+        showAnalyzing();
+      }
+    }, 400);
+  };
+
+  function showAnalyzing(){
+    document.getElementById("quizScreen").classList.remove("active");
+    document.getElementById("analyzingScreen").classList.add("active");
+    document.getElementById("progressFill").style.width = "100%";
+
+    // Increment participant count
+    stored++;
+    localStorage.setItem("baln_test_count", stored.toString());
+
+    setTimeout(function(){
+      document.getElementById("analyzingScreen").classList.remove("active");
+      showResult();
+    }, 2200);
+  }
+
+  function getResultType(){
+    var max = 0;
+    var winner = "";
+    var tie = false;
+    for(var k in scores){
+      if(scores[k]>max){max=scores[k];winner=k;tie=false;}
+      else if(scores[k]===max && max>0){tie=true;}
+    }
+    return tie ? "X" : winner;
+  }
+
+  function showResult(){
+    var type = getResultType();
+    var r = results[type];
+    var matchPct = Math.floor(Math.random()*16)+15;
+
+    var html = '<div class="result-card" id="resultCard">';
+    html += '<div class="result-emoji">'+r.emoji+'</div>';
+    html += '<div class="result-label">MY INVESTMENT DNA</div>';
+    html += '<div class="result-type">'+r.type+'</div>';
+    html += '<div class="result-investor">'+r.label+' · '+r.investor+'</div>';
+    html += '<div class="result-desc">';
+    for(var i=0;i<r.desc.length;i++){
+      html += '<p>'+r.desc[i]+'</p>';
+    }
+    html += '</div>';
+    html += '<div class="result-study"><h4>이런 투자 공부가 필요해요</h4><ul>';
+    for(var j=0;j<r.study.length;j++){
+      html += '<li>'+r.study[j]+'</li>';
+    }
+    html += '</ul></div>';
+    html += '<div class="result-match">당신과 같은 유형: <span>'+matchPct+'%</span></div>';
+    html += '<div class="watermark">baln - 매일 5분, 바른 투자 습관<br><a href="https://baln.app">baln.app</a></div>';
+    html += '</div>';
+
+    // Share
+    html += '<div class="share-section">';
+    html += '<div class="share-buttons">';
+    html += '<button class="share-btn kakao" onclick="shareKakao()">카카오톡</button>';
+    html += '<button class="share-btn twitter" onclick="shareTwitter()">트위터</button>';
+    html += '<button class="share-btn copy" onclick="copyLink()">링크 복사</button>';
+    html += '</div>';
+
+    // CTA
+    html += '<div class="cta-section">';
+    html += '<a href="https://apps.apple.com/app/id6758968658" style="text-decoration:none"><button class="btn-cta">나에게 맞는 투자 공부 시작하기</button></a>';
+    html += '<p class="cta-sub">baln - 매일 5분, 바른 투자 습관</p>';
+    html += '</div>';
+
+    html += '<button class="btn-retry" onclick="retry()">테스트 다시 하기</button>';
+    html += '</div>';
+
+    var rs = document.getElementById("resultScreen");
+    rs.innerHTML = html;
+    rs.classList.add("active");
+    window.scrollTo(0,0);
+
+    // Store result type for sharing
+    window._resultType = r.type;
+    window._resultLabel = r.label;
+  }
+
+  window.shareKakao = function(){
+    // Try Kakao SDK, fallback to link copy
+    if(window.Kakao && Kakao.isInitialized && Kakao.isInitialized()){
+      try{
+        Kakao.Share.sendDefault({
+          objectType:'feed',
+          content:{
+            title:'나의 투자 성향: '+window._resultType,
+            description:'8개 질문으로 알아보는 나의 투자 DNA',
+            imageUrl:'https://baln.app/og-image.png',
+            link:{mobileWebUrl:'https://baln.app/test/',webUrl:'https://baln.app/test/'}
+          },
+          buttons:[{title:'나도 테스트하기',link:{mobileWebUrl:'https://baln.app/test/',webUrl:'https://baln.app/test/'}}]
+        });
+        return;
+      }catch(e){}
+    }
+    copyLink();
+  };
+
+  window.shareTwitter = function(){
+    var text = '나의 투자 성향은 '+window._resultType+'! '+window._resultLabel+' 🧪\n8개 질문으로 알아보는 나의 투자 DNA\n';
+    var url = 'https://baln.app/test/';
+    window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(text)+'&url='+encodeURIComponent(url),'_blank');
+  };
+
+  window.copyLink = function(){
+    var url = 'https://baln.app/test/';
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(url).then(function(){showToast("링크가 복사되었습니다");});
+    } else {
+      var ta = document.createElement("textarea");
+      ta.value = url;
+      ta.style.position="fixed";
+      ta.style.left="-9999px";
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      showToast("링크가 복사되었습니다");
+    }
+  };
+
+  function showToast(msg){
+    var t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    setTimeout(function(){t.classList.remove("show");},2000);
+  }
+
+  window.retry = function(){
+    document.getElementById("resultScreen").classList.remove("active");
+    document.getElementById("resultScreen").innerHTML = "";
+    document.getElementById("landing").classList.add("active");
+    window.scrollTo(0,0);
+  };
+
+  // Try loading Kakao SDK
+  var ks = document.createElement("script");
+  ks.src = "https://t1.kakaocdn.net/kakao_js_sdk/2.6.0/kakao.min.js";
+  ks.onload = function(){
+    try{Kakao.init("your_kakao_app_key");}catch(e){}
+  };
+  document.head.appendChild(ks);
+})();
+</script>
+</body>
+</html>

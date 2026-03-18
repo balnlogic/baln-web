@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oracle — Ancient science. Your experiment.</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --deep: #0f0f14;
+      --purple: #6C63FF;
+      --purple-dim: #3d3880;
+      --gold: #D4A574;
+      --gold-dim: #8a6a44;
+      --white: #f0ede8;
+      --muted: #7a7570;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── HERO ─────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 24px;
+      position: relative;
+      background: radial-gradient(ellipse 80% 60% at 50% 40%, #1a1228 0%, var(--black) 70%);
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle 400px at 20% 30%, rgba(108,99,255,0.08) 0%, transparent 70%),
+        radial-gradient(circle 300px at 80% 70%, rgba(212,165,116,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .glyph-row {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(20px, 4vw, 32px);
+      letter-spacing: 0.4em;
+      color: var(--gold-dim);
+      margin-bottom: 48px;
+      opacity: 0.7;
+    }
+
+    .hero h1 {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(52px, 10vw, 96px);
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      line-height: 1;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, var(--white) 0%, var(--gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero .tagline {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(18px, 3vw, 24px);
+      font-style: italic;
+      color: var(--gold);
+      letter-spacing: 0.06em;
+      margin-bottom: 48px;
+      opacity: 0.85;
+    }
+
+    .hero .desc {
+      max-width: 540px;
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 56px;
+    }
+
+    .hero .desc em {
+      color: var(--white);
+      font-style: normal;
+    }
+
+    .cta-group {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 80px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--purple);
+      color: #fff;
+      padding: 14px 32px;
+      border-radius: 2px;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover { background: #5851e0; }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(212,165,116,0.4);
+      color: var(--gold);
+      padding: 14px 32px;
+      border-radius: 2px;
+      font-size: 14px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--gold); color: var(--white); }
+
+    .scroll-hint {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      opacity: 0.5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .scroll-hint::after {
+      content: '';
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--muted), transparent);
+    }
+
+    /* ── PILLARS ──────────────────────────────────────── */
+    .section {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 100px 24px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--purple);
+      margin-bottom: 16px;
+    }
+
+    .section h2 {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+
+    .section .sub {
+      font-size: 15px;
+      color: var(--muted);
+      max-width: 500px;
+      line-height: 1.8;
+      margin-bottom: 64px;
+    }
+
+    .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .pillar {
+      background: var(--deep);
+      padding: 40px 32px;
+    }
+
+    .pillar-glyph {
+      font-family: 'EB Garamond', serif;
+      font-size: 36px;
+      color: var(--gold-dim);
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .pillar h3 {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+
+    .pillar p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── HOW IT WORKS ─────────────────────────────────── */
+    .how-section {
+      background: var(--deep);
+      border-top: 1px solid rgba(255,255,255,0.04);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 48px;
+    }
+
+    .step {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .step-num {
+      font-family: 'EB Garamond', serif;
+      font-size: 48px;
+      color: rgba(108,99,255,0.2);
+      line-height: 1;
+    }
+
+    .step h3 {
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--white);
+    }
+
+    .step p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    /* ── ROUTES ───────────────────────────────────────── */
+    .routes {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1px;
+      background: rgba(255,255,255,0.04);
+    }
+
+    .route {
+      background: var(--black);
+      padding: 40px 32px;
+      border-left: 2px solid transparent;
+      transition: border-color 0.2s;
+    }
+    .route:hover { border-left-color: var(--purple); }
+
+    .route-icon {
+      font-size: 24px;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .route h3 {
+      font-family: 'EB Garamond', serif;
+      font-size: 20px;
+      font-weight: 400;
+      margin-bottom: 10px;
+      color: var(--gold);
+    }
+
+    .route p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── DISCLAIMER ───────────────────────────────────── */
+    .disclaimer-bar {
+      text-align: center;
+      padding: 24px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.2);
+      letter-spacing: 0.06em;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+
+    /* ── FOOTER ───────────────────────────────────────── */
+    footer {
+      background: #050505;
+      padding: 60px 24px;
+      text-align: center;
+    }
+
+    footer .logo {
+      font-family: 'EB Garamond', serif;
+      font-size: 28px;
+      letter-spacing: 0.15em;
+      background: linear-gradient(135deg, var(--white), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+
+    footer .tagline-small {
+      font-family: 'EB Garamond', serif;
+      font-size: 13px;
+      font-style: italic;
+      color: var(--gold-dim);
+      margin-bottom: 32px;
+    }
+
+    footer .links {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 32px;
+    }
+
+    footer .links a { color: var(--muted); text-decoration: none; }
+    footer .links a:hover { color: var(--white); }
+
+    footer .copy {
+      font-size: 11px;
+      color: rgba(255,255,255,0.15);
+    }
+
+    /* ── DIVIDER ──────────────────────────────────────── */
+    .divider {
+      width: 40px;
+      height: 1px;
+      background: var(--gold-dim);
+      margin: 0 auto 60px;
+      opacity: 0.4;
+    }
+
+    /* ── RESPONSIVE ───────────────────────────────────── */
+    @media (max-width: 600px) {
+      .cta-group { flex-direction: column; align-items: center; }
+      .btn-primary, .btn-ghost { width: 240px; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="glyph-row">甲 乙 丙 丁 戊 己 庚 辛 壬 癸</p>
+  <h1>Oracle</h1>
+  <p class="tagline">Ancient science. Your experiment.</p>
+  <p class="desc">
+    <em>5,000 years of pattern, rebuilt for today.</em><br>
+    Oracle decodes your birth data using the Four Pillars of Destiny —
+    an East Asian calendrical system that maps time, energy, and the recurring
+    patterns in a life.
+  </p>
+  <div class="cta-group">
+    <a href="#" class="btn-primary">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+      App Store
+    </a>
+    <a href="#how" class="btn-ghost">How it works</a>
+  </div>
+  <div class="scroll-hint">scroll</div>
+</section>
+
+<!-- PILLARS -->
+<section class="section">
+  <p class="section-label">The System</p>
+  <h2>Four pillars.<br>One pattern.</h2>
+  <p class="sub">
+    Your birth moment encodes four columns of information — Year, Month, Day, Hour.
+    Each pillar holds a stem and branch, forming a map of elemental forces at the moment you arrived.
+  </p>
+  <div class="pillars">
+    <div class="pillar">
+      <span class="pillar-glyph">年</span>
+      <h3>Year Pillar</h3>
+      <p>Your origin. The ancestral energy you carry and the social context of your formation.</p>
+    </div>
+    <div class="pillar">
+      <span class="pillar-glyph">月</span>
+      <h3>Month Pillar</h3>
+      <p>Your drives. Career orientation, ambitions, the energy you project into the world.</p>
+    </div>
+    <div class="pillar">
+      <span class="pillar-glyph">日</span>
+      <h3>Day Pillar</h3>
+      <p>Your self. The core identity — who you are when no one is watching.</p>
+    </div>
+    <div class="pillar">
+      <span class="pillar-glyph">時</span>
+      <h3>Hour Pillar</h3>
+      <p>Your inner world. Hidden desires, late-life trajectory, the self others rarely see.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<div class="how-section" id="how">
+  <section class="section">
+    <p class="section-label">Process</p>
+    <h2>How Oracle reads<br>your pattern</h2>
+    <p class="sub">Three steps from birth data to simulation.</p>
+    <div class="divider"></div>
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">01</span>
+        <h3>Enter your birth data</h3>
+        <p>Date, time, and gender. Oracle converts this into your Four Pillars chart using a precise East Asian calendrical calculation — the same system used for 5,000 years.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">02</span>
+        <h3>AI interprets the chart</h3>
+        <p>Your chart is analyzed against decadal cycles, yearly energies, and elemental interactions. The AI identifies the recurring patterns — not predictions, but structural tendencies.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">03</span>
+        <h3>Choose your simulation</h3>
+        <p>Three narrative paths. Each explores a different current in your chart. Select the one that resonates, and see where the pattern leads.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ROUTES -->
+<section class="section">
+  <p class="section-label">Simulations</p>
+  <h2>Three currents.<br>One chart.</h2>
+  <p class="sub">Every reading offers three distinct paths through your pattern. Not predictions — experiments.</p>
+  <div class="routes">
+    <div class="route">
+      <span class="route-icon">〜</span>
+      <h3>The Natural Current</h3>
+      <p>Follow the dominant flow in your chart. Where your elemental forces align — least resistance, most momentum.</p>
+    </div>
+    <div class="route">
+      <span class="route-icon">◈</span>
+      <h3>Your Hidden Strength</h3>
+      <p>Draw from the subdominant pillar. The capability you underuse — often the source of unexpected breakthroughs.</p>
+    </div>
+    <div class="route">
+      <span class="route-icon">△</span>
+      <h3>The Unseen Risk</h3>
+      <p>The pattern you've been ignoring. What happens when the suppressed element finally demands attention.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DISCLAIMER -->
+<div class="disclaimer-bar">
+  All outputs are AI-generated simulations. Oracle does not make predictions or provide spiritual guidance.
+  · Entertainment use only.
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo">Oracle</div>
+  <div class="tagline-small">Ancient science. Your experiment.</div>
+  <div class="links">
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="#">Support</a>
+  </div>
+  <div class="copy">© 2026 Oracle. All rights reserved.</div>
+</footer>
+
+</body>
+</html>

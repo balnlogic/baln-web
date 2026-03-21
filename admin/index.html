@@ -1805,7 +1805,7 @@
       <div class="modal-card" style="max-width:700px;">
         <div class="modal-header">
           <h3 id="modal-recording-title">회의록 상세</h3>
-          <button class="modal-close" id="modal-recording-close" onclick="hideModal('modal-recording')">&times;</button>
+          <button class="modal-close" id="modal-recording-close">&times;</button>
         </div>
         <div class="modal-body">
           <div id="modal-recording-meta" class="modal-section" style="color:var(--text2); font-size:13px;"></div>
@@ -1948,12 +1948,20 @@
       // Modal: ESC to close, overlay click to close
       document.addEventListener('keydown', e => {
         if (e.key === 'Escape') {
+          // Stop audio if recording modal is open
+          const recAudio = document.getElementById('modal-recording-audio');
+          if (recAudio) { recAudio.pause(); recAudio.src = ''; }
           document.querySelectorAll('.modal-overlay.visible').forEach(m => hideModal(m.id));
         }
       });
       document.querySelectorAll('.modal-overlay').forEach(overlay => {
         overlay.addEventListener('click', e => {
-          if (e.target === overlay) hideModal(overlay.id);
+          if (e.target === overlay) {
+            // Stop audio if recording modal is open
+            const recAudio = document.getElementById('modal-recording-audio');
+            if (recAudio) { recAudio.pause(); recAudio.src = ''; }
+            hideModal(overlay.id);
+          }
         });
       });
     });
@@ -1990,7 +1998,7 @@
         case 'growth': loadGrowth(); break;
         case 'eventlog': loadEventLog(); break;
         case 'wbs': loadWBS(); break;
-        case 'recordings': loadRecordings(); tabDataLoaded.recordings = true; break;
+        case 'recordings': loadRecordings(); break;
       }
     }
 

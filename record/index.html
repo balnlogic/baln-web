@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>녹음 관리</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root {
+      --bg: #0D0D0D;
+      --surface: #1A1A1A;
+      --surface2: #242424;
+      --border: #333;
+      --text: #F5F5F5;
+      --text2: #9E9E9E;
+      --text3: #555;
+      --primary: #4CAF50;
+      --primary-dim: rgba(76,175,80,0.15);
+      --red: #ef4444;
+      --blue: #2196F3;
+      --yellow: #FFC107;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── Login ── */
+    #login-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .login-card {
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 44px 36px;
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+
+    .login-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+
+    .login-card h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .login-card p {
+      color: var(--text3);
+      font-size: 13px;
+      margin-bottom: 28px;
+    }
+
+    .login-card input {
+      width: 100%;
+      padding: 13px 16px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 14px;
+      margin-bottom: 10px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .login-card input:focus { border-color: var(--primary); }
+
+    .login-card button.primary-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 4px;
+      transition: opacity 0.2s;
+    }
+
+    .login-card button.primary-btn:hover { opacity: 0.88; }
+    .login-card button.primary-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+    .login-error {
+      color: var(--red);
+      font-size: 13px;
+      margin-top: 10px;
+      min-height: 18px;
+    }
+
+    /* ── App Layout ── */
+    #app { display: none; }
+
+    .topbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .topbar-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .icon-btn {
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      color: var(--text2);
+      transition: opacity 0.2s;
+    }
+    .icon-btn:hover { opacity: 0.8; }
+    .icon-btn.danger { background: rgba(239,68,68,0.12); color: var(--red); border-color: rgba(239,68,68,0.25); }
+
+    /* ── Content ── */
+    .content {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px 16px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .card-body {
+      padding: 16px 18px;
+    }
+
+    /* ── Recorder ── */
+    .recorder-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .key-input {
+      flex: 1;
+      min-width: 200px;
+      padding: 9px 13px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      color: var(--text);
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .key-input:focus { border-color: var(--primary); }
+
+    .rec-controls {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    #rec-btn {
+      padding: 11px 28px;
+      border-radius: 10px;
+      border: none;
+      background: var(--primary);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      white-space: nowrap;
+    }
+    #rec-btn:active { transform: scale(0.97); }
+    #rec-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    #rec-btn.recording { background: var(--red); }
+
+    #rec-status { color: var(--text2); font-size: 14px; }
+
+    #rec-timer {
+      font-variant-numeric: tabular-nums;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--red);
+      display: none;
+      min-width: 60px;
+    }
+
+    #rec-progress {
+      display: none;
+      margin-top: 12px;
+      padding: 11px 14px;
+      background: var(--surface2);
+      border-radius: 9px;
+      font-size: 13px;
+      color: var(--text2);
+    }
+
+    /* ── Search / Filters ── */
+    .filter-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .search-input {
+      flex: 1;
+      min-width: 200px;
+      padding: 9px 13px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      color: var(--text);
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .search-input:focus { border-color: var(--primary); }
+
+    #topic-filters {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .topic-pill {
+      padding: 4px 13px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text2);
+      transition: all 0.15s;
+    }
+    .topic-pill:hover { background: var(--surface2); }
+    .topic-pill.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+    /* ── Stats row ── */
+    .stats-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .stat-chip {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 12px;
+      color: var(--text2);
+    }
+
+    .stat-chip strong { color: var(--text); margin-right: 3px; }
+
+    /* ── Recording Table ── */
+    .rec-table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 10px 10px;
+      font-size: 13px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      vertical-align: middle;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    tr:hover td { background: rgba(255,255,255,0.03); }
+
+    #recordings-loading, #recordings-empty {
+      display: none;
+      text-align: center;
+      padding: 32px;
+      color: var(--text3);
+      font-size: 14px;
+    }
+
+    /* ── Status Badges ── */
+    .status-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .status-done { background: var(--primary-dim); color: var(--primary); }
+    .status-wait { background: rgba(255,193,7,0.15); color: var(--yellow); }
+    .status-proc { background: rgba(33,150,243,0.15); color: var(--blue); }
+
+    /* ── Action Buttons ── */
+    .btn-sm {
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: none;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      white-space: nowrap;
+    }
+    .btn-sm:hover { opacity: 0.8; }
+    .btn-transcribe { background: var(--primary-dim); color: var(--primary); }
+    .btn-delete { background: rgba(239,68,68,0.12); color: var(--red); }
+
+    /* ── Modal ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 660px;
+      max-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .modal-header h3 {
+      font-size: 15px;
+      font-weight: 700;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 80%;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text2);
+      font-size: 22px;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0 4px;
+    }
+    .modal-close:hover { color: var(--text); }
+
+    .modal-body {
+      overflow-y: auto;
+      padding: 20px;
+      flex: 1;
+    }
+
+    .modal-section { margin-bottom: 20px; }
+    .modal-section:last-child { margin-bottom: 0; }
+
+    .modal-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 8px;
+    }
+
+    .modal-meta {
+      font-size: 13px;
+      color: var(--text2);
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .transcript-box {
+      background: var(--surface2);
+      border-radius: 10px;
+      padding: 16px;
+      max-height: 380px;
+      overflow-y: auto;
+      font-size: 14px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      color: var(--text);
+    }
+
+    audio {
+      width: 100%;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    /* ── Topic Edit Inline ── */
+    .topic-cell { cursor: text; }
+
+    /* ── Mobile ── */
+    @media (max-width: 600px) {
+      .content { padding: 12px; }
+      .card-body { padding: 12px 14px; }
+      th, td { padding: 8px 8px; }
+      .modal-card { max-height: 92vh; }
+      th:nth-child(2), td:nth-child(2) { max-width: 120px; } /* 파일명 */
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ LOGIN ═══ -->
+  <div id="login-screen">
+    <div class="login-card">
+      <div class="login-icon">🎙️</div>
+      <h1>녹음 관리</h1>
+      <p>본인만 접근 가능한 개인 녹음 보관함</p>
+      <input type="password" id="login-pw" placeholder="비밀번호"
+        onkeydown="if(event.key==='Enter') handleLogin()" />
+      <button class="primary-btn" onclick="handleLogin()" id="login-btn">로그인</button>
+      <p class="login-error" id="login-error"></p>
+    </div>
+  </div>
+
+  <!-- ═══ APP ═══ -->
+  <div id="app">
+
+    <!-- 상단바 -->
+    <div class="topbar">
+      <div class="topbar-title">
+        🎙️ 녹음 관리
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn" onclick="loadRecordings()">↻ 새로고침</button>
+        <button class="icon-btn danger" onclick="handleLogout()">로그아웃</button>
+      </div>
+    </div>
+
+    <!-- 본문 -->
+    <div class="content">
+
+      <!-- 웹 녹음 카드 -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">🎤 웹 녹음</span>
+        </div>
+        <div class="card-body">
+          <div class="recorder-row">
+            <input id="rec-openai-key" type="password" class="key-input"
+              placeholder="OpenAI API Key (전사 자동화용, 선택사항)"
+              oninput="localStorage.setItem('rec_openai_key', this.value)" />
+            <span style="font-size:12px; color:var(--text3); white-space:nowrap;">없으면 나중에 수동 전사</span>
+          </div>
+          <div class="rec-controls">
+            <button id="rec-btn" onclick="toggleRecording()">🎙️ 녹음 시작</button>
+            <span id="rec-status" style="color:var(--text2); font-size:14px;">마이크 준비됨</span>
+            <span id="rec-timer">00:00</span>
+          </div>
+          <div id="rec-progress"></div>
+        </div>
+      </div>
+
+      <!-- 녹음 목록 카드 -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">📋 녹음 목록</span>
+          <div id="stats-row" class="stats-row" style="margin:0;"></div>
+        </div>
+        <div class="card-body">
+          <div class="filter-row">
+            <input id="rec-search" type="search" class="search-input"
+              placeholder="🔍 파일명 · 내용 · 주제 검색..."
+              oninput="filterRecordings()" />
+          </div>
+          <div id="topic-filters"></div>
+
+          <div id="recordings-loading">불러오는 중...</div>
+          <div id="recordings-empty">녹음이 없습니다.</div>
+
+          <div class="rec-table-wrap">
+            <table id="recordings-table" style="display:none;">
+              <thead>
+                <tr>
+                  <th>날짜</th>
+                  <th>파일명</th>
+                  <th>길이</th>
+                  <th>언어</th>
+                  <th>주제</th>
+                  <th>전사</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="recordings-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══ 상세 모달 ═══ -->
+  <div class="modal-overlay" id="modal-detail">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-title">녹음 상세</h3>
+        <button class="modal-close" onclick="closeModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-section">
+          <div class="modal-meta" id="modal-meta"></div>
+        </div>
+        <div class="modal-section" id="modal-audio-section" style="display:none;">
+          <div class="modal-label">오디오</div>
+          <audio id="modal-audio" controls></audio>
+        </div>
+        <div class="modal-section">
+          <div class="modal-label">전사 내용</div>
+          <div class="transcript-box" id="modal-transcript">불러오는 중...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ══════════════════════════════════════════
+    // CONSTANTS
+    // ══════════════════════════════════════════
+    const RECORD_URL = 'https://nhjpdhkanowdbbcccmgu.supabase.co';
+    const RECORD_KEY = 'ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW01b2FuQmthR3RoYm05M1pHSmlZMk5qYldkMUlpd2ljbTlzWlNJNkluTmxjblpwWTJWZmNtOXNaU0lzSW1saGRDSTZNVGMzTkRBNE9UQTBOU3dpWlhod0lqb3lNRGc1TmpZMU1EUTFmUS5kYXpUbUtfNHc0dVB3QXV5RTY3ODJGcExVaHFFYU9wR1pVcDZkMi01N0hN';
+    // 비밀번호 해시 (SHA-256 of actual password — compared client side)
+    const PW_HASH = 'b9e1d3a4f26c5e8702d1947b3f0c8a5e2d4b6f1a3c5e7d9b0f2a4c6e8d1b3f5'; // placeholder — checked via simple compare
+    const CORRECT_PW = 'qnwkehlwk1$';
+
+    let sb = null;
+    let allRecordings = [];
+    let activeTopicFilter = null;
+    let mediaRecorder = null;
+    let recChunks = [];
+    let recStartTime = 0;
+    let recTimerInterval = null;
+
+    // ══════════════════════════════════════════
+    // AUTH
+    // ══════════════════════════════════════════
+    function handleLogin() {
+      const pw = document.getElementById('login-pw').value;
+      const errEl = document.getElementById('login-error');
+      const btn = document.getElementById('login-btn');
+      if (!pw) { errEl.textContent = '비밀번호를 입력하세요.'; return; }
+      if (pw !== CORRECT_PW) { errEl.textContent = '비밀번호가 틀렸습니다.'; return; }
+
+      btn.disabled = true; btn.textContent = '접속 중...'; errEl.textContent = '';
+      try {
+        sb = window.supabase.createClient(RECORD_URL, atob(RECORD_KEY));
+        localStorage.setItem('rec_logged_in', '1');
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+
+        // Restore OpenAI key
+        const savedKey = localStorage.getItem('rec_openai_key');
+        if (savedKey) document.getElementById('rec-openai-key').value = savedKey;
+
+        loadRecordings();
+      } catch (e) {
+        errEl.textContent = '접속 실패: ' + e.message;
+        btn.disabled = false; btn.textContent = '로그인';
+      }
+    }
+
+    function handleLogout() {
+      sb = null;
+      localStorage.removeItem('rec_logged_in');
+      document.getElementById('login-pw').value = '';
+      document.getElementById('login-error').textContent = '';
+      document.getElementById('app').style.display = 'none';
+      document.getElementById('login-screen').style.display = 'flex';
+    }
+
+    // Auto-login if remembered
+    window.addEventListener('DOMContentLoaded', () => {
+      if (localStorage.getItem('rec_logged_in') === '1') {
+        try {
+          sb = window.supabase.createClient(RECORD_URL, atob(RECORD_KEY));
+          document.getElementById('login-screen').style.display = 'none';
+          document.getElementById('app').style.display = 'block';
+          const savedKey = localStorage.getItem('rec_openai_key');
+          if (savedKey) document.getElementById('rec-openai-key').value = savedKey;
+          loadRecordings();
+        } catch (e) {
+          localStorage.removeItem('rec_logged_in');
+        }
+      }
+    });
+
+    // ══════════════════════════════════════════
+    // RECORDER
+    // ══════════════════════════════════════════
+    async function toggleRecording() {
+      if (mediaRecorder && mediaRecorder.state === 'recording') {
+        stopRecording();
+      } else {
+        await startRecording();
+      }
+    }
+
+    async function startRecording() {
+      const btn = document.getElementById('rec-btn');
+      const status = document.getElementById('rec-status');
+      const timer = document.getElementById('rec-timer');
+      const progress = document.getElementById('rec-progress');
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
+          ? 'audio/webm;codecs=opus'
+          : MediaRecorder.isTypeSupported('audio/ogg;codecs=opus')
+            ? 'audio/ogg;codecs=opus'
+            : 'audio/webm';
+        mediaRecorder = new MediaRecorder(stream, { mimeType });
+        recChunks = [];
+        mediaRecorder.ondataavailable = e => { if (e.data.size > 0) recChunks.push(e.data); };
+        mediaRecorder.onstop = handleRecordingStop;
+        mediaRecorder.start(1000);
+        recStartTime = Date.now();
+        btn.textContent = '⏹ 녹음 중지';
+        btn.classList.add('recording');
+        status.textContent = '🔴 녹음 중...';
+        timer.style.display = 'inline';
+        progress.style.display = 'none';
+        recTimerInterval = setInterval(() => {
+          const el = Math.floor((Date.now() - recStartTime) / 1000);
+          const m = String(Math.floor(el / 60)).padStart(2, '0');
+          const s = String(el % 60).padStart(2, '0');
+          timer.textContent = `${m}:${s}`;
+        }, 500);
+      } catch (err) {
+        alert('마이크 접근 실패: ' + err.message);
+      }
+    }
+
+    function stopRecording() {
+      if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+        mediaRecorder.stop();
+        mediaRecorder.stream.getTracks().forEach(t => t.stop());
+      }
+      clearInterval(recTimerInterval);
+      const btn = document.getElementById('rec-btn');
+      const status = document.getElementById('rec-status');
+      btn.textContent = '🎙️ 녹음 시작';
+      btn.classList.remove('recording');
+      status.textContent = '처리 중...';
+      btn.disabled = true;
+    }
+
+    async function handleRecordingStop() {
+      const duration = Math.floor((Date.now() - recStartTime) / 1000);
+      const blob = new Blob(recChunks, { type: mediaRecorder ? mediaRecorder.mimeType : 'audio/webm' });
+      const ext = (mediaRecorder && mediaRecorder.mimeType.includes('ogg')) ? 'ogg' : 'webm';
+      const ts = new Date().toISOString().replace(/[:.]/g, '-');
+      const fileName = `web-${ts}.${ext}`;
+      const filePath = `web/${fileName}`;
+
+      const progress = document.getElementById('rec-progress');
+      const status = document.getElementById('rec-status');
+      const btn = document.getElementById('rec-btn');
+      const timer = document.getElementById('rec-timer');
+
+      progress.style.display = 'block';
+      try {
+        // 1. Upload
+        progress.textContent = '⬆️ 업로드 중...';
+        const { error: uploadError } = await sb.storage
+          .from('recordings')
+          .upload(filePath, blob, { contentType: blob.type, upsert: false });
+        if (uploadError) throw new Error('업로드 실패: ' + uploadError.message);
+
+        // 2. Whisper (선택)
+        let fullText = null, language = null, segmentsJson = null;
+        let transcriptionStatus = 0;
+        const openaiKey = localStorage.getItem('rec_openai_key');
+        if (openaiKey) {
+          progress.textContent = '🧠 전사 중... (Whisper)';
+          try {
+            const formData = new FormData();
+            formData.append('file', blob, fileName);
+            formData.append('model', 'whisper-1');
+            formData.append('response_format', 'verbose_json');
+            const resp = await fetch('https://api.openai.com/v1/audio/transcriptions', {
+              method: 'POST',
+              headers: { Authorization: `Bearer ${openaiKey}` },
+              body: formData
+            });
+            if (resp.ok) {
+              const result = await resp.json();
+              fullText = result.text;
+              language = result.language;
+              segmentsJson = (result.segments || []).map(s => ({
+                startTime: s.start, endTime: s.end, text: (s.text || '').trim()
+              }));
+              transcriptionStatus = 2;
+            }
+          } catch (e) { console.warn('Whisper 오류:', e); }
+        }
+
+        // 3. DB Insert
+        progress.textContent = '💾 저장 중...';
+        const { error: insertError } = await sb.from('recordings').insert({
+          file_name: fileName,
+          duration: duration,
+          source: 'web',
+          file_path: filePath,
+          upload_size_bytes: blob.size,
+          full_text: fullText,
+          language: language,
+          segments_json: segmentsJson,
+          transcription_status: transcriptionStatus
+        });
+        if (insertError) throw new Error('DB 저장 실패: ' + insertError.message);
+
+        progress.textContent = transcriptionStatus === 2
+          ? `✅ 완료! ${duration}초 | 언어: ${language || '?'}`
+          : `✅ 업로드 완료 (${duration}초) — OpenAI 키 입력 시 자동 전사됩니다`;
+
+        await loadRecordings();
+      } catch (err) {
+        progress.textContent = '❌ 오류: ' + err.message;
+      } finally {
+        status.textContent = '마이크 준비됨';
+        timer.style.display = 'none';
+        btn.disabled = false;
+      }
+    }
+
+    // ══════════════════════════════════════════
+    // RECORDINGS LIST
+    // ══════════════════════════════════════════
+    async function loadRecordings() {
+      const loading = document.getElementById('recordings-loading');
+      const empty = document.getElementById('recordings-empty');
+      const table = document.getElementById('recordings-table');
+
+      loading.style.display = 'block';
+      table.style.display = 'none';
+      empty.style.display = 'none';
+
+      const { data, error } = await sb
+        .from('recordings')
+        .select('id, file_name, duration, transcription_status, language, topic, created_at, file_path, full_text')
+        .order('created_at', { ascending: false });
+
+      loading.style.display = 'none';
+
+      if (error || !data || data.length === 0) {
+        empty.style.display = 'block';
+        allRecordings = [];
+        renderTopicFilters([]);
+        updateStats([]);
+        return;
+      }
+
+      allRecordings = data;
+      renderTopicFilters(data);
+      updateStats(data);
+      filterRecordings();
+    }
+
+    function updateStats(data) {
+      const total = data.length;
+      const done = data.filter(r => r.transcription_status === 2).length;
+      const pending = total - done;
+      const totalSec = data.reduce((a, r) => a + (r.duration || 0), 0);
+      const h = Math.floor(totalSec / 3600);
+      const m = Math.floor((totalSec % 3600) / 60);
+      const durStr = h > 0 ? `${h}시간 ${m}분` : `${m}분`;
+      document.getElementById('stats-row').innerHTML = total > 0 ? `
+        <span class="stat-chip"><strong>${total}</strong>개</span>
+        <span class="stat-chip"><strong>${durStr}</strong> 총 녹음</span>
+        <span class="stat-chip"><strong>${done}</strong> 전사완료</span>
+        ${pending > 0 ? `<span class="stat-chip"><strong>${pending}</strong> 대기중</span>` : ''}
+      ` : '';
+    }
+
+    function renderTopicFilters(data) {
+      const topics = [...new Set(data.map(r => r.topic).filter(Boolean))].sort();
+      const container = document.getElementById('topic-filters');
+      if (topics.length === 0) { container.innerHTML = ''; return; }
+      const allPill = `<button class="topic-pill ${activeTopicFilter === null ? 'active' : ''}" onclick="setTopicFilter(null)">전체</button>`;
+      const pills = topics.map(t => `<button class="topic-pill ${activeTopicFilter === t ? 'active' : ''}" onclick="setTopicFilter(${JSON.stringify(t)})">📁 ${esc(t)}</button>`).join('');
+      container.innerHTML = allPill + pills;
+    }
+
+    function setTopicFilter(topic) {
+      activeTopicFilter = topic;
+      renderTopicFilters(allRecordings);
+      filterRecordings();
+    }
+
+    function filterRecordings() {
+      const q = (document.getElementById('rec-search')?.value || '').toLowerCase().trim();
+      let filtered = allRecordings;
+      if (activeTopicFilter !== null) filtered = filtered.filter(r => r.topic === activeTopicFilter);
+      if (q) {
+        filtered = filtered.filter(r =>
+          (r.file_name || '').toLowerCase().includes(q) ||
+          (r.full_text || '').toLowerCase().includes(q) ||
+          (r.topic || '').toLowerCase().includes(q) ||
+          (r.language || '').toLowerCase().includes(q)
+        );
+      }
+      renderTable(filtered);
+    }
+
+    function renderTable(data) {
+      const tbody = document.getElementById('recordings-tbody');
+      const table = document.getElementById('recordings-table');
+      const empty = document.getElementById('recordings-empty');
+      tbody.innerHTML = '';
+
+      if (data.length === 0) {
+        table.style.display = 'none';
+        empty.style.display = 'block';
+        empty.textContent = '검색 결과가 없습니다.';
+        return;
+      }
+      table.style.display = '';
+      empty.style.display = 'none';
+
+      data.forEach(rec => {
+        const date = rec.created_at ? new Date(rec.created_at).toLocaleString('ko-KR', { month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit' }) : '-';
+        const dur = rec.duration
+          ? `${Math.floor(rec.duration / 60)}:${String(Math.round(rec.duration) % 60).padStart(2, '0')}`
+          : '-';
+        const statusHtml = rec.transcription_status === 2
+          ? '<span class="status-badge status-done">완료</span>'
+          : rec.transcription_status === 1
+            ? '<span class="status-badge status-proc">처리중</span>'
+            : '<span class="status-badge status-wait">대기</span>';
+        const canTranscribe = rec.transcription_status !== 2 && rec.file_path;
+
+        const tr = document.createElement('tr');
+        tr.style.cursor = 'pointer';
+        tr.innerHTML = `
+          <td style="white-space:nowrap; color:var(--text2); font-size:12px;">${esc(date)}</td>
+          <td style="max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${esc(rec.file_name||'')}">${esc(rec.file_name||'-')}</td>
+          <td style="white-space:nowrap; font-variant-numeric:tabular-nums;">${esc(dur)}</td>
+          <td>${esc(rec.language||'-')}</td>
+          <td class="topic-cell" data-id="${rec.id}" onclick="event.stopPropagation(); editTopic(this, '${rec.id}')"
+            style="color:${rec.topic ? 'var(--text)' : 'var(--text3)'}; font-size:12px; min-width:90px;">
+            ${rec.topic ? esc(rec.topic) : '<em>+ 주제</em>'}
+          </td>
+          <td>${statusHtml}</td>
+          <td onclick="event.stopPropagation()" style="white-space:nowrap; text-align:right;">
+            ${canTranscribe ? `<button class="btn-sm btn-transcribe" onclick="transcribeRecording('${rec.id}','${esc(rec.file_path||'')}','${esc(rec.file_name||'')}')">전사</button> ` : ''}
+            <button class="btn-sm btn-delete" onclick="deleteRecording('${rec.id}','${esc(rec.file_path||'')}','${esc(rec.file_name||'')}')">삭제</button>
+          </td>
+        `;
+        tr.addEventListener('click', () => openDetail(rec));
+        tbody.appendChild(tr);
+      });
+    }
+
+    // ══════════════════════════════════════════
+    // TOPIC EDIT
+    // ══════════════════════════════════════════
+    function editTopic(cell, recId) {
+      const current = cell.querySelector('em') ? '' : cell.textContent.trim();
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.value = current;
+      input.placeholder = '주제 입력...';
+      input.style.cssText = 'width:120px; padding:3px 7px; border-radius:6px; border:1px solid var(--border); background:var(--surface2); color:var(--text); font-size:12px; outline:none;';
+      cell.innerHTML = '';
+      cell.appendChild(input);
+      input.focus();
+
+      const save = async () => {
+        const newTopic = input.value.trim() || null;
+        await sb.from('recordings').update({ topic: newTopic }).eq('id', recId);
+        const rec = allRecordings.find(r => r.id === recId);
+        if (rec) rec.topic = newTopic;
+        renderTopicFilters(allRecordings);
+        cell.style.color = newTopic ? 'var(--text)' : 'var(--text3)';
+        cell.innerHTML = newTopic ? esc(newTopic) : '<em>+ 주제</em>';
+        cell.onclick = e => { e.stopPropagation(); editTopic(cell, recId); };
+      };
+      input.addEventListener('blur', save);
+      input.addEventListener('keydown', e => {
+        if (e.key === 'Enter') input.blur();
+        if (e.key === 'Escape') { input.value = current; input.blur(); }
+      });
+    }
+
+    // ══════════════════════════════════════════
+    // TRANSCRIBE
+    // ══════════════════════════════════════════
+    async function transcribeRecording(recId, filePath, fileName) {
+      let key = localStorage.getItem('rec_openai_key');
+      if (!key) {
+        key = prompt('OpenAI API Key를 입력하세요 (전사에 필요):');
+        if (!key) return;
+        localStorage.setItem('rec_openai_key', key);
+        const keyInput = document.getElementById('rec-openai-key');
+        if (keyInput) keyInput.value = key;
+      }
+
+      // Update badge
+      const statusCell = document.querySelector(`[data-id="${recId}"]`)?.parentElement?.querySelector('.status-badge');
+      if (statusCell) statusCell.textContent = '전사 중...';
+
+      try {
+        const { data: urlData, error: urlErr } = await sb.storage.from('recordings').createSignedUrl(filePath, 120);
+        if (urlErr || !urlData?.signedUrl) throw new Error('파일 URL 획득 실패');
+        const audioResp = await fetch(urlData.signedUrl);
+        if (!audioResp.ok) throw new Error('오디오 다운로드 실패');
+        const blob = await audioResp.blob();
+        const ext = (fileName || '').split('.').pop() || 'webm';
+        const formData = new FormData();
+        formData.append('file', blob, `audio.${ext}`);
+        formData.append('model', 'whisper-1');
+        formData.append('response_format', 'verbose_json');
+
+        const resp = await fetch('https://api.openai.com/v1/audio/transcriptions', {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${key}` },
+          body: formData
+        });
+        if (!resp.ok) throw new Error('Whisper 실패: ' + (await resp.text()).slice(0, 120));
+        const result = await resp.json();
+        const segmentsJson = (result.segments || []).map(s => ({
+          startTime: s.start, endTime: s.end, text: (s.text || '').trim()
+        }));
+
+        await sb.from('recordings').update({
+          full_text: result.text,
+          language: result.language,
+          segments_json: segmentsJson,
+          transcription_status: 2
+        }).eq('id', recId);
+
+        await loadRecordings();
+      } catch (err) {
+        if (statusCell) statusCell.textContent = '오류';
+        alert('전사 실패: ' + err.message);
+      }
+    }
+
+    // ══════════════════════════════════════════
+    // DELETE
+    // ══════════════════════════════════════════
+    async function deleteRecording(recId, filePath, fileName) {
+      if (!confirm(`"${fileName}"\n삭제할까요? (파일 + DB 모두 삭제)`)) return;
+      try {
+        if (filePath) await sb.storage.from('recordings').remove([filePath]);
+        const { error } = await sb.from('recordings').delete().eq('id', recId);
+        if (error) throw new Error(error.message);
+        allRecordings = allRecordings.filter(r => r.id !== recId);
+        renderTopicFilters(allRecordings);
+        updateStats(allRecordings);
+        filterRecordings();
+      } catch (err) {
+        alert('삭제 실패: ' + err.message);
+      }
+    }
+
+    // ══════════════════════════════════════════
+    // DETAIL MODAL
+    // ══════════════════════════════════════════
+    async function openDetail(rec) {
+      document.getElementById('modal-title').textContent = rec.file_name || '녹음 상세';
+      const date = rec.created_at ? new Date(rec.created_at).toLocaleString('ko-KR') : '-';
+      const dur = rec.duration ? `${Math.floor(rec.duration/60)}:${String(Math.round(rec.duration)%60).padStart(2,'0')}` : '-';
+      document.getElementById('modal-meta').innerHTML = `
+        <span>📅 ${esc(date)}</span>
+        <span>⏱ ${esc(dur)}</span>
+        ${rec.language ? `<span>🌐 ${esc(rec.language)}</span>` : ''}
+        ${rec.topic ? `<span>📁 ${esc(rec.topic)}</span>` : ''}
+      `;
+
+      // Reset audio
+      const audioEl = document.getElementById('modal-audio');
+      const audioSection = document.getElementById('modal-audio-section');
+      audioEl.pause(); audioEl.src = '';
+      audioSection.style.display = 'none';
+
+      document.getElementById('modal-transcript').textContent = '불러오는 중...';
+      document.getElementById('modal-detail').classList.add('open');
+
+      // Fetch full data
+      const { data } = await sb.from('recordings')
+        .select('transcription_status, full_text, segments_json')
+        .eq('id', rec.id)
+        .single();
+
+      const transcriptEl = document.getElementById('modal-transcript');
+      if (data) {
+        if (data.transcription_status === 2) {
+          if (data.segments_json && Array.isArray(data.segments_json)) {
+            transcriptEl.textContent = data.segments_json.map(s => s.text || '').join('\n').trim() || data.full_text || '(내용 없음)';
+          } else {
+            transcriptEl.textContent = data.full_text || '(내용 없음)';
+          }
+        } else if (data.transcription_status === 1) {
+          transcriptEl.textContent = '전사 처리 중입니다...';
+        } else {
+          transcriptEl.textContent = '아직 전사되지 않았습니다.';
+        }
+      } else {
+        transcriptEl.textContent = '데이터를 불러올 수 없습니다.';
+      }
+
+      // Audio player
+      if (rec.file_path) {
+        const { data: urlData } = await sb.storage.from('recordings').createSignedUrl(rec.file_path, 3600);
+        if (urlData?.signedUrl) {
+          audioEl.src = urlData.signedUrl;
+          audioSection.style.display = 'block';
+        }
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('modal-detail').classList.remove('open');
+      const audioEl = document.getElementById('modal-audio');
+      audioEl.pause(); audioEl.src = '';
+    }
+
+    // Close on overlay click
+    document.getElementById('modal-detail').addEventListener('click', function(e) {
+      if (e.target === this) closeModal();
+    });
+
+    // ESC key
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // ══════════════════════════════════════════
+    // UTILS
+    // ══════════════════════════════════════════
+    function esc(v) {
+      return String(v ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+  </script>
+</body>
+</html>

@@ -1849,6 +1849,10 @@
       waitlist: 'baln_local_waitlist'
     };
 
+    const RECORD_SUPABASE_URL = 'YOUR_RECORD_SUPABASE_URL';
+    const RECORD_SERVICE_ROLE_KEY = 'YOUR_RECORD_SERVICE_ROLE_KEY_BASE64';
+    const sbRecord = window.supabase.createClient(RECORD_SUPABASE_URL, atob(RECORD_SERVICE_ROLE_KEY));
+
     function escapeHtml(value) {
       return String(value ?? '')
         .replace(/&/g, '&amp;')
@@ -3678,6 +3682,54 @@
       a.click();
       a.remove();
       URL.revokeObjectURL(url);
+    }
+
+    // ══════════════════════════════════════════════════════════════
+    // RECORDINGS TAB
+    // ══════════════════════════════════════════════════════════════
+
+    async function loadRecordings() {
+      const loading = document.getElementById('recordings-loading');
+      const empty = document.getElementById('recordings-empty');
+      const tbody = document.getElementById('recordings-tbody');
+      const table = document.getElementById('recordings-table');
+
+      if (loading) loading.style.display = 'block';
+      if (table) table.style.display = 'none';
+      if (empty) empty.style.display = 'none';
+      if (tbody) tbody.innerHTML = '';
+
+      const { data, error } = await sbRecord
+        .from('recordings')
+        .select('id, file_name, duration, transcription_status, created_at, file_path')
+        .order('created_at', { ascending: false });
+
+      if (loading) loading.style.display = 'none';
+
+      if (error || !data || data.length === 0) {
+        if (empty) empty.style.display = 'block';
+        return;
+      }
+
+      if (table) table.style.display = '';
+
+      const statusLabel = { 0: '대기중', 1: '처리중', 2: '완료' };
+
+      data.forEach(rec => {
+        const date = rec.created_at ? new Date(rec.created_at).toLocaleString('ko-KR') : '-';
+        const dur = rec.duration ? `${Math.floor(rec.duration/60)}:${String(rec.duration%60).padStart(2,'0')}` : '-';
+        const status = statusLabel[rec.transcription_status] ?? '알 수 없음';
+        const tr = document.createElement('tr');
+        tr.style.cursor = 'pointer';
+        tr.innerHTML = `
+          <td>${date}</td>
+          <td>${rec.file_name || '-'}</td>
+          <td>${dur}</td>
+          <td>${status}</td>
+        `;
+        tr.addEventListener('click', () => openRecordingDetail(rec));
+        tbody.appendChild(tr);
+      });
     }
 
     // ══════════════════════════════════════════════════════════════

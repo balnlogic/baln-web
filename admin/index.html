@@ -703,6 +703,7 @@
       <button class="tab-btn" data-tab="automation">🤖 자동화</button>
       <button class="tab-btn" data-tab="manage">🛠️ 관리</button>
       <button class="tab-btn" data-tab="settings">⚙️ 설정</button>
+      <button class="tab-btn" data-tab="recordings">📝 회의록</button>
     </div>
 
     <div class="content">
@@ -1786,7 +1787,7 @@
     let allPosts = [];
     let allGatherings = [];
     let charts = {};
-    let tabDataLoaded = {};
+    let tabDataLoaded = { recordings: false };
     let selectedPosts = new Set();
     let currentLoungeSegment = 'posts';
     let currentReportFilter = 'all';
@@ -1929,6 +1930,7 @@
         case 'growth': loadGrowth(); break;
         case 'eventlog': loadEventLog(); break;
         case 'wbs': loadWBS(); break;
+        case 'recordings': loadRecordings(); tabDataLoaded.recordings = true; break;
       }
     }
 

@@ -1938,6 +1938,13 @@
         });
       });
 
+      // Recording modal close button: stop audio on close
+      document.getElementById('modal-recording-close')?.addEventListener('click', () => {
+        const audioEl = document.getElementById('modal-recording-audio');
+        if (audioEl) { audioEl.pause(); audioEl.src = ''; }
+        hideModal('modal-recording');
+      });
+
       // Modal: ESC to close, overlay click to close
       document.addEventListener('keydown', e => {
         if (e.key === 'Escape') {
@@ -3730,6 +3737,67 @@
         tr.addEventListener('click', () => openRecordingDetail(rec));
         tbody.appendChild(tr);
       });
+    }
+
+    async function openRecordingDetail(rec) {
+      // Show modal
+      showModal('modal-recording');
+
+      // Set title
+      const titleEl = document.getElementById('modal-recording-title');
+      if (titleEl) titleEl.textContent = rec.file_name || '회의록 상세';
+
+      // Set meta
+      const metaEl = document.getElementById('modal-recording-meta');
+      if (metaEl) {
+        const date = rec.created_at ? new Date(rec.created_at).toLocaleString('ko-KR') : '-';
+        const dur = rec.duration ? `${Math.floor(rec.duration/60)}:${String(rec.duration%60).padStart(2,'0')}` : '-';
+        metaEl.textContent = `${date} | 길이: ${dur}`;
+      }
+
+      // Reset audio
+      const audioEl = document.getElementById('modal-recording-audio');
+      const audioWrap = document.getElementById('modal-recording-audio-wrap');
+      if (audioEl) { audioEl.pause(); audioEl.src = ''; }
+      if (audioWrap) audioWrap.style.display = 'none';
+
+      // Set transcription placeholder
+      const transcriptEl = document.getElementById('modal-recording-transcript');
+      if (transcriptEl) transcriptEl.textContent = '전사 내용을 불러오는 중...';
+
+      // Fetch full transcription data
+      const { data } = await sbRecord
+        .from('recordings')
+        .select('transcription_status, full_text, segments_json')
+        .eq('id', rec.id)
+        .single();
+
+      if (transcriptEl) {
+        if (data && data.transcription_status === 2) {
+          if (data.segments_json && Array.isArray(data.segments_json)) {
+            transcriptEl.textContent = data.segments_json.map(s => s.text || '').join('\n').trim() || data.full_text || '(전사 내용 없음)';
+          } else {
+            transcriptEl.textContent = data.full_text || '(전사 내용 없음)';
+          }
+        } else if (data && data.transcription_status === 1) {
+          transcriptEl.textContent = '전사 처리 중입니다...';
+        } else if (data && data.transcription_status === 0) {
+          transcriptEl.textContent = '전사 대기 중입니다.';
+        } else {
+          transcriptEl.textContent = '전사 내용이 없습니다.';
+        }
+      }
+
+      // Lazy signed URL for audio
+      if (rec.file_path && audioEl && audioWrap) {
+        const { data: urlData } = await sbRecord.storage
+          .from('recordings')
+          .createSignedUrl(rec.file_path, 3600);
+        if (urlData?.signedUrl) {
+          audioEl.src = urlData.signedUrl;
+          audioWrap.style.display = 'block';
+        }
+      }
     }
 
     // ══════════════════════════════════════════════════════════════

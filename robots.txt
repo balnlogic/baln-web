@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /internal/
 
 # AI Search Crawlers — ALLOW (cited in real-time answers)
 User-agent: OAI-SearchBot

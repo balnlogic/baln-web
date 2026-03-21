@@ -3729,10 +3729,10 @@
         const tr = document.createElement('tr');
         tr.style.cursor = 'pointer';
         tr.innerHTML = `
-          <td>${date}</td>
-          <td>${rec.file_name || '-'}</td>
-          <td>${dur}</td>
-          <td>${status}</td>
+          <td>${escapeHtml(date)}</td>
+          <td>${escapeHtml(rec.file_name || '-')}</td>
+          <td>${escapeHtml(dur)}</td>
+          <td>${escapeHtml(status)}</td>
         `;
         tr.addEventListener('click', () => openRecordingDetail(rec));
         tbody.appendChild(tr);

@@ -1849,8 +1849,8 @@
       waitlist: 'baln_local_waitlist'
     };
 
-    const RECORD_SUPABASE_URL = 'YOUR_RECORD_SUPABASE_URL';
-    const RECORD_SERVICE_ROLE_KEY = 'YOUR_RECORD_SERVICE_ROLE_KEY_BASE64';
+    const RECORD_SUPABASE_URL = 'YOUR_RECORD_SUPABASE_URL'; // TODO: replace with actual Record Supabase URL
+    const RECORD_SERVICE_ROLE_KEY = 'cGxhY2Vob2xkZXI='; // placeholder — replace with actual base64-encoded service role key
     const sbRecord = window.supabase.createClient(RECORD_SUPABASE_URL, atob(RECORD_SERVICE_ROLE_KEY));
 
     function escapeHtml(value) {

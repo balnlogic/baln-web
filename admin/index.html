@@ -1723,6 +1723,32 @@
 
       </div>
 
+      <!-- ═══ TAB: 회의록 ═══ -->
+      <div class="tab-content" id="tab-recordings">
+
+        <div class="section-card">
+          <div class="section-header">
+            <span class="section-title">📝 회의록</span>
+          </div>
+          <div class="section-body">
+            <div id="recordings-loading" style="display:none; color:var(--text2); font-size:14px;">불러오는 중...</div>
+            <div id="recordings-empty" style="display:none; color:var(--text3); font-size:14px;">회의록이 없습니다.</div>
+            <table class="data-table" id="recordings-table" style="width:100%">
+              <thead>
+                <tr>
+                  <th>날짜</th>
+                  <th>파일명</th>
+                  <th>길이</th>
+                  <th>전사상태</th>
+                </tr>
+              </thead>
+              <tbody id="recordings-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
     </div>
 
     <!-- ═══ MODALS ═══ -->
@@ -1771,6 +1797,29 @@
             <textarea class="modal-textarea" id="credit-grant-memo" placeholder="지급 사유 (선택)"></textarea>
           </div>
           <button class="action-btn primary" onclick="executeGrantCredit()" style="width:100%;padding:12px;">지급하기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-recording">
+      <div class="modal-card" style="max-width:700px;">
+        <div class="modal-header">
+          <h3 id="modal-recording-title">회의록 상세</h3>
+          <button class="modal-close" id="modal-recording-close" onclick="hideModal('modal-recording')">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div id="modal-recording-meta" class="modal-section" style="color:var(--text2); font-size:13px;"></div>
+          <!-- 오디오 플레이어 -->
+          <div id="modal-recording-audio-wrap" class="modal-section" style="display:none;">
+            <audio id="modal-recording-audio" controls style="width:100%;"></audio>
+          </div>
+          <!-- 전사 내용 -->
+          <div class="modal-section">
+            <div class="modal-section-title">전사 내용</div>
+            <div id="modal-recording-transcript" style="background:var(--surface2); border-radius:8px; padding:16px; max-height:400px; overflow-y:auto; font-size:14px; line-height:1.6; white-space:pre-wrap; color:var(--text);">
+              전사 내용을 불러오는 중...
+            </div>
+          </div>
         </div>
       </div>
     </div>

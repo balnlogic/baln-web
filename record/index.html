@@ -719,6 +719,7 @@
   <button class="ctx-item" id="ctx-view" onclick="ctxAction('view')">🔍 내용 보기</button>
   <button class="ctx-item" id="ctx-transcribe" onclick="ctxAction('transcribe')">🧠 전사하기</button>
   <button class="ctx-item" id="ctx-minutes" onclick="ctxAction('minutes')">📋 회의록 생성</button>
+  <button class="ctx-item" id="ctx-retranscribe" onclick="ctxAction('retranscribe')">🔄 재전사</button>
   <div class="ctx-sep"></div>
   <button class="ctx-item" onclick="ctxAction('rename')">✏️ 제목 변경</button>
   <button class="ctx-item" onclick="ctxAction('topic')">📁 폴더 변경</button>
@@ -1121,6 +1122,9 @@
     const copyBtn = f.transcription_status === 2
       ? `<button class="file-copy-btn" onclick="copyFileText('${f.id}', event)" title="전사 텍스트 복사">복사</button>`
       : '';
+    const transcribeBtn = f.transcription_status === 0
+      ? `<button class="file-copy-btn" onclick="requestTranscription('${f.id}', event)" title="전사 시작" style="right:auto;left:10px;">전사</button>`
+      : '';
     return `<div class="file-item ${isSelected ? 'selected' : ''}" data-id="${f.id}" onclick="handleFileClick(event, '${f.id}')">
       <div class="file-check" onclick="event.stopPropagation()">
         <input type="checkbox" ${isSelected ? 'checked' : ''}
@@ -1128,7 +1132,7 @@
       </div>
       <div class="file-icon">${icon}</div>
       <div class="file-body">
-        <div class="file-title">${titleHtml}</div>
+        <div class="file-title"><span ondblclick="renameMemo('${f.id}', '${(f.memo || f.file_name).replace(/'/g, "\\'")}', event)" title="더블클릭으로 편집" style="cursor:text;">${titleHtml}</span></div>
         <div class="file-meta">
           ${folderTag}
           <span class="file-dur">${esc(dur)}</span>
@@ -1142,7 +1146,7 @@
         <button class="star-btn ${starClass}" onclick="toggleStar('${f.id}', event)" title="즐겨찾기">${starIcon}</button>
         <button class="more-btn" onclick="event.stopPropagation(); openCtxMenu(event, '${f.id}')" title="더보기">···</button>
       </div>
-      ${copyBtn}
+      ${copyBtn}${transcribeBtn}
     </div>`;
   }
 
@@ -1385,6 +1389,8 @@
       renameFile(rec);
     } else if (action === 'topic') {
       changeTopic(rec);
+    } else if (action === 'retranscribe') {
+      requestTranscription(rec.id);
     } else if (action === 'delete') {
       deleteFile(rec.id, rec.file_path, rec.file_name);
     }
@@ -1435,7 +1441,35 @@
   // ════════════════════════════════════════════
   // FILE ACTIONS
   // ════════════════════════════════════════════
-  async function renameFile(rec) {
+  async function renameMemo(id, currentTitle, e) {
+    e.stopPropagation();
+    const span = e.currentTarget;
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = currentTitle;
+    input.style.cssText = 'background:var(--surface2);border:1px solid var(--primary);border-radius:4px;padding:2px 6px;font-size:inherit;font-weight:inherit;color:var(--text);width:100%;outline:none;';
+    span.replaceWith(input);
+    input.focus();
+    input.select();
+
+    const save = async () => {
+      const newVal = input.value.trim();
+      if (newVal && newVal !== currentTitle) {
+        await supaFetch(`recordings?id=eq.${id}`, 'PATCH', { memo: newVal });
+        const f = allFiles.find(x => x.id === id);
+        if (f) f.memo = newVal;
+        showToast('제목 저장됨', 'success');
+      }
+      renderCurrentView();
+    };
+    input.addEventListener('blur', save);
+    input.addEventListener('keydown', e2 => {
+      if (e2.key === 'Enter') { e2.preventDefault(); input.blur(); }
+      if (e2.key === 'Escape') { input.value = currentTitle; input.blur(); }
+    });
+  }
+
+    async function renameFile(rec) {
     const current = rec.memo || '';
     const newTitle = prompt('새 제목:', current);
     if (newTitle === null) return;
@@ -1468,7 +1502,31 @@
     } catch(e) { showToast('삭제 실패: ' + e.message, 'error'); }
   }
 
-  async function transcribeFile(recId, filePath, fileName) {
+  async function requestTranscription(id, e) {
+    if (e) e.stopPropagation();
+    const f = allFiles.find(x => x.id === id);
+    if (!f) return;
+    showToast('전사 요청 중...', 'info');
+    try {
+      const resp = await fetch('http://127.0.0.1:7432/transcribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ recId: id })
+      });
+      const result = await resp.json();
+      if (result.ok !== false) {
+        showToast('전사 시작됨! 잠시 후 확인하세요.', 'success');
+        f.transcription_status = 1;
+        renderCurrentView();
+      } else {
+        showToast('전사 요청 실패', 'error');
+      }
+    } catch {
+      showToast('로컬 서버에 연결할 수 없습니다', 'error');
+    }
+  }
+
+    async function transcribeFile(recId, filePath, fileName) {
     const rec = allFiles.find(f => f.id === recId);
     if (rec) rec.transcription_status = 1;
     renderCurrentView();

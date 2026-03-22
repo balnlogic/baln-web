@@ -220,6 +220,53 @@
     .server-status.online { color: #22c55e; }
     .server-status.offline .dot { background: var(--red); }
     .server-status.offline { color: var(--red); }
+    .shortcuts-panel {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.95);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px 28px;
+      z-index: 9999;
+      min-width: 320px;
+      max-width: 400px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.4);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s, transform .2s;
+    }
+    .shortcuts-panel.open {
+      opacity: 1;
+      pointer-events: all;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    .shortcuts-panel h3 {
+      margin: 0 0 16px;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .shortcut-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--text2);
+    }
+    .shortcut-row:last-child { border-bottom: none; }
+    .shortcut-row kbd {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2px 7px;
+      font-family: monospace;
+      font-size: 12px;
+      color: var(--text);
+    }
     @keyframes shimmer {
       0% { background-position: -200% 0; }
       100% { background-position: 200% 0; }
@@ -454,6 +501,7 @@
           <span class="dot"></span>
           <span class="label">서버 확인 중</span>
         </div>
+        <button onclick="toggleShortcutsPanel()" title="키보드 단축키 (?)" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:4px 6px;border-radius:6px;line-height:1;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text3)'">?</button>
       </div>
 
       <!-- Bulk bar -->
@@ -876,9 +924,14 @@
       const done = allFiles.filter(f => f.transcription_status === 2).length;
       const withMinutes = allFiles.filter(f => f.formatted_minutes).length;
       const pending = allFiles.filter(f => f.transcription_status === 0).length;
+      const totalSecs = allFiles.reduce((s, f) => s + (f.duration || 0), 0);
+      const totalH = Math.floor(totalSecs / 3600);
+      const totalM = Math.floor((totalSecs % 3600) / 60);
+      const totalTimeStr = totalH > 0 ? `${totalH}시간 ${totalM}분` : `${totalM}분`;
       statsHtml = `<div class="stats-chips" style="margin-bottom:20px;">
         <div class="stat-chip">📁 총 <strong>${totalAll}</strong>개</div>
         <div class="stat-chip">⏱ <strong>${formatDur(totalSec)}</strong></div>
+        <div class="stat-chip"><span class="stat-num">${totalTimeStr}</span><span class="stat-label"> 총 녹음 시간</span></div>
         <div class="stat-chip" style="color:var(--primary);">✅ 전사 <strong>${done}</strong></div>
         ${withMinutes > 0 ? `<div class="stat-chip" style="color:#3B82F6;">📋 회의록 <strong>${withMinutes}</strong></div>` : ''}
         ${pending > 0 ? `<div class="stat-chip" style="color:var(--yellow);">⏳ 대기 <strong>${pending}</strong></div>` : ''}
@@ -1138,9 +1191,15 @@
     document.getElementById('ctx-menu').classList.remove('open');
   }
 
+  function toggleShortcutsPanel() {
+    const panel = document.getElementById('shortcuts-panel');
+    if (!panel) return;
+    panel.classList.toggle('open');
+  }
+
   document.addEventListener('click', closeCtxMenu);
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') { closeCtxMenu(); closeAllModals(); }
+    if (e.key === 'Escape') { closeCtxMenu(); closeAllModals(); document.getElementById('shortcuts-panel')?.classList.remove('open'); }
     // Cmd/Ctrl+F → focus search
     if ((e.metaKey || e.ctrlKey) && e.key === 'f') {
       const searchEl = document.getElementById('search-input');
@@ -1157,6 +1216,16 @@
         e.preventDefault();
         openRecorderModal();
       }
+    }
+    if (e.key === '?' && !e.ctrlKey && !e.metaKey && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) {
+      e.preventDefault();
+      toggleShortcutsPanel();
+      return;
+    }
+    if (e.key === 's' && !e.ctrlKey && !e.metaKey && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) {
+      e.preventDefault();
+      if (typeof cycleSortOrder === 'function') cycleSortOrder();
+      return;
     }
   });
 
@@ -1812,5 +1881,13 @@
     return String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
   }
 </script>
+<div class="shortcuts-panel" id="shortcuts-panel">
+  <h3>⌨️ 키보드 단축키</h3>
+  <div class="shortcut-row"><span>검색창 포커스</span><kbd>⌘F</kbd></div>
+  <div class="shortcut-row"><span>새 파일 업로드</span><kbd>⌘N</kbd></div>
+  <div class="shortcut-row"><span>모달/패널 닫기</span><kbd>Esc</kbd></div>
+  <div class="shortcut-row"><span>단축키 도움말</span><kbd>?</kbd></div>
+  <div class="shortcut-row"><span>정렬 변경</span><kbd>S</kbd></div>
+</div>
 </body>
 </html>

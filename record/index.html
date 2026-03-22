@@ -405,6 +405,7 @@
       <div class="bulk-bar" id="bulk-bar">
         <span class="sel-count" id="sel-count">0개 선택됨</span>
         <button class="bulk-action-btn secondary" onclick="clearSelection()">취소</button>
+        <button class="bulk-action-btn secondary" onclick="bulkTranscribe()" id="bulk-transcribe-btn">🧠 전사</button>
         <button class="bulk-action-btn danger" onclick="bulkDelete()">🗑 삭제</button>
       </div>
 
@@ -848,6 +849,30 @@
     document.querySelectorAll('.file-list').forEach(el => el.classList.remove('any-selected'));
   }
 
+  async function bulkTranscribe() {
+    const ids = [...selectedIds];
+    if (!ids.length) return;
+    const untranscribed = allFiles.filter(f => ids.includes(f.id) && f.transcription_status !== 2);
+    if (!untranscribed.length) {
+      showToast('선택한 파일이 모두 이미 전사되었습니다.', 'info');
+      return;
+    }
+    const btn = document.getElementById('bulk-transcribe-btn');
+    btn.disabled = true;
+    btn.textContent = `⏳ 전사 중 (0/${untranscribed.length})`;
+    clearSelection();
+
+    let done = 0;
+    for (const rec of untranscribed) {
+      btn.textContent = `⏳ ${done + 1}/${untranscribed.length}`;
+      await transcribeFile(rec.id, rec.file_path, rec.file_name);
+      done++;
+    }
+    btn.disabled = false;
+    btn.textContent = '🧠 전사';
+    showToast(`✅ ${done}개 전사 완료`, 'success');
+  }
+
   async function bulkDelete() {
     const ids = [...selectedIds];
     if (!ids.length) return;
@@ -1011,6 +1036,24 @@
           }
         } catch(e) {
           // 자동 분류 실패는 무시 (선택적 기능)
+        }
+      }
+
+      // 자동 제목 생성 (memo 없는 경우만)
+      if (!rec?.memo) {
+        try {
+          const titleResp = await fetch('http://127.0.0.1:7432/auto-title', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ recId }),
+          });
+          const titleResult = await titleResp.json();
+          if (titleResult.ok && titleResult.title) {
+            if (rec) rec.memo = titleResult.title;
+            renderCurrentView();
+          }
+        } catch(e) {
+          // 자동 제목 생성 실패는 무시
         }
       }
     } catch(e) {

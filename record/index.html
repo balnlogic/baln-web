@@ -785,11 +785,15 @@
           <div id="transcript-stats" style="display:none;font-size:11px;color:var(--text3);padding:6px 2px;text-align:right;border-top:1px solid var(--border);margin-top:6px;"></div>
           <div style="text-align:right;margin-top:8px;">
             <button id="btn-summarize" onclick="generateSummary()" style="background:var(--primary-dim);border:1px solid var(--primary);border-radius:7px;padding:5px 12px;font-size:12px;color:var(--primary);cursor:pointer;font-weight:600;">⚡ AI 요약</button>
+            <button onclick="quickMinutes()" style="background:rgba(59,130,246,.1);border:1px solid #3B82F6;border-radius:7px;padding:5px 12px;font-size:12px;color:#3B82F6;cursor:pointer;font-weight:600;margin-left:6px;">📋 회의록</button>
           </div>
           <div class="summary-box" id="detail-summary"></div>
         </div>
         <div id="detail-tab-minutes" style="display:none;">
-          <div class="transcript-box" id="detail-minutes-content" style="white-space:pre-wrap;"></div>
+          <div class="transcript-box" id="detail-minutes-content" style="white-space:pre-wrap;outline:none;" contenteditable="false"></div>
+          <div style="text-align:right;margin-top:6px;display:none;" id="detail-minutes-actions">
+            <button onclick="saveDetailMinutes()" style="background:var(--primary);color:#fff;border:none;border-radius:7px;padding:5px 12px;font-size:12px;cursor:pointer;font-weight:600;">💾 저장</button>
+          </div>
         </div>
       </div>
     </div>
@@ -1284,6 +1288,8 @@
         : `<span class="file-status-badge badge-wait">미전사</span>`;
     const minutesBadge = f.formatted_minutes
       ? `<span class="file-status-badge" style="background:rgba(59,130,246,.13);color:#3B82F6;">📋 회의록</span>` : '';
+    const langBadge = (f.language && f.language !== 'auto' && f.transcription_status === 2)
+      ? `<span class="file-status-badge" style="background:rgba(168,85,247,.13);color:#a855f7;">${f.language.toUpperCase()}</span>` : '';
     const starClass = f.starred ? 'starred' : '';
     const starIcon = f.starred ? '⭐' : '☆';
     const isSelected = selectedIds.has(f.id);
@@ -1315,7 +1321,7 @@
           <span class="file-dur">${esc(dur)}</span>
           ${sizeStr ? `<span class="file-dur" style="color:var(--text3);">${esc(sizeStr)}</span>` : ''}
           <span class="file-date">${esc(date)}</span>
-          ${statusBadge}${minutesBadge}
+          ${statusBadge}${minutesBadge}${langBadge}
         </div>
         ${processingBar}
       </div>
@@ -1614,9 +1620,9 @@
     event.stopPropagation();
   }
 
-  function ctxAction(action) {
+  function ctxAction(action, overrideRec) {
     closeCtxMenu();
-    const rec = ctxRec;
+    const rec = overrideRec || ctxRec;
     if (!rec) return;
 
     if (action === 'view') {
@@ -2281,10 +2287,16 @@
     if (rec.formatted_minutes) {
       minutesBtn.style.display = '';
       minutesContent.textContent = rec.formatted_minutes;
+      minutesContent.contentEditable = 'true';
+      minutesContent.addEventListener('input', () => {
+        document.getElementById('detail-minutes-actions').style.display = '';
+      });
     } else {
       minutesBtn.style.display = 'none';
       minutesContent.textContent = '';
+      minutesContent.contentEditable = 'false';
     }
+    document.getElementById('detail-minutes-actions').style.display = 'none';
 
     // Fetch full data
     const { data } = await sb.from('recordings')
@@ -2335,6 +2347,26 @@
     const readMin = Math.max(1, Math.round(words / 200));
     statsEl.textContent = `글자 ${chars.toLocaleString()} · 단어 ${words.toLocaleString()} · 약 ${readMin}분 읽기`;
     statsEl.style.display = '';
+  }
+
+  async function saveDetailMinutes() {
+    if (!detailFileId) return;
+    const el = document.getElementById('detail-minutes-content');
+    if (!el) return;
+    const text = el.innerText || el.textContent || '';
+    await supaFetch(`recordings?id=eq.${detailFileId}`, 'PATCH', { formatted_minutes: text });
+    const f = allFiles.find(x => x.id === detailFileId);
+    if (f) f.formatted_minutes = text;
+    document.getElementById('detail-minutes-actions').style.display = 'none';
+    showToast('회의록 저장됨', 'success');
+  }
+
+  function quickMinutes() {
+    if (!detailFileId) return;
+    const rec = allFiles.find(f => f.id === detailFileId);
+    if (!rec) return;
+    closeModal('modal-detail');
+    setTimeout(() => ctxAction('minutes', rec), 150);
   }
 
   async function generateSummary() {

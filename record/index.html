@@ -652,6 +652,16 @@
       </div>
 
       <div class="sidebar-footer">
+        <div style="margin-bottom:10px;">
+          <div id="sidebar-server-info" style="font-size:11px;color:var(--text3);padding:6px 8px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;gap:6px;">
+            <span id="sidebar-server-dot" style="width:6px;height:6px;border-radius:50%;background:var(--text3);flex-shrink:0;display:inline-block;"></span>
+            <span id="sidebar-server-label">서버 상태 확인 중</span>
+          </div>
+          <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text3);cursor:pointer;margin-top:8px;">
+            <input type="checkbox" id="auto-summarize-toggle" onchange="toggleAutoSummarize(this.checked)" style="accent-color:var(--primary);" />
+            전사 완료 시 자동 요약
+          </label>
+        </div>
         <button class="logout-btn" onclick="logout()">로그아웃</button>
       </div>
     </aside>
@@ -962,6 +972,17 @@
     if (btn) btn.textContent = isLight ? '🌙' : '☀️';
   }
 
+  function toggleAutoSummarize(val) {
+    localStorage.setItem('record_autoSummarize', val ? '1' : '0');
+    showToast(val ? '자동 요약 켜짐' : '자동 요약 꺼짐', 'info');
+  }
+
+  function initAutoSummarize() {
+    const val = localStorage.getItem('record_autoSummarize') === '1';
+    const el = document.getElementById('auto-summarize-toggle');
+    if (el) el.checked = val;
+  }
+
   function initTheme() {
     const saved = localStorage.getItem('record_theme');
     if (saved === 'light') {
@@ -981,10 +1002,20 @@
         badge.className = 'server-status online';
         const jobStr = data.activeJobs > 0 ? ` (${data.activeJobs}개 전사 중)` : '';
         badge.querySelector('.label').textContent = `서버 연결됨${jobStr}`;
+        badge.title = '';
+        const sdot2 = document.getElementById('sidebar-server-dot');
+        const slabel2 = document.getElementById('sidebar-server-label');
+        if (sdot2) sdot2.style.background = '#22c55e';
+        if (slabel2) slabel2.textContent = '서버 실행 중';
       } else throw new Error('not ok');
     } catch {
       badge.className = 'server-status offline';
       badge.querySelector('.label').textContent = '서버 오프라인';
+      badge.title = '로컬 서버가 꺼져 있습니다. 터미널에서 node /path/to/transcribe-server.js 를 실행하세요.';
+      const sdot = document.getElementById('sidebar-server-dot');
+      const slabel = document.getElementById('sidebar-server-label');
+      if (sdot) sdot.style.background = 'var(--red)';
+      if (slabel) slabel.textContent = '서버 오프라인 · 전사 불가';
     }
   }
 
@@ -995,6 +1026,7 @@
     loadFiles();
     startPolling();
     initTheme();
+    initAutoSummarize();
     checkServerStatus();
     setInterval(checkServerStatus, 30000);
   }
@@ -1192,7 +1224,7 @@
     </div>
   </div>`;
       })()}
-      ${pending > 0 ? `<button onclick="transcribeAllPending()" style="margin-bottom:14px; padding:7px 14px; background:var(--surface); border:1px solid var(--border); border-radius:8px; color:var(--text2); font-size:12px; font-weight:600; cursor:pointer; transition:background .15s;" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background='var(--surface)'">🧠 미전사 ${pending}개 모두 전사하기</button>` : ''}
+      ${pending > 0 ? `<button onclick="transcribeAllPending()" style="margin-bottom:14px; padding:7px 14px; background:var(--surface); border:1px solid var(--border); border-radius:8px; color:var(--text2); font-size:12px; font-weight:600; cursor:pointer; transition:background .15s;" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background='var(--surface)'">⚡ ${pending}개 모두 전사하기</button>` : ''}
       ${(() => {
         const processing = allFiles.filter(f => f.transcription_status === 1);
         return processing.length > 0 ? `

@@ -662,10 +662,11 @@
       <div class="topbar">
         <button class="menu-btn" onclick="openSidebar()">☰</button>
         <div class="topbar-title" id="topbar-title">홈</div>
-        <div class="topbar-search">
+        <div class="topbar-search" style="position:relative;">
           <span style="color:var(--text3); font-size:14px;">🔍</span>
           <input id="search-input" type="search" placeholder="검색 (⌘F)..."
-            oninput="visibleCount = PAGE_SIZE; filterFiles()" />
+            oninput="visibleCount = PAGE_SIZE; filterFiles(); const clearBtn = document.getElementById('search-clear'); if (clearBtn) clearBtn.style.display = this.value ? '' : 'none';" />
+          <button id="search-clear" onclick="clearSearch()" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text3);font-size:14px;display:none;" title="검색 초기화">×</button>
         </div>
         <button id="sort-btn" onclick="cycleSortOrder()" title="정렬"
           style="flex-shrink:0; padding:6px 10px; border-radius:8px; border:1px solid var(--border); background:var(--surface2); color:var(--text2); font-size:12px; cursor:pointer; white-space:nowrap; transition:background .15s;">
@@ -684,6 +685,7 @@
         <span class="sel-count" id="sel-count">0개 선택됨</span>
         <button class="bulk-action-btn secondary" onclick="clearSelection()">취소</button>
         <button class="bulk-action-btn secondary" onclick="bulkTranscribe()" id="bulk-transcribe-btn">🧠 전사</button>
+        <button class="bulk-action-btn secondary" onclick="bulkStar()" title="선택 파일 즐겨찾기 토글">⭐ 즐겨찾기</button>
         <button class="bulk-action-btn danger" onclick="bulkDelete()">🗑 삭제</button>
         <select id="bulk-folder-select" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:12px;color:var(--text2);" onchange="bulkMoveFolder(this.value); this.value='';">
           <option value="">📁 폴더로 이동...</option>
@@ -1190,6 +1192,52 @@
         ` : '';
       })()}
       <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">최근 녹음</div>`;
+      // 최근 파일 그룹화
+      const now = new Date();
+      const todayStr = now.toDateString();
+      const yesterdayStr = new Date(now - 86400000).toDateString();
+      const thisWeekStart = new Date(now - 6 * 86400000);
+
+      function groupLabel(dateStr) {
+        const d = new Date(dateStr).toDateString();
+        if (d === todayStr) return '오늘';
+        if (d === yesterdayStr) return '어제';
+        if (new Date(dateStr) >= thisWeekStart) return '이번 주';
+        return null;
+      }
+
+      const recentFiles = [...allFiles]
+        .sort((a,b) => new Date(b.created_at) - new Date(a.created_at))
+        .slice(0, 20);
+
+      const grouped = {};
+      for (const f of recentFiles) {
+        const lbl = groupLabel(f.created_at);
+        if (!lbl) continue;
+        if (!grouped[lbl]) grouped[lbl] = [];
+        grouped[lbl].push(f);
+      }
+
+      const timelineHtml = Object.keys(grouped).length > 0 ? `
+        <div style="margin-top:20px;">
+          <div style="font-size:12px;font-weight:700;color:var(--text3);margin-bottom:10px;letter-spacing:.05em;">🕐 최근 활동</div>
+          ${Object.entries(grouped).map(([lbl, files]) => `
+            <div style="margin-bottom:14px;">
+              <div style="font-size:11px;color:var(--text3);font-weight:600;margin-bottom:6px;padding-left:2px;">${lbl}</div>
+              ${files.map(f => `
+                <div onclick="openDetail('${f.id}')" style="display:flex;align-items:center;gap:10px;padding:7px 8px;border-radius:8px;cursor:pointer;transition:background .12s;" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background=''">
+                  <span style="font-size:16px;">${f.transcription_status === 2 ? '✅' : f.transcription_status === 1 ? '⏳' : '🎙️'}</span>
+                  <div style="flex:1;overflow:hidden;">
+                    <div style="font-size:13px;color:var(--text);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(getTitle(f))}</div>
+                    <div style="font-size:11px;color:var(--text3);">${formatDur(f.duration)} · ${f.topic || '미분류'}</div>
+                  </div>
+                  <span style="font-size:11px;color:var(--text3);white-space:nowrap;">${new Date(f.created_at).toLocaleTimeString('ko-KR', {hour:'2-digit',minute:'2-digit'})}</span>
+                </div>
+              `).join('')}
+            </div>
+          `).join('')}
+        </div>
+      ` : '';
     } else {
       const totalSec = files.reduce((a, f) => a + (f.duration || 0), 0);
       const done = files.filter(f => f.transcription_status === 2).length;
@@ -1217,7 +1265,7 @@
   </button>
 </div>`
       : '';
-    content.innerHTML = `${filterTabsHtml}${statsHtml}<div class="file-list ${selectedIds.size > 0 ? 'any-selected' : ''}" id="file-list">${listHtml}${loadMoreHtml}</div>`;
+    content.innerHTML = `${filterTabsHtml}${statsHtml}${currentView === 'home' ? timelineHtml : ''}<div class="file-list ${selectedIds.size > 0 ? 'any-selected' : ''}" id="file-list">${listHtml}${loadMoreHtml}</div>`;
   }
 
   function renderFileItem(f) {
@@ -1473,6 +1521,29 @@
       if (done < pending.length) showToast(`⏳ ${done}/${pending.length} 완료`, 'info');
     }
     showToast(`✅ ${done}개 전사 완료`, 'success');
+  }
+
+  function clearSearch() {
+    const el = document.getElementById('search-input') || document.querySelector('input[placeholder*="검색"]');
+    if (el) { el.value = ''; el.dispatchEvent(new Event('input')); }
+    const clearBtn = document.getElementById('search-clear');
+    if (clearBtn) clearBtn.style.display = 'none';
+  }
+
+  async function bulkStar() {
+    const ids = [...selectedIds];
+    if (ids.length === 0) return;
+    // 하나라도 즐겨찾기 안 된 게 있으면 전부 즐겨찾기, 전부 즐겨찾기면 해제
+    const allStarred = ids.every(id => allFiles.find(f => f.id === id)?.starred);
+    const newVal = !allStarred;
+    for (const id of ids) {
+      await supaFetch(`recordings?id=eq.${id}`, 'PATCH', { starred: newVal });
+      const f = allFiles.find(x => x.id === id);
+      if (f) f.starred = newVal;
+    }
+    selectedIds.clear();
+    renderCurrentView();
+    showToast(newVal ? `${ids.length}개 즐겨찾기 추가` : `${ids.length}개 즐겨찾기 해제`, 'success');
   }
 
   async function bulkDelete() {

@@ -440,6 +440,19 @@
       transition: text-decoration-color .15s;
     }
     .seg-ts:hover { text-decoration-color: var(--primary); }
+    .summary-box {
+      background: var(--surface2);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--text2);
+      white-space: pre-wrap;
+      margin-top: 8px;
+      border-left: 3px solid var(--primary);
+      display: none;
+    }
+    .summary-box.visible { display: block; }
     .badge-done { background:var(--primary-dim); color:var(--primary); }
     .badge-wait { background:rgba(245,158,11,.13); color:var(--yellow); }
     .badge-proc { background:rgba(59,130,246,.13); color:var(--blue); }
@@ -768,6 +781,10 @@
         <div id="detail-tab-transcript">
           <div class="transcript-box" id="detail-transcript">불러오는 중...</div>
           <div id="transcript-stats" style="display:none;font-size:11px;color:var(--text3);padding:6px 2px;text-align:right;border-top:1px solid var(--border);margin-top:6px;"></div>
+          <div style="text-align:right;margin-top:8px;">
+            <button id="btn-summarize" onclick="generateSummary()" style="background:var(--primary-dim);border:1px solid var(--primary);border-radius:7px;padding:5px 12px;font-size:12px;color:var(--primary);cursor:pointer;font-weight:600;">⚡ AI 요약</button>
+          </div>
+          <div class="summary-box" id="detail-summary"></div>
         </div>
         <div id="detail-tab-minutes" style="display:none;">
           <div class="transcript-box" id="detail-minutes-content" style="white-space:pre-wrap;"></div>
@@ -783,6 +800,7 @@
   <button class="ctx-item" id="ctx-transcribe" onclick="ctxAction('transcribe')">🧠 전사하기</button>
   <button class="ctx-item" id="ctx-minutes" onclick="ctxAction('minutes')">📋 회의록 생성</button>
   <button class="ctx-item" id="ctx-retranscribe" onclick="ctxAction('retranscribe')">🔄 재전사</button>
+  <button class="ctx-item" id="ctx-summarize" onclick="ctxAction('summarize')">⚡ AI 요약</button>
   <div class="ctx-sep"></div>
   <button class="ctx-item" onclick="ctxAction('rename')">✏️ 제목 변경</button>
   <button class="ctx-item" onclick="ctxAction('topic')">📁 폴더 변경</button>
@@ -1544,6 +1562,9 @@
       requestTranscription(rec.id);
     } else if (action === 'delete') {
       deleteFile(rec.id, rec.file_path, rec.file_name);
+    } else if (action === 'summarize') {
+      openDetail(rec.id);
+      setTimeout(() => generateSummary(), 500);
     }
   }
 
@@ -2243,6 +2264,36 @@
     const readMin = Math.max(1, Math.round(words / 200));
     statsEl.textContent = `글자 ${chars.toLocaleString()} · 단어 ${words.toLocaleString()} · 약 ${readMin}분 읽기`;
     statsEl.style.display = '';
+  }
+
+  async function generateSummary() {
+    if (!detailFileId) return;
+    const btn = document.getElementById('btn-summarize');
+    const box = document.getElementById('detail-summary');
+    if (!btn || !box) return;
+    btn.disabled = true;
+    btn.textContent = '⏳ 요약 중...';
+    box.classList.remove('visible');
+    try {
+      const resp = await fetch('http://127.0.0.1:7432/summarize', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ recId: detailFileId })
+      });
+      const data = await resp.json();
+      if (data.summary) {
+        box.textContent = data.summary;
+        box.classList.add('visible');
+        showToast('요약 완료', 'success');
+      } else {
+        showToast(data.error || '요약 실패', 'error');
+      }
+    } catch {
+      showToast('로컬 서버에 연결할 수 없습니다', 'error');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '⚡ AI 요약';
+    }
   }
 
   // ════════════════════════════════════════════

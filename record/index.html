@@ -399,6 +399,10 @@
           <input id="search-input" type="search" placeholder="검색 (⌘F)..."
             oninput="filterFiles()" />
         </div>
+        <button id="sort-btn" onclick="cycleSortOrder()" title="정렬"
+          style="flex-shrink:0; padding:6px 10px; border-radius:8px; border:1px solid var(--border); background:var(--surface2); color:var(--text2); font-size:12px; cursor:pointer; white-space:nowrap; transition:background .15s;">
+          📅 최신순
+        </button>
       </div>
 
       <!-- Bulk bar -->
@@ -483,6 +487,9 @@
           <button onclick="copyActiveTabContent()" id="copy-tab-btn"
             style="flex-shrink:0; padding:5px 10px; border-radius:8px; border:1px solid var(--border); background:var(--surface2); color:var(--text2); font-size:12px; cursor:pointer; transition:background .15s;"
             title="복사">📋 복사</button>
+          <button onclick="exportActiveTabContent()" id="export-tab-btn"
+            style="flex-shrink:0; padding:5px 10px; border-radius:8px; border:1px solid var(--border); background:var(--surface2); color:var(--text2); font-size:12px; cursor:pointer; transition:background .15s;"
+            title="내보내기">⬇ 내보내기</button>
         </div>
         <div id="detail-tab-transcript">
           <div class="transcript-box" id="detail-transcript">불러오는 중...</div>
@@ -602,6 +609,7 @@
   let selectedIds = new Set();
   let ctxRecId = null;
   let ctxRec = null;
+  let sortOrder = 'date_desc';
 
   // Recorder
   let mediaRecorder = null;
@@ -770,6 +778,8 @@
       );
     }
 
+    files = sortFiles(files);
+
     const content = document.getElementById('main-content');
 
     if (files.length === 0) {
@@ -856,6 +866,29 @@
 
   function filterFiles() {
     renderCurrentView();
+  }
+
+  const SORT_OPTIONS = [
+    { key: 'date_desc', label: '📅 최신순' },
+    { key: 'date_asc', label: '📅 오래된순' },
+    { key: 'dur_desc', label: '⏱ 긴 순' },
+    { key: 'status', label: '✅ 전사상태' },
+  ];
+
+  function cycleSortOrder() {
+    const idx = SORT_OPTIONS.findIndex(o => o.key === sortOrder);
+    sortOrder = SORT_OPTIONS[(idx + 1) % SORT_OPTIONS.length].key;
+    document.getElementById('sort-btn').textContent = SORT_OPTIONS[(idx + 1) % SORT_OPTIONS.length].label;
+    renderCurrentView();
+  }
+
+  function sortFiles(files) {
+    return [...files].sort((a, b) => {
+      if (sortOrder === 'date_asc') return new Date(a.created_at) - new Date(b.created_at);
+      if (sortOrder === 'dur_desc') return (b.duration || 0) - (a.duration || 0);
+      if (sortOrder === 'status') return b.transcription_status - a.transcription_status;
+      return new Date(b.created_at) - new Date(a.created_at); // date_desc default
+    });
   }
 
   // ════════════════════════════════════════════
@@ -1565,6 +1598,24 @@
     }).catch(() => {
       showToast('복사 실패. 직접 선택하여 복사하세요.', 'error');
     });
+  }
+
+  function exportActiveTabContent() {
+    const transcriptVisible = document.getElementById('detail-tab-transcript').style.display !== 'none';
+    const el = transcriptVisible
+      ? document.getElementById('detail-transcript')
+      : document.getElementById('detail-minutes-content');
+    const text = el.innerText || el.textContent;
+    if (!text || text === '불러오는 중...') { showToast('내보낼 내용이 없습니다.', 'info'); return; }
+    const title = document.getElementById('detail-title').textContent.replace(/[\\/:*?"<>|]/g, '') || '전사내용';
+    const type = transcriptVisible ? '전사' : '회의록';
+    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `${title}_${type}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('⬇ 파일 다운로드 중...', 'success');
   }
 
   function closeModal(id) {

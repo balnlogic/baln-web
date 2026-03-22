@@ -1463,8 +1463,13 @@
 
     const txEl = document.getElementById('detail-transcript');
     if (data?.transcription_status === 2) {
-      if (data.segments_json && Array.isArray(data.segments_json)) {
-        txEl.textContent = data.segments_json.map(s => s.text||'').join('\n').trim() || data.full_text || '(내용 없음)';
+      if (data.segments_json && Array.isArray(data.segments_json) && data.segments_json.length > 0) {
+        const segsHtml = data.segments_json.map(s => {
+          const startMin = String(Math.floor((s.start||0)/60)).padStart(2,'0');
+          const startSec = String(Math.round((s.start||0)%60)).padStart(2,'0');
+          return `<span style="color:var(--text3);font-size:11px;margin-right:8px;font-variant-numeric:tabular-nums;">${startMin}:${startSec}</span>${esc(s.text||'')}`;
+        }).join('\n');
+        txEl.innerHTML = segsHtml;
       } else {
         txEl.textContent = data.full_text || '(내용 없음)';
       }

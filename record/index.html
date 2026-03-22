@@ -219,6 +219,25 @@
     }
     .filter-tab:hover { color: var(--text2); }
     .filter-tab.active { color: var(--primary); background: var(--primary-dim); font-weight: 700; }
+    .file-item { position: relative; }
+    .file-copy-btn {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 3px 8px;
+      font-size: 11px;
+      cursor: pointer;
+      color: var(--text3);
+      opacity: 0;
+      transition: opacity .15s;
+      z-index: 2;
+    }
+    .file-item:hover .file-copy-btn { opacity: 1; }
+    .file-copy-btn:hover { color: var(--text); background: var(--surface3); }
     .server-status {
       display: inline-flex;
       align-items: center;
@@ -1046,7 +1065,7 @@
     const sizeStr = f.upload_size_bytes ? formatSize(f.upload_size_bytes) : '';
     const date = formatDate(f.created_at);
     const folderTag = f.topic
-      ? `<span class="file-folder">📁 ${esc(f.topic)}</span>` : '';
+      ? `<span class="file-folder" style="cursor:pointer;" onclick="filterByTopic('${f.topic}', event)" title="이 주제로 필터">📁 ${esc(f.topic)}</span>` : '';
     const statusBadge = f.transcription_status === 2
       ? `<span class="file-status-badge badge-done">전사완료</span>`
       : f.transcription_status === 1
@@ -1060,6 +1079,9 @@
     const icon = f.source === 'web' ? '🎙️' : f.source === 'ios' ? '📱' : '⌚';
 
     const processingBar = f.transcription_status === 1 ? '<div class="processing-bar"></div>' : '';
+    const copyBtn = f.transcription_status === 2
+      ? `<button class="file-copy-btn" onclick="copyFileText('${f.id}', event)" title="전사 텍스트 복사">복사</button>`
+      : '';
     return `<div class="file-item ${isSelected ? 'selected' : ''}" data-id="${f.id}" onclick="handleFileClick(event, '${f.id}')">
       <div class="file-check" onclick="event.stopPropagation()">
         <input type="checkbox" ${isSelected ? 'checked' : ''}
@@ -1081,6 +1103,7 @@
         <button class="star-btn ${starClass}" onclick="toggleStar('${f.id}', event)" title="즐겨찾기">${starIcon}</button>
         <button class="more-btn" onclick="event.stopPropagation(); openCtxMenu(event, '${f.id}')" title="더보기">···</button>
       </div>
+      ${copyBtn}
     </div>`;
   }
 
@@ -1115,6 +1138,30 @@
     await supaFetch(`recordings?id=eq.${id}`, 'PATCH', { starred: newVal });
   }
 
+  async function copyFileText(id, e) {
+    e.stopPropagation();
+    const f = allFiles.find(x => x.id === id);
+    if (!f) return;
+    if (f.full_text) {
+      await navigator.clipboard.writeText(f.full_text);
+      showToast('전사 텍스트 복사됨', 'success');
+      return;
+    }
+    // full_text가 없으면 DB에서 가져오기
+    try {
+      const data = await supaFetch(`recordings?id=eq.${id}&select=full_text`);
+      const text = data?.[0]?.full_text || '';
+      if (text) {
+        await navigator.clipboard.writeText(text);
+        showToast('전사 텍스트 복사됨', 'success');
+      } else {
+        showToast('전사 텍스트 없음', 'error');
+      }
+    } catch(err) {
+      showToast('복사 실패', 'error');
+    }
+  }
+
   function sortFiles(files) {
     return [...files].sort((a, b) => {
       if (sortOrder === 'date_asc') return new Date(a.created_at) - new Date(b.created_at);
@@ -1145,6 +1192,15 @@
       btn.classList.toggle('active', btn.dataset.filter === filter);
     });
     renderCurrentView();
+  }
+
+  function filterByTopic(topic, e) {
+    if (e) e.stopPropagation();
+    const searchEl = document.getElementById('search-input') || document.querySelector('input[type="search"]') || document.querySelector('input[placeholder*="검색"]');
+    if (searchEl) {
+      searchEl.value = topic;
+      searchEl.dispatchEvent(new Event('input'));
+    }
   }
 
   // ════════════════════════════════════════════

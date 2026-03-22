@@ -737,15 +737,29 @@
     if (files.length === 0) {
       content.innerHTML = `<div class="empty-state">
         <div class="empty-icon">${currentView === 'home' ? '🎙️' : '📂'}</div>
-        <div class="empty-title">${q ? '검색 결과가 없습니다' : '녹음이 없습니다'}</div>
-        <div class="empty-sub">${currentView === 'home' ? '녹음 버튼으로 새 녹음을 시작하세요' : ''}</div>
+        <div class="empty-title">${q ? '검색 결과가 없습니다' : currentView === 'home' ? '첫 녹음을 시작해보세요' : '녹음이 없습니다'}</div>
+        <div class="empty-sub">${q ? '' : currentView === 'home' ? '왼쪽 상단 🔴 녹음 버튼으로 바로 시작할 수 있습니다' : ''}</div>
       </div>`;
       return;
     }
 
-    // Stats (모든파일/폴더/미분류 뷰에서만)
+    // Stats
     let statsHtml = '';
-    if (currentView !== 'home') {
+    if (currentView === 'home') {
+      const totalAll = allFiles.length;
+      const totalSec = allFiles.reduce((a, f) => a + (f.duration || 0), 0);
+      const done = allFiles.filter(f => f.transcription_status === 2).length;
+      const withMinutes = allFiles.filter(f => f.formatted_minutes).length;
+      const pending = allFiles.filter(f => f.transcription_status === 0).length;
+      statsHtml = `<div class="stats-chips" style="margin-bottom:20px;">
+        <div class="stat-chip">📁 총 <strong>${totalAll}</strong>개</div>
+        <div class="stat-chip">⏱ <strong>${formatDur(totalSec)}</strong></div>
+        <div class="stat-chip" style="color:var(--primary);">✅ 전사 <strong>${done}</strong></div>
+        ${withMinutes > 0 ? `<div class="stat-chip" style="color:#3B82F6;">📋 회의록 <strong>${withMinutes}</strong></div>` : ''}
+        ${pending > 0 ? `<div class="stat-chip" style="color:var(--yellow);">⏳ 대기 <strong>${pending}</strong></div>` : ''}
+      </div>
+      <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">최근 녹음</div>`;
+    } else {
       const totalSec = files.reduce((a, f) => a + (f.duration || 0), 0);
       const done = files.filter(f => f.transcription_status === 2).length;
       statsHtml = `<div class="stats-chips">

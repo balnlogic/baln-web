@@ -197,6 +197,28 @@
     }
     .star-btn:hover { opacity: 0.7; }
     .star-btn.starred { opacity: 1; transform: scale(1.15); }
+    .filter-tabs {
+      display: flex;
+      gap: 4px;
+      padding: 8px 12px 0;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      flex-shrink: 0;
+    }
+    .filter-tab {
+      padding: 6px 12px;
+      border-radius: 8px 8px 0 0;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text3);
+      transition: color .15s, background .15s;
+      white-space: nowrap;
+    }
+    .filter-tab:hover { color: var(--text2); }
+    .filter-tab.active { color: var(--primary); background: var(--primary-dim); font-weight: 700; }
     .server-status {
       display: inline-flex;
       align-items: center;
@@ -759,6 +781,7 @@
   let ctxRecId = null;
   let ctxRec = null;
   let sortOrder = 'date_desc';
+  let activeFilter = 'all'; // 'all' | 'today' | 'starred' | 'pending'
 
   // Recorder
   let mediaRecorder = null;
@@ -945,19 +968,25 @@
       );
     }
 
-    files = sortFiles(files);
+    files = filterFiles(sortFiles(files));
 
     const content = document.getElementById('main-content');
 
+    const _emptyFilterTabsHtml = `<div class="filter-tabs">
+      <button class="filter-tab ${activeFilter==='all'?'active':''}" data-filter="all" onclick="setFilter('all')">전체</button>
+      <button class="filter-tab ${activeFilter==='today'?'active':''}" data-filter="today" onclick="setFilter('today')">오늘</button>
+      <button class="filter-tab ${activeFilter==='starred'?'active':''}" data-filter="starred" onclick="setFilter('starred')">⭐ 즐겨찾기</button>
+      <button class="filter-tab ${activeFilter==='pending'?'active':''}" data-filter="pending" onclick="setFilter('pending')">⏳ 미전사</button>
+    </div>`;
     if (files.length === 0) {
       if (q) {
-        content.innerHTML = `<div style="text-align:center;padding:60px 20px;color:var(--text3);">
+        content.innerHTML = _emptyFilterTabsHtml + `<div style="text-align:center;padding:60px 20px;color:var(--text3);">
           <div style="font-size:48px;margin-bottom:12px;">🔍</div>
           <div style="font-size:15px;font-weight:500;margin-bottom:6px;">"${q}"에 대한 결과 없음</div>
           <div style="font-size:13px;">다른 검색어를 시도해 보세요</div>
         </div>`;
       } else {
-        content.innerHTML = `<div style="text-align:center;padding:60px 20px;color:var(--text3);">
+        content.innerHTML = _emptyFilterTabsHtml + `<div style="text-align:center;padding:60px 20px;color:var(--text3);">
           <div style="font-size:48px;margin-bottom:12px;">🎙️</div>
           <div style="font-size:15px;font-weight:500;margin-bottom:6px;">녹음 파일이 없습니다</div>
           <div style="font-size:13px;">워치나 아이폰으로 녹음을 시작해 보세요</div>
@@ -999,8 +1028,14 @@
       </div>`;
     }
 
+    const filterTabsHtml = `<div class="filter-tabs">
+      <button class="filter-tab ${activeFilter==='all'?'active':''}" data-filter="all" onclick="setFilter('all')">전체</button>
+      <button class="filter-tab ${activeFilter==='today'?'active':''}" data-filter="today" onclick="setFilter('today')">오늘</button>
+      <button class="filter-tab ${activeFilter==='starred'?'active':''}" data-filter="starred" onclick="setFilter('starred')">⭐ 즐겨찾기</button>
+      <button class="filter-tab ${activeFilter==='pending'?'active':''}" data-filter="pending" onclick="setFilter('pending')">⏳ 미전사</button>
+    </div>`;
     const listHtml = files.map(f => renderFileItem(f)).join('');
-    content.innerHTML = `${statsHtml}<div class="file-list ${selectedIds.size > 0 ? 'any-selected' : ''}" id="file-list">${listHtml}</div>`;
+    content.innerHTML = `${filterTabsHtml}${statsHtml}<div class="file-list ${selectedIds.size > 0 ? 'any-selected' : ''}" id="file-list">${listHtml}</div>`;
   }
 
   function renderFileItem(f) {
@@ -1088,6 +1123,28 @@
       if (sortOrder === 'starred') return (b.starred ? 1 : 0) - (a.starred ? 1 : 0) || new Date(b.created_at) - new Date(a.created_at);
       return new Date(b.created_at) - new Date(a.created_at); // date_desc default
     });
+  }
+
+  function filterFiles(files) {
+    const today = new Date().toDateString();
+    switch (activeFilter) {
+      case 'today':
+        return files.filter(f => new Date(f.created_at).toDateString() === today);
+      case 'starred':
+        return files.filter(f => f.starred);
+      case 'pending':
+        return files.filter(f => f.transcription_status === 0);
+      default:
+        return files;
+    }
+  }
+
+  function setFilter(filter) {
+    activeFilter = filter;
+    document.querySelectorAll('.filter-tab').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.filter === filter);
+    });
+    renderCurrentView();
   }
 
   // ════════════════════════════════════════════

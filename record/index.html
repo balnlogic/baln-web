@@ -354,6 +354,33 @@
 .confirm-dialog .cdlg-btn:hover { opacity: 0.8; }
 .confirm-dialog .cdlg-cancel { background: var(--surface2); color: var(--text); }
 .confirm-dialog .cdlg-ok { background: var(--red); color: #fff; }
+.ctx-submenu {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 8px 30px rgba(0,0,0,.3);
+  min-width: 160px;
+  z-index: 10001;
+  padding: 4px;
+  display: none;
+}
+.ctx-item.has-sub:hover .ctx-submenu { display: block; }
+.ctx-submenu-item {
+  display: block;
+  width: 100%;
+  padding: 7px 14px;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text2);
+  border-radius: 7px;
+}
+.ctx-submenu-item:hover { background: var(--surface2); color: var(--text); }
 .confirm-overlay {
   position: fixed;
   inset: 0;
@@ -645,6 +672,9 @@
         <button class="bulk-action-btn secondary" onclick="clearSelection()">취소</button>
         <button class="bulk-action-btn secondary" onclick="bulkTranscribe()" id="bulk-transcribe-btn">🧠 전사</button>
         <button class="bulk-action-btn danger" onclick="bulkDelete()">🗑 삭제</button>
+        <select id="bulk-folder-select" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:12px;color:var(--text2);" onchange="bulkMoveFolder(this.value); this.value='';">
+          <option value="">📁 폴더로 이동...</option>
+        </select>
       </div>
 
       <!-- Content -->
@@ -751,6 +781,10 @@
   <div class="ctx-sep"></div>
   <button class="ctx-item" onclick="ctxAction('rename')">✏️ 제목 변경</button>
   <button class="ctx-item" onclick="ctxAction('topic')">📁 폴더 변경</button>
+  <div class="ctx-item has-sub" style="position:relative;" id="ctx-move-folder">
+    📁 폴더로 이동
+    <div class="ctx-submenu" id="ctx-folder-submenu"></div>
+  </div>
   <div class="ctx-sep"></div>
   <button class="ctx-item danger" onclick="ctxAction('delete')">🗑 삭제</button>
 </div>
@@ -1322,6 +1356,30 @@
     const count = selectedIds.size;
     document.getElementById('sel-count').textContent = `${count}개 선택됨`;
     bar.classList.toggle('visible', count > 0);
+    // 폴더 select 옵션 동적 채우기
+    const bfs = document.getElementById('bulk-folder-select');
+    if (bfs) {
+      const topics = [...new Set(allFiles.map(f => f.topic).filter(Boolean))].sort();
+      bfs.innerHTML = '<option value="">📁 폴더로 이동...</option>' +
+        '<option value="__none__">📭 폴더 없음</option>' +
+        topics.map(t => `<option value="${t.replace(/"/g,'&quot;')}">📁 ${t}</option>`).join('');
+    }
+  }
+
+  async function bulkMoveFolder(topic) {
+    if (topic === '') return;
+    const realTopic = topic === '__none__' ? null : topic;
+    const ids = [...selectedIds];
+    if (ids.length === 0) return;
+    for (const id of ids) {
+      await supaFetch(`recordings?id=eq.${id}`, 'PATCH', { topic: realTopic });
+      const f = allFiles.find(x => x.id === id);
+      if (f) f.topic = realTopic;
+    }
+    selectedIds.clear();
+    updateSidebar();
+    renderCurrentView();
+    showToast(`${ids.length}개 파일 이동됨`, 'success');
   }
 
   function clearSelection() {
@@ -1423,6 +1481,16 @@
     if (x + 170 > window.innerWidth) x = window.innerWidth - 175;
     menu.style.left = x + 'px';
     menu.style.top = y + 'px';
+    // 폴더 서브메뉴 채우기
+    const subEl = document.getElementById('ctx-folder-submenu');
+    if (subEl) {
+      const topics = [...new Set(allFiles.map(f => f.topic).filter(Boolean))].sort();
+      subEl.innerHTML = [
+        `<button class="ctx-submenu-item" onclick="moveToFolder(null)">📭 폴더 없음</button>`,
+        ...topics.map(t => `<button class="ctx-submenu-item" onclick="moveToFolder('${t.replace(/'/g, "\\'")}')">📁 ${t}</button>`),
+        `<button class="ctx-submenu-item" onclick="moveToNewFolder()">➕ 새 폴더...</button>`
+      ].join('');
+    }
     menu.classList.add('open');
     event.stopPropagation();
   }
@@ -1451,6 +1519,27 @@
 
   function closeCtxMenu() {
     document.getElementById('ctx-menu').classList.remove('open');
+  }
+
+  async function moveToFolder(topic) {
+    closeCtxMenu();
+    const rec = ctxRec;
+    if (!rec) return;
+    await supaFetch(`recordings?id=eq.${rec.id}`, 'PATCH', { topic: topic });
+    const f = allFiles.find(x => x.id === rec.id);
+    if (f) f.topic = topic;
+    updateSidebar();
+    renderCurrentView();
+    showToast(topic ? `📁 ${topic} 으로 이동됨` : '폴더에서 제거됨', 'success');
+  }
+
+  async function moveToNewFolder() {
+    closeCtxMenu();
+    const rec = ctxRec;
+    if (!rec) return;
+    const name = prompt('새 폴더 이름:');
+    if (!name?.trim()) return;
+    await moveToFolder(name.trim());
   }
 
   function toggleShortcutsPanel() {

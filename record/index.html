@@ -517,7 +517,7 @@
     <div class="modal-body" style="display:flex;flex-direction:column;gap:14px;">
 
       <!-- 메타 입력 -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;">
         <div>
           <label style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;">시작 일시</label>
           <input id="min-start" type="datetime-local" class="rec-key-input" style="width:100%;margin-top:4px;" />
@@ -644,6 +644,7 @@
     document.getElementById('app').style.display = 'block';
     switchView('home');
     loadFiles();
+    startPolling();
   }
 
   window.addEventListener('DOMContentLoaded', () => {
@@ -661,12 +662,45 @@
   async function loadFiles() {
     const { data, error } = await sb
       .from('recordings')
-      .select('id, file_name, memo, duration, transcription_status, language, topic, created_at, file_path, full_text, source, formatted_minutes, meeting_at_start, meeting_at_end, location, participants')
+      .select('id, file_name, memo, duration, transcription_status, language, topic, created_at, file_path, full_text, source, formatted_minutes, meeting_at_start, meeting_at_end, location, participants, upload_size_bytes')
       .order('created_at', { ascending: false });
     if (error) { console.error(error); return; }
     allFiles = data || [];
     updateSidebar();
     renderCurrentView();
+  }
+
+  let pollInterval = null;
+
+  function startPolling() {
+    if (pollInterval) return;
+    pollInterval = setInterval(async () => {
+      const hasProcessing = allFiles.some(f => f.transcription_status === 1);
+      if (!hasProcessing) return;
+      // Only refresh the status of processing files
+      const processingIds = allFiles.filter(f => f.transcription_status === 1).map(f => f.id);
+      for (const id of processingIds) {
+        const { data } = await sb.from('recordings')
+          .select('transcription_status, full_text, language, memo, topic')
+          .eq('id', id).single();
+        if (data && data.transcription_status !== 1) {
+          const rec = allFiles.find(f => f.id === id);
+          if (rec) {
+            rec.transcription_status = data.transcription_status;
+            rec.full_text = data.full_text;
+            rec.language = data.language;
+            if (data.memo) rec.memo = data.memo;
+            if (data.topic) rec.topic = data.topic;
+          }
+        }
+      }
+      updateSidebar();
+      renderCurrentView();
+    }, 15000); // every 15 seconds
+  }
+
+  function stopPolling() {
+    if (pollInterval) { clearInterval(pollInterval); pollInterval = null; }
   }
 
   function updateSidebar() {
@@ -784,6 +818,7 @@
     const searchQ = (document.getElementById('search-input')?.value || '').toLowerCase().trim();
     const titleHtml = highlightMatch(title, searchQ);
     const dur = formatDur(f.duration);
+    const sizeStr = f.upload_size_bytes ? formatSize(f.upload_size_bytes) : '';
     const date = formatDate(f.created_at);
     const folderTag = f.topic
       ? `<span class="file-folder">📁 ${esc(f.topic)}</span>` : '';
@@ -808,6 +843,7 @@
         <div class="file-meta">
           ${folderTag}
           <span class="file-dur">${esc(dur)}</span>
+          ${sizeStr ? `<span class="file-dur" style="color:var(--text3);">${esc(sizeStr)}</span>` : ''}
           <span class="file-date">${esc(date)}</span>
           ${statusBadge}${minutesBadge}
         </div>
@@ -1604,6 +1640,13 @@
     if (m > 0) parts.push(`${m}분`);
     if (sec > 0 || parts.length === 0) parts.push(`${sec}초`);
     return parts.join(' ');
+  }
+
+  function formatSize(bytes) {
+    if (!bytes) return '';
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(0) + ' KB';
+    return (bytes / 1024 / 1024).toFixed(1) + ' MB';
   }
 
   function formatDate(iso) {

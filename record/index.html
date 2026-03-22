@@ -763,6 +763,7 @@
         </div>
         <div id="detail-tab-transcript">
           <div class="transcript-box" id="detail-transcript">불러오는 중...</div>
+          <div id="transcript-stats" style="display:none;font-size:11px;color:var(--text3);padding:6px 2px;text-align:right;border-top:1px solid var(--border);margin-top:6px;"></div>
         </div>
         <div id="detail-tab-minutes" style="display:none;">
           <div class="transcript-box" id="detail-minutes-content" style="white-space:pre-wrap;"></div>
@@ -989,6 +990,11 @@
     allFiles = data || [];
     updateSidebar();
     renderCurrentView();
+    const syncEl = document.getElementById('last-sync');
+    if (syncEl) {
+      const now = new Date();
+      syncEl.textContent = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')} 갱신`;
+    }
   }
 
   let pollInterval = null;
@@ -1861,6 +1867,11 @@
       document.getElementById('min-result').value = result.minutes;
       document.getElementById('min-result-wrap').style.display = '';
       renderEmailList();
+      const countEl = document.getElementById('minutes-char-count');
+      if (countEl) {
+        const len = result.minutes.length;
+        countEl.textContent = `${len.toLocaleString()}자`;
+      }
       status.textContent = '✅ 회의록 생성 완료';
       btn.textContent = '🔄 다시 생성';
       btn.disabled = false;
@@ -2135,6 +2146,8 @@
       txEl.textContent = '아직 전사되지 않았습니다. ··· 메뉴에서 [전사하기]를 사용하세요.';
     }
 
+    showTranscriptStats(data?.full_text || null);
+
     if (rec.file_path) {
       const { data: urlData } = await sb.storage.from('recordings').createSignedUrl(rec.file_path, 3600);
       if (urlData?.signedUrl) { audioEl.src = urlData.signedUrl; audioWrap.style.display = 'block'; }
@@ -2149,6 +2162,16 @@
     if (!audio) return;
     audio.currentTime = seconds;
     if (audio.paused) audio.play().catch(() => {});
+  }
+
+  function showTranscriptStats(text) {
+    const statsEl = document.getElementById('transcript-stats');
+    if (!statsEl || !text) { if (statsEl) statsEl.style.display = 'none'; return; }
+    const chars = text.length;
+    const words = text.trim().split(/\s+/).filter(Boolean).length;
+    const readMin = Math.max(1, Math.round(words / 200));
+    statsEl.textContent = `글자 ${chars.toLocaleString()} · 단어 ${words.toLocaleString()} · 약 ${readMin}분 읽기`;
+    statsEl.style.display = '';
   }
 
   // ════════════════════════════════════════════

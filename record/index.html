@@ -474,8 +474,18 @@
         <audio id="detail-audio" controls></audio>
       </div>
       <div style="margin-top:14px;">
-        <div style="font-size:11px; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:.4px; margin-bottom:8px;">전사 내용</div>
-        <div class="transcript-box" id="detail-transcript">불러오는 중...</div>
+        <div style="display:flex; gap:2px; margin-bottom:8px; background:var(--surface2); border-radius:8px; padding:3px;" id="detail-tabs">
+          <button onclick="switchDetailTab('transcript')" id="tab-btn-transcript"
+            style="flex:1; padding:5px 10px; border-radius:6px; border:none; font-size:12px; font-weight:600; cursor:pointer; background:var(--surface); color:var(--text); transition:background .15s;">전사 내용</button>
+          <button onclick="switchDetailTab('minutes')" id="tab-btn-minutes"
+            style="flex:1; padding:5px 10px; border-radius:6px; border:none; font-size:12px; font-weight:600; cursor:pointer; background:none; color:var(--text2); transition:background .15s;">회의록</button>
+        </div>
+        <div id="detail-tab-transcript">
+          <div class="transcript-box" id="detail-transcript">불러오는 중...</div>
+        </div>
+        <div id="detail-tab-minutes" style="display:none;">
+          <div class="transcript-box" id="detail-minutes-content" style="white-space:pre-wrap;"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -761,6 +771,8 @@
       : f.transcription_status === 1
         ? `<span class="file-status-badge badge-proc">처리중</span>`
         : `<span class="file-status-badge badge-wait">미전사</span>`;
+    const minutesBadge = f.formatted_minutes
+      ? `<span class="file-status-badge" style="background:rgba(59,130,246,.13);color:#3B82F6;">📋 회의록</span>` : '';
     const isSelected = selectedIds.has(f.id);
     const icon = f.source === 'web' ? '🎙️' : f.source === 'ios' ? '📱' : '⌚';
 
@@ -776,7 +788,7 @@
           ${folderTag}
           <span class="file-dur">${esc(dur)}</span>
           <span class="file-date">${esc(date)}</span>
-          ${statusBadge}
+          ${statusBadge}${minutesBadge}
         </div>
       </div>
       <div class="file-more">
@@ -1336,6 +1348,18 @@
     document.getElementById('detail-transcript').textContent = '불러오는 중...';
     document.getElementById('modal-detail').classList.add('open');
 
+    // Minutes tab
+    const minutesBtn = document.getElementById('tab-btn-minutes');
+    const minutesContent = document.getElementById('detail-minutes-content');
+    switchDetailTab('transcript');
+    if (rec.formatted_minutes) {
+      minutesBtn.style.display = '';
+      minutesContent.textContent = rec.formatted_minutes;
+    } else {
+      minutesBtn.style.display = 'none';
+      minutesContent.textContent = '';
+    }
+
     // Fetch full data
     const { data } = await sb.from('recordings')
       .select('transcription_status, full_text, segments_json')
@@ -1363,6 +1387,18 @@
   // ════════════════════════════════════════════
   // MODALS
   // ════════════════════════════════════════════
+  function switchDetailTab(tab) {
+    const isTranscript = tab === 'transcript';
+    document.getElementById('detail-tab-transcript').style.display = isTranscript ? '' : 'none';
+    document.getElementById('detail-tab-minutes').style.display = isTranscript ? 'none' : '';
+    document.getElementById('tab-btn-transcript').style.cssText =
+      'flex:1; padding:5px 10px; border-radius:6px; border:none; font-size:12px; font-weight:600; cursor:pointer; transition:background .15s;' +
+      (isTranscript ? 'background:var(--surface); color:var(--text);' : 'background:none; color:var(--text2);');
+    document.getElementById('tab-btn-minutes').style.cssText =
+      'flex:1; padding:5px 10px; border-radius:6px; border:none; font-size:12px; font-weight:600; cursor:pointer; transition:background .15s;' +
+      (!isTranscript ? 'background:var(--surface); color:var(--text);' : 'background:none; color:var(--text2);');
+  }
+
   function closeModal(id) {
     document.getElementById(id).classList.remove('open');
     if (id === 'modal-detail') {

@@ -947,10 +947,12 @@
     const badge = document.getElementById('server-status-badge');
     if (!badge) return;
     try {
-      const resp = await fetch('http://127.0.0.1:7432/health', { signal: AbortSignal.timeout(2000) });
+      const resp = await fetch('http://127.0.0.1:7432/status', { signal: AbortSignal.timeout(2000) });
       if (resp.ok) {
+        const data = await resp.json();
         badge.className = 'server-status online';
-        badge.querySelector('.label').textContent = '서버 연결됨';
+        const jobStr = data.activeJobs > 0 ? ` (${data.activeJobs}개 전사 중)` : '';
+        badge.querySelector('.label').textContent = `서버 연결됨${jobStr}`;
       } else throw new Error('not ok');
     } catch {
       badge.className = 'server-status offline';
@@ -1147,6 +1149,21 @@
         ${pending > 0 ? `<div class="stat-chip" style="color:var(--yellow);">⏳ 대기 <strong>${pending}</strong></div>` : ''}
       </div>
       ${pending > 0 ? `<button onclick="transcribeAllPending()" style="margin-bottom:14px; padding:7px 14px; background:var(--surface); border:1px solid var(--border); border-radius:8px; color:var(--text2); font-size:12px; font-weight:600; cursor:pointer; transition:background .15s;" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background='var(--surface)'">🧠 미전사 ${pending}개 모두 전사하기</button>` : ''}
+      ${(() => {
+        const processing = allFiles.filter(f => f.transcription_status === 1);
+        return processing.length > 0 ? `
+          <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:16px;">
+            <div style="font-size:12px;font-weight:700;color:var(--text3);margin-bottom:10px;letter-spacing:.05em;">⚡ 전사 진행 중 (${processing.length}개)</div>
+            ${processing.map(f => `
+              <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);">
+                <div class="processing-bar" style="width:40px;flex-shrink:0;"></div>
+                <span style="font-size:13px;color:var(--text2);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(getTitle(f))}</span>
+                <span style="font-size:11px;color:var(--text3);">${formatDur(f.duration)}</span>
+              </div>
+            `).join('')}
+          </div>
+        ` : '';
+      })()}
       <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">최근 녹음</div>`;
     } else {
       const totalSec = files.reduce((a, f) => a + (f.duration || 0), 0);

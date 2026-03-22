@@ -23,6 +23,11 @@
       --blue: #3B82F6;
       --yellow: #F59E0B;
       --sidebar-w: 200px;
+      /* aliases */
+      --accent: var(--primary);
+      --bg2: var(--surface2);
+      --bg3: var(--surface3);
+      --text1: var(--text);
     }
     * { margin:0; padding:0; box-sizing:border-box; }
     body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
@@ -319,6 +324,13 @@
     ::-webkit-scrollbar { width:5px; height:5px; }
     ::-webkit-scrollbar-track { background:transparent; }
     ::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+
+    /* ══ TOAST ══ */
+    #toast-container { position:fixed; bottom:24px; right:20px; z-index:9999; display:flex; flex-direction:column-reverse; gap:8px; pointer-events:none; }
+    .toast { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:10px 16px; font-size:13px; color:var(--text); box-shadow:0 4px 16px rgba(0,0,0,.4); opacity:0; transform:translateY(8px); transition:opacity .25s, transform .25s; pointer-events:none; max-width:320px; }
+    .toast.show { opacity:1; transform:translateY(0); }
+    .toast.toast-err { border-color:var(--red); color:var(--red); }
+    .toast.toast-ok { border-color:var(--primary); color:var(--primary); }
   </style>
 </head>
 <body>
@@ -415,11 +427,6 @@
       <button class="modal-close" onclick="closeModal('modal-recorder')">×</button>
     </div>
     <div class="modal-body">
-      <div class="rec-key-row">
-        <input id="rec-openai-key" type="password" class="rec-key-input"
-          placeholder="OpenAI API Key (자동 전사용, 선택)"
-          oninput="localStorage.setItem('rec_openai_key', this.value)" />
-      </div>
       <div class="rec-center">
         <button id="rec-circle-btn" class="rec-circle-btn" onclick="toggleRecording()">🎙️</button>
         <div id="rec-timer"></div>
@@ -478,6 +485,7 @@
 <div class="ctx-menu" id="ctx-menu">
   <button class="ctx-item" id="ctx-view" onclick="ctxAction('view')">🔍 내용 보기</button>
   <button class="ctx-item" id="ctx-transcribe" onclick="ctxAction('transcribe')">🧠 전사하기</button>
+  <button class="ctx-item" id="ctx-minutes" onclick="ctxAction('minutes')">📋 회의록 생성</button>
   <div class="ctx-sep"></div>
   <button class="ctx-item" onclick="ctxAction('rename')">✏️ 제목 변경</button>
   <button class="ctx-item" onclick="ctxAction('topic')">📁 폴더 변경</button>
@@ -485,7 +493,84 @@
   <button class="ctx-item danger" onclick="ctxAction('delete')">🗑 삭제</button>
 </div>
 
+<!-- ══ 회의록 모달 ══ -->
+<div class="modal-overlay" id="modal-minutes">
+  <div class="modal-card" style="max-width:640px;">
+    <div class="modal-head">
+      <h3>📋 회의록</h3>
+      <button class="modal-close" onclick="closeModal('modal-minutes')">×</button>
+    </div>
+    <div class="modal-body" style="display:flex;flex-direction:column;gap:14px;">
+
+      <!-- 메타 입력 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div>
+          <label style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;">시작 일시</label>
+          <input id="min-start" type="datetime-local" class="rec-key-input" style="width:100%;margin-top:4px;" />
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;">종료 일시</label>
+          <input id="min-end" type="datetime-local" class="rec-key-input" style="width:100%;margin-top:4px;" />
+        </div>
+      </div>
+      <div>
+        <label style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;">장소</label>
+        <input id="min-location" type="text" class="rec-key-input" placeholder="예) 회의실 A, 줌, 강남 카페" style="width:100%;margin-top:4px;" />
+      </div>
+      <div>
+        <label style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;">참여자 (이름/이메일, 콤마 구분)</label>
+        <input id="min-participants" type="text" class="rec-key-input" placeholder="예) 김철수 kim@abc.com, 이영희 lee@xyz.com" style="width:100%;margin-top:4px;" />
+      </div>
+
+      <!-- 생성 버튼 -->
+      <button id="min-gen-btn" onclick="generateMinutes()"
+        style="background:var(--accent);color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;">
+        🤖 Claude로 회의록 생성
+      </button>
+      <div id="min-gen-status" style="font-size:12px;color:var(--text3);text-align:center;display:none;"></div>
+
+      <!-- 결과 -->
+      <div id="min-result-wrap" style="display:none;">
+        <label style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;">생성된 회의록</label>
+        <textarea id="min-result" style="width:100%;min-height:220px;margin-top:6px;padding:12px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text1);font-size:13px;line-height:1.7;resize:vertical;font-family:inherit;box-sizing:border-box;"></textarea>
+
+        <!-- 이메일 전송 -->
+        <div style="margin-top:12px;padding:12px;background:var(--bg2);border-radius:8px;border:1px solid var(--border);">
+          <label style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;">이메일로 공유</label>
+          <div id="min-email-list" style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;"></div>
+          <div style="margin-top:8px;display:flex;gap:8px;">
+            <input id="min-email-extra" type="email" class="rec-key-input" placeholder="추가 수신자 이메일" style="flex:1;" />
+            <button onclick="addEmailRecipient()" style="background:var(--bg3);border:1px solid var(--border);color:var(--text1);padding:6px 12px;border-radius:6px;cursor:pointer;white-space:nowrap;">+ 추가</button>
+          </div>
+          <button onclick="sendMinutesEmail()"
+            style="width:100%;margin-top:10px;background:#2563eb;color:#fff;border:none;padding:10px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;">
+            ✉️ 이메일 전송
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+
 <script>
+  // ════════════════════════════════════════════
+  // TOAST
+  // ════════════════════════════════════════════
+  function showToast(msg, type = 'info') {
+    const container = document.getElementById('toast-container');
+    const el = document.createElement('div');
+    el.className = 'toast' + (type === 'error' ? ' toast-err' : type === 'success' ? ' toast-ok' : '');
+    el.textContent = msg;
+    container.appendChild(el);
+    requestAnimationFrame(() => { requestAnimationFrame(() => el.classList.add('show')); });
+    setTimeout(() => {
+      el.classList.remove('show');
+      setTimeout(() => el.remove(), 300);
+    }, 3500);
+  }
+
   // ════════════════════════════════════════════
   // CONSTANTS
   // ════════════════════════════════════════════
@@ -524,8 +609,6 @@
     try {
       sb = window.supabase.createClient(RECORD_URL, atob(RECORD_KEY));
       localStorage.setItem('rec_auth', '1');
-      const saved = localStorage.getItem('rec_openai_key');
-      if (saved) document.getElementById('rec-openai-key').value = saved;
       showApp();
     } catch(e) {
       errEl.textContent = '오류: ' + e.message;
@@ -553,8 +636,6 @@
     if (localStorage.getItem('rec_auth') === '1') {
       try {
         sb = window.supabase.createClient(RECORD_URL, atob(RECORD_KEY));
-        const saved = localStorage.getItem('rec_openai_key');
-        if (saved) document.getElementById('rec-openai-key').value = saved;
         showApp();
       } catch(e) { localStorage.removeItem('rec_auth'); }
     }
@@ -566,7 +647,7 @@
   async function loadFiles() {
     const { data, error } = await sb
       .from('recordings')
-      .select('id, file_name, memo, duration, transcription_status, language, topic, created_at, file_path, full_text, source')
+      .select('id, file_name, memo, duration, transcription_status, language, topic, created_at, file_path, full_text, source, formatted_minutes, meeting_at_start, meeting_at_end, location, participants')
       .order('created_at', { ascending: false });
     if (error) { console.error(error); return; }
     allFiles = data || [];
@@ -758,7 +839,7 @@
       updateSidebar();
       renderCurrentView();
     } catch(e) {
-      alert('삭제 오류: ' + e.message);
+      showToast('삭제 오류: ' + e.message, 'error');
     }
   }
 
@@ -784,6 +865,8 @@
     const menu = document.getElementById('ctx-menu');
     const canTranscribe = ctxRec && ctxRec.transcription_status !== 2;
     document.getElementById('ctx-transcribe').style.display = canTranscribe ? '' : 'none';
+    const canMinutes = ctxRec && ctxRec.transcription_status === 2;
+    document.getElementById('ctx-minutes').style.display = canMinutes ? '' : 'none';
 
     // Position
     const rect = event.target.getBoundingClientRect();
@@ -805,6 +888,8 @@
       openDetail(rec);
     } else if (action === 'transcribe') {
       transcribeFile(rec.id, rec.file_path, rec.file_name);
+    } else if (action === 'minutes') {
+      openMinutesModal(rec);
     } else if (action === 'rename') {
       renameFile(rec);
     } else if (action === 'topic') {
@@ -855,48 +940,216 @@
       allFiles = allFiles.filter(f => f.id !== id);
       updateSidebar();
       renderCurrentView();
-    } catch(e) { alert('삭제 실패: ' + e.message); }
+    } catch(e) { showToast('삭제 실패: ' + e.message, 'error'); }
   }
 
   async function transcribeFile(recId, filePath, fileName) {
-    let key = localStorage.getItem('rec_openai_key');
-    if (!key) {
-      key = prompt('OpenAI API Key를 입력하세요:');
-      if (!key) return;
-      localStorage.setItem('rec_openai_key', key);
-      const keyInput = document.getElementById('rec-openai-key');
-      if (keyInput) keyInput.value = key;
-    }
     const rec = allFiles.find(f => f.id === recId);
     if (rec) rec.transcription_status = 1;
     renderCurrentView();
 
+    // 로컬 전사 서버 (Mac에서 node transcribe-server.js 실행 필요)
     try {
-      const { data: urlData, error } = await sb.storage.from('recordings').createSignedUrl(filePath, 120);
-      if (error || !urlData?.signedUrl) throw new Error('URL 획득 실패');
-      const blob = await (await fetch(urlData.signedUrl)).blob();
-      const ext = (fileName || '').split('.').pop() || 'webm';
-      const form = new FormData();
-      form.append('file', blob, `audio.${ext}`);
-      form.append('model', 'whisper-1');
-      form.append('response_format', 'verbose_json');
-      const resp = await fetch('https://api.openai.com/v1/audio/transcriptions', {
-        method: 'POST', headers: { Authorization: `Bearer ${key}` }, body: form
+      const resp = await fetch('http://127.0.0.1:7432/transcribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ recId }),
       });
-      if (!resp.ok) throw new Error((await resp.text()).slice(0, 120));
       const result = await resp.json();
-      const segs = (result.segments || []).map(s => ({ startTime: s.start, endTime: s.end, text: (s.text||'').trim() }));
-      await sb.from('recordings').update({
-        full_text: result.text, language: result.language,
-        segments_json: segs, transcription_status: 2
-      }).eq('id', recId);
-      if (rec) { rec.transcription_status = 2; rec.full_text = result.text; rec.language = result.language; }
+      if (!resp.ok || result.error) throw new Error(result.error || '전사 실패');
+      // 완료 후 DB에서 최신 데이터 반영
+      const { data } = await sb.from('recordings')
+        .select('transcription_status,full_text,language').eq('id', recId).single();
+      if (rec && data) {
+        rec.transcription_status = data.transcription_status;
+        rec.full_text = data.full_text;
+        rec.language = data.language;
+      }
       updateSidebar();
       renderCurrentView();
     } catch(e) {
       if (rec) rec.transcription_status = 0;
       renderCurrentView();
-      alert('전사 실패: ' + e.message);
+      if (e.message.includes('Failed to fetch') || e.message.includes('NetworkError')) {
+        showToast('⚠️ 전사 서버가 꺼져 있습니다. node transcribe-server.js 실행 필요', 'error');
+      } else {
+        showToast('전사 실패: ' + e.message, 'error');
+      }
+    }
+  }
+
+  // ════════════════════════════════════════════
+  // MINUTES (회의록)
+  // ════════════════════════════════════════════
+  let minutesRecId = null;
+  let minutesEmailList = [];
+
+  function openMinutesModal(rec) {
+    minutesRecId = rec.id;
+    minutesEmailList = [];
+
+    // 기존 참여자 이메일 파싱
+    if (rec.participants) {
+      try {
+        const parts = typeof rec.participants === 'string'
+          ? JSON.parse(rec.participants) : rec.participants;
+        if (Array.isArray(parts)) minutesEmailList = parts.map(p => p.email).filter(Boolean);
+      } catch(e) {}
+    }
+
+    // 날짜 채우기 (기존 값 or 파일 생성일 기준)
+    const created = new Date(rec.created_at || Date.now());
+    const toLocal = d => {
+      const dt = new Date(d);
+      dt.setMinutes(dt.getMinutes() - dt.getTimezoneOffset());
+      return dt.toISOString().slice(0, 16);
+    };
+    document.getElementById('min-start').value = rec.meeting_at_start
+      ? toLocal(rec.meeting_at_start) : toLocal(created);
+    document.getElementById('min-end').value = rec.meeting_at_end
+      ? toLocal(rec.meeting_at_end) : '';
+    document.getElementById('min-location').value = rec.location || '';
+    document.getElementById('min-participants').value = '';
+    document.getElementById('min-gen-status').style.display = 'none';
+    document.getElementById('min-gen-btn').disabled = false;
+    document.getElementById('min-gen-btn').textContent = '🤖 Claude로 회의록 생성';
+
+    // 기존 회의록이 있으면 바로 표시
+    const resultWrap = document.getElementById('min-result-wrap');
+    if (rec.formatted_minutes) {
+      document.getElementById('min-result').value = rec.formatted_minutes;
+      resultWrap.style.display = '';
+    } else {
+      resultWrap.style.display = 'none';
+    }
+    renderEmailList();
+    document.getElementById('modal-minutes').classList.add('open');
+  }
+
+  function renderEmailList() {
+    const el = document.getElementById('min-email-list');
+    el.innerHTML = minutesEmailList.map((e, i) =>
+      `<span style="background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:12px;display:flex;align-items:center;gap:6px;">
+        ${esc(e)}
+        <button onclick="removeEmail(${i})" style="background:none;border:none;color:var(--text3);cursor:pointer;padding:0;font-size:14px;line-height:1;">×</button>
+      </span>`
+    ).join('');
+  }
+
+  function addEmailRecipient() {
+    const input = document.getElementById('min-email-extra');
+    const email = input.value.trim();
+    if (!email || !email.includes('@')) return;
+    if (!minutesEmailList.includes(email)) minutesEmailList.push(email);
+    input.value = '';
+    renderEmailList();
+  }
+
+  function removeEmail(i) {
+    minutesEmailList.splice(i, 1);
+    renderEmailList();
+  }
+
+  // 참여자 입력란에서 이메일 자동 파싱
+  document.getElementById('min-participants').addEventListener('blur', () => {
+    const raw = document.getElementById('min-participants').value;
+    const emails = raw.match(/[\w.+-]+@[\w-]+\.[\w.]+/g) || [];
+    emails.forEach(e => { if (!minutesEmailList.includes(e)) minutesEmailList.push(e); });
+    if (emails.length) renderEmailList();
+  });
+
+  async function generateMinutes() {
+    if (!minutesRecId) return;
+    const btn = document.getElementById('min-gen-btn');
+    const status = document.getElementById('min-gen-status');
+    btn.disabled = true;
+    btn.textContent = '⏳ 생성 중...';
+    status.style.display = 'block';
+    status.textContent = 'Claude가 회의록을 작성하고 있습니다...';
+
+    // 참여자에서 이메일 추출
+    const raw = document.getElementById('min-participants').value;
+    const emails = raw.match(/[\w.+-]+@[\w-]+\.[\w.]+/g) || [];
+    emails.forEach(e => { if (!minutesEmailList.includes(e)) minutesEmailList.push(e); });
+
+    // participants JSON 구성
+    const nameParts = raw.split(',').map(s => s.trim()).filter(Boolean);
+    const participantsArr = nameParts.map(s => {
+      const emailMatch = s.match(/[\w.+-]+@[\w-]+\.[\w.]+/);
+      return { name: s.replace(emailMatch ? emailMatch[0] : '', '').trim(), email: emailMatch ? emailMatch[0] : '' };
+    });
+
+    try {
+      const resp = await fetch('http://127.0.0.1:7432/minutes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          recId: minutesRecId,
+          start: document.getElementById('min-start').value || null,
+          end: document.getElementById('min-end').value || null,
+          location: document.getElementById('min-location').value || null,
+          participants: participantsArr.length ? JSON.stringify(participantsArr) : null,
+        }),
+      });
+      const result = await resp.json();
+      if (!resp.ok || result.error) throw new Error(result.error || '생성 실패');
+
+      document.getElementById('min-result').value = result.minutes;
+      document.getElementById('min-result-wrap').style.display = '';
+      renderEmailList();
+      status.textContent = '✅ 회의록 생성 완료';
+      btn.textContent = '🔄 다시 생성';
+      btn.disabled = false;
+
+      // 로컬 캐시 업데이트
+      const rec = allFiles.find(f => f.id === minutesRecId);
+      if (rec) rec.formatted_minutes = result.minutes;
+    } catch(e) {
+      status.textContent = e.message.includes('Failed to fetch')
+        ? '⚠️ 로컬 서버가 꺼져 있습니다. node transcribe-server.js 실행 필요'
+        : '❌ ' + e.message;
+      btn.disabled = false;
+      btn.textContent = '🔄 다시 시도';
+    }
+  }
+
+  async function sendMinutesEmail() {
+    if (minutesEmailList.length === 0) { showToast('수신자 이메일을 입력하세요.', 'error'); return; }
+    const minutes = document.getElementById('min-result').value;
+    if (!minutes.trim()) { showToast('먼저 회의록을 생성하세요.', 'error'); return; }
+
+    const rec = allFiles.find(f => f.id === minutesRecId);
+    const title = rec ? getTitle(rec) : '회의록';
+
+    const emailBtn = document.querySelector('#min-result-wrap button[onclick="sendMinutesEmail()"]');
+    const origText = emailBtn ? emailBtn.textContent : '';
+    if (emailBtn) { emailBtn.disabled = true; emailBtn.textContent = '⏳ 이메일 작성 중...'; }
+
+    // 참여자 파싱
+    const nameParts = document.getElementById('min-participants').value.split(',').map(s => s.trim()).filter(Boolean);
+    const participantsArr = nameParts.map(s => {
+      const emailMatch = s.match(/[\w.+-]+@[\w-]+\.[\w.]+/);
+      return { name: s.replace(emailMatch ? emailMatch[0] : '', '').trim(), email: emailMatch ? emailMatch[0] : '' };
+    });
+
+    try {
+      const resp = await fetch('http://127.0.0.1:7432/email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ recId: minutesRecId, minutes, participants: participantsArr }),
+      });
+      const result = await resp.json();
+      if (!resp.ok || result.error) throw new Error(result.error || '이메일 작성 실패');
+
+      // Gmail compose URL로 열기
+      const to = minutesEmailList.join(',');
+      const subject = encodeURIComponent(`[회의록] ${title}`);
+      const body = encodeURIComponent(result.emailBody);
+      window.open(`https://mail.google.com/mail/?view=cm&to=${to}&su=${subject}&body=${body}`, '_blank');
+    } catch(e) {
+      showToast(e.message.includes('Failed to fetch') ? '⚠️ 로컬 서버가 꺼져 있습니다. node transcribe-server.js 실행 필요' : '이메일 작성 실패: ' + e.message, 'error');
+    } finally {
+      if (emailBtn) { emailBtn.disabled = false; emailBtn.textContent = origText; }
     }
   }
 
@@ -942,7 +1195,7 @@
         const s = String(el%60).padStart(2,'0');
         timer.textContent = `${m}:${s}`;
       }, 500);
-    } catch(e) { alert('마이크 접근 실패: ' + e.message); }
+    } catch(e) { showToast('마이크 접근 실패: ' + e.message, 'error'); }
   }
 
   function stopRecording() {
@@ -973,37 +1226,28 @@
       const { error: upErr } = await sb.storage.from('recordings').upload(filePath, blob, { contentType: blob.type, upsert: false });
       if (upErr) throw new Error('업로드 실패: ' + upErr.message);
 
-      let fullText = null, language = null, segs = null, txStatus = 0;
-      const key = localStorage.getItem('rec_openai_key');
-      if (key) {
-        progress.textContent = '🧠 Whisper 전사 중...';
-        try {
-          const form = new FormData();
-          form.append('file', blob, fileName);
-          form.append('model', 'whisper-1');
-          form.append('response_format', 'verbose_json');
-          const resp = await fetch('https://api.openai.com/v1/audio/transcriptions', {
-            method: 'POST', headers: { Authorization: `Bearer ${key}` }, body: form
-          });
-          if (resp.ok) {
-            const r = await resp.json();
-            fullText = r.text; language = r.language;
-            segs = (r.segments||[]).map(s => ({ startTime: s.start, endTime: s.end, text: (s.text||'').trim() }));
-            txStatus = 2;
-          }
-        } catch(e) { console.warn('Whisper 오류:', e); }
-      }
-
       progress.textContent = '💾 저장 중...';
-      const { error: insErr } = await sb.from('recordings').insert({
+      const { data: insData, error: insErr } = await sb.from('recordings').insert({
         file_name: fileName, duration, source: 'web', file_path: filePath,
-        upload_size_bytes: blob.size, full_text: fullText, language, segments_json: segs, transcription_status: txStatus
-      });
+        upload_size_bytes: blob.size, transcription_status: 0
+      }).select('id').single();
       if (insErr) throw new Error('DB 오류: ' + insErr.message);
 
-      progress.textContent = txStatus === 2
-        ? `✅ 완료 — ${formatDur(duration)} | ${language || '?'}`
-        : `✅ 업로드 완료 — ${formatDur(duration)} (나중에 전사 가능)`;
+      // 자동 전사 (로컬 서버)
+      progress.textContent = '🧠 Whisper 전사 중...';
+      try {
+        const txResp = await fetch('http://127.0.0.1:7432/transcribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ recId: insData.id }),
+        });
+        const txResult = await txResp.json();
+        progress.textContent = txResult.ok
+          ? `✅ 완료 — ${formatDur(duration)}`
+          : `✅ 저장됨 — ··· 메뉴에서 전사 가능`;
+      } catch(e) {
+        progress.textContent = `✅ 저장됨 — ··· 메뉴에서 전사 가능`;
+      }
       await loadFiles();
     } catch(e) {
       progress.textContent = '❌ ' + e.message;
@@ -1043,38 +1287,29 @@
       const { error: upErr } = await sb.storage.from('recordings').upload(filePath, file, { contentType: file.type || 'audio/*', upsert: false });
       if (upErr) throw new Error('업로드 실패: ' + upErr.message);
 
-      let fullText = null, language = null, segs = null, txStatus = 0;
-      const key = localStorage.getItem('rec_openai_key');
-      if (key) {
-        progress.textContent = '🧠 Whisper 전사 중...';
-        try {
-          const form = new FormData();
-          form.append('file', file, file.name);
-          form.append('model', 'whisper-1');
-          form.append('response_format', 'verbose_json');
-          const resp = await fetch('https://api.openai.com/v1/audio/transcriptions', {
-            method: 'POST', headers: { Authorization: `Bearer ${key}` }, body: form
-          });
-          if (resp.ok) {
-            const r = await resp.json();
-            fullText = r.text; language = r.language;
-            segs = (r.segments||[]).map(s => ({ startTime: s.start, endTime: s.end, text: (s.text||'').trim() }));
-            txStatus = 2;
-          }
-        } catch(e) { console.warn('Whisper 오류:', e); }
-      }
-
       progress.textContent = '💾 저장 중...';
-      const { error: insErr } = await sb.from('recordings').insert({
+      const { data: insData, error: insErr } = await sb.from('recordings').insert({
         file_name: file.name, memo: file.name.replace(/\.[^.]+$/, ''),
         source: 'upload', file_path: filePath,
-        upload_size_bytes: file.size, full_text: fullText, language, segments_json: segs, transcription_status: txStatus
-      });
+        upload_size_bytes: file.size, transcription_status: 0
+      }).select('id').single();
       if (insErr) throw new Error('DB 오류: ' + insErr.message);
 
-      progress.textContent = txStatus === 2
-        ? `✅ 완료! "${file.name}" — ${language || '?'}`
-        : `✅ 업로드 완료 — "${file.name}"`;
+      // 자동 전사 (로컬 서버)
+      progress.textContent = '🧠 Whisper 전사 중...';
+      try {
+        const txResp = await fetch('http://127.0.0.1:7432/transcribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ recId: insData.id }),
+        });
+        const txResult = await txResp.json();
+        progress.textContent = txResult.ok
+          ? `✅ 완료! "${file.name}"`
+          : `✅ 저장됨 — ··· 메뉴에서 전사 가능`;
+      } catch(e) {
+        progress.textContent = `✅ 저장됨 — "${file.name}"`;
+      }
       await loadFiles();
     } catch(e) {
       progress.textContent = '❌ ' + e.message;
@@ -1142,7 +1377,7 @@
   }
 
   function closeAllModals() {
-    ['modal-recorder', 'modal-upload', 'modal-detail'].forEach(id => {
+    ['modal-recorder', 'modal-upload', 'modal-detail', 'modal-minutes'].forEach(id => {
       document.getElementById(id)?.classList.remove('open');
     });
   }

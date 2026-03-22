@@ -185,6 +185,18 @@
     .file-status-badge {
       font-size:10px; font-weight:700; padding:1px 6px; border-radius:5px;
     }
+    .star-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      padding: 2px 4px;
+      opacity: 0.35;
+      transition: opacity .15s, transform .15s;
+      line-height: 1;
+    }
+    .star-btn:hover { opacity: 0.7; }
+    .star-btn.starred { opacity: 1; transform: scale(1.15); }
     .badge-done { background:var(--primary-dim); color:var(--primary); }
     .badge-wait { background:rgba(245,158,11,.13); color:var(--yellow); }
     .badge-proc { background:rgba(59,130,246,.13); color:var(--blue); }
@@ -783,11 +795,19 @@
     const content = document.getElementById('main-content');
 
     if (files.length === 0) {
-      content.innerHTML = `<div class="empty-state">
-        <div class="empty-icon">${currentView === 'home' ? '🎙️' : '📂'}</div>
-        <div class="empty-title">${q ? '검색 결과가 없습니다' : currentView === 'home' ? '첫 녹음을 시작해보세요' : '녹음이 없습니다'}</div>
-        <div class="empty-sub">${q ? '' : currentView === 'home' ? '왼쪽 상단 🔴 녹음 버튼으로 바로 시작할 수 있습니다' : ''}</div>
-      </div>`;
+      if (q) {
+        content.innerHTML = `<div style="text-align:center;padding:60px 20px;color:var(--text3);">
+          <div style="font-size:48px;margin-bottom:12px;">🔍</div>
+          <div style="font-size:15px;font-weight:500;margin-bottom:6px;">"${q}"에 대한 결과 없음</div>
+          <div style="font-size:13px;">다른 검색어를 시도해 보세요</div>
+        </div>`;
+      } else {
+        content.innerHTML = `<div style="text-align:center;padding:60px 20px;color:var(--text3);">
+          <div style="font-size:48px;margin-bottom:12px;">🎙️</div>
+          <div style="font-size:15px;font-weight:500;margin-bottom:6px;">녹음 파일이 없습니다</div>
+          <div style="font-size:13px;">워치나 아이폰으로 녹음을 시작해 보세요</div>
+        </div>`;
+      }
       return;
     }
 
@@ -839,6 +859,8 @@
         : `<span class="file-status-badge badge-wait">미전사</span>`;
     const minutesBadge = f.formatted_minutes
       ? `<span class="file-status-badge" style="background:rgba(59,130,246,.13);color:#3B82F6;">📋 회의록</span>` : '';
+    const starClass = f.starred ? 'starred' : '';
+    const starIcon = f.starred ? '⭐' : '☆';
     const isSelected = selectedIds.has(f.id);
     const icon = f.source === 'web' ? '🎙️' : f.source === 'ios' ? '📱' : '⌚';
 
@@ -859,6 +881,7 @@
         </div>
       </div>
       <div class="file-more">
+        <button class="star-btn ${starClass}" onclick="toggleStar('${f.id}', event)" title="즐겨찾기">${starIcon}</button>
         <button class="more-btn" onclick="event.stopPropagation(); openCtxMenu(event, '${f.id}')" title="더보기">···</button>
       </div>
     </div>`;
@@ -873,6 +896,7 @@
     { key: 'date_asc', label: '📅 오래된순' },
     { key: 'dur_desc', label: '⏱ 긴 순' },
     { key: 'status', label: '✅ 전사상태' },
+    { key: 'starred', label: '⭐ 즐겨찾기' },
   ];
 
   function cycleSortOrder() {
@@ -882,11 +906,24 @@
     renderCurrentView();
   }
 
+  async function toggleStar(id, e) {
+    e.stopPropagation();
+    const f = allFiles.find(x => x.id === id);
+    if (!f) return;
+    const newVal = !f.starred;
+    f.starred = newVal;
+    const btn = e.currentTarget;
+    btn.classList.toggle('starred', newVal);
+    btn.textContent = newVal ? '⭐' : '☆';
+    await supaFetch(`recordings?id=eq.${id}`, 'PATCH', { starred: newVal });
+  }
+
   function sortFiles(files) {
     return [...files].sort((a, b) => {
       if (sortOrder === 'date_asc') return new Date(a.created_at) - new Date(b.created_at);
       if (sortOrder === 'dur_desc') return (b.duration || 0) - (a.duration || 0);
       if (sortOrder === 'status') return b.transcription_status - a.transcription_status;
+      if (sortOrder === 'starred') return (b.starred ? 1 : 0) - (a.starred ? 1 : 0) || new Date(b.created_at) - new Date(a.created_at);
       return new Date(b.created_at) - new Date(a.created_at); // date_desc default
     });
   }

@@ -258,6 +258,56 @@
       color: var(--text2);
     }
     .shortcut-row:last-child { border-bottom: none; }
+
+.confirm-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.92);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+  z-index: 10000;
+  min-width: 280px;
+  max-width: 360px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .18s, transform .18s;
+  text-align: center;
+}
+.confirm-dialog.open {
+  opacity: 1;
+  pointer-events: all;
+  transform: translate(-50%, -50%) scale(1);
+}
+.confirm-dialog .cdlg-icon { font-size: 36px; margin-bottom: 12px; }
+.confirm-dialog .cdlg-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.confirm-dialog .cdlg-msg { font-size: 13px; color: var(--text2); margin-bottom: 20px; line-height: 1.5; }
+.confirm-dialog .cdlg-btns { display: flex; gap: 8px; justify-content: center; }
+.confirm-dialog .cdlg-btn {
+  padding: 8px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: opacity .15s;
+}
+.confirm-dialog .cdlg-btn:hover { opacity: 0.8; }
+.confirm-dialog .cdlg-cancel { background: var(--surface2); color: var(--text); }
+.confirm-dialog .cdlg-ok { background: var(--red); color: #fff; }
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .18s;
+}
+.confirm-overlay.open { opacity: 1; pointer-events: all; }
     .shortcut-row kbd {
       background: var(--surface2);
       border: 1px solid var(--border);
@@ -1113,7 +1163,8 @@
   async function bulkDelete() {
     const ids = [...selectedIds];
     if (!ids.length) return;
-    if (!confirm(`${ids.length}개 녹음을 삭제할까요?\n(파일 + DB 모두 삭제)`)) return;
+    const ok = await showConfirm({ msg: `${ids.length}개 녹음을 영구 삭제합니다. 파일과 DB에서 모두 삭제됩니다.` });
+    if (!ok) return;
     const files = allFiles.filter(f => ids.includes(f.id));
     const paths = files.map(f => f.file_path).filter(Boolean);
     try {
@@ -1254,7 +1305,8 @@
   }
 
   async function deleteFile(id, filePath, fileName) {
-    if (!confirm(`"${getTitle(allFiles.find(f=>f.id===id)||{file_name:fileName})}"\n삭제할까요?`)) return;
+    const ok = await showConfirm({ msg: `"${getTitle(allFiles.find(f=>f.id===id)||{file_name:fileName})}" 을(를) 영구 삭제합니다.` });
+    if (!ok) return;
     try {
       if (filePath) await sb.storage.from('recordings').remove([filePath]);
       await sb.from('recordings').delete().eq('id', id);
@@ -1419,6 +1471,7 @@
 
   async function generateMinutes() {
     if (!minutesRecId) return;
+    const genBtn = document.querySelector('#modal-minutes .btn-primary') || document.getElementById('min-gen-btn');
     const btn = document.getElementById('min-gen-btn');
     const status = document.getElementById('min-gen-status');
     btn.disabled = true;
@@ -1879,6 +1932,25 @@
 
   function esc(v) {
     return String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+
+  let _confirmResolve = null;
+  function showConfirm({ icon = '🗑️', title = '삭제할까요?', msg = '', okLabel = '삭제', okClass = 'cdlg-ok' } = {}) {
+    return new Promise(resolve => {
+      _confirmResolve = resolve;
+      document.getElementById('cdlg-icon').textContent = icon;
+      document.getElementById('cdlg-title').textContent = title;
+      document.getElementById('cdlg-msg').textContent = msg;
+      document.getElementById('cdlg-ok-btn').textContent = okLabel;
+      document.getElementById('cdlg-ok-btn').className = `cdlg-btn ${okClass}`;
+      document.getElementById('confirm-overlay').classList.add('open');
+      document.getElementById('confirm-dialog').classList.add('open');
+    });
+  }
+  function confirmResolve(result) {
+    document.getElementById('confirm-overlay').classList.remove('open');
+    document.getElementById('confirm-dialog').classList.remove('open');
+    if (_confirmResolve) { _confirmResolve(result); _confirmResolve = null; }
   }
 </script>
 <div class="shortcuts-panel" id="shortcuts-panel">

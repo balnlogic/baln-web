@@ -597,7 +597,7 @@
         <div class="topbar-search">
           <span style="color:var(--text3); font-size:14px;">🔍</span>
           <input id="search-input" type="search" placeholder="검색 (⌘F)..."
-            oninput="filterFiles()" />
+            oninput="visibleCount = PAGE_SIZE; filterFiles()" />
         </div>
         <button id="sort-btn" onclick="cycleSortOrder()" title="정렬"
           style="flex-shrink:0; padding:6px 10px; border-radius:8px; border:1px solid var(--border); background:var(--surface2); color:var(--text2); font-size:12px; cursor:pointer; white-space:nowrap; transition:background .15s;">
@@ -824,6 +824,8 @@
   let ctxRec = null;
   let sortOrder = 'date_desc';
   let activeFilter = 'all'; // 'all' | 'today' | 'starred' | 'pending'
+  let visibleCount = 30;
+  const PAGE_SIZE = 30;
 
   // Recorder
   let mediaRecorder = null;
@@ -970,11 +972,13 @@
     const folderNav = document.getElementById('folder-nav');
     folderNav.innerHTML = topics.map(t => {
       const count = allFiles.filter(f => f.topic === t).length;
+      const pendingCount = allFiles.filter(f => f.topic === t && f.transcription_status === 0).length;
+      const pendingStr = pendingCount > 0 ? ` <span style="color:var(--red);font-size:10px;">+${pendingCount}</span>` : '';
       const active = currentView === 'folder' && currentFolder === t;
       return `<button class="nav-item ${active ? 'active' : ''}" onclick="switchFolder(${JSON.stringify(t)})">
         <span class="nav-icon">📁</span>
         <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;">${esc(t)}</span>
-        <span class="nav-count">${count}</span>
+        <span class="nav-count">${count}${pendingStr}</span>
       </button>`;
     }).join('');
   }
@@ -1093,8 +1097,17 @@
       <button class="filter-tab ${activeFilter==='starred'?'active':''}" data-filter="starred" onclick="setFilter('starred')">⭐ 즐겨찾기</button>
       <button class="filter-tab ${activeFilter==='pending'?'active':''}" data-filter="pending" onclick="setFilter('pending')">⏳ 미전사</button>
     </div>`;
+    const totalCount = files.length;
+    files = files.slice(0, visibleCount);
     const listHtml = files.map(f => renderFileItem(f)).join('');
-    content.innerHTML = `${filterTabsHtml}${statsHtml}<div class="file-list ${selectedIds.size > 0 ? 'any-selected' : ''}" id="file-list">${listHtml}</div>`;
+    const loadMoreHtml = totalCount > visibleCount
+      ? `<div style="text-align:center;padding:16px;">
+  <button onclick="loadMore()" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 20px;font-size:13px;color:var(--text2);cursor:pointer;">
+    더 보기 (${totalCount - visibleCount}개 더)
+  </button>
+</div>`
+      : '';
+    content.innerHTML = `${filterTabsHtml}${statsHtml}<div class="file-list ${selectedIds.size > 0 ? 'any-selected' : ''}" id="file-list">${listHtml}${loadMoreHtml}</div>`;
   }
 
   function renderFileItem(f) {
@@ -1125,7 +1138,13 @@
     const transcribeBtn = f.transcription_status === 0
       ? `<button class="file-copy-btn" onclick="requestTranscription('${f.id}', event)" title="전사 시작" style="right:auto;left:10px;">전사</button>`
       : '';
-    return `<div class="file-item ${isSelected ? 'selected' : ''}" data-id="${f.id}" onclick="handleFileClick(event, '${f.id}')">
+    const fileInfo = [
+      f.upload_size_bytes ? `크기: ${formatSize(f.upload_size_bytes)}` : '',
+      f.language ? `언어: ${f.language}` : '',
+      f.source ? `소스: ${f.source}` : '',
+      f.created_at ? `생성: ${new Date(f.created_at).toLocaleString('ko-KR')}` : ''
+    ].filter(Boolean).join('\n');
+    return `<div class="file-item ${isSelected ? 'selected' : ''}" data-id="${f.id}" onclick="handleFileClick(event, '${f.id}')" title="${fileInfo}">
       <div class="file-check" onclick="event.stopPropagation()">
         <input type="checkbox" ${isSelected ? 'checked' : ''}
           onchange="toggleSelect('${f.id}', this.checked)" />
@@ -1230,10 +1249,16 @@
   }
 
   function setFilter(filter) {
+    visibleCount = PAGE_SIZE;
     activeFilter = filter;
     document.querySelectorAll('.filter-tab').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.filter === filter);
     });
+    renderCurrentView();
+  }
+
+  function loadMore() {
+    visibleCount += PAGE_SIZE;
     renderCurrentView();
   }
 

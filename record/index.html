@@ -475,11 +475,14 @@
         <audio id="detail-audio" controls></audio>
       </div>
       <div style="margin-top:14px;">
-        <div style="display:flex; gap:2px; margin-bottom:8px; background:var(--surface2); border-radius:8px; padding:3px;" id="detail-tabs">
-          <button onclick="switchDetailTab('transcript')" id="tab-btn-transcript"
-            style="flex:1; padding:5px 10px; border-radius:6px; border:none; font-size:12px; font-weight:600; cursor:pointer; background:var(--surface); color:var(--text); transition:background .15s;">전사 내용</button>
-          <button onclick="switchDetailTab('minutes')" id="tab-btn-minutes"
-            style="flex:1; padding:5px 10px; border-radius:6px; border:none; font-size:12px; font-weight:600; cursor:pointer; background:none; color:var(--text2); transition:background .15s;">회의록</button>
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+          <div style="display:flex; gap:2px; flex:1; background:var(--surface2); border-radius:8px; padding:3px;" id="detail-tabs">
+            <button onclick="switchDetailTab('transcript')" id="tab-btn-transcript" style="flex:1; padding:5px 10px; border-radius:6px; border:none; font-size:12px; font-weight:600; cursor:pointer; background:var(--surface); color:var(--text); transition:background .15s;">전사 내용</button>
+            <button onclick="switchDetailTab('minutes')" id="tab-btn-minutes" style="flex:1; padding:5px 10px; border-radius:6px; border:none; font-size:12px; font-weight:600; cursor:pointer; background:none; color:var(--text2); transition:background .15s;">회의록</button>
+          </div>
+          <button onclick="copyActiveTabContent()" id="copy-tab-btn"
+            style="flex-shrink:0; padding:5px 10px; border-radius:8px; border:1px solid var(--border); background:var(--surface2); color:var(--text2); font-size:12px; cursor:pointer; transition:background .15s;"
+            title="복사">📋 복사</button>
         </div>
         <div id="detail-tab-transcript">
           <div class="transcript-box" id="detail-transcript">불러오는 중...</div>
@@ -759,6 +762,7 @@
         ${withMinutes > 0 ? `<div class="stat-chip" style="color:#3B82F6;">📋 회의록 <strong>${withMinutes}</strong></div>` : ''}
         ${pending > 0 ? `<div class="stat-chip" style="color:var(--yellow);">⏳ 대기 <strong>${pending}</strong></div>` : ''}
       </div>
+      ${pending > 0 ? `<button onclick="transcribeAllPending()" style="margin-bottom:14px; padding:7px 14px; background:var(--surface); border:1px solid var(--border); border-radius:8px; color:var(--text2); font-size:12px; font-weight:600; cursor:pointer; transition:background .15s;" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background='var(--surface)'">🧠 미전사 ${pending}개 모두 전사하기</button>` : ''}
       <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">최근 녹음</div>`;
     } else {
       const totalSec = files.reduce((a, f) => a + (f.duration || 0), 0);
@@ -872,6 +876,19 @@
     }
     btn.disabled = false;
     btn.textContent = '🧠 전사';
+    showToast(`✅ ${done}개 전사 완료`, 'success');
+  }
+
+  async function transcribeAllPending() {
+    const pending = allFiles.filter(f => f.transcription_status === 0);
+    if (!pending.length) { showToast('전사할 파일이 없습니다.', 'info'); return; }
+    showToast(`🧠 ${pending.length}개 전사를 시작합니다...`, 'info');
+    let done = 0;
+    for (const rec of pending) {
+      await transcribeFile(rec.id, rec.file_path, rec.file_name);
+      done++;
+      if (done < pending.length) showToast(`⏳ ${done}/${pending.length} 완료`, 'info');
+    }
     showToast(`✅ ${done}개 전사 완료`, 'success');
   }
 
@@ -1498,6 +1515,20 @@
     document.getElementById('tab-btn-minutes').style.cssText =
       'flex:1; padding:5px 10px; border-radius:6px; border:none; font-size:12px; font-weight:600; cursor:pointer; transition:background .15s;' +
       (!isTranscript ? 'background:var(--surface); color:var(--text);' : 'background:none; color:var(--text2);');
+  }
+
+  function copyActiveTabContent() {
+    const transcriptVisible = document.getElementById('detail-tab-transcript').style.display !== 'none';
+    const el = transcriptVisible
+      ? document.getElementById('detail-transcript')
+      : document.getElementById('detail-minutes-content');
+    const text = el.innerText || el.textContent;
+    if (!text || text === '불러오는 중...') { showToast('복사할 내용이 없습니다.', 'info'); return; }
+    navigator.clipboard.writeText(text).then(() => {
+      showToast('📋 클립보드에 복사되었습니다.', 'success');
+    }).catch(() => {
+      showToast('복사 실패. 직접 선택하여 복사하세요.', 'error');
+    });
   }
 
   function closeModal(id) {

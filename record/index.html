@@ -993,6 +993,26 @@
       }
       updateSidebar();
       renderCurrentView();
+
+      // 자동 주제 분류 — /auto-topic 엔드포인트 호출 (topic 없는 경우만)
+      if (!rec?.topic) {
+        try {
+          const topicResp = await fetch('http://127.0.0.1:7432/auto-topic', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ recId }),
+          });
+          const topicResult = await topicResp.json();
+          if (topicResult.ok && topicResult.topic && !topicResult.skipped) {
+            if (rec) rec.topic = topicResult.topic;
+            updateSidebar();
+            renderCurrentView();
+            showToast(`📁 자동 분류됨: ${topicResult.topic}`, 'success');
+          }
+        } catch(e) {
+          // 자동 분류 실패는 무시 (선택적 기능)
+        }
+      }
     } catch(e) {
       if (rec) rec.transcription_status = 0;
       renderCurrentView();

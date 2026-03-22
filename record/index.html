@@ -396,7 +396,7 @@
         <div class="topbar-title" id="topbar-title">홈</div>
         <div class="topbar-search">
           <span style="color:var(--text3); font-size:14px;">🔍</span>
-          <input id="search-input" type="search" placeholder="파일명 · 내용 · 주제 검색..."
+          <input id="search-input" type="search" placeholder="검색 (⌘F)..."
             oninput="filterFiles()" />
         </div>
       </div>
@@ -777,6 +777,8 @@
 
   function renderFileItem(f) {
     const title = getTitle(f);
+    const searchQ = (document.getElementById('search-input')?.value || '').toLowerCase().trim();
+    const titleHtml = highlightMatch(title, searchQ);
     const dur = formatDur(f.duration);
     const date = formatDate(f.created_at);
     const folderTag = f.topic
@@ -798,7 +800,7 @@
       </div>
       <div class="file-icon">${icon}</div>
       <div class="file-body">
-        <div class="file-title">${esc(title)}</div>
+        <div class="file-title">${titleHtml}</div>
         <div class="file-meta">
           ${folderTag}
           <span class="file-dur">${esc(dur)}</span>
@@ -957,6 +959,23 @@
   document.addEventListener('click', closeCtxMenu);
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') { closeCtxMenu(); closeAllModals(); }
+    // Cmd/Ctrl+F → focus search
+    if ((e.metaKey || e.ctrlKey) && e.key === 'f') {
+      const searchEl = document.getElementById('search-input');
+      if (searchEl && document.getElementById('app').style.display !== 'none') {
+        e.preventDefault();
+        searchEl.focus();
+        searchEl.select();
+      }
+    }
+    // Cmd/Ctrl+N → open recorder modal (when app is visible, no modal open)
+    if ((e.metaKey || e.ctrlKey) && e.key === 'n') {
+      if (document.getElementById('app').style.display !== 'none' &&
+          !document.querySelector('.modal-overlay.open')) {
+        e.preventDefault();
+        openRecorderModal();
+      }
+    }
   });
 
   // ════════════════════════════════════════════
@@ -1516,6 +1535,15 @@
   // ════════════════════════════════════════════
   // UTILS
   // ════════════════════════════════════════════
+  function highlightMatch(text, query) {
+    if (!query) return esc(text);
+    const idx = text.toLowerCase().indexOf(query);
+    if (idx === -1) return esc(text);
+    return esc(text.slice(0, idx)) +
+      `<mark style="background:rgba(76,175,80,.3);color:inherit;border-radius:2px;padding:0 1px;">${esc(text.slice(idx, idx + query.length))}</mark>` +
+      esc(text.slice(idx + query.length));
+  }
+
   function getTitle(rec) {
     if (rec.memo) return rec.memo;
     // Clean up auto-generated filenames

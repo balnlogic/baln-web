@@ -197,6 +197,41 @@
     }
     .star-btn:hover { opacity: 0.7; }
     .star-btn.starred { opacity: 1; transform: scale(1.15); }
+    .server-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 20px;
+      background: var(--surface2);
+      color: var(--text3);
+      cursor: default;
+      user-select: none;
+    }
+    .server-status .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--text3);
+      flex-shrink: 0;
+    }
+    .server-status.online .dot { background: #22c55e; }
+    .server-status.online { color: #22c55e; }
+    .server-status.offline .dot { background: var(--red); }
+    .server-status.offline { color: var(--red); }
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    .processing-bar {
+      height: 2px;
+      background: linear-gradient(90deg, transparent 25%, var(--primary) 50%, transparent 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 1px;
+      margin-top: 4px;
+    }
     .badge-done { background:var(--primary-dim); color:var(--primary); }
     .badge-wait { background:rgba(245,158,11,.13); color:var(--yellow); }
     .badge-proc { background:rgba(59,130,246,.13); color:var(--blue); }
@@ -415,6 +450,10 @@
           style="flex-shrink:0; padding:6px 10px; border-radius:8px; border:1px solid var(--border); background:var(--surface2); color:var(--text2); font-size:12px; cursor:pointer; white-space:nowrap; transition:background .15s;">
           📅 최신순
         </button>
+        <div id="server-status-badge" class="server-status" title="로컬 전사 서버 (포트 7432)">
+          <span class="dot"></span>
+          <span class="label">서버 확인 중</span>
+        </div>
       </div>
 
       <!-- Bulk bar -->
@@ -659,12 +698,30 @@
     document.getElementById('login-error').textContent = '';
   }
 
+
+  async function checkServerStatus() {
+    const badge = document.getElementById('server-status-badge');
+    if (!badge) return;
+    try {
+      const resp = await fetch('http://127.0.0.1:7432/health', { signal: AbortSignal.timeout(2000) });
+      if (resp.ok) {
+        badge.className = 'server-status online';
+        badge.querySelector('.label').textContent = '서버 연결됨';
+      } else throw new Error('not ok');
+    } catch {
+      badge.className = 'server-status offline';
+      badge.querySelector('.label').textContent = '서버 오프라인';
+    }
+  }
+
   function showApp() {
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app').style.display = 'block';
     switchView('home');
     loadFiles();
     startPolling();
+    checkServerStatus();
+    setInterval(checkServerStatus, 30000);
   }
 
   window.addEventListener('DOMContentLoaded', () => {
@@ -864,6 +921,7 @@
     const isSelected = selectedIds.has(f.id);
     const icon = f.source === 'web' ? '🎙️' : f.source === 'ios' ? '📱' : '⌚';
 
+    const processingBar = f.transcription_status === 1 ? '<div class="processing-bar"></div>' : '';
     return `<div class="file-item ${isSelected ? 'selected' : ''}" data-id="${f.id}" onclick="handleFileClick(event, '${f.id}')">
       <div class="file-check" onclick="event.stopPropagation()">
         <input type="checkbox" ${isSelected ? 'checked' : ''}
@@ -879,6 +937,7 @@
           <span class="file-date">${esc(date)}</span>
           ${statusBadge}${minutesBadge}
         </div>
+        ${processingBar}
       </div>
       <div class="file-more">
         <button class="star-btn ${starClass}" onclick="toggleStar('${f.id}', event)" title="즐겨찾기">${starIcon}</button>

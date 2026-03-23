@@ -1426,7 +1426,7 @@
           </div>
           <div id="bookmarks-list"></div>
           <div id="qa-panel" style="display:none; border-top:1px solid var(--border); padding:12px 0; margin-top:8px">
-            <div style="font-size:0.85rem;font-weight:600;margin-bottom:8px">❓ 전사 내용 질문</div>
+            <div style="font-size:0.85rem;font-weight:600;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;">❓ 전사 내용 질문<button onclick="exportQAHistory('md')" title="대화 내보내기" style="font-size:12px; padding:4px 8px; background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius-sm); cursor:pointer; color:var(--text);">📥 저장</button></div>
             <div id="qa-messages" style="max-height:200px;overflow-y:auto;margin-bottom:8px;display:flex;flex-direction:column;gap:2px;"></div>
             <div style="display:flex;gap:6px">
               <input id="qa-input" placeholder="질문 입력..." style="flex:1;padding:6px 10px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);font-size:0.85rem" onkeydown="if(event.key==='Enter')askQuestion()">
@@ -7700,6 +7700,111 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
     }
   }
 
+
+  // ─── 텍스트 다운로드 헬퍼 ───────────────────────────────────────────
+  function downloadText(content, filename) {
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  // ─── 기능 1: AI 대화 기록 내보내기 ──────────────────────────────────
+  function exportQAHistory(format) {
+    const msgs = document.getElementById('qa-messages');
+    if (!msgs) { showToast('QA 패널을 찾을 수 없습니다', 'error'); return; }
+    const items = msgs.querySelectorAll('[data-role]');
+    if (items.length === 0) { showToast('내보낼 대화가 없습니다', 'info'); return; }
+
+    const pairs = [];
+    let current = null;
+    items.forEach(el => {
+      const role = el.getAttribute('data-role');
+      const text = el.innerText || el.textContent || '';
+      if (role === 'user') { current = { q: text.trim(), a: '' }; pairs.push(current); }
+      else if (role === 'assistant' && current) { current.a = text.trim(); }
+    });
+
+    // data-role 없을 경우 클래스 기반 파싱 fallback
+    if (pairs.length === 0) {
+      const allMsgs = Array.from(msgs.children);
+      let lastRole = null;
+      allMsgs.forEach(el => {
+        const text = (el.innerText || el.textContent || '').trim();
+        if (!text) return;
+        const isUser = el.style.alignSelf === 'flex-end' || el.classList.contains('user-msg') || el.style.background?.includes('var(--primary)');
+        if (isUser) { current = { q: text, a: '' }; pairs.push(current); lastRole = 'user'; }
+        else { if (current) current.a = text; lastRole = 'assistant'; }
+      });
+    }
+
+    const date = new Date().toISOString().slice(0, 10);
+    let output = '';
+    let filename = '';
+
+    if (format === 'txt') {
+      output = pairs.map((p, i) => `[Q${i+1}] ${p.q}
+[A${i+1}] ${p.a}`).join('
+
+');
+      filename = `qa-history-${date}.txt`;
+    } else if (format === 'md') {
+      output = `# AI 대화 기록
+생성일: ${date}
+
+` +
+        pairs.map((p, i) => `## Q${i+1}
+${p.q}
+
+### 답변
+${p.a}`).join('
+
+---
+
+');
+      filename = `qa-history-${date}.md`;
+    } else if (format === 'json') {
+      output = JSON.stringify({ date, conversations: pairs }, null, 2);
+      filename = `qa-history-${date}.json`;
+    }
+
+    downloadText(output, filename);
+    showToast('📥 대화 기록 저장 완료');
+  }
+
+  // ─── 기능 2: 앱 데이터 백업/복원 ────────────────────────────────────
+  function exportAppData() {
+    const data = {};
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      data[key] = localStorage.getItem(key);
+    }
+    const json = JSON.stringify(data, null, 2);
+    downloadText(json, `record-backup-${new Date().toISOString().slice(0,10)}.json`);
+    showToast('💾 데이터 백업 완료');
+  }
+
+  function importAppData(file) {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      try {
+        const data = JSON.parse(e.target.result);
+        if (confirm('현재 데이터를 덮어씁니다. 계속하시겠습니까?')) {
+          Object.entries(data).forEach(([k, v]) => localStorage.setItem(k, v));
+          showToast('✅ 데이터 복원 완료');
+          setTimeout(() => location.reload(), 1000);
+        }
+      } catch(err) {
+        showToast('❌ 파일 형식 오류', 'error');
+      }
+    };
+    reader.readAsText(file);
+  }
+
 </script>
 <div class="shortcuts-panel" id="shortcuts-panel">
   <div class="sp-header">
@@ -7845,6 +7950,22 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
       <div class="settings-row">
         <span>북마크</span>
         <kbd id="key-bookmark" class="editable-key" data-action="bookmark" tabindex="0">b</kbd>
+      </div>
+    </div>
+
+    <!-- 데이터 백업/복원 -->
+    <div class="settings-section">
+      <div class="settings-title">데이터</div>
+      <div class="settings-row">
+        <span>데이터 백업</span>
+        <button onclick="exportAppData()" style="padding:4px 10px; background:var(--primary); color:#fff; border:none; border-radius:var(--radius-sm); cursor:pointer; font-size:12px;">내보내기</button>
+      </div>
+      <div class="settings-row">
+        <span>데이터 복원</span>
+        <label style="cursor:pointer; padding:4px 10px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); font-size:12px;">
+          불러오기
+          <input type="file" accept=".json" style="display:none" onchange="importAppData(this.files[0])">
+        </label>
       </div>
     </div>
   </div>

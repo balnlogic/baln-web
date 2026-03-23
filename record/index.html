@@ -661,9 +661,15 @@
     .toast.toast-err { border-color:var(--red); color:var(--red); }
     .toast.toast-ok { border-color:var(--primary); color:var(--primary); }
   .file-size { font-size:0.72rem; color:var(--muted); margin-left:4px; }
+  #offline-banner { 
+    display:none; position:fixed; top:0; left:0; right:0; z-index:9999;
+    background:#ef4444; color:#fff; text-align:center; padding:8px; font-size:0.9rem;
+  }
+  #offline-banner.show { display:block; }
   </style>
 </head>
 <body>
+<div id="offline-banner">🔴 오프라인 상태입니다. 인터넷 연결을 확인해주세요.</div>
 
 <!-- ══ LOGIN ══ -->
 <div id="login-screen">
@@ -1219,6 +1225,7 @@
     initLangPref();
     checkServerStatus();
     setInterval(checkServerStatus, 30000);
+    initOfflineDetection();
   }
 
   window.addEventListener('DOMContentLoaded', () => {
@@ -2091,7 +2098,13 @@
 
   document.addEventListener('click', closeCtxMenu);
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') { closeCtxMenu(); closeAllModals(); document.getElementById('shortcuts-panel')?.classList.remove('open'); }
+    if (e.key === 'Escape') { closeCtxMenu(); closeAllModals(); document.getElementById('shortcuts-panel')?.classList.remove('open'); const si = document.getElementById('search-input'); if (si && document.activeElement === si) { si.blur(); si.value = ''; si.dispatchEvent(new Event('input')); } }
+    // 검색창 포커스
+    if (e.key === '/' && !e.ctrlKey && !e.metaKey && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+      e.preventDefault();
+      const s = document.getElementById('search-input');
+      if (s) s.focus();
+    }
     // Cmd/Ctrl+F → focus search
     if ((e.metaKey || e.ctrlKey) && e.key === 'f') {
       const searchEl = document.getElementById('search-input');
@@ -3307,6 +3320,16 @@
         b.classList.toggle('active', b.dataset.rate === stored);
       });
     }
+  }
+
+  function initOfflineDetection() {
+    const banner = document.getElementById('offline-banner');
+    window.addEventListener('offline', () => { if(banner) banner.classList.add('show'); });
+    window.addEventListener('online', () => {
+      if(banner) banner.classList.remove('show');
+      showToast('연결되었습니다', 'success');
+      loadFiles();
+    });
   }
 
 </script>

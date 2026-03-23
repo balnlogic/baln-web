@@ -852,6 +852,29 @@
   }
   .skeleton-title { height: 16px; width: 60%; margin-bottom: 8px; }
   .skeleton-sub   { height: 12px; width: 40%; }
+  /* ── 핀 고정 ── */
+  .pin-indicator { color:#f59e0b; font-size:0.8rem; margin-right:2px; }
+  .file-item.pinned { border-left:3px solid #f59e0b !important; }
+
+  /* ── 알림 센터 ── */
+  #notification-panel { 
+    position:fixed; top:56px; right:12px; width:320px; max-height:480px;
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    box-shadow:0 8px 32px rgba(0,0,0,0.2); z-index:500; display:none; overflow:hidden;
+  }
+  #notification-panel.open { display:flex; flex-direction:column; }
+  .notif-header { display:flex; justify-content:space-between; align-items:center; padding:12px 16px; border-bottom:1px solid var(--border); }
+  .notif-list { overflow-y:auto; flex:1; }
+  .notif-item { display:flex; gap:10px; padding:10px 16px; border-bottom:1px solid var(--border); border-bottom-color:rgba(128,128,128,.25); font-size:0.84rem; }
+  .notif-item.unread { background:color-mix(in srgb, var(--primary) 5%, transparent); }
+  .notif-time { font-size:0.72rem; color:var(--muted); white-space:nowrap; }
+  #notif-badge { 
+    position:absolute; top:-4px; right:-4px; background:#ef4444; color:#fff;
+    border-radius:50%; width:16px; height:16px; font-size:0.65rem; display:none;
+    align-items:center; justify-content:center;
+  }
+  #notif-badge.show { display:flex; }
+  .notif-btn-wrap { position:relative; }
 </style>
 </head>
 <body>
@@ -981,7 +1004,11 @@
         </div>
         <span class="unsaved-indicator" id="unsaved-indicator">● 저장되지 않음</span>
         <button onclick="toggleShortcutsPanel()" title="키보드 단축키 (?)" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:4px 6px;border-radius:6px;line-height:1;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text3)'">?</button>
-        <button id="theme-toggle-btn" onclick="toggleTheme()" title="테마 변경" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:4px 6px;border-radius:6px;line-height:1;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text3)'">☀️</button>
+        <div class="notif-btn-wrap">
+        <button onclick="toggleNotificationPanel(event)" title="알림 센터" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:4px 6px;border-radius:6px;line-height:1;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text3)'">🔔</button>
+        <span id="notif-badge"></span>
+      </div>
+      <button id="theme-toggle-btn" onclick="toggleTheme()" title="테마 변경" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:4px 6px;border-radius:6px;line-height:1;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text3)'">☀️</button>
       </div>
 
       <!-- Bulk bar -->
@@ -1212,6 +1239,7 @@
   <button class="ctx-item" id="ctx-retranscribe" onclick="ctxAction('retranscribe')">🔄 재전사</button>
   <button class="ctx-item" id="ctx-summarize" onclick="ctxAction('summarize')">⚡ AI 요약</button>
   <div class="ctx-sep"></div>
+  <button class="ctx-item" id="ctx-pin" onclick="ctxAction('pin')">📌 핀 고정</button>
   <button class="ctx-item" onclick="ctxAction('rename')">✏️ 제목 변경</button>
   <button class="ctx-item" onclick="ctxAction('topic')">📁 폴더 변경</button>
   <div class="ctx-item has-sub" style="position:relative;" id="ctx-move-folder">
@@ -1220,6 +1248,18 @@
   </div>
   <div class="ctx-sep"></div>
   <button class="ctx-item danger" onclick="ctxAction('delete')">🗑 삭제</button>
+</div>
+
+
+<!-- ══ 알림 센터 패널 ══ -->
+<div id="notification-panel">
+  <div class="notif-header">
+    <span style="font-weight:700;font-size:0.9rem;">🔔 알림</span>
+    <button onclick="clearAllNotifications()" style="background:none;border:none;cursor:pointer;font-size:0.78rem;color:var(--text3);padding:4px 8px;border-radius:6px;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text3)'">전체 지우기</button>
+  </div>
+  <div class="notif-list" id="notification-list">
+    <div style="padding:24px;text-align:center;color:var(--text3);font-size:0.85rem;">알림이 없습니다</div>
+  </div>
 </div>
 
 <!-- ══ 회의록 모달 ══ -->
@@ -1510,9 +1550,11 @@
       const resp = await fetch('http://127.0.0.1:7432/status', { signal: AbortSignal.timeout(2000) });
       if (resp.ok) {
         const data = await resp.json();
+        const wasOffline = badge.classList.contains('offline');
         badge.className = 'server-status online';
         const jobStr = data.activeJobs > 0 ? ` (${data.activeJobs}개 전사 중)` : '';
         badge.querySelector('.label').textContent = `서버 연결됨${jobStr}`;
+        if (wasOffline) addNotification('server', '🖥️ 서버 온라인');
         badge.title = '';
         const sdot2 = document.getElementById('sidebar-server-dot');
         const slabel2 = document.getElementById('sidebar-server-label');
@@ -1522,8 +1564,10 @@
         if (reconnBtn2) reconnBtn2.classList.remove('show');
       } else throw new Error('not ok');
     } catch {
+      const wasOnline = badge.classList.contains('online');
       badge.className = 'server-status offline';
       badge.querySelector('.label').textContent = '서버 오프라인';
+      if (wasOnline) addNotification('server', '🖥️ 서버 오프라인');
       badge.title = '로컬 서버가 꺼져 있습니다. 터미널에서 node /path/to/transcribe-server.js 를 실행하세요.';
       const sdot = document.getElementById('sidebar-server-dot');
       const slabel = document.getElementById('sidebar-server-label');
@@ -1644,6 +1688,7 @@
             if (data.transcription_status === 2 && wasProcessing && notifyEnabled) {
               showNotification('전사 완료', `"${getTitle(rec)}" 전사가 완료됐습니다`);
               showToast(getTitle(rec) + ' 전사 완료!', 'success');
+              addNotification('transcription', '✅ ' + getTitle(rec) + ' 전사 완료', rec.id);
             }
           }
         }
@@ -2081,14 +2126,16 @@
       f.source ? `소스: ${f.source}` : '',
       f.created_at ? `생성: ${new Date(f.created_at).toLocaleString('ko-KR')}` : ''
     ].filter(Boolean).join('\n');
-    return `<div class="file-item ${isSelected ? 'selected' : ''}" data-id="${f.id}" draggable="true" ondragstart="onFileDragStart('${f.id}', event)" ondragend="onFileDragEnd(event)" onclick="handleFileClick(event, '${f.id}')" title="${fileInfo}">
+    const pinned = isPinned(f.id);
+    const pinIcon = pinned ? '<span class="pin-indicator">📌</span>' : '';
+    return `<div class="file-item ${isSelected ? 'selected' : ''}${pinned ? ' pinned' : ''}" data-id="${f.id}" draggable="true" ondragstart="onFileDragStart('${f.id}', event)" ondragend="onFileDragEnd(event)" onclick="handleFileClick(event, '${f.id}')" title="${fileInfo}">
       <div class="file-check" onclick="event.stopPropagation()">
         <input type="checkbox" ${isSelected ? 'checked' : ''}
           onchange="toggleSelect('${f.id}', this.checked)" />
       </div>
       <div class="file-icon">${icon}</div>
       <div class="file-body">
-        <div class="file-title"><span ondblclick="renameMemo('${f.id}', '${(f.memo || f.file_name).replace(/'/g, "\\'")}', event)" title="더블클릭으로 편집" style="cursor:text;">${titleHtml}</span></div>
+        <div class="file-title">${pinIcon}<span ondblclick="renameMemo('${f.id}', '${(f.memo || f.file_name).replace(/'/g, "\\'")}', event)" title="더블클릭으로 편집" style="cursor:text;">${titleHtml}</span></div>
         <div class="file-meta">
           ${folderTag}
           <span class="file-dur">${esc(dur)}</span>
@@ -2244,8 +2291,24 @@
     shareContent(text, `${title} - 회의록`);
   }
 
+  /* ═══ 핀 고정 ═══ */
+  const PINNED_KEY = 'pinned-files';
+  function getPinned() { try { return JSON.parse(localStorage.getItem(PINNED_KEY)||'[]'); } catch { return []; } }
+  function isPinned(id) { return getPinned().includes(String(id)); }
+  function togglePin(id) {
+    const pins = getPinned();
+    const sid = String(id);
+    const idx = pins.indexOf(sid);
+    if (idx === -1) pins.push(sid); else pins.splice(idx, 1);
+    localStorage.setItem(PINNED_KEY, JSON.stringify(pins));
+    loadFiles();
+  }
+
   function sortFiles(files) {
     return [...files].sort((a, b) => {
+      const pa = isPinned(a.id), pb = isPinned(b.id);
+      if (pa && !pb) return -1;
+      if (!pa && pb) return 1;
       if (sortOrder === 'date_asc') return new Date(a.created_at) - new Date(b.created_at);
       if (sortOrder === 'dur_desc') return (b.duration || 0) - (a.duration || 0);
       if (sortOrder === 'status') return b.transcription_status - a.transcription_status;
@@ -2522,6 +2585,8 @@
         `<button class="ctx-submenu-item" onclick="moveToNewFolder()">➕ 새 폴더...</button>`
       ].join('');
     }
+    const pinBtn = document.getElementById('ctx-pin');
+    if (pinBtn) pinBtn.textContent = isPinned(id) ? '📌 핀 해제' : '📌 핀 고정';
     menu.classList.add('open');
     event.stopPropagation();
   }
@@ -2543,11 +2608,77 @@
       changeTopic(rec);
     } else if (action === 'retranscribe') {
       requestTranscription(rec.id);
+    } else if (action === 'pin') {
+      togglePin(rec.id);
     } else if (action === 'delete') {
       deleteFile(rec.id, rec.file_path, rec.file_name);
     } else if (action === 'summarize') {
       openDetail(rec.id);
       setTimeout(() => generateSummary(), 500);
+    }
+  }
+
+  /* ═══ 인앱 알림 센터 ═══ */
+  const NOTIF_KEY = 'app-notifications';
+  function getNotifications() { try { return JSON.parse(localStorage.getItem(NOTIF_KEY)||'[]'); } catch { return []; } }
+  function addNotification(type, message, recId) {
+    const notifs = getNotifications();
+    notifs.unshift({ id: Date.now(), type, message, recId: recId || null, time: new Date().toISOString(), read: false });
+    if (notifs.length > 50) notifs.splice(50);
+    localStorage.setItem(NOTIF_KEY, JSON.stringify(notifs));
+    renderNotifications();
+    updateNotifBadge();
+  }
+  function renderNotifications() {
+    const list = document.getElementById('notification-list');
+    if (!list) return;
+    const notifs = getNotifications();
+    if (notifs.length === 0) {
+      list.innerHTML = '<div style="padding:24px;text-align:center;color:var(--muted,var(--text3));font-size:0.85rem;">알림이 없습니다</div>';
+      return;
+    }
+    list.innerHTML = notifs.map(n => {
+      const ago = relativeTime(n.time);
+      return `<div class="notif-item ${n.read ? '' : 'unread'}">
+        <div style="flex:1;">
+          <div>${esc(n.message)}</div>
+          <div class="notif-time">${esc(ago)}</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+  function clearAllNotifications() {
+    localStorage.removeItem(NOTIF_KEY);
+    renderNotifications();
+    updateNotifBadge();
+  }
+  function updateNotifBadge() {
+    const badge = document.getElementById('notif-badge');
+    if (!badge) return;
+    const count = getNotifications().filter(n => !n.read).length;
+    if (count > 0) {
+      badge.textContent = count > 9 ? '9+' : count;
+      badge.classList.add('show');
+    } else {
+      badge.classList.remove('show');
+    }
+  }
+  function markAllRead() {
+    const notifs = getNotifications().map(n => ({...n, read: true}));
+    localStorage.setItem(NOTIF_KEY, JSON.stringify(notifs));
+    updateNotifBadge();
+  }
+  function toggleNotificationPanel(event) {
+    event.stopPropagation();
+    const panel = document.getElementById('notification-panel');
+    if (!panel) return;
+    const isOpen = panel.classList.contains('open');
+    if (isOpen) {
+      panel.classList.remove('open');
+    } else {
+      renderNotifications();
+      panel.classList.add('open');
+      markAllRead();
     }
   }
 
@@ -2761,7 +2892,13 @@
     });
   }
 
-  document.addEventListener('click', closeCtxMenu);
+  document.addEventListener('click', (e) => {
+    closeCtxMenu();
+    const panel = document.getElementById('notification-panel');
+    if (panel && panel.classList.contains('open') && !panel.contains(e.target)) {
+      panel.classList.remove('open');
+    }
+  });
   document.addEventListener('keydown', e => {
     if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); if (cmdPaletteOpen) { closeCmdPalette(); } else { openCmdPalette(); } return; }
     if (e.key === 'Escape') { if (cmdPaletteOpen) { closeCmdPalette(); return; } closeCtxMenu(); closeAllModals(); document.getElementById('shortcuts-panel')?.classList.remove('open'); const si = document.getElementById('search-input'); if (si && document.activeElement === si) { si.blur(); si.value = ''; si.dispatchEvent(new Event('input')); } }
@@ -4728,6 +4865,7 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
       if (!text.trim()) return;
       await supaFetch(`recordings?id=eq.${detailFileId}`, 'PATCH', { formatted_minutes: text });
       showToast('자동 저장됨', 'info');
+      addNotification('autosave', '💾 자동 저장됨');
     }, 30000);
   }
 

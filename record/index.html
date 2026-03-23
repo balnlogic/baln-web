@@ -951,6 +951,18 @@
       position:absolute; top:0; bottom:0; width:2px; background:#fff;
       opacity:0.8; pointer-events:none; transition:left 0.1s linear;
     }
+
+  /* Focus Mode */
+  body.focus-mode #sidebar { display:none; }
+  body.focus-mode #file-list-panel { display:none; }
+  body.focus-mode #detail-panel { position:fixed; inset:0; z-index:200; background:var(--bg); overflow:auto; padding:40px; max-width:800px; margin:0 auto; }
+  body.focus-mode .focus-mode-toggle { background:var(--primary) !important; }
+
+  /* Memo Search */
+  .memo-result-item { padding:8px; border-radius:var(--radius-sm); cursor:pointer; border-bottom:1px solid var(--border); }
+  .memo-result-item:hover { background:var(--hover); }
+  .memo-result-title { font-size:13px; font-weight:600; color:var(--text); margin-bottom:2px; }
+  .memo-result-text { font-size:12px; color:var(--text-secondary); }
 </style>
 </head>
 <body>
@@ -1111,12 +1123,18 @@
           <span class="label">서버 확인 중</span>
         </div>
         <span class="unsaved-indicator" id="unsaved-indicator">● 저장되지 않음</span>
+        <button onclick="toggleMemoSearch()" title="메모 검색" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:4px 6px;border-radius:6px;line-height:1;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text3)'">📝</button>
         <button onclick="toggleShortcutsPanel()" title="키보드 단축키 (?)" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:4px 6px;border-radius:6px;line-height:1;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text3)'">?</button>
         <div class="notif-btn-wrap">
         <button onclick="toggleNotificationPanel(event)" title="알림 센터" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:4px 6px;border-radius:6px;line-height:1;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text3)'">🔔</button>
         <span id="notif-badge"></span>
       </div>
       <button id="theme-toggle-btn" onclick="toggleTheme()" title="테마 변경" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:4px 6px;border-radius:6px;line-height:1;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text3)'">☀️</button>
+      </div>
+      <!-- Memo Search Panel -->
+      <div id="memo-search-panel" style="display:none; position:fixed; top:60px; right:20px; width:320px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow-lg); z-index:150; padding:16px; flex-direction:column; gap:8px;">
+        <input id="memo-search-input" type="text" placeholder="메모 검색..." oninput="searchMemos(this.value)" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--bg); color:var(--text); box-sizing:border-box;">
+        <div id="memo-search-results" style="max-height:300px; overflow-y:auto;"></div>
       </div>
 
       <!-- Bulk bar -->
@@ -1241,6 +1259,7 @@
           <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:6px;" id="transcript-edit-bar">
             <div id="transcript-quality-badge" style="display:none;"></div>
             <div style="display:flex;gap:6px;align-items:center;">
+              <button onclick="toggleFocusMode()" title="읽기 모드" class="icon-btn focus-mode-toggle" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--text3);">📖</button>
               <button onclick="setTranscriptFontSize(-1)" title="글자 작게" class="icon-btn" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--text3);">A-</button>
               <button onclick="setTranscriptFontSize(1)" title="글자 크게" class="icon-btn" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--text3);">A+</button>
               <button id="btn-edit-transcript" onclick="toggleTranscriptEdit()" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;color:var(--text3);">✏️ 편집</button>
@@ -1532,6 +1551,49 @@
     if (menu) menu.style.display = 'none';
   }
 
+  function toggleFocusMode() {
+    focusModeActive = !focusModeActive;
+    document.body.classList.toggle('focus-mode', focusModeActive);
+    if (focusModeActive) {
+      document.documentElement.requestFullscreen?.().catch(() => {});
+    } else {
+      document.exitFullscreen?.().catch(() => {});
+    }
+    showToast(focusModeActive ? '📖 읽기 모드' : '읽기 모드 종료');
+  }
+
+  function toggleMemoSearch() {
+    const panel = document.getElementById('memo-search-panel');
+    if (!panel) return;
+    const isVisible = panel.style.display !== 'none';
+    panel.style.display = isVisible ? 'none' : 'flex';
+    if (!isVisible) {
+      searchMemos('');
+      const inp = document.getElementById('memo-search-input');
+      if (inp) inp.focus();
+    }
+  }
+
+  function searchMemos(query) {
+    memoSearchQuery = query;
+    let results = allFiles.filter(f => f.memo && f.memo.trim());
+    if (query) {
+      results = results.filter(f => f.memo.toLowerCase().includes(query.toLowerCase()));
+    }
+    const container = document.getElementById('memo-search-results');
+    if (!container) return;
+    if (results.length === 0) {
+      container.innerHTML = '<div style="padding:12px;text-align:center;color:var(--text3);font-size:13px;">검색 결과 없음</div>';
+      return;
+    }
+    container.innerHTML = results.map(f => `
+      <div class="memo-result-item" onclick="openDetail('${f.id}')">
+        <div class="memo-result-title">${escHtml(f.file_name || '')}</div>
+        <div class="memo-result-text">${highlightText(f.memo.substring(0, 100), query)}...</div>
+      </div>
+    `).join('');
+  }
+
   function showToast(msg, type = 'info') {
     if (toastQueue.length >= 5) toastQueue.shift(); // 최대 5개, 초과 시 오래된 것 제거
     toastQueue.push({ msg, type });
@@ -1595,6 +1657,8 @@
   let visibleCount = 30;
   const PAGE_SIZE = 30;
   let focusedFileIdx = -1; // 키보드 파일 탐색 인덱스
+  let focusModeActive = false;
+  let memoSearchQuery = '';
 
   // Recorder
   let mediaRecorder = null;
@@ -3323,7 +3387,7 @@
       if (activeTab === 'transcript') { e.preventDefault(); undoTranscriptEdit(); return; }
     }
     if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); if (cmdPaletteOpen) { closeCmdPalette(); } else { openCmdPalette(); } return; }
-    if (e.key === 'Escape') { if (cmdPaletteOpen) { closeCmdPalette(); return; } closeCtxMenu(); closeAllModals(); document.getElementById('shortcuts-panel')?.classList.remove('open'); const si = document.getElementById('search-input'); if (si && document.activeElement === si) { si.blur(); si.value = ''; si.dispatchEvent(new Event('input')); } }
+    if (e.key === 'Escape') { if (focusModeActive) { toggleFocusMode(); return; } if (cmdPaletteOpen) { closeCmdPalette(); return; } closeCtxMenu(); closeAllModals(); document.getElementById('shortcuts-panel')?.classList.remove('open'); const si = document.getElementById('search-input'); if (si && document.activeElement === si) { si.blur(); si.value = ''; si.dispatchEvent(new Event('input')); } }
     // 검색창 포커스
     if (e.key === '/' && !e.ctrlKey && !e.metaKey && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
       e.preventDefault();

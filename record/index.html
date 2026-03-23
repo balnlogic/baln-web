@@ -754,10 +754,26 @@
 .file-item:hover .file-retry-btn { display:inline-flex; }
 .auto-next-btn { padding:3px 10px; border-radius:6px; font-size:0.8rem; cursor:pointer; border:1px solid var(--border); background:none; color:var(--muted); }
 .auto-next-btn.active { background:var(--primary)20; color:var(--primary); border-color:var(--primary); }
+#transcription-progress-bar {
+  display:none; position:fixed; top:0; left:0; right:0; z-index:9998;
+  background:linear-gradient(90deg, #6366f1, #8b5cf6); color:#fff;
+  padding:6px 16px; font-size:0.85rem; text-align:center;
+  animation: progress-pulse 1.5s ease-in-out infinite alternate;
+}
+#transcription-progress-bar.show { display:block; }
+@keyframes progress-pulse { from { opacity:0.8; } to { opacity:1; } }
+#server-reconnect-btn {
+  display:none; margin-top:6px; padding:4px 12px; border-radius:6px;
+  background:var(--primary); color:#fff; border:none; cursor:pointer;
+  font-size:0.8rem; width:100%;
+}
+#server-reconnect-btn.show { display:block; }
+#server-reconnect-btn:disabled { opacity:0.6; cursor:not-allowed; }
 </style>
 </head>
 <body>
 <div id="offline-banner">🔴 오프라인 상태입니다. 인터넷 연결을 확인해주세요.</div>
+<div id="transcription-progress-bar"></div>
 
 <!-- ══ LOGIN ══ -->
 <div id="login-screen">
@@ -826,6 +842,7 @@
             <span id="sidebar-server-dot" style="width:6px;height:6px;border-radius:50%;background:var(--text3);flex-shrink:0;display:inline-block;"></span>
             <span id="sidebar-server-label">서버 상태 확인 중</span>
           </div>
+          <button id="server-reconnect-btn" onclick="reconnectServer()">🔄 재연결 시도</button>
           <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text3);cursor:pointer;margin-top:8px;">
             <input type="checkbox" id="auto-summarize-toggle" onchange="toggleAutoSummarize(this.checked)" style="accent-color:var(--primary);" />
             전사 완료 시 자동 요약
@@ -1344,6 +1361,8 @@
         const slabel2 = document.getElementById('sidebar-server-label');
         if (sdot2) sdot2.style.background = '#22c55e';
         if (slabel2) slabel2.textContent = '서버 실행 중';
+        const reconnBtn2 = document.getElementById('server-reconnect-btn');
+        if (reconnBtn2) reconnBtn2.classList.remove('show');
       } else throw new Error('not ok');
     } catch {
       badge.className = 'server-status offline';
@@ -1353,6 +1372,34 @@
       const slabel = document.getElementById('sidebar-server-label');
       if (sdot) sdot.style.background = 'var(--red)';
       if (slabel) slabel.textContent = '서버 오프라인 · 전사 불가';
+      const reconnBtn = document.getElementById('server-reconnect-btn');
+      if (reconnBtn) reconnBtn.classList.add('show');
+    }
+  }
+
+  function updateTranscriptionProgress() {
+    const processing = allFiles.filter(f => f.transcription_status === 1);
+    const bar = document.getElementById('transcription-progress-bar');
+    if (!bar) return;
+    if (processing.length > 0) {
+      bar.classList.add('show');
+      bar.textContent = `⏳ 전사 처리 중: ${processing.length}개 파일`;
+    } else {
+      bar.classList.remove('show');
+    }
+  }
+
+  async function reconnectServer() {
+    const btn = document.getElementById('server-reconnect-btn');
+    if (btn) { btn.disabled = true; btn.textContent = '⟳ 연결 중...'; }
+    await checkServerStatus();
+    const badge = document.getElementById('server-status-badge');
+    const isOnline = badge && badge.classList.contains('online');
+    if (btn) { btn.disabled = false; btn.textContent = '🔄 재연결 시도'; }
+    if (isOnline) {
+      showToast('서버에 연결되었습니다.');
+    } else {
+      showToast('서버 연결 실패. 서버가 실행 중인지 확인하세요.');
     }
   }
 
@@ -1360,14 +1407,25 @@
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app').style.display = 'block';
     switchView('home');
-    loadFiles();
+    loadFiles().then(() => updateTranscriptionProgress());
     startPolling();
     initTheme();
     initAutoSummarize();
     initNotify();
     initLangPref();
     checkServerStatus();
-    setInterval(checkServerStatus, 30000);
+    // 서버 상태에 따라 적응형 폴링: 오프라인이면 10초, 온라인이면 60초
+    let _serverCheckInterval = null;
+    function scheduleServerCheck() {
+      if (_serverCheckInterval) clearInterval(_serverCheckInterval);
+      const badge = document.getElementById('server-status-badge');
+      const isOffline = badge && badge.classList.contains('offline');
+      _serverCheckInterval = setInterval(async () => {
+        await checkServerStatus();
+        scheduleServerCheck();
+      }, isOffline ? 10000 : 60000);
+    }
+    scheduleServerCheck();
     initOfflineDetection();
   }
 

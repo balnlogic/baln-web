@@ -824,6 +824,7 @@
   .settings-title { font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
   .settings-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); cursor: pointer; }
   .settings-row span { font-size: 14px; color: var(--text); }
+  .editable-key { background:var(--surface); border:1px solid var(--border); border-radius:4px; padding:2px 6px; font-size:12px; cursor:pointer; font-family:monospace; }
   .group-count { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1px 7px; font-size:0.75rem; font-weight:400; }
   .group-collapsed .group-items { display:none; }
 .status-error { color:#ef4444; font-size:0.75rem; }
@@ -1962,6 +1963,22 @@
     showToast(val ? '자동 요약 켜짐' : '자동 요약 꺼짐', 'info');
   }
 
+  async function requestAutoSummarize(id, text) {
+    try {
+      const res = await fetch('http://localhost:7432/summarize', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ recId: id, text })
+      });
+      const data = await res.json();
+      if (data.summary) {
+        await supaFetch('PATCH', 'recordings?id=eq.' + id, { summary: data.summary });
+        addNotification('auto-summary', '📝 자동 요약 완료', id);
+        showToast('📝 자동 요약 완료');
+      }
+    } catch(e) { /* 서버 없으면 무시 */ }
+  }
+
 
   function toggleNotify(val) {
     if (val) {
@@ -1996,8 +2013,11 @@
 
   function initAutoSummarize() {
     const val = localStorage.getItem('record_autoSummarize') === '1';
+    autoSummarize = val;
     const el = document.getElementById('auto-summarize-toggle');
     if (el) el.checked = val;
+    const el2 = document.getElementById('setting-autosummarize');
+    if (el2) el2.checked = val;
   }
 
 
@@ -2114,6 +2134,22 @@
 
   window.addEventListener('DOMContentLoaded', () => {
     loadSortPrefs();
+    // 커스텀 단축키 editable-key 이벤트 등록
+    document.querySelectorAll('.editable-key').forEach(el => {
+      el.addEventListener('click', () => {
+        const prev = el.textContent;
+        el.textContent = '입력...';
+        el.addEventListener('keydown', e => {
+          e.preventDefault();
+          saveCustomKey(el.dataset.action, e.key);
+          el.textContent = e.key;
+        }, { once: true });
+        el.addEventListener('blur', () => {
+          if (el.textContent === '입력...') el.textContent = prev;
+        }, { once: true });
+        el.focus();
+      });
+    });
     // 저장된 정렬값으로 버튼 UI 동기화
     const savedOpt = SORT_OPTIONS.find(o => o.key === sortOrder);
     if (savedOpt) {
@@ -2251,6 +2287,9 @@
               showToast(getTitle(rec) + ' 전사 완료!', 'success');
               addNotification('transcription', '✅ ' + getTitle(rec) + ' 전사 완료', rec.id);
               logActivity('transcribed', getTitle(rec));
+            }
+            if (autoSummarize && data.transcription_status === 2 && wasProcessing) {
+              requestAutoSummarize(rec.id, data.full_text || '');
             }
           }
         }
@@ -2400,6 +2439,14 @@
     if (elPreview) elPreview.checked = previewVisible;
     if (elAutoscroll) elAutoscroll.checked = autoScrollTranscript;
     if (elAutonext) elAutonext.checked = autoPlayNext;
+    const elAutoSum = document.getElementById('setting-autosummarize');
+    if (elAutoSum) elAutoSum.checked = autoSummarize;
+    // 커스텀 단축키 표시 업데이트
+    const keys = getCustomKeys();
+    const keySearch = document.getElementById('key-search');
+    const keyBookmark = document.getElementById('key-bookmark');
+    if (keySearch) keySearch.textContent = keys.search;
+    if (keyBookmark) keyBookmark.textContent = keys.bookmark;
   }
 
   function toggleCompactView() {
@@ -5707,6 +5754,30 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
   // ════════════════════════════════════════════
   // POLLING: prevTranscriptionMap
   // ════════════════════════════════════════════
+  // ── 커스텀 단축키 ──
+  const CUSTOM_KEYS_KEY = 'custom-keys';
+  const DEFAULT_KEYS = {
+    search: '/',
+    newNote: 'n',
+    bookmark: 'b',
+    stats: 's',
+    loop: 'l',
+  };
+  function getCustomKeys() {
+    try { return { ...DEFAULT_KEYS, ...JSON.parse(localStorage.getItem(CUSTOM_KEYS_KEY) || '{}') }; }
+    catch(e) { return { ...DEFAULT_KEYS }; }
+  }
+  function saveCustomKey(action, key) {
+    try {
+      const store = JSON.parse(localStorage.getItem(CUSTOM_KEYS_KEY) || '{}');
+      store[action] = key;
+      localStorage.setItem(CUSTOM_KEYS_KEY, JSON.stringify(store));
+    } catch(e) {}
+  }
+
+  // ── 자동 요약 전역 변수 ──
+  let autoSummarize = false;
+
   let prevTranscriptionMap = {};
 
   // ── 폴더 아이콘 ──
@@ -7145,6 +7216,28 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
         <span>자동 다음 재생</span>
         <input type="checkbox" id="setting-autonext" onchange="toggleAutoPlayNext()">
       </label>
+    </div>
+
+    <!-- 자동 요약 설정 -->
+    <div class="settings-section">
+      <div class="settings-title">AI 요약</div>
+      <label class="settings-row">
+        <span>전사 후 자동 요약</span>
+        <input type="checkbox" id="setting-autosummarize" onchange="autoSummarize=this.checked; localStorage.setItem('record_autoSummarize', this.checked?'1':'0'); showToast(this.checked?'자동 요약 켜짐':'자동 요약 꺼짐', 'info');">
+      </label>
+    </div>
+
+    <!-- 단축키 설정 -->
+    <div class="settings-section">
+      <div class="settings-title">단축키</div>
+      <div class="settings-row">
+        <span>검색</span>
+        <kbd id="key-search" class="editable-key" data-action="search" tabindex="0">/</kbd>
+      </div>
+      <div class="settings-row">
+        <span>북마크</span>
+        <kbd id="key-bookmark" class="editable-key" data-action="bookmark" tabindex="0">b</kbd>
+      </div>
     </div>
   </div>
 

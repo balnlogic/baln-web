@@ -736,6 +736,7 @@
             </select>
           </div>
         </div>
+        <button onclick="exportAllData()" style="width:100%;padding:6px 12px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--text3);font-size:11px;cursor:pointer;margin-top:4px;">⬇️ 데이터 백업</button>
         <button class="logout-btn" onclick="logout()">로그아웃</button>
       </div>
     </aside>
@@ -883,6 +884,7 @@
           <div class="transcript-box" id="detail-minutes-content" style="white-space:pre-wrap;outline:none;" contenteditable="false"></div>
           <div style="text-align:right;margin-top:6px;display:none;" id="detail-minutes-actions">
             <button onclick="saveDetailMinutes()" style="background:var(--primary);color:#fff;border:none;border-radius:7px;padding:5px 12px;font-size:12px;cursor:pointer;font-weight:600;">💾 저장</button>
+            <button onclick="exportMinutesPDF()" style="background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:5px 12px;font-size:12px;cursor:pointer;color:var(--text2);margin-left:4px;">🖨️ PDF</button>
           </div>
         </div>
         <div id="detail-tab-info" style="display:none;">
@@ -2292,6 +2294,9 @@
     const emails = raw.match(/[\w.+-]+@[\w-]+\.[\w.]+/g) || [];
     emails.forEach(e => { if (!minutesEmailList.includes(e)) minutesEmailList.push(e); });
 
+    // 템플릿 선택
+    const selectedTemplate = document.getElementById('min-template')?.value || 'default';
+
     // participants JSON 구성
     const nameParts = raw.split(',').map(s => s.trim()).filter(Boolean);
     const participantsArr = nameParts.map(s => {
@@ -2309,7 +2314,7 @@
           end: document.getElementById('min-end').value || null,
           location: document.getElementById('min-location').value || null,
           participants: participantsArr.length ? JSON.stringify(participantsArr) : null,
-          template: document.getElementById('min-template')?.value || 'default',
+          template: selectedTemplate, // minutes template 선택값
         }),
       });
       const result = await resp.json();
@@ -2901,6 +2906,60 @@
     a.click();
     URL.revokeObjectURL(url);
     showToast('⬇ 파일 다운로드 중...', 'success');
+  }
+
+  function exportMinutesPDF() {
+    if (!detailFileId) return;
+    const f = allFiles.find(x => x.id === detailFileId);
+    const title = f ? getTitle(f) : '회의록';
+    const content = document.getElementById('detail-minutes-content')?.innerText ||
+                    document.getElementById('min-result')?.value || '';
+    if (!content) { showToast('회의록 내용이 없습니다', 'error'); return; }
+
+    const win = window.open('', '_blank');
+    win.document.write(`<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>${title} - 회의록</title>
+<style>
+  body { font-family: -apple-system, 'Malgun Gothic', sans-serif; padding: 40px; color: #1a1a1a; line-height: 1.7; max-width: 800px; margin: 0 auto; }
+  h1 { font-size: 22px; margin-bottom: 6px; }
+  .meta { font-size: 13px; color: #666; margin-bottom: 24px; border-bottom: 1px solid #eee; padding-bottom: 12px; }
+  pre { white-space: pre-wrap; font-family: inherit; font-size: 14px; }
+  @media print { body { padding: 20px; } }
+</style>
+</head>
+<body>
+<h1>${title}</h1>
+<div class="meta">내보낸 시각: ${new Date().toLocaleString('ko-KR')}</div>
+<pre>${content.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</pre>
+<script>window.print(); window.close();<\/script>
+</body>
+</html>`);
+    win.document.close();
+  }
+
+  function exportAllData() {
+    const data = allFiles.map(f => ({
+      id: f.id,
+      title: getTitle(f),
+      duration: f.duration,
+      created_at: f.created_at,
+      topic: f.topic,
+      language: f.language,
+      full_text: f.full_text,
+      formatted_minutes: f.formatted_minutes,
+      source: f.source
+    }));
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `record-backup-${new Date().toISOString().slice(0,10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast(`${data.length}개 파일 데이터 내보내기 완료`, 'success');
   }
 
   function closeModal(id) {

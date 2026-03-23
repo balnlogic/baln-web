@@ -1271,6 +1271,7 @@
                   <div class="ctx-item" onclick="exportTranscript('txt');hideExportMenu()">📄 TXT</div>
                   <div class="ctx-item" onclick="exportTranscript('srt');hideExportMenu()">🎬 SRT 자막</div>
                   <div class="ctx-item" onclick="exportTranscript('json');hideExportMenu()">📦 JSON</div>
+                  <div class="ctx-item" onclick="exportPDF();hideExportMenu()">📄 PDF</div>
                 </div>
               </div>
             </div>
@@ -1502,6 +1503,40 @@
   // Toast queue system
   const toastQueue = [];
   let toastActive = false;
+  function exportPDF() {
+    const rec = allFiles.find(f => f.id === detailFileId);
+    if (!rec) return;
+    const f = rec;
+    const text = f.full_text || '전사 내용 없음';
+    const title = f.topic || f.file_name || '녹음';
+    const date = f.created_at ? new Date(f.created_at).toLocaleDateString('ko-KR') : '';
+
+    const printWin = window.open('', '_blank', 'width=800,height=600');
+    printWin.document.write(`<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>${title}</title>
+  <style>
+    body { font-family: 'Noto Sans KR', sans-serif; padding: 40px; max-width: 700px; margin: 0 auto; color: #222; }
+    h1 { font-size: 24px; border-bottom: 2px solid #333; padding-bottom: 8px; }
+    .meta { color: #666; font-size: 13px; margin-bottom: 24px; }
+    .text { line-height: 1.8; font-size: 15px; white-space: pre-wrap; }
+    @media print { button { display: none; } }
+  </style>
+</head>
+<body>
+  <h1>${title}</h1>
+  <div class="meta">📅 ${date} | 📁 ${f.folder || '미분류'}</div>
+  <div class="text">${text}</div>
+  <br>
+  <button onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
+</body>
+</html>`);
+    printWin.document.close();
+    setTimeout(() => printWin.print(), 500);
+  }
+
   async function exportTranscript(format) {
     const rec = allFiles.find(f => f.id === detailFileId);
     if (!rec) return;
@@ -1652,6 +1687,19 @@
   let ctxRecId = null;
   let ctxRec = null;
   let sortOrder = 'date_desc';
+  const SORT_KEY = 'sort-prefs';
+
+  function saveSortPrefs() {
+    localStorage.setItem(SORT_KEY, JSON.stringify({ sortOrder }));
+  }
+
+  function loadSortPrefs() {
+    try {
+      const p = JSON.parse(localStorage.getItem(SORT_KEY) || '{}');
+      if (p.sortOrder) sortOrder = p.sortOrder;
+    } catch(e) {}
+  }
+
   const RECENT_KEY = 'record-recent';
   let activeFilter = 'all'; // 'all' | 'today' | 'starred' | 'recent' | 'pending'
   let visibleCount = 30;
@@ -1858,6 +1906,13 @@
   }
 
   window.addEventListener('DOMContentLoaded', () => {
+    loadSortPrefs();
+    // 저장된 정렬값으로 버튼 UI 동기화
+    const savedOpt = SORT_OPTIONS.find(o => o.key === sortOrder);
+    if (savedOpt) {
+      const sortBtn = document.getElementById('sort-btn');
+      if (sortBtn) sortBtn.textContent = savedOpt.label;
+    }
     if (localStorage.getItem('rec_auth') === '1') {
       try {
         sb = window.supabase.createClient(RECORD_URL, atob(RECORD_KEY));
@@ -2501,6 +2556,7 @@
     const idx = SORT_OPTIONS.findIndex(o => o.key === sortOrder);
     sortOrder = SORT_OPTIONS[(idx + 1) % SORT_OPTIONS.length].key;
     document.getElementById('sort-btn').textContent = SORT_OPTIONS[(idx + 1) % SORT_OPTIONS.length].label;
+    saveSortPrefs();
     renderCurrentView();
   }
 

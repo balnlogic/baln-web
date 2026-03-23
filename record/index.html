@@ -769,6 +769,22 @@
 }
 #server-reconnect-btn.show { display:block; }
 #server-reconnect-btn:disabled { opacity:0.6; cursor:not-allowed; }
+
+.participant-chip { 
+  display:inline-flex; align-items:center; gap:4px; padding:3px 10px;
+  background:var(--surface); border:1px solid var(--border); border-radius:12px;
+  font-size:0.8rem; margin:2px;
+}
+.participant-chip .rm-p { cursor:pointer; color:var(--muted); font-size:0.7rem; }
+.participant-chip .rm-p:hover { color:#ef4444; }
+.participant-input-row { display:flex; gap:4px; margin-top:6px; }
+.participant-input-row input { padding:4px 8px; border:1px solid var(--border); border-radius:6px; background:var(--surface); color:var(--text); font-size:0.82rem; }
+.participant-input-row button { padding:4px 10px; background:var(--primary); color:#fff; border:none; border-radius:6px; cursor:pointer; }
+.action-item { display:flex; align-items:flex-start; gap:8px; padding:4px 0; }
+.action-item input[type=checkbox] { margin-top:3px; accent-color:var(--primary); }
+.action-item label { font-size:0.85rem; color:var(--text); cursor:pointer; line-height:1.4; }
+.action-item.checked label { text-decoration:line-through; color:var(--muted); }
+#action-items-list { margin-top:4px; }
 </style>
 </head>
 <body>
@@ -1089,6 +1105,19 @@
       </div>
     </div>
     <div id="emotion-empty" style="font-size:12px;color:var(--text3);">전사 후 분석 가능합니다.</div>
+  </div>
+  <div class="participants-section" style="margin-top:12px;">
+    <div class="info-label" style="font-size:11px;color:var(--text3);margin-bottom:4px;">참가자</div>
+    <div id="participants-list"></div>
+    <div class="participant-input-row">
+      <input id="participant-name" placeholder="이름" style="width:45%">
+      <input id="participant-email" placeholder="이메일 (선택)" style="width:45%">
+      <button onclick="addParticipantUI()">+</button>
+    </div>
+  </div>
+  <div style="margin-top:12px;">
+    <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">액션 아이템</div>
+    <div id="action-items-list"></div>
   </div>
 </div>
       </div>
@@ -3419,6 +3448,7 @@
       (tab === 'minutes' ? 'background:var(--surface); color:var(--text);' : 'background:none; color:var(--text2);');
     document.getElementById('tab-btn-info').style.background = isInfo ? 'var(--surface2)' : '';
     document.getElementById('tab-btn-info').style.color = isInfo ? 'var(--text)' : 'var(--text2)';
+    if (isInfo && detailFileId) { renderParticipants(detailFileId); renderActionItems(detailFileId); }
   }
 
   function copyActiveTabContent() {
@@ -4474,6 +4504,143 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
       else if (negative > positive && negative > neutral) { dominant = 'negative'; emoji = '😟'; }
       return { positive, negative, neutral, dominant, emoji };
     }
+
+  // ════════════════════════════════════════════
+  // 참가자 관리
+  // ════════════════════════════════════════════
+  function renderParticipants(recId) {
+    const el = document.getElementById('participants-list');
+    if (!el) return;
+    const rec = allFiles.find(f => f.id === recId);
+    if (!rec) { el.innerHTML = ''; return; }
+    let parts = [];
+    try {
+      parts = rec.participants
+        ? (typeof rec.participants === 'string' ? JSON.parse(rec.participants) : rec.participants)
+        : [];
+    } catch(e) { parts = []; }
+    if (!Array.isArray(parts)) parts = [];
+    if (parts.length === 0) {
+      el.innerHTML = '<span style="font-size:0.82rem;color:var(--muted);">참가자 없음</span>';
+      return;
+    }
+    el.innerHTML = parts.map(p =>
+      `<span class="participant-chip">${p.name}${p.email ? ' <span style="color:var(--muted);">'+p.email+'</span>' : ''}<span class="rm-p" onclick="removeParticipant('${recId}','${p.name.replace(/'/g,"\\'")}')">✕</span></span>`
+    ).join('');
+  }
+
+  async function addParticipant(recId, name, email) {
+    if (!name) return;
+    const rec = allFiles.find(f => f.id === recId);
+    if (!rec) return;
+    let parts = [];
+    try {
+      parts = rec.participants
+        ? (typeof rec.participants === 'string' ? JSON.parse(rec.participants) : rec.participants)
+        : [];
+    } catch(e) { parts = []; }
+    if (!Array.isArray(parts)) parts = [];
+    if (parts.find(p => p.name === name)) { showToast('이미 추가된 참가자입니다.', 'info'); return; }
+    parts.push({ name, email: email || '' });
+    await supaFetch('recordings?id=eq.' + recId, 'PATCH', { participants: JSON.stringify(parts) });
+    rec.participants = parts;
+    renderParticipants(recId);
+  }
+
+  async function removeParticipant(recId, name) {
+    const rec = allFiles.find(f => f.id === recId);
+    if (!rec) return;
+    let parts = [];
+    try {
+      parts = rec.participants
+        ? (typeof rec.participants === 'string' ? JSON.parse(rec.participants) : rec.participants)
+        : [];
+    } catch(e) { parts = []; }
+    if (!Array.isArray(parts)) parts = [];
+    parts = parts.filter(p => p.name !== name);
+    await supaFetch('recordings?id=eq.' + recId, 'PATCH', { participants: JSON.stringify(parts) });
+    rec.participants = parts;
+    renderParticipants(recId);
+  }
+
+  function addParticipantUI() {
+    const nameEl = document.getElementById('participant-name');
+    const emailEl = document.getElementById('participant-email');
+    const name = (nameEl?.value || '').trim();
+    const email = (emailEl?.value || '').trim();
+    if (!name) { showToast('이름을 입력해주세요.', 'info'); return; }
+    addParticipant(detailFileId, name, email);
+    if (nameEl) nameEl.value = '';
+    if (emailEl) emailEl.value = '';
+  }
+
+  // ════════════════════════════════════════════
+  // 액션 아이템 추출
+  // ════════════════════════════════════════════
+  const ACTION_ITEMS_KEY = 'action-items-state';
+
+  function extractActionItems(text) {
+    if (!text) return [];
+    const patterns = [
+      { re: /[^。.\n]*해주세요[^。.\n]*/g, keyword: '해주세요' },
+      { re: /[^。.\n]*하겠습니다[^。.\n]*/g, keyword: '하겠습니다' },
+      { re: /[^。.\n]*해야[^。.\n]*/g, keyword: '해야' },
+      { re: /[^。.\n]*검토[^。.\n]*/g, keyword: '검토' },
+      { re: /[^。.\n]*확인[^。.\n]*/g, keyword: '확인' },
+      { re: /[^。.\n]*작업[^。.\n]*/g, keyword: '작업' },
+      { re: /[^。.\n]*다음주[^。.\n]*/g, keyword: '다음주' },
+      { re: /[^。.\n]*오늘[^。.\n]*/g, keyword: '오늘' },
+      { re: /[^。.\n]*내일[^。.\n]*/g, keyword: '내일' },
+    ];
+    const results = [];
+    const seen = new Set();
+    for (const { re, keyword } of patterns) {
+      const matches = text.match(re) || [];
+      for (const m of matches) {
+        const trimmed = m.trim();
+        if (trimmed.length < 5) continue;
+        if (seen.has(trimmed)) continue;
+        seen.add(trimmed);
+        results.push({ text: trimmed, keyword });
+        if (results.length >= 10) return results;
+      }
+    }
+    return results;
+  }
+
+  function renderActionItems(recId) {
+    const el = document.getElementById('action-items-list');
+    if (!el) return;
+    const rec = allFiles.find(f => f.id === recId);
+    const text = rec?.full_text || '';
+    const items = extractActionItems(text);
+    if (items.length === 0) {
+      el.innerHTML = '<span style="font-size:0.82rem;color:var(--muted);">전사 후 추출 가능합니다.</span>';
+      return;
+    }
+    let state = {};
+    try { state = JSON.parse(localStorage.getItem(ACTION_ITEMS_KEY) || '{}'); } catch(e) { state = {}; }
+    const checked = state[recId] || [];
+    el.innerHTML = items.map((item, i) => {
+      const isChecked = checked.includes(i);
+      return `<div class="action-item${isChecked ? ' checked' : ''}" id="ai-row-${i}">
+        <input type="checkbox" id="ai-cb-${i}" ${isChecked ? 'checked' : ''} onchange="toggleActionItem('${recId}',${i})">
+        <label for="ai-cb-${i}">${item.text.replace(/</g,'&lt;').replace(/>/g,'&gt;')} <span style="font-size:0.75rem;color:var(--primary);opacity:0.7;">#${item.keyword}</span></label>
+      </div>`;
+    }).join('');
+  }
+
+  function toggleActionItem(recId, idx) {
+    let state = {};
+    try { state = JSON.parse(localStorage.getItem(ACTION_ITEMS_KEY) || '{}'); } catch(e) { state = {}; }
+    const checked = state[recId] || [];
+    const pos = checked.indexOf(idx);
+    if (pos === -1) checked.push(idx); else checked.splice(pos, 1);
+    state[recId] = checked;
+    localStorage.setItem(ACTION_ITEMS_KEY, JSON.stringify(state));
+    const row = document.getElementById('ai-row-' + idx);
+    if (row) row.className = 'action-item' + (checked.includes(idx) ? ' checked' : '');
+  }
 </script>
 <div class="shortcuts-panel" id="shortcuts-panel">
   <div class="sp-header">

@@ -1298,6 +1298,7 @@
         <audio id="detail-audio" controls>
       <canvas id="waveform-canvas" onclick="waveformClick(event)"></canvas></audio>
         <span id="loop-indicator">&#x1F501; 루프</span>
+        <span id="audio-time-display" style="font-size:12px; color:var(--text-secondary); font-family:monospace; min-width:90px; text-align:center;">0:00 / 0:00</span>
         <button class="icon-btn" id="audio-download-btn" onclick="downloadAudio()" title="오디오 다운로드" style="margin-left:4px;padding:4px 10px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);font-size:12px;cursor:pointer;">⬇️ 다운로드</button>
         <button class="auto-next-btn" id="auto-next-btn" onclick="toggleAutoPlayNext()" title="연속 재생 켜기/끄기">▶▶ 연속</button>
         <div class="gain-bar">
@@ -1322,6 +1323,7 @@
             title="내보내기">⬇ 내보내기</button>
           <button onclick="shareCurrentContent()" title="공유" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:4px 6px;border-radius:6px;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text3)'">↗️</button>
           <button onclick="copyPermalink()" title="퍼머링크 복사" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:4px 6px;border-radius:6px;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text3)'">🔗</button>
+          <button onclick="showQRCode(getPermalink(detailFileId))" title="QR 코드" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:4px 6px;border-radius:6px;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text3)'">⬛</button>
         </div>
         <div id="detail-search-wrap" style="padding:8px 0 4px;display:none;">
           <input id="detail-search-input" type="text" placeholder="전사 내 검색..." 
@@ -2225,6 +2227,17 @@
     if (!detailFileId) return;
     const url = getPermalink(detailFileId);
     navigator.clipboard.writeText(url).then(() => showToast('링크 복사됨', 'success'));
+  }
+
+  function showQRCode(url) {
+    const modal = document.getElementById('qr-modal');
+    document.getElementById('qr-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}`;
+    document.getElementById('qr-url-text').textContent = url;
+    modal.style.display = 'flex';
+  }
+
+  function closeQRModal() {
+    document.getElementById('qr-modal').style.display = 'none';
   }
 
   function checkHashDeeplink() {
@@ -4815,6 +4828,15 @@
     _lastSavedPlayPos = 0;
     audio.addEventListener('timeupdate', () => {
       if (audio.duration) drawWaveform(audio.currentTime / audio.duration);
+      // 오디오 시간 표시 업데이트
+      const display = document.getElementById('audio-time-display');
+      if (display) {
+        const cur = formatTime(audio.currentTime);
+        const total = formatTime(audio.duration || 0);
+        const rem = formatTime((audio.duration || 0) - audio.currentTime);
+        display.textContent = `${cur} / ${total}`;
+        display.title = `남은 시간: ${rem}`;
+      }
       // 구간 루프 체크
       if (loopMode && isFinite(loopEnd) && audio.currentTime >= loopEnd) {
         audio.currentTime = loopStart;
@@ -7238,6 +7260,16 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
         <span>북마크</span>
         <kbd id="key-bookmark" class="editable-key" data-action="bookmark" tabindex="0">b</kbd>
       </div>
+    </div>
+  </div>
+
+  <!-- QR 코드 모달 -->
+  <div id="qr-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:400; align-items:center; justify-content:center;">
+    <div style="background:var(--surface); padding:24px; border-radius:var(--radius-lg); text-align:center; min-width:240px;">
+      <div style="font-size:14px; font-weight:600; margin-bottom:12px;">📱 QR 코드</div>
+      <img id="qr-img" src="" alt="QR" style="width:200px; height:200px; border-radius:8px;">
+      <div style="margin-top:8px; font-size:12px; color:var(--text-secondary);" id="qr-url-text"></div>
+      <button onclick="closeQRModal()" style="margin-top:12px; padding:8px 20px; background:var(--primary); color:#fff; border:none; border-radius:var(--radius-sm); cursor:pointer;">닫기</button>
     </div>
   </div>
 

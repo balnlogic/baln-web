@@ -765,6 +765,16 @@
         </button>
       </div>
 
+
+      <div class="nav-section">
+        <div class="smart-folders-label">스마트 폴더</div>
+        <div id="smart-folders-nav">
+          <button class="smart-folder-item" data-sf="today" onclick="setSmartFolder('today')">📝 오늘의 회의</button>
+          <button class="smart-folder-item" data-sf="pending" onclick="setSmartFolder('pending')">⚡ 처리 필요</button>
+          <button class="smart-folder-item" data-sf="long" onclick="setSmartFolder('long')">📊 긴 녹음 (30분+)</button>
+        </div>
+      </div>
+
       <div class="nav-section">
         <div class="nav-section-label">폴더</div>
         <div id="folder-nav"></div>
@@ -997,6 +1007,11 @@
     <select id="info-topic-select" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:13px;color:var(--text);" onchange="saveInfoTopic(this.value)">
       <option value="">폴더 없음</option>
     </select>
+  </div>
+  <div style="margin-top:10px;">
+    <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">태그</div>
+    <div id="detail-tags"></div>
+    <input id="tag-input" placeholder="태그 추가 후 Enter" onkeydown="if(event.key==='Enter'&&this.value.trim()){addFileTag(detailFileId,this.value);this.value='';}" />
   </div>
 </div>
       </div>
@@ -1839,6 +1854,12 @@
 
   function filterFiles(files) {
     const today = new Date().toDateString();
+    if (currentView === 'smartFolder') {
+      if (activeSmartFolder === 'today') return files.filter(f => new Date(f.created_at).toDateString() === today);
+      if (activeSmartFolder === 'pending') return files.filter(f => f.transcription_status === 0);
+      if (activeSmartFolder === 'long') return files.filter(f => (f.duration || 0) >= 1800);
+      return files;
+    }
     switch (activeFilter) {
       case 'today':
         return files.filter(f => new Date(f.created_at).toDateString() === today);
@@ -2856,6 +2877,7 @@
     document.getElementById('info-filename').textContent = rec.file_name || '-';
     document.getElementById('info-size').textContent = rec.upload_size_bytes ? formatSize(rec.upload_size_bytes) : '-';
     document.getElementById('info-duration').textContent = formatDur(rec.duration);
+    renderFileTags(detailFileId);
     document.getElementById('info-language').textContent = rec.language || '-';
     document.getElementById('info-created').textContent = rec.created_at ? new Date(rec.created_at).toLocaleString('ko-KR') : '-';
     document.getElementById('info-source').textContent = rec.source || '-';
@@ -3172,6 +3194,28 @@
 }
 #loop-indicator.active { display:inline-flex; align-items:center; gap:4px; }
 mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
+
+/* ── Smart Folders ── */
+.smart-folder-item { 
+  padding:6px 12px; cursor:pointer; border-radius:6px; font-size:0.85rem;
+  display:flex; align-items:center; gap:8px; color:var(--text);
+  margin:1px 4px;
+}
+.smart-folder-item:hover { background:var(--surface); }
+.smart-folder-item.active { background:color-mix(in srgb, var(--primary) 15%, transparent); color:var(--primary); }
+.smart-folders-label { 
+  font-size:0.72rem; color:var(--muted); padding:12px 16px 4px; text-transform:uppercase; letter-spacing:0.05em;
+}
+/* ── File Tags ── */
+.file-tag { 
+  display:inline-flex; align-items:center; gap:3px; padding:2px 8px;
+  background:var(--primary)20; color:var(--primary); border-radius:10px;
+  font-size:0.75rem; margin:2px;
+}
+.file-tag .rm-tag { cursor:pointer; opacity:0.7; font-size:0.65rem; }
+.file-tag .rm-tag:hover { opacity:1; }
+#detail-tags { display:flex; flex-wrap:wrap; gap:4px; margin-bottom:8px; min-height:24px; }
+#tag-input { width:100%; padding:6px 10px; border:1px solid var(--border); border-radius:8px; background:var(--surface); color:var(--text); font-size:0.85rem; }
 </style>
 </head>
 <body>
@@ -3806,6 +3850,71 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
 
   function escHtml(str) {
     return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+
+  // ════════════════════════════════════════════
+  // SMART FOLDERS
+  // ════════════════════════════════════════════
+  let activeSmartFolder = null;
+
+  function setSmartFolder(sf) {
+    activeSmartFolder = sf;
+    // 다른 뷰 비활성화 후 smartFolder 뷰로 전환
+    currentView = 'smartFolder';
+    currentFolder = null;
+    visibleCount = PAGE_SIZE;
+    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.smart-folder-item').forEach(el => {
+      el.classList.toggle('active', el.dataset.sf === sf);
+    });
+    renderCurrentView();
+  }
+
+  // ════════════════════════════════════════════
+  // FILE TAGS (localStorage fallback)
+  // ════════════════════════════════════════════
+  const TAGS_KEY = 'file-tags';
+
+  function getFileTags(recId) {
+    try {
+      const all = JSON.parse(localStorage.getItem(TAGS_KEY) || '{}');
+      return all[recId] || [];
+    } catch { return []; }
+  }
+
+  function addFileTag(recId, tag) {
+    tag = tag.trim();
+    if (!tag) return;
+    try {
+      const all = JSON.parse(localStorage.getItem(TAGS_KEY) || '{}');
+      const tags = all[recId] || [];
+      if (!tags.includes(tag) && tags.length < 5) {
+        tags.push(tag);
+        all[recId] = tags;
+        localStorage.setItem(TAGS_KEY, JSON.stringify(all));
+      }
+    } catch {}
+    renderFileTags(recId);
+  }
+
+  function removeFileTag(recId, tag) {
+    try {
+      const all = JSON.parse(localStorage.getItem(TAGS_KEY) || '{}');
+      const tags = (all[recId] || []).filter(t => t !== tag);
+      all[recId] = tags;
+      localStorage.setItem(TAGS_KEY, JSON.stringify(all));
+    } catch {}
+    renderFileTags(recId);
+  }
+
+  function renderFileTags(recId) {
+    const container = document.getElementById('detail-tags');
+    if (!container) return;
+    const tags = getFileTags(recId);
+    container.innerHTML = tags.map(t =>
+      `<span class="file-tag">${t}<span class="rm-tag" onclick="removeFileTag(${JSON.stringify(recId)}, ${JSON.stringify(t)})">✕</span></span>`
+    ).join('');
   }
 
 </script>

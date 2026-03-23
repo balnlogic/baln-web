@@ -481,6 +481,7 @@
       transition: text-decoration-color .15s;
     }
     .seg-ts:hover { text-decoration-color: var(--primary); }
+    .seg-time { cursor:pointer; color:var(--primary); text-decoration:underline; font-size:12px; }
     .seg-ts.playing {
       background: var(--primary-dim);
       color: var(--primary);
@@ -2776,6 +2777,12 @@
         break;
     }
     // advancedFilter 적용
+    if (dateFrom) {
+      files = files.filter(f => new Date(f.created_at) >= new Date(dateFrom));
+    }
+    if (dateTo) {
+      files = files.filter(f => new Date(f.created_at) <= new Date(dateTo + 'T23:59:59'));
+    }
     if (advancedFilter.dateFrom) {
       const from = new Date(advancedFilter.dateFrom);
       files = files.filter(f => new Date(f.created_at) >= from);
@@ -4162,7 +4169,7 @@
           const startMin = String(Math.floor((s.start||0)/60)).padStart(2,'0');
           const startSec = String(Math.round((s.start||0)%60)).padStart(2,'0');
           const speakerColor = SPEAKER_COLORS[s.speakerIdx % SPEAKER_COLORS.length];
-          return `<div class="seg-item" data-idx="${idx}" style="border-left:3px solid ${speakerColor}" ondblclick="editSegment(${idx})"><span class="seg-ts" data-time="${s.start||0}" onclick="seekAudio(${s.start||0})">${startMin}:${startSec}</span><span class="seg-text">${esc(s.text||'')}</span></div>`;
+          return `<div class="seg-item" data-idx="${idx}" style="border-left:3px solid ${speakerColor}" ondblclick="editSegment(${idx})"><span class="seg-ts" data-time="${s.start||0}" onclick="jumpToTime(${s.start||0})">${startMin}:${startSec}</span><span class="seg-text">${esc(s.text||'')}</span></div>`;
         }).join('');
         txEl.innerHTML = segsHtml;
         renderKeyPoints(data.full_text || segsWithSpeaker.map(s=>s.text).join(' '));
@@ -4364,6 +4371,14 @@
     if (!audio) return;
     audio.currentTime = seconds;
     if (audio.paused) audio.play().catch(() => {});
+  }
+
+  function jumpToTime(seconds) {
+    const audio = document.getElementById('detail-audio');
+    if (!audio) return;
+    audio.currentTime = seconds;
+    if (audio.paused) audio.play().catch(() => {});
+    showToast('⏩ ' + Math.floor(seconds/60) + ':' + String(Math.floor(seconds%60)).padStart(2,'0') + ' 로 이동');
   }
 
   function showTranscriptStats(text) {
@@ -5185,7 +5200,7 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
       return;
     }
     container.innerHTML = list.map(sec =>
-      `<span class="bookmark-item" onclick="seekAudio(${sec})">${formatTime(sec)} <span onclick="event.stopPropagation();removeBookmark(${JSON.stringify(recId)},${sec})" style="opacity:0.6;font-size:0.9em;">×</span></span>`
+      `<span class="bookmark-item" onclick="jumpToTime(${sec})">${formatTime(sec)} <span onclick="event.stopPropagation();removeBookmark(${JSON.stringify(recId)},${sec})" style="opacity:0.6;font-size:0.9em;">×</span></span>`
     ).join('');
   }
 
@@ -6226,6 +6241,14 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
     if (_prevFocusEl) { _prevFocusEl.focus(); _prevFocusEl = null; }
   }
 
+
+  // ── 날짜 범위 필터 (전역 변수) ──
+  let dateFrom = '';
+  let dateTo = '';
+
+  function applyDateFilter() {
+    loadFiles();
+  }
 
   // ── 고급 필터 ──
   let advancedFilter = { dateFrom: null, dateTo: null, status: '', minLen: 0 };

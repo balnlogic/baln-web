@@ -28,6 +28,24 @@
       --bg2: var(--surface2);
       --bg3: var(--surface3);
       --text1: var(--text);
+      /* 시맨틱 색상 */
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --info: #3b82f6;
+      /* 오버레이 */
+      --overlay: rgba(0,0,0,0.5);
+      /* 그림자 */
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.15);
+      --shadow: 0 4px 16px rgba(0,0,0,0.2);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.3);
+      /* 반경 */
+      --radius-sm: 4px;
+      --radius: 8px;
+      --radius-lg: 12px;
+      --radius-xl: 16px;
+      /* 전환 */
+      --transition: 0.15s ease;
     }
     body.light-theme {
       --bg: #F5F5F5;
@@ -1095,14 +1113,14 @@
 </div>
 
 <!-- ══ DETAIL MODAL ══ -->
-<div class="modal-overlay" id="modal-detail">
+<div class="modal-overlay" id="modal-detail" role="dialog" aria-modal="true" aria-labelledby="detail-title">
   <div class="modal-card detail-card" style="max-width:680px;">
     <div class="modal-head">
       <h3 id="detail-title" style="max-width:75%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">녹음 상세</h3>
       <div style="display:flex;align-items:center;gap:2px;">
         <button onclick="navigateDetail(-1)" style="background:none;border:none;cursor:pointer;color:var(--text3);font-size:18px;padding:4px 8px;" title="이전 파일 (←)">←</button>
         <button onclick="navigateDetail(1)" style="background:none;border:none;cursor:pointer;color:var(--text3);font-size:18px;padding:4px 8px;" title="다음 파일 (→)">→</button>
-        <button class="modal-close" onclick="closeModal('modal-detail')">×</button>
+        <button class="modal-close" onclick="closeModal('modal-detail')" aria-label="상세 모달 닫기">×</button>
       </div>
     </div>
     <div class="modal-body">
@@ -5626,6 +5644,38 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
     }).join('');
   }
 
+
+  // ── 접근성: 포커스 트랩 ──
+  let _prevFocusEl = null;
+
+  function trapFocus(modalEl) {
+    const focusables = modalEl.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    if (!focusables.length) return;
+    const first = focusables[0], last = focusables[focusables.length - 1];
+    modalEl.addEventListener('keydown', function handler(e) {
+      if (e.key !== 'Tab') return;
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+    first.focus();
+  }
+
+  function openModalWithFocus(modalEl) {
+    _prevFocusEl = document.activeElement;
+    modalEl.classList.add('open');
+    setTimeout(() => trapFocus(modalEl), 50);
+  }
+
+  function closeModalWithFocus(modalEl) {
+    modalEl.classList.remove('open');
+    if (_prevFocusEl) { _prevFocusEl.focus(); _prevFocusEl = null; }
+  }
+
 </script>
 <div class="shortcuts-panel" id="shortcuts-panel">
   <div class="sp-header">
@@ -5684,21 +5734,21 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
   <button class="mobile-nav-btn" onclick="toggleMobileSidebar()">📁<span>폴더</span></button>
   <button class="mobile-nav-btn" onclick="setFilter('all')">📋<span>전체</span></button>
   <button class="mobile-nav-btn" onclick="setFilter('starred')">⭐<span>즐겨찾기</span></button>
-  <button class="mobile-nav-btn" onclick="document.getElementById('search-input').focus()">🔍<span>검색</span></button>
+  <button class="mobile-nav-btn" onclick="document.getElementById('search-input').focus()" aria-label="검색창 열기">🔍<span>검색</span></button>
 </nav>
 <div id="cmd-palette-overlay" onclick="closeCmdPalette()" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.5)"></div>
-<div id="cmd-palette">
+<div id="cmd-palette" role="dialog" aria-modal="true" aria-label="명령 팔레트">
   <input id="cmd-input" placeholder="파일 검색 또는 명령 입력..." autocomplete="off" oninput="updateCmdResults(this.value)" onkeydown="handleCmdKey(event)">
   <div id="cmd-results"></div>
 </div>
 
 
   <!-- Compare Modal -->
-  <div id="compare-modal">
+  <div id="compare-modal" role="dialog" aria-modal="true" aria-label="파일 비교">
     <div id="compare-inner">
       <div id="compare-header">
         <h3 style="margin:0;font-size:1rem">📋 파일 비교</h3>
-        <button onclick="closeCompareModal()" style="background:none;border:none;cursor:pointer;font-size:1.2rem;color:var(--muted)">✕</button>
+        <button onclick="closeCompareModal()" style="background:none;border:none;cursor:pointer;font-size:1.2rem;color:var(--muted)" aria-label="비교 모달 닫기">✕</button>
       </div>
       <div class="compare-panels">
         <div class="compare-panel" id="compare-left"></div>

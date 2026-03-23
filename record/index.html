@@ -1004,6 +1004,8 @@
   .detail-folder-row { display:flex; align-items:center; gap:8px; padding:4px 0; }
   .detail-folder-row label { font-size:13px; color:var(--text-secondary); min-width:48px; }
   .detail-folder-row select { flex:1; padding:4px 8px; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--surface); color:var(--text); font-size:13px; }
+    .stats-period-btn { padding:6px 14px; border:1px solid var(--border); border-radius:var(--radius); background:var(--surface); color:var(--text-secondary); cursor:pointer; font-size:13px; }
+    .stats-period-btn.active { background:var(--primary); color:#fff; border-color:var(--primary); }
 </style>
 </head>
 <body>
@@ -1327,8 +1329,8 @@
               </div>
             </div>
           </div>
+          <div id="transcript-stats" style="display:flex; gap:16px; font-size:12px; color:var(--text-secondary); padding:4px 0; border-bottom:1px solid var(--border); margin-bottom:8px;"></div>
           <div class="transcript-box" id="detail-transcript">불러오는 중...</div>
-          <div id="transcript-stats" style="display:none;font-size:11px;color:var(--text3);padding:6px 2px;text-align:right;border-top:1px solid var(--border);margin-top:6px;"></div>
           <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
             <button onclick="toggleQaPanel()" style="background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.5);border-radius:7px;padding:5px 12px;font-size:12px;color:#f59e0b;cursor:pointer;font-weight:600;">❓ 질문</button>
             <div style="display:flex;gap:6px;">
@@ -4547,14 +4549,23 @@
     showToast('⏩ ' + Math.floor(seconds/60) + ':' + String(Math.floor(seconds%60)).padStart(2,'0') + ' 로 이동');
   }
 
-  function showTranscriptStats(text) {
-    const statsEl = document.getElementById('transcript-stats');
-    if (!statsEl || !text) { if (statsEl) statsEl.style.display = 'none'; return; }
+  function calcReadingTime(text) {
     const chars = text.length;
-    const words = text.trim().split(/\s+/).filter(Boolean).length;
-    const readMin = Math.max(1, Math.round(words / 200));
-    statsEl.textContent = `글자 ${chars.toLocaleString()} · 단어 ${words.toLocaleString()} · 약 ${readMin}분 읽기`;
-    statsEl.style.display = '';
+    const words = text.split(/\s+/).filter(Boolean).length;
+    const minutes = Math.ceil(text.length / 350);
+    return { chars, words, minutes };
+  }
+
+  function renderTranscriptStats(text) {
+    const statsEl = document.getElementById('transcript-stats');
+    if (!statsEl) return;
+    if (!text || !text.trim()) { statsEl.innerHTML = ''; return; }
+    const stats = calcReadingTime(text);
+    statsEl.innerHTML = `<span>${stats.chars.toLocaleString()}자</span><span>${stats.words.toLocaleString()}단어</span><span>약 ${stats.minutes}분 읽기</span>`;
+  }
+
+  function showTranscriptStats(text) {
+    renderTranscriptStats(text || '');
   }
 
   async function saveDetailMinutes() {
@@ -5884,6 +5895,16 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
     console.table(groups.map(g => ({ files: g.map(id => allFiles.find(f=>f.id===id)?.file_name).join(', ') })));
   }
 
+  let statsViewPeriod = 'all'; // 'all' | 'week' | 'month'
+
+  function setStatsPeriod(period) {
+    statsViewPeriod = period;
+    document.querySelectorAll('.stats-period-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.period === period);
+    });
+    showStatsView();
+  }
+
   function showStatsView() {
     currentView = 'stats';
     document.querySelectorAll('.nav-item[data-view]').forEach(el => {
@@ -5892,15 +5913,24 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
     document.getElementById('topbar-title').textContent = '📊 통계';
     clearSelection();
 
-    const total = allFiles.length;
-    const done = allFiles.filter(f => f.transcription_status === 2).length;
+    const now = new Date();
+    let filteredFiles = allFiles;
+    if (statsViewPeriod === 'week') {
+      const cutoff = new Date(now); cutoff.setDate(now.getDate() - 7); cutoff.setHours(0,0,0,0);
+      filteredFiles = allFiles.filter(f => f.created_at && new Date(f.created_at) >= cutoff);
+    } else if (statsViewPeriod === 'month') {
+      const cutoff = new Date(now); cutoff.setDate(now.getDate() - 30); cutoff.setHours(0,0,0,0);
+      filteredFiles = allFiles.filter(f => f.created_at && new Date(f.created_at) >= cutoff);
+    }
+
+    const total = filteredFiles.length;
+    const done = filteredFiles.filter(f => f.transcription_status === 2).length;
     const rate = total ? Math.round(done / total * 100) : 0;
-    const totalSecs = allFiles.reduce((s, f) => s + (f.duration || 0), 0);
+    const totalSecs = filteredFiles.reduce((s, f) => s + (f.duration || 0), 0);
     const totalH = Math.floor(totalSecs / 3600);
     const totalM = Math.floor((totalSecs % 3600) / 60);
     const totalTimeStr = totalH > 0 ? `${totalH}시간 ${totalM}분` : `${totalM}분`;
 
-    const now = new Date();
     const weekStart = new Date(now);
     weekStart.setDate(now.getDate() - now.getDay());
     weekStart.setHours(0, 0, 0, 0);
@@ -5909,7 +5939,7 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
     // 요일별 분포
     const dayNames = ['일','월','화','수','목','금','토'];
     const dayCounts = new Array(7).fill(0);
-    allFiles.forEach(f => { if (f.created_at) dayCounts[new Date(f.created_at).getDay()]++; });
+    filteredFiles.forEach(f => { if (f.created_at) dayCounts[new Date(f.created_at).getDay()]++; });
     const maxDay = Math.max(...dayCounts, 1);
 
     const dayBarsHtml = dayNames.map((d, i) => {
@@ -5921,9 +5951,9 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
     }).join('');
 
     // 폴더별 파일 수
-    const topics = [...new Set(allFiles.map(f => f.topic).filter(Boolean))].sort();
-    const unclassifiedCount = allFiles.filter(f => !f.topic).length;
-    const folderData = topics.map(t => ({ label: t, count: allFiles.filter(f => f.topic === t).length }));
+    const topics = [...new Set(filteredFiles.map(f => f.topic).filter(Boolean))].sort();
+    const unclassifiedCount = filteredFiles.filter(f => !f.topic).length;
+    const folderData = topics.map(t => ({ label: t, count: filteredFiles.filter(f => f.topic === t).length }));
     if (unclassifiedCount > 0) folderData.push({ label: '미분류', count: unclassifiedCount });
     folderData.sort((a, b) => b.count - a.count);
     const maxFolder = Math.max(...folderData.map(d => d.count), 1);
@@ -5937,6 +5967,11 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
     }).join('');
 
     const html = `
+      <div id="stats-period-tabs" style="display:flex; gap:8px; margin-bottom:16px;">
+        <button onclick="setStatsPeriod('week')" class="stats-period-btn${statsViewPeriod === 'week' ? ' active' : ''}" data-period="week">이번 주</button>
+        <button onclick="setStatsPeriod('month')" class="stats-period-btn${statsViewPeriod === 'month' ? ' active' : ''}" data-period="month">이번 달</button>
+        <button onclick="setStatsPeriod('all')" class="stats-period-btn${statsViewPeriod === 'all' ? ' active' : ''}" data-period="all">전체</button>
+      </div>
       <div class="stats-grid">
         <div class="stats-card">
           <div class="s-label">총 녹음 수</div>

@@ -301,7 +301,7 @@
       padding: 24px 28px;
       z-index: 9999;
       min-width: 320px;
-      max-width: 400px;
+      max-width: 680px;
       box-shadow: 0 20px 60px rgba(0,0,0,.4);
       opacity: 0;
       pointer-events: none;
@@ -328,6 +328,15 @@
       color: var(--text2);
     }
     .shortcut-row:last-child { border-bottom: none; }
+    .sp-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .sp-section { }
+    .sp-title { font-size:0.75rem; font-weight:600; color:var(--primary); margin-bottom:8px; text-transform:uppercase; }
+    .sp-row { display:flex; align-items:center; gap:6px; margin-bottom:4px; font-size:0.82rem; }
+    .sp-row kbd { background:var(--surface); border:1px solid var(--border); border-radius:4px; padding:1px 5px; font-size:0.75rem; font-family:monospace; white-space:nowrap; }
+    .sp-row span { color:var(--muted); }
+    .sp-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+    .sp-header h3 { margin:0; font-size:1rem; }
+    .sp-header button { background:none; border:none; cursor:pointer; font-size:1rem; color:var(--muted); }
 
 .confirm-dialog {
   position: fixed;
@@ -655,7 +664,7 @@
     ::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
 
     /* ══ TOAST ══ */
-    #toast-container { position:fixed; bottom:24px; right:20px; z-index:9999; display:flex; flex-direction:column-reverse; gap:8px; pointer-events:none; }
+    #toast-container { position:fixed; bottom:80px; right:20px; z-index:9999; display:flex; flex-direction:column-reverse; gap:8px; pointer-events:none; }
     .toast { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:10px 16px; font-size:13px; color:var(--text); box-shadow:0 4px 16px rgba(0,0,0,.4); opacity:0; transform:translateY(8px); transition:opacity .25s, transform .25s; pointer-events:none; max-width:320px; }
     .toast.show { opacity:1; transform:translateY(0); }
     .toast.toast-err { border-color:var(--red); color:var(--red); }
@@ -1116,7 +1125,18 @@
   // ════════════════════════════════════════════
   // TOAST
   // ════════════════════════════════════════════
+  // Toast queue system
+  const toastQueue = [];
+  let toastActive = false;
   function showToast(msg, type = 'info') {
+    if (toastQueue.length >= 5) toastQueue.shift(); // 최대 5개, 초과 시 오래된 것 제거
+    toastQueue.push({ msg, type });
+    if (!toastActive) _processToastQueue();
+  }
+  function _processToastQueue() {
+    if (!toastQueue.length) { toastActive = false; return; }
+    toastActive = true;
+    const { msg, type } = toastQueue.shift();
     const container = document.getElementById('toast-container');
     const el = document.createElement('div');
     el.className = 'toast' + (type === 'error' ? ' toast-err' : type === 'success' ? ' toast-ok' : '');
@@ -1125,8 +1145,8 @@
     requestAnimationFrame(() => { requestAnimationFrame(() => el.classList.add('show')); });
     setTimeout(() => {
       el.classList.remove('show');
-      setTimeout(() => el.remove(), 300);
-    }, 3500);
+      setTimeout(() => { el.remove(); _processToastQueue(); }, 300);
+    }, 2500);
   }
 
   // ════════════════════════════════════════════
@@ -4060,16 +4080,47 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
 
 </script>
 <div class="shortcuts-panel" id="shortcuts-panel">
-  <h3>⌨️ 키보드 단축키</h3>
-  <div class="shortcut-row"><span>검색창 포커스</span><kbd>⌘F</kbd></div>
-  <div class="shortcut-row"><span>새 파일 업로드</span><kbd>⌘N</kbd></div>
-  <div class="shortcut-row"><span>모달/패널 닫기</span><kbd>Esc</kbd></div>
-  <div class="shortcut-row"><span>단축키 도움말</span><kbd>?</kbd></div>
-  <div class="shortcut-row"><span>정렬 변경</span><kbd>S</kbd></div>
-  <div class="shortcut-row"><span>홈으로</span><kbd>G</kbd></div>
-  <div class="shortcut-row"><span>전체 파일</span><kbd>A</kbd></div>
-  <div class="shortcut-row"><span>미전사 토글</span><kbd>U</kbd></div>
-  <div class="shortcut-row"><span>빠른 메모</span><kbd>N</kbd></div>
+  <div class="sp-header">
+    <h3>⌨️ 단축키</h3>
+    <button onclick="toggleShortcutsPanel()">✕</button>
+  </div>
+  <div class="sp-grid">
+    <div class="sp-section">
+      <div class="sp-title">파일 탐색</div>
+      <div class="sp-row"><kbd>↑</kbd><kbd>↓</kbd><span>이전/다음 파일</span></div>
+      <div class="sp-row"><kbd>←</kbd><span>목록으로 돌아가기</span></div>
+      <div class="sp-row"><kbd>→</kbd><span>파일 열기</span></div>
+      <div class="sp-row"><kbd>G</kbd><span>다음 파일</span></div>
+      <div class="sp-row"><kbd>A</kbd><span>이전 파일</span></div>
+      <div class="sp-row"><kbd>U</kbd><span>목록 상단으로</span></div>
+      <div class="sp-row"><kbd>Shift</kbd><span>+클릭 범위 선택</span></div>
+      <div class="sp-row"><kbd>Ctrl+A</kbd><span>전체 선택</span></div>
+    </div>
+    <div class="sp-section">
+      <div class="sp-title">재생</div>
+      <div class="sp-row"><kbd>Space</kbd><span>재생/정지</span></div>
+      <div class="sp-row"><kbd>←</kbd><kbd>→</kbd><span>10초 이동</span></div>
+      <div class="sp-row"><kbd>0</kbd><span>처음으로</span></div>
+      <div class="sp-row"><kbd>1</kbd>~<kbd>5</kbd><span>속도 (0.5x~2x)</span></div>
+      <div class="sp-row"><kbd>+</kbd><span>속도 높이기</span></div>
+      <div class="sp-row"><kbd>-</kbd><span>속도 낮추기</span></div>
+      <div class="sp-row"><kbd>L</kbd><span>루프 토글</span></div>
+      <div class="sp-row"><kbd>[</kbd><kbd>]</kbd><span>루프 시작/끝</span></div>
+      <div class="sp-row"><kbd>B</kbd><span>북마크 추가 (재생중)</span></div>
+    </div>
+    <div class="sp-section">
+      <div class="sp-title">편집 / UI</div>
+      <div class="sp-row"><kbd>R</kbd><span>이름 변경</span></div>
+      <div class="sp-row"><kbd>T</kbd><span>재전사 요청</span></div>
+      <div class="sp-row"><kbd>S</kbd><span>별표 토글</span></div>
+      <div class="sp-row"><kbd>D</kbd><span>삭제</span></div>
+      <div class="sp-row"><kbd>N</kbd><span>빠른 메모</span></div>
+      <div class="sp-row"><kbd>/</kbd><span>검색창 포커스</span></div>
+      <div class="sp-row"><kbd>F</kbd><span>필터 탭 순환</span></div>
+      <div class="sp-row"><kbd>?</kbd><span>단축키 도움말</span></div>
+      <div class="sp-row"><kbd>Esc</kbd><span>닫기/취소</span></div>
+    </div>
+  </div>
 </div>
 <button class="quick-note-fab" onclick="toggleQuickNote()" title="빠른 메모 (N)" id="quick-note-fab">📝</button>
 <div class="quick-note-panel" id="quick-note-panel">

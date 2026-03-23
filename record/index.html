@@ -889,6 +889,9 @@
   }
   #notif-badge.show { display:flex; }
   .notif-btn-wrap { position:relative; }
+  .qa-msg { padding:6px 10px; border-radius:8px; font-size:0.83rem; margin-bottom:4px; line-height:1.5; }
+  .qa-user { background:color-mix(in srgb, var(--primary) 13%, transparent); color:var(--text); }
+  .qa-assistant { background:var(--surface); border:1px solid var(--border); color:var(--text); }
 </style>
 </head>
 <body>
@@ -1125,6 +1128,7 @@
             style="flex-shrink:0; padding:5px 10px; border-radius:8px; border:1px solid var(--border); background:var(--surface2); color:var(--text2); font-size:12px; cursor:pointer; transition:background .15s;"
             title="내보내기">⬇ 내보내기</button>
           <button onclick="shareCurrentContent()" title="공유" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:4px 6px;border-radius:6px;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text3)'">↗️</button>
+          <button onclick="copyPermalink()" title="퍼머링크 복사" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:4px 6px;border-radius:6px;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text3)'">🔗</button>
         </div>
         <div id="detail-search-wrap" style="padding:8px 0 4px;display:none;">
           <input id="detail-search-input" type="text" placeholder="전사 내 검색..." 
@@ -1158,12 +1162,23 @@
           </div>
           <div class="transcript-box" id="detail-transcript">불러오는 중...</div>
           <div id="transcript-stats" style="display:none;font-size:11px;color:var(--text3);padding:6px 2px;text-align:right;border-top:1px solid var(--border);margin-top:6px;"></div>
-          <div style="text-align:right;margin-top:8px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+            <button onclick="toggleQaPanel()" style="background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.5);border-radius:7px;padding:5px 12px;font-size:12px;color:#f59e0b;cursor:pointer;font-weight:600;">❓ 질문</button>
+            <div style="display:flex;gap:6px;">
             <button id="btn-summarize" onclick="generateSummary()" style="background:var(--primary-dim);border:1px solid var(--primary);border-radius:7px;padding:5px 12px;font-size:12px;color:var(--primary);cursor:pointer;font-weight:600;">⚡ AI 요약</button>
-            <button onclick="quickMinutes()" style="background:rgba(59,130,246,.1);border:1px solid #3B82F6;border-radius:7px;padding:5px 12px;font-size:12px;color:#3B82F6;cursor:pointer;font-weight:600;margin-left:6px;">📋 회의록</button>
+            <button onclick="quickMinutes()" style="background:rgba(59,130,246,.1);border:1px solid #3B82F6;border-radius:7px;padding:5px 12px;font-size:12px;color:#3B82F6;cursor:pointer;font-weight:600;">📋 회의록</button>
+            </div>
           </div>
           <div class="summary-box" id="detail-summary"></div>
           <div id="bookmarks-list"></div>
+          <div id="qa-panel" style="display:none; border-top:1px solid var(--border); padding:12px 0; margin-top:8px">
+            <div style="font-size:0.85rem;font-weight:600;margin-bottom:8px">❓ 전사 내용 질문</div>
+            <div id="qa-messages" style="max-height:200px;overflow-y:auto;margin-bottom:8px;display:flex;flex-direction:column;gap:2px;"></div>
+            <div style="display:flex;gap:6px">
+              <input id="qa-input" placeholder="질문 입력..." style="flex:1;padding:6px 10px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);font-size:0.85rem" onkeydown="if(event.key==='Enter')askQuestion()">
+              <button onclick="askQuestion()" style="padding:6px 12px;background:var(--primary);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:0.85rem">전송</button>
+            </div>
+          </div>
         </div>
         <div id="detail-tab-minutes" style="display:none;">
           <div class="minutes-tab-bar">
@@ -1680,6 +1695,77 @@
   // ════════════════════════════════════════════
   // DATA
   // ════════════════════════════════════════════
+  // ── QA 패널 (전사 내 AI 질문) ──
+  let qaVisible = false;
+  function toggleQaPanel() {
+    qaVisible = !qaVisible;
+    const panel = document.getElementById('qa-panel');
+    if (panel) panel.style.display = qaVisible ? 'block' : 'none';
+  }
+
+  async function askQuestion() {
+    const input = document.getElementById('qa-input');
+    const q = input?.value?.trim();
+    if (!q) return;
+    input.value = '';
+
+    const rec = allFiles.find(f => f.id === detailFileId);
+    const transcript = rec?.full_text || '';
+    if (!transcript) { showToast('전사 내용이 없습니다', 'info'); return; }
+
+    appendQaMessage('user', q);
+    appendQaMessage('assistant', '답변 생성 중...');
+
+    try {
+      const resp = await fetch('http://127.0.0.1:7432/summarize', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ recId: detailFileId, question: q, transcript })
+      });
+      const data = await resp.json();
+      updateLastQaMessage(data.summary || data.result || '답변을 가져올 수 없습니다.');
+    } catch(e) {
+      updateLastQaMessage('서버에 연결할 수 없습니다. 로컬 서버를 확인해주세요.');
+    }
+  }
+
+  function appendQaMessage(role, text) {
+    const msgs = document.getElementById('qa-messages');
+    if (!msgs) return;
+    const div = document.createElement('div');
+    div.className = `qa-msg qa-${role}`;
+    div.textContent = text;
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function updateLastQaMessage(text) {
+    const msgs = document.getElementById('qa-messages');
+    const last = msgs?.lastChild;
+    if (last) last.textContent = text;
+  }
+
+  // ── 퍼머링크 (파일 딥링크) ──
+  function getPermalink(id) {
+    return window.location.href.split('#')[0] + '#rec-' + id;
+  }
+
+  function copyPermalink() {
+    if (!detailFileId) return;
+    const url = getPermalink(detailFileId);
+    navigator.clipboard.writeText(url).then(() => showToast('링크 복사됨', 'success'));
+  }
+
+  function checkHashDeeplink() {
+    const hash = window.location.hash;
+    if (hash && hash.startsWith('#rec-')) {
+      const id = hash.slice(5);
+      setTimeout(() => {
+        const rec = allFiles.find(f => String(f.id) === id);
+        if (rec) openDetail(rec.id);
+      }, 500);
+    }
+  }
+
   async function loadFiles() {
     isLoading = true;
     if (document.getElementById('file-list')) showSkeletons(5);

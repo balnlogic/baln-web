@@ -726,6 +726,17 @@
 }
 .mobile-nav-btn.active { color: var(--primary); }
   .quality-badge { font-size:0.75rem; padding:2px 8px; border-radius:10px; margin-left:8px; }
+  .view-toggle { display:flex; gap:4px; margin-bottom:12px; }
+  .view-toggle-btn { padding:4px 10px; border-radius:6px; font-size:0.8rem; cursor:pointer; border:1px solid var(--border); background:none; color:var(--muted); }
+  .view-toggle-btn.active { background:var(--primary); color:#fff; border-color:var(--primary); }
+  .group-header {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:8px 12px; font-size:0.82rem; font-weight:600; color:var(--muted);
+    cursor:pointer; border-radius:8px; margin-top:8px;
+  }
+  .group-header:hover { background:var(--surface); }
+  .group-count { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1px 7px; font-size:0.75rem; font-weight:400; }
+  .group-collapsed .group-items { display:none; }
 </style>
 </head>
 <body>
@@ -938,6 +949,7 @@
         <audio id="detail-audio" controls>
       <canvas id="waveform-canvas" onclick="waveformClick(event)"></canvas></audio>
         <span id="loop-indicator">&#x1F501; 루프</span>
+        <button class="icon-btn" id="audio-download-btn" onclick="downloadAudio()" title="오디오 다운로드" style="margin-left:4px;padding:4px 10px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);font-size:12px;cursor:pointer;">⬇️ 다운로드</button>
       </div>
       <div style="margin-top:14px;">
         <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
@@ -1458,6 +1470,68 @@
     if (el2) el2.textContent = `전사 ${done}개`;
   }
 
+
+  // ════════════════════════════════════════════
+  // VIEW MODE (목록/날짜별/폴더별)
+  // ════════════════════════════════════════════
+  let viewMode = 'list'; // 'list' | 'date' | 'folder'
+
+  function setViewMode(mode) {
+    viewMode = mode;
+    renderCurrentView();
+  }
+
+  function renderGroupedView(files, groupByFn, labelFn) {
+    const groups = {};
+    const order = [];
+    for (const f of files) {
+      const key = groupByFn(f);
+      if (!groups[key]) { groups[key] = []; order.push(key); }
+      groups[key].push(f);
+    }
+    return order.map(key => {
+      const items = groups[key];
+      const id = 'grp-' + key.replace(/[^a-zA-Z0-9]/g, '_');
+      return `<div class="group-section" id="${id}">
+        <div class="group-header" onclick="toggleGroup('${id}')">
+          <span>${labelFn(key)}</span>
+          <span class="group-count">${items.length}개</span>
+        </div>
+        <div class="group-items">
+          ${items.map(f => renderFileItem(f)).join('')}
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function toggleGroup(id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('group-collapsed');
+  }
+
+  // ════════════════════════════════════════════
+  // DOWNLOAD AUDIO
+  // ════════════════════════════════════════════
+  async function downloadAudio() {
+    if (!detailFileId) return;
+    const rec = allFiles.find(f => f.id === detailFileId);
+    if (!rec || !rec.file_path) { showToast('파일 경로를 찾을 수 없습니다.', 'error'); return; }
+    showToast('다운로드 준비 중...', 'info');
+    try {
+      const { data: urlData, error } = await sb.storage.from('recordings').createSignedUrl(rec.file_path, 300);
+      if (error || !urlData?.signedUrl) throw new Error(error?.message || 'URL 생성 실패');
+      const a = document.createElement('a');
+      a.href = urlData.signedUrl;
+      a.download = rec.file_name || (rec.file_path.split('/').pop()) || 'recording';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showToast('다운로드 시작', 'success');
+    } catch(e) {
+      showToast('다운로드 실패: ' + e.message, 'error');
+    }
+  }
+
   function renderCurrentView() {
     const q = (document.getElementById('search-input')?.value || '').toLowerCase().trim();
     let files = allFiles;
@@ -1658,16 +1732,44 @@
       <button class="filter-tab ${activeFilter==='recent'?'active':''}" data-filter="recent" onclick="setFilter('recent')">🕐 최근</button>
     </div>`;
     const totalCount = files.length;
-    files = files.slice(0, visibleCount);
-    const listHtml = files.map(f => renderFileItem(f)).join('');
-    const loadMoreHtml = totalCount > visibleCount
-      ? `<div style="text-align:center;padding:16px;">
-  <button onclick="loadMore()" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 20px;font-size:13px;color:var(--text2);cursor:pointer;">
-    더 보기 (${totalCount - visibleCount}개 더)
-  </button>
-</div>`
-      : '';
-    content.innerHTML = `${filterTabsHtml}${statsHtml}${currentView === 'home' ? barChartHtml + weekSummaryHtml + timelineHtml : ''}<div class="file-list ${selectedIds.size > 0 ? 'any-selected' : ''}" id="file-list">${listHtml}${loadMoreHtml}</div>`;
+    let groupedHtml = '';
+    let listHtml = '';
+    let loadMoreHtml = '';
+
+    if (viewMode === 'date' && currentView !== 'home') {
+      groupedHtml = renderGroupedView(
+        files,
+        f => {
+          const d = new Date(f.created_at);
+          return d.toLocaleDateString('ko-KR', { year:'numeric', month:'2-digit', day:'2-digit' });
+        },
+        key => key
+      );
+    } else if (viewMode === 'folder' && currentView !== 'home') {
+      groupedHtml = renderGroupedView(
+        files,
+        f => f.topic || '__none__',
+        key => key === '__none__' ? '📁 미분류' : '📁 ' + key
+      );
+    } else {
+      const pagedFiles = files.slice(0, visibleCount);
+      listHtml = pagedFiles.map(f => renderFileItem(f)).join('');
+      loadMoreHtml = totalCount > visibleCount
+        ? `<div style="text-align:center;padding:16px;"><button onclick="loadMore()" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 20px;font-size:13px;color:var(--text2);cursor:pointer;">더 보기 (${totalCount - visibleCount}개 더)</button></div>`
+        : '';
+    }
+
+    const viewToggleHtml = currentView !== 'home' ? `<div class="view-toggle">
+      <button class="view-toggle-btn ${viewMode==='list'?'active':''}" onclick="setViewMode('list')">📋 목록</button>
+      <button class="view-toggle-btn ${viewMode==='date'?'active':''}" onclick="setViewMode('date')">📅 날짜별</button>
+      <button class="view-toggle-btn ${viewMode==='folder'?'active':''}" onclick="setViewMode('folder')">📁 폴더별</button>
+    </div>` : '';
+
+    if (groupedHtml) {
+      content.innerHTML = `${filterTabsHtml}${viewToggleHtml}${statsHtml}<div class="file-list ${selectedIds.size > 0 ? 'any-selected' : ''}" id="file-list">${groupedHtml}</div>`;
+    } else {
+      content.innerHTML = `${filterTabsHtml}${viewToggleHtml}${statsHtml}${currentView === 'home' ? barChartHtml + weekSummaryHtml + timelineHtml : ''}<div class="file-list ${selectedIds.size > 0 ? 'any-selected' : ''}" id="file-list">${listHtml}${loadMoreHtml}</div>`;
+    }
     updateActiveFileHighlight();
   }
 

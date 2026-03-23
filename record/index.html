@@ -685,6 +685,15 @@
             <input type="checkbox" id="notify-toggle" onchange="toggleNotify(this.checked)" style="accent-color:var(--primary);" />
             전사 완료 알림
           </label>
+          <div style="margin-top:6px;">
+            <select id="default-lang-select" onchange="saveLangPref(this.value)" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:11px;color:var(--text3);">
+              <option value="auto">🌐 언어 자동 감지</option>
+              <option value="ko">🇰🇷 한국어</option>
+              <option value="en">🇺🇸 영어</option>
+              <option value="ja">🇯🇵 일본어</option>
+              <option value="zh">🇨🇳 중국어</option>
+            </select>
+          </div>
         </div>
         <button class="logout-btn" onclick="logout()">로그아웃</button>
       </div>
@@ -1057,6 +1066,17 @@
     if (el) el.checked = saved && Notification.permission === 'granted';
   }
 
+  function saveLangPref(lang) {
+    localStorage.setItem('record_defaultLang', lang);
+    showToast(`기본 언어: ${lang}`, 'info');
+  }
+
+  function initLangPref() {
+    const saved = localStorage.getItem('record_defaultLang') || 'auto';
+    const el = document.getElementById('default-lang-select');
+    if (el) el.value = saved;
+  }
+
   function setUnsaved(val) {
     const el = document.getElementById('unsaved-indicator');
     if (el) el.classList.toggle('visible', val);
@@ -1127,6 +1147,7 @@
     initTheme();
     initAutoSummarize();
     initNotify();
+    initLangPref();
     checkServerStatus();
     setInterval(checkServerStatus, 30000);
   }
@@ -1465,7 +1486,8 @@
     const starClass = f.starred ? 'starred' : '';
     const starIcon = f.starred ? '⭐' : '☆';
     const isSelected = selectedIds.has(f.id);
-    const icon = f.source === 'web' ? '🎙️' : f.source === 'ios' ? '📱' : '⌚';
+    const sourceIcon = getSourceIcon(f.source);
+    const icon = sourceIcon;
 
     const processingBar = f.transcription_status === 1 ? '<div class="processing-bar"></div>' : '';
     const copyBtn = f.transcription_status === 2
@@ -2516,6 +2538,22 @@
       if (urlData?.signedUrl) { audioEl.src = urlData.signedUrl; audioWrap.style.display = 'block'; }
       initAudioTimeUpdate();
     }
+    // 속도 버튼 삽입
+    const playerEl = document.getElementById('detail-audio-wrap');
+    if (playerEl && !playerEl.querySelector('.rate-controls')) {
+      const rateDiv = document.createElement('div');
+      rateDiv.className = 'rate-controls';
+      rateDiv.style.cssText = 'display:flex;gap:4px;margin-top:6px;';
+      [0.75, 1, 1.25, 1.5, 2].forEach(s => {
+        const btn = document.createElement('button');
+        btn.textContent = s + 'x';
+        btn.id = 'rate-btn-' + String(s).replace('.', '_');
+        btn.style.cssText = 'background:var(--surface3);border:1px solid var(--border);border-radius:5px;padding:2px 8px;font-size:11px;cursor:pointer;color:var(--text3);';
+        btn.onclick = () => setPlaybackRate(s);
+        rateDiv.appendChild(btn);
+      });
+      playerEl.appendChild(rateDiv);
+    }
   }
 
   // ════════════════════════════════════════════
@@ -2826,6 +2864,30 @@
     if (diffD === 1) return '어제';
     if (diffD < 7) return `${diffD}일 전`;
     return d.toLocaleDateString('ko-KR', {month:'short',day:'numeric'});
+  }
+
+  function getSourceIcon(source) {
+    switch(source?.toLowerCase()) {
+      case 'watch': return '⌚';
+      case 'phone': case 'iphone': return '📱';
+      case 'upload': return '⬆️';
+      case 'mic': return '🎤';
+      default: return '🎙️';
+    }
+  }
+
+  function setPlaybackRate(rate) {
+    const audio = document.getElementById('detail-audio');
+    if (audio) audio.playbackRate = rate;
+    document.querySelectorAll('[id^="rate-btn-"]').forEach(btn => {
+      btn.style.background = 'var(--surface3)';
+      btn.style.color = 'var(--text3)';
+    });
+    const activeBtn = document.getElementById('rate-btn-' + String(rate).replace('.', '_'));
+    if (activeBtn) {
+      activeBtn.style.background = 'var(--primary-dim)';
+      activeBtn.style.color = 'var(--primary)';
+    }
   }
 
   function formatSize(bytes) {

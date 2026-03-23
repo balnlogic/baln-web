@@ -847,6 +847,8 @@
       border-left:2px solid var(--primary); padding-left:8px;
     }
     details[open] > summary { margin-bottom:8px; }
+    .wf-tag { cursor:pointer; color:var(--primary); border-radius:4px; padding:2px 4px; transition:opacity 0.15s; }
+    .wf-tag:hover { background:color-mix(in srgb, var(--primary) 15%, transparent); }
 
   /* ── 스켈레톤 로딩 ── */
   .skeleton {
@@ -1134,6 +1136,10 @@
             <summary style="cursor:pointer;font-size:0.85rem;color:var(--primary);font-weight:600">&#128161; 요점 정리</summary>
             <div id="keypoints-content"></div>
           </details>
+          <details id="wordfreq-section" style="margin-bottom:12px">
+            <summary style="cursor:pointer;font-size:0.85rem;color:var(--primary);font-weight:600">📊 주요 단어</summary>
+            <div id="wordfreq-content" style="padding:8px 0;display:flex;flex-wrap:wrap;gap:6px;align-items:baseline"></div>
+          </details>
           <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:6px;" id="transcript-edit-bar">
             <div id="transcript-quality-badge" style="display:none;"></div>
             <div style="display:flex;gap:6px;">
@@ -1420,6 +1426,25 @@
       el.classList.remove('show');
       setTimeout(() => { el.remove(); _processToastQueue(); }, 300);
     }, 2500);
+  }
+
+  // ════════════════════════════════════════════
+  // PLAY POSITION MEMORY
+  // ════════════════════════════════════════════
+  var PLAYPOS_KEY = 'play-positions';
+  function savePlayPosition(recId, seconds) {
+    if (!recId || seconds < 5) return;
+    try {
+      var pos = JSON.parse(localStorage.getItem(PLAYPOS_KEY) || '{}');
+      pos[recId] = seconds;
+      localStorage.setItem(PLAYPOS_KEY, JSON.stringify(pos));
+    } catch(e) {}
+  }
+  function getPlayPosition(recId) {
+    try {
+      var pos = JSON.parse(localStorage.getItem(PLAYPOS_KEY) || '{}');
+      return pos[recId] || 0;
+    } catch(e) { return 0; }
   }
 
   // ════════════════════════════════════════════
@@ -3608,9 +3633,11 @@
         }).join('');
         txEl.innerHTML = segsHtml;
         renderKeyPoints(data.full_text || segsWithSpeaker.map(s=>s.text).join(' '));
+        renderWordFreq(data.full_text || segsWithSpeaker.map(s=>s.text).join(' '));
       } else {
         txEl.textContent = formatTranscriptText(data.full_text) || '(내용 없음)';
         renderKeyPoints(data.full_text || '');
+        renderWordFreq(data.full_text || '');
       }
     } else if (data?.transcription_status === 1) {
       txEl.textContent = '전사 처리 중입니다...';
@@ -3687,6 +3714,28 @@
       }
       initAudioTimeUpdate();
       applyStoredPlaybackRate();
+      // 저장된 재생 위치 확인
+      (function() {
+        var savedPos = getPlayPosition(rec.id);
+        if (savedPos > 10) {
+          var container = document.getElementById('toast-container');
+          var el = document.createElement('div');
+          el.className = 'toast';
+          el.style.cursor = 'pointer';
+          el.textContent = '이전에 ' + formatTime(savedPos) + '에서 중단하셨습니다. 이어서 재생할까요?';
+          el.onclick = function() {
+            var a = document.getElementById('detail-audio');
+            if (a) { a.currentTime = savedPos; a.play().catch(function(){}); }
+            el.remove();
+          };
+          container.appendChild(el);
+          requestAnimationFrame(function() { requestAnimationFrame(function() { el.classList.add('show'); }); });
+          setTimeout(function() {
+            el.classList.remove('show');
+            setTimeout(function() { el.remove(); }, 300);
+          }, 6000);
+        }
+      })();
     }
     // 속도 버튼 삽입
     const playerEl = document.getElementById('detail-audio-wrap');
@@ -3711,14 +3760,21 @@
   // ════════════════════════════════════════════
   // AUDIO SEEK
   // ════════════════════════════════════════════
+  var _lastSavedPlayPos = 0;
   function initAudioTimeUpdate() {
     const audio = document.getElementById('detail-audio');
     if (!audio) return;
+    _lastSavedPlayPos = 0;
     audio.addEventListener('timeupdate', () => {
       if (audio.duration) drawWaveform(audio.currentTime / audio.duration);
       // 구간 루프 체크
       if (loopMode && isFinite(loopEnd) && audio.currentTime >= loopEnd) {
         audio.currentTime = loopStart;
+      }
+      // 30초마다 재생 위치 저장
+      if (detailFileId && audio.currentTime - _lastSavedPlayPos >= 30) {
+        _lastSavedPlayPos = audio.currentTime;
+        savePlayPosition(detailFileId, audio.currentTime);
       }
       const currentTime = audio.currentTime;
       const txEl = document.getElementById('detail-transcript-content') || document.getElementById('detail-transcript');
@@ -5392,6 +5448,41 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
     }
     section.style.display = '';
     container.innerHTML = '<ul>' + points.map(function(p){ return '<li>' + esc(p) + '</li>'; }).join('') + '</ul>';
+  }
+
+  // ── 단어 빈도 계산 ──
+  var WF_STOPWORDS = new Set(['그리고','그런데','하지만','그래서','따라서','또한','또는','이제','지금','여기','저기','이것','저것','그것','이런','저런','그런','어떤','모든','각각','있다','없다','이다','하다','되다','같다','이고','이며','에서','으로','부터','까지','에게','한다','했다','됩니다','있는','없는','이런','것이','수가','것을','것은','것도','수도','수를','있어','없어','인데','이야','이에','이를','이가','이도','이나','이든','이면','해서','해야','해도','했고','하고','하면','하면서','하여','라고','라는','라면','라도','이라고','이라는','있습니다','없습니다','합니다','됩니다']);
+  function buildWordFreq(text) {
+    if (!text) return [];
+    var tokens = text.match(/[가-힣]{2,}/g) || [];
+    var freq = {};
+    tokens.forEach(function(w) {
+      if (!WF_STOPWORDS.has(w)) freq[w] = (freq[w] || 0) + 1;
+    });
+    var entries = Object.entries(freq).sort(function(a, b) { return b[1] - a[1]; });
+    return entries.slice(0, 15).map(function(e) { return { word: e[0], count: e[1] }; });
+  }
+  function renderWordFreq(text) {
+    var section = document.getElementById('wordfreq-section');
+    var container = document.getElementById('wordfreq-content');
+    if (!section || !container) return;
+    var words = buildWordFreq(text);
+    if (words.length === 0) { section.style.display = 'none'; return; }
+    section.style.display = '';
+    var maxCount = words[0].count;
+    var minCount = words[words.length - 1].count;
+    container.innerHTML = words.map(function(item) {
+      var ratio = maxCount === minCount ? 0.5 : (item.count - minCount) / (maxCount - minCount);
+      var style;
+      if (ratio >= 0.66) {
+        style = 'font-size:1.4rem;font-weight:700';
+      } else if (ratio >= 0.33) {
+        style = 'font-size:1rem';
+      } else {
+        style = 'font-size:0.8rem;opacity:0.6';
+      }
+      return '<span class="wf-tag" style="' + style + '" onclick="searchInTranscript(' + JSON.stringify(item.word) + ')" title="' + item.count + '회">' + esc(item.word) + '</span>';
+    }).join('');
   }
 
 </script>

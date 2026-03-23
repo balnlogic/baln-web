@@ -737,6 +737,14 @@
   .group-header:hover { background:var(--surface); }
   .group-count { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1px 7px; font-size:0.75rem; font-weight:400; }
   .group-collapsed .group-items { display:none; }
+.status-error { color:#ef4444; font-size:0.75rem; }
+.file-retry-btn { 
+  display:none; padding:2px 8px; font-size:0.75rem; background:#ef4444; color:#fff;
+  border:none; border-radius:6px; cursor:pointer; margin-left:6px;
+}
+.file-item:hover .file-retry-btn { display:inline-flex; }
+.auto-next-btn { padding:3px 10px; border-radius:6px; font-size:0.8rem; cursor:pointer; border:1px solid var(--border); background:none; color:var(--muted); }
+.auto-next-btn.active { background:var(--primary)20; color:var(--primary); border-color:var(--primary); }
 </style>
 </head>
 <body>
@@ -950,6 +958,7 @@
       <canvas id="waveform-canvas" onclick="waveformClick(event)"></canvas></audio>
         <span id="loop-indicator">&#x1F501; 루프</span>
         <button class="icon-btn" id="audio-download-btn" onclick="downloadAudio()" title="오디오 다운로드" style="margin-left:4px;padding:4px 10px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);font-size:12px;cursor:pointer;">⬇️ 다운로드</button>
+        <button class="auto-next-btn" id="auto-next-btn" onclick="toggleAutoPlayNext()" title="연속 재생 켜기/끄기">▶▶ 연속</button>
       </div>
       <div style="margin-top:14px;">
         <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
@@ -1563,6 +1572,7 @@
       <button class="filter-tab ${activeFilter==='starred'?'active':''}" data-filter="starred" onclick="setFilter('starred')">⭐ 즐겨찾기</button>
       <button class="filter-tab ${activeFilter==='pending'?'active':''}" data-filter="pending" onclick="setFilter('pending')">⏳ 미전사</button>
       <button class="filter-tab ${activeFilter==='recent'?'active':''}" data-filter="recent" onclick="setFilter('recent')">🕐 최근</button>
+      <button class="filter-tab ${activeFilter==='error'?'active':''}" data-filter="error" onclick="setFilter('error')">⚠️ 오류</button>
     </div>`;
     if (files.length === 0) {
       if (q) {
@@ -1701,7 +1711,7 @@
               <div style="font-size:11px;color:var(--text3);font-weight:600;margin-bottom:6px;padding-left:2px;">${lbl}</div>
               ${files.map(f => `
                 <div onclick="openDetail('${f.id}')" style="display:flex;align-items:center;gap:10px;padding:7px 8px;border-radius:8px;cursor:pointer;transition:background .12s;" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background=''">
-                  <span style="font-size:16px;">${f.transcription_status === 2 ? '✅' : f.transcription_status === 1 ? '⏳' : '🎙️'}</span>
+                  <span style="font-size:16px;">${f.transcription_status === 2 ? '✅' : f.transcription_status === 1 ? '⏳' : f.transcription_status === 3 ? '⚠️' : '🎙️'}</span>
                   <div style="flex:1;overflow:hidden;">
                     <div style="font-size:13px;color:var(--text);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(getTitle(f))}</div>
                     <div style="font-size:11px;color:var(--text3);">${formatDur(f.duration)} · ${f.topic || '미분류'}</div>
@@ -1782,11 +1792,14 @@
     const date = relativeTime(f.created_at);
     const folderTag = f.topic
       ? `<span class="file-folder" style="cursor:pointer;" onclick="filterByTopic('${f.topic}', event)" title="이 주제로 필터">📁 ${esc(f.topic)}</span>` : '';
+    const _si = getStatusInfo(f.transcription_status);
     const statusBadge = f.transcription_status === 2
-      ? `<span class="file-status-badge badge-done">전사완료</span>`
+      ? `<span class="file-status-badge badge-done">${_si.icon} ${_si.label}</span>`
       : f.transcription_status === 1
-        ? `<span class="file-status-badge badge-proc">처리중</span>`
-        : `<span class="file-status-badge badge-wait">미전사</span>`;
+        ? `<span class="file-status-badge badge-proc">${_si.icon} ${_si.label}</span>`
+        : f.transcription_status === 3
+          ? `<span class="status-error">${_si.icon} 전사 오류</span><button class="file-retry-btn" onclick="requestTranscription('${f.id}', event)" title="재시도">재시도</button>`
+          : `<span class="file-status-badge badge-wait">${_si.icon} ${_si.label}</span>`;
     const minutesBadge = f.formatted_minutes
       ? `<span class="file-status-badge" style="background:rgba(59,130,246,.13);color:#3B82F6;">📋 회의록</span>` : '';
     const langBadge = (f.language && f.language !== 'auto' && f.transcription_status === 2)
@@ -2000,6 +2013,8 @@
         return getRecent().filter(f => allFiles.find(x => x.id === f.id));
       case 'pending':
         return files.filter(f => f.transcription_status === 0);
+      case 'error':
+        return files.filter(f => f.transcription_status === 3);
       default:
         return files;
     }
@@ -2921,6 +2936,29 @@
   // ════════════════════════════════════════════
   let detailFileId = null; // 현재 상세 모달에서 보고 있는 파일 id
 
+  function getStatusInfo(status) {
+    switch(status) {
+      case 0: return { label:'미전사', color:'var(--muted)', icon:'⏸' };
+      case 1: return { label:'처리중', color:'#f59e0b', icon:'⏳' };
+      case 2: return { label:'완료', color:'#10b981', icon:'✅' };
+      case 3: return { label:'오류', color:'#ef4444', icon:'⚠️' };
+      default: return { label:'알 수 없음', color:'var(--muted)', icon:'❓' };
+    }
+  }
+
+  let autoPlayNext = false;
+  function toggleAutoPlayNext() {
+    autoPlayNext = !autoPlayNext;
+    const btn = document.getElementById('auto-next-btn');
+    if (btn) btn.classList.toggle('active', autoPlayNext);
+    showToast(autoPlayNext ? '연속 재생 켜짐' : '연속 재생 꺼짐', 'info');
+  }
+  function getNextFile() {
+    const files = filterFiles(sortFiles([...allFiles]));
+    const idx = files.findIndex(f => f.id === detailFileId);
+    return idx !== -1 && idx < files.length - 1 ? files[idx + 1] : null;
+  }
+
   function navigateDetail(dir) {
     if (!detailFileId) return;
     const files = filterFiles(sortFiles([...allFiles]));
@@ -3023,7 +3061,18 @@
 
     if (rec.file_path) {
       const { data: urlData } = await sb.storage.from('recordings').createSignedUrl(rec.file_path, 3600);
-      if (urlData?.signedUrl) { audioEl.src = urlData.signedUrl; audioWrap.style.display = 'block'; waveformData = null; initWaveform(urlData.signedUrl); }
+      if (urlData?.signedUrl) {
+        audioEl.src = urlData.signedUrl;
+        audioWrap.style.display = 'block';
+        waveformData = null;
+        initWaveform(urlData.signedUrl);
+        audioEl.onended = () => {
+          if (autoPlayNext) {
+            const next = getNextFile();
+            if (next) openDetail(next);
+          }
+        };
+      }
       initAudioTimeUpdate();
       applyStoredPlaybackRate();
     }

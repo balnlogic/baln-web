@@ -317,6 +317,16 @@
       background: var(--primary-dim) !important;
       border: 1px dashed var(--primary) !important;
     }
+    /* ══ FOLDER INFO BTN ══ */
+    .folder-info-btn { opacity:0; background:none; border:none; cursor:pointer; font-size:11px; padding:1px; transition:var(--transition); }
+    .sidebar-folder-item:hover .folder-info-btn { opacity:1; }
+
+    /* ══ CHAPTER LIST ══ */
+    #chapter-list { display:flex; flex-direction:column; gap:4px; margin-bottom:12px; }
+    .chapter-item { display:flex; gap:8px; align-items:center; padding:4px 8px; border-radius:var(--radius-sm); cursor:pointer; font-size:13px; }
+    .chapter-item:hover { background:var(--surface2); }
+    .chapter-time { color:var(--primary); font-family:monospace; font-size:12px; min-width:48px; }
+
     .shortcuts-panel {
       position: fixed;
       top: 50%;
@@ -1419,6 +1429,7 @@
               <button onclick="document.getElementById('trans-btns').style.display = document.getElementById('trans-btns').style.display==='none'?'flex':'none'" title="번역" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--text3);">🌐</button>
             </div>
           </div>
+          <div id="chapter-list" style="display:none;"></div>
           <div id="transcript-stats" style="display:flex; gap:16px; font-size:12px; color:var(--text-secondary); padding:4px 0; border-bottom:1px solid var(--border); margin-bottom:8px;"><span id="detected-lang"></span></div>
           <div class="transcript-box" id="detail-transcript">불러오는 중...</div>
           <div class="trans-btns" id="trans-btns" style="display:none;gap:6px;flex-wrap:wrap;margin-top:8px;align-items:center;">
@@ -1735,6 +1746,13 @@
   <div class="text">${text}</div>
   <br>
   <button onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
+
+  <!-- ══ FOLDER STATS POPUP ══ -->
+  <div id="folder-stats-popup" style="display:none; position:fixed; z-index:200; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:12px; box-shadow:var(--shadow-lg); min-width:200px; pointer-events:auto;">
+    <div style="font-size:13px; font-weight:600; margin-bottom:8px;" id="fsp-title"></div>
+    <div id="fsp-body" style="font-size:12px; color:var(--text2); line-height:1.8;"></div>
+    <button onclick="document.getElementById('folder-stats-popup').style.display='none'" style="margin-top:8px; font-size:11px; padding:2px 6px; background:none; border:1px solid var(--border); border-radius:4px; cursor:pointer;">닫기</button>
+  </div>
 </body>
 </html>`);
     printWin.document.close();
@@ -2544,6 +2562,7 @@
         <span class="nav-icon" style="color:${fColor || 'inherit'}">${getFolderIcon(t)}</span>
         <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;${fColor ? 'color:'+fColor : ''}">${esc(t)}</span>
         <span class="nav-count folder-count">${count}${pendingStr}</span>
+        <button class="folder-info-btn" onclick="event.stopPropagation(); showFolderStats('${t}', event)">ℹ️</button>
       </button>`;
     }).join('');
     folderNav.innerHTML += `<button onclick="createNewFolder()" style="width:100%;padding:6px 12px;background:none;border:1px dashed var(--border);border-radius:8px;color:var(--text3);font-size:12px;cursor:pointer;margin-top:6px;transition:border-color .15s, color .15s;" onmouseover="this.style.borderColor='var(--primary)';this.style.color='var(--primary)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text3)'">
@@ -5135,6 +5154,15 @@
         txEl.innerHTML = segsHtml;
         renderKeyPoints(data.full_text || segsWithSpeaker.map(s=>s.text).join(' '));
         renderWordFreq(data.full_text || segsWithSpeaker.map(s=>s.text).join(' '));
+        // 챕터 자동 생성: 세그먼트 > 10개이고 총 길이 > 5분(300초)일 때
+        const totalSegDur = (segsWithSpeaker[segsWithSpeaker.length-1]?.end || 0) - (segsWithSpeaker[0]?.start || 0);
+        if (segsWithSpeaker.length > 10 && totalSegDur > 300) {
+          const chapters = generateChapters(data.full_text, segsWithSpeaker);
+          renderChapterList(chapters);
+        } else {
+          const chEl = document.getElementById('chapter-list');
+          if (chEl) chEl.style.display = 'none';
+        }
       } else {
         txEl.innerHTML = formatTranscriptParagraphs(data.full_text) || '(내용 없음)';
         renderKeyPoints(data.full_text || '');
@@ -5418,12 +5446,130 @@
     if (audio.paused) audio.play().catch(() => {});
   }
 
-  function jumpToTime(seconds) {
+  // ════════════════════════════════════════════
+  // FOLDER STATS POPUP
+  // ════════════════════════════════════════════
+  function showFolderStats(folder, event) {
+    const popup = document.getElementById('folder-stats-popup');
+    const titleEl = document.getElementById('fsp-title');
+    const bodyEl = document.getElementById('fsp-body');
+
+    const files = allFiles.filter(f => (f.folder || f.topic || '미분류') === folder);
+    const fileCount = files.length;
+    const totalDur = files.reduce((s, f) => s + (f.duration || 0), 0);
+    const latest = files.reduce((best, f) => {
+      if (!best) return f;
+      return (f.created_at || '') > (best.created_at || '') ? f : best;
+    }, null);
+    const withText = files.filter(f => f.full_text && f.full_text.length > 0);
+    const avgQuality = withText.length > 0
+      ? Math.round(withText.reduce((s, f) => s + calcTranscriptQuality(f.full_text).score, 0) / withText.length)
+      : null;
+
+    titleEl.textContent = '📁 ' + folder;
+    let bodyHtml = '';
+    bodyHtml += `<div>파일 수: <b>${fileCount}</b>개</div>`;
+    bodyHtml += `<div>총 녹음 시간: <b>${formatDur(totalDur)}</b></div>`;
+    if (avgQuality !== null) bodyHtml += `<div>평균 전사 품질: <b>${avgQuality}</b></div>`;
+    if (latest) {
+      const latestDate = latest.created_at ? new Date(latest.created_at).toLocaleDateString('ko-KR') : '-';
+      bodyHtml += `<div>가장 최근 파일: <b>${esc(latest.file_name || '-')}</b> (${latestDate})</div>`;
+    }
+    bodyEl.innerHTML = bodyHtml;
+
+    // 팝업 위치 설정
+    const x = event.clientX;
+    const y = event.clientY;
+    popup.style.display = 'block';
+    const pw = popup.offsetWidth;
+    const ph = popup.offsetHeight;
+    const ww = window.innerWidth;
+    const wh = window.innerHeight;
+    popup.style.left = Math.min(x + 8, ww - pw - 8) + 'px';
+    popup.style.top = Math.min(y + 8, wh - ph - 8) + 'px';
+  }
+
+    function jumpToTime(seconds) {
     const audio = document.getElementById('detail-audio');
     if (!audio) return;
     audio.currentTime = seconds;
     if (audio.paused) audio.play().catch(() => {});
     showToast('⏩ ' + Math.floor(seconds/60) + ':' + String(Math.floor(seconds%60)).padStart(2,'0') + ' 로 이동');
+  }
+
+  // ════════════════════════════════════════════
+  // CHAPTER AUTO-GENERATION
+  // ════════════════════════════════════════════
+  function generateChapters(text, segments) {
+    const chapters = [];
+    if (segments && segments.length > 0) {
+      let chapterStart = 0;
+      let chapterStartTime = segments[0].start || 0;
+      let chapterTexts = [];
+
+      for (let i = 0; i < segments.length; i++) {
+        const seg = segments[i];
+        const nextSeg = segments[i + 1];
+        chapterTexts.push(seg.text || '');
+
+        const isLastSeg = !nextSeg;
+        const hasLongGap = nextSeg && ((nextSeg.start || 0) - (seg.end || seg.start || 0)) >= 30;
+
+        if (hasLongGap || isLastSeg) {
+          const chapterNum = chapters.length + 1;
+          chapters.push({
+            title: '챕터 ' + chapterNum,
+            startTime: chapterStartTime,
+            startIdx: chapterStart,
+            text: chapterTexts.join(' ')
+          });
+          chapterStart = i + 1;
+          if (nextSeg) chapterStartTime = nextSeg.start || 0;
+          chapterTexts = [];
+        }
+      }
+    } else if (text) {
+      const words = text.split(/\s+/);
+      const totalWords = words.length;
+      const chunksTarget = Math.max(2, Math.ceil(totalWords / 80));
+      const wordsPerChunk = Math.ceil(totalWords / chunksTarget);
+
+      for (let i = 0; i < chunksTarget; i++) {
+        const chunkWords = words.slice(i * wordsPerChunk, (i + 1) * wordsPerChunk);
+        if (chunkWords.length === 0) break;
+        chapters.push({
+          title: '챕터 ' + (i + 1),
+          startTime: null,
+          startIdx: i * wordsPerChunk,
+          text: chunkWords.join(' ')
+        });
+      }
+    }
+    return chapters;
+  }
+
+  function renderChapterList(chapters) {
+    const el = document.getElementById('chapter-list');
+    if (!el || chapters.length <= 1) {
+      if (el) el.style.display = 'none';
+      return;
+    }
+    const formatT = function(sec) {
+      if (sec === null || sec === undefined) return '';
+      const m = String(Math.floor(sec / 60)).padStart(2, '0');
+      const s = String(Math.round(sec % 60)).padStart(2, '0');
+      return m + ':' + s;
+    };
+    el.innerHTML = '<div style="font-size:12px; font-weight:600; color:var(--text2); margin-bottom:4px;">📑 챕터</div>' +
+      chapters.map(function(ch, i) {
+        const timeStr = ch.startTime !== null ? formatT(ch.startTime) : '';
+        const timeHtml = timeStr
+          ? '<span class="chapter-time" onclick="event.stopPropagation(); jumpToTime(' + ch.startTime + ')">' + timeStr + '</span>'
+          : '<span class="chapter-time" style="opacity:0.3">' + String(i+1).padStart(2,'0') + '</span>';
+        const onclick = ch.startTime !== null ? ' onclick="jumpToTime(' + ch.startTime + ')"' : '';
+        return '<div class="chapter-item"' + onclick + '>' + timeHtml + '<span>' + esc(ch.title) + '</span></div>';
+      }).join('');
+    el.style.display = 'flex';
   }
 
   function calcTextStats(text) {

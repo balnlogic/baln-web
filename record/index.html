@@ -988,6 +988,8 @@
   /* Focus Mode */
   body.focus-mode #sidebar { display:none; }
   body.focus-mode #file-list-panel { display:none; }
+  #file-list-panel { transition: none; } /* 드래그 중 transition 방지 */
+  .wf-tag { cursor: pointer; }
   body.focus-mode #detail-panel { position:fixed; inset:0; z-index:200; background:var(--bg); overflow:auto; padding:40px; max-width:800px; margin:0 auto; }
   body.focus-mode .focus-mode-toggle { background:var(--primary) !important; }
 
@@ -1237,10 +1239,16 @@
       </div>
 
       <!-- Content -->
-      <div class="content" id="main-content">
-        <div class="empty-state">
-          <div class="empty-icon">🎙️</div>
-          <div class="empty-title">불러오는 중...</div>
+      <div id="file-list-panel" style="flex:1; display:flex; overflow:hidden; min-width:200px;">
+        <div class="content" id="main-content">
+          <div class="empty-state">
+            <div class="empty-icon">🎙️</div>
+            <div class="empty-title">불러오는 중...</div>
+          </div>
+        </div>
+        <div id="resize-handle" style="width:4px; background:var(--border); cursor:col-resize; flex-shrink:0; transition:background 0.2s;"
+             onmouseenter="this.style.background='var(--primary)'" 
+             onmouseleave="this.style.background='var(--border)'">
         </div>
       </div>
     </div>
@@ -2214,6 +2222,7 @@
     }
     scheduleServerCheck();
     initOfflineDetection();
+    initResizablePanels();
   }
 
   window.addEventListener('DOMContentLoaded', () => {
@@ -6688,6 +6697,30 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
 
     const content = document.getElementById('main-content');
     content.innerHTML = html;
+
+    // 상위 키워드 클라우드 렌더링
+    const allText = filteredFiles.map(f => f.full_text || '').join(' ');
+    if (allText.trim()) {
+      const topWords = buildWordFreq(allText).slice(0, 30);
+      if (topWords.length > 0) {
+        const kwSection = document.createElement('div');
+        kwSection.className = 'stats-section';
+        const maxC = topWords[0].count;
+        const minC = topWords[topWords.length - 1].count;
+        kwSection.innerHTML = '<div class="stats-section-title">🔍 상위 키워드</div><div style="display:flex;flex-wrap:wrap;gap:6px;padding:8px 0;">' +
+          topWords.map(function(item) {
+            var ratio = maxC === minC ? 0.5 : (item.count - minC) / (maxC - minC);
+            var style;
+            if (ratio >= 0.66) { style = 'font-size:1.3rem;font-weight:700'; }
+            else if (ratio >= 0.33) { style = 'font-size:1rem'; }
+            else { style = 'font-size:0.8rem;opacity:0.6'; }
+            return '<span class="wf-tag" style="' + style + '" onclick="searchByKeyword(' + JSON.stringify(item.word) + ')" title="' + item.count + '회">' + esc(item.word) + '</span>';
+          }).join('') +
+        '</div>';
+        content.appendChild(kwSection);
+      }
+    }
+
     closeSidebar();
   }
 
@@ -7197,6 +7230,73 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
     var entries = Object.entries(freq).sort(function(a, b) { return b[1] - a[1]; });
     return entries.slice(0, 15).map(function(e) { return { word: e[0], count: e[1] }; });
   }
+  // ════════════════════════════════════════════
+  // 키워드 클릭 → 전체 파일 검색
+  // ════════════════════════════════════════════
+  function searchByKeyword(word) {
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) {
+      searchInput.value = word;
+      searchInput.dispatchEvent(new Event('input'));
+      // 파일 목록 뷰로 전환
+      if (typeof renderCurrentView === 'function') renderCurrentView();
+      showToast('🔍 "' + word + '" 검색 중');
+    }
+  }
+
+  // ════════════════════════════════════════════
+  // 파일 목록 패널 너비 드래그 조절
+  // ════════════════════════════════════════════
+  function initResizablePanels() {
+    const handle = document.getElementById('resize-handle');
+    const panel = document.getElementById('file-list-panel');
+    if (!handle || !panel) return;
+
+    // localStorage에서 저장된 너비 복원
+    const savedWidth = localStorage.getItem('panel-width');
+    if (savedWidth) {
+      panel.style.width = savedWidth + 'px';
+      panel.style.flex = 'none';
+    }
+
+    let isDragging = false;
+    let startX = 0;
+    let startWidth = 0;
+
+    handle.addEventListener('mousedown', function(e) {
+      isDragging = true;
+      startX = e.clientX;
+      startWidth = panel.offsetWidth;
+      document.body.style.cursor = 'col-resize';
+      document.body.style.userSelect = 'none';
+      e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', function(e) {
+      if (!isDragging) return;
+      const delta = e.clientX - startX;
+      const newWidth = Math.max(180, Math.min(600, startWidth + delta));
+      panel.style.width = newWidth + 'px';
+      panel.style.flex = 'none';
+    });
+
+    document.addEventListener('mouseup', function() {
+      if (!isDragging) return;
+      isDragging = false;
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+      const newWidth = panel.offsetWidth;
+      localStorage.setItem('panel-width', newWidth);
+    });
+
+    // 더블클릭 시 기본 너비(280px)로 리셋
+    handle.addEventListener('dblclick', function() {
+      panel.style.width = '';
+      panel.style.flex = '1';
+      localStorage.removeItem('panel-width');
+    });
+  }
+
   function renderWordFreq(text) {
     var section = document.getElementById('wordfreq-section');
     var container = document.getElementById('wordfreq-content');
@@ -7216,7 +7316,7 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
       } else {
         style = 'font-size:0.8rem;opacity:0.6';
       }
-      return '<span class="wf-tag" style="' + style + '" onclick="searchInTranscript(' + JSON.stringify(item.word) + ')" title="' + item.count + '회">' + esc(item.word) + '</span>';
+      return '<span class="wf-tag" style="' + style + '" onclick="searchByKeyword(' + JSON.stringify(item.word) + ')" title="' + item.count + '회">' + esc(item.word) + '</span>';
     }).join('');
   }
 

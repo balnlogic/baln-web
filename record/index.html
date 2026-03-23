@@ -835,6 +835,23 @@
       border-left:2px solid var(--primary); padding-left:8px;
     }
     details[open] > summary { margin-bottom:8px; }
+
+  /* ── 스켈레톤 로딩 ── */
+  .skeleton {
+    background: linear-gradient(90deg, var(--surface) 25%, color-mix(in srgb, var(--surface) 80%, var(--text)) 50%, var(--surface) 75%);
+    background-size: 200% 100%;
+    animation: skeleton-wave 1.5s infinite;
+    border-radius: 8px;
+  }
+  @keyframes skeleton-wave {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  .skeleton-card {
+    padding: 12px; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 4px;
+  }
+  .skeleton-title { height: 16px; width: 60%; margin-bottom: 8px; }
+  .skeleton-sub   { height: 12px; width: 40%; }
 </style>
 </head>
 <body>
@@ -1582,12 +1599,15 @@
   // DATA
   // ════════════════════════════════════════════
   async function loadFiles() {
+    isLoading = true;
+    if (document.getElementById('file-list')) showSkeletons(5);
     const { data, error } = await sb
       .from('recordings')
       .select('id, file_name, memo, duration, transcription_status, language, topic, created_at, file_path, full_text, source, formatted_minutes, meeting_at_start, meeting_at_end, location, participants, upload_size_bytes')
       .order('created_at', { ascending: false });
     if (error) { console.error(error); return; }
     allFiles = data || [];
+    isLoading = false;
     updateSidebar();
     renderCurrentView();
     updateTopbarStats();
@@ -2001,7 +2021,7 @@
       const pagedFiles = files.slice(0, visibleCount);
       listHtml = pagedFiles.map(f => renderFileItem(f)).join('');
       loadMoreHtml = totalCount > visibleCount
-        ? `<div style="text-align:center;padding:16px;"><button onclick="loadMore()" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 20px;font-size:13px;color:var(--text2);cursor:pointer;">더 보기 (${totalCount - visibleCount}개 더)</button></div>`
+        ? `<div id="scroll-sentinel" style="height:20px;margin:8px 0"></div><div id="scroll-loading" style="display:none;text-align:center;padding:12px;color:var(--muted);font-size:0.85rem">⏳ 불러오는 중...</div>`
         : '';
     }
 
@@ -2018,6 +2038,7 @@
       content.innerHTML = `${filterTabsHtml}${viewToggleHtml}${statsHtml}${currentView === 'home' ? barChartHtml + weekSummaryHtml + timelineHtml : ''}<div class="file-list ${selectedIds.size > 0 ? 'any-selected' : ''}" id="file-list">${listHtml}${loadMoreHtml}</div>`;
     }
     updateActiveFileHighlight();
+    initScrollObserver();
   }
 
   function renderFileItem(f) {
@@ -2269,6 +2290,48 @@
   function loadMore() {
     visibleCount += PAGE_SIZE;
     renderCurrentView();
+    setTimeout(initScrollObserver, 50);
+  }
+
+  /* ── 무한 스크롤 ── */
+  let scrollObserver = null;
+
+  function initScrollObserver() {
+    if (scrollObserver) scrollObserver.disconnect();
+    const sentinel = document.getElementById('scroll-sentinel');
+    if (!sentinel) return;
+    scrollObserver = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) loadMoreFiles();
+    }, { threshold: 0.1 });
+    scrollObserver.observe(sentinel);
+  }
+
+  function loadMoreFiles() {
+    // scroll-sentinel가 있다는 것은 더 로드할 파일이 있다는 뜻
+    const sentinel = document.getElementById('scroll-sentinel');
+    if (!sentinel) return;
+    const loadingEl = document.getElementById('scroll-loading');
+    if (loadingEl) loadingEl.style.display = '';
+    setTimeout(() => {
+      visibleCount += PAGE_SIZE;
+      renderCurrentView();
+      if (loadingEl) loadingEl.style.display = 'none';
+      setTimeout(initScrollObserver, 50);
+    }, 200);
+  }
+
+  /* ── 스켈레톤 로딩 ── */
+  let isLoading = false;
+
+  function showSkeletons(count = 5) {
+    const container = document.getElementById('file-list');
+    if (!container) return;
+    container.innerHTML = Array.from({length: count}, () => `
+      <div class="skeleton-card">
+        <div class="skeleton skeleton-title"></div>
+        <div class="skeleton skeleton-sub"></div>
+      </div>
+    `).join('');
   }
 
   function filterByTopic(topic, e) {

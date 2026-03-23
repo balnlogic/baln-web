@@ -901,6 +901,8 @@
   /* ── 핀 고정 ── */
   .pin-indicator { color:#f59e0b; font-size:0.8rem; margin-right:2px; }
   .file-item.pinned { border-left:3px solid #f59e0b !important; }
+  /* ── 키보드 포커스 ── */
+  .file-item.keyboard-focused { outline: 2px solid var(--primary); outline-offset: -2px; }
   /* ── 색상 레이블 ── */
   .color-palette-inline { display:flex; gap:4px; padding:4px 8px; align-items:center; }
   .clr-dot { width:16px; height:16px; border-radius:50%; cursor:pointer; border:2px solid transparent; flex-shrink:0; }
@@ -1592,6 +1594,7 @@
   let activeFilter = 'all'; // 'all' | 'today' | 'starred' | 'recent' | 'pending'
   let visibleCount = 30;
   const PAGE_SIZE = 30;
+  let focusedFileIdx = -1; // 키보드 파일 탐색 인덱스
 
   // Recorder
   let mediaRecorder = null;
@@ -3395,6 +3398,12 @@
       e.preventDefault();
       setLoopEnd();
     }
+    // 파일 목록 키보드 탐색
+    if (!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) {
+      if (e.key === 'ArrowDown') { e.preventDefault(); moveFocusedFile(1); return; }
+      if (e.key === 'ArrowUp') { e.preventDefault(); moveFocusedFile(-1); return; }
+      if (e.key === 'Enter' && focusedFileIdx >= 0) { e.preventDefault(); selectFocusedFile(); return; }
+    }
   });
 
   // ════════════════════════════════════════════
@@ -3926,6 +3935,7 @@
   // DETAIL MODAL
   // ════════════════════════════════════════════
   let detailFileId = null; // 현재 상세 모달에서 보고 있는 파일 id
+  let playbackRate = 1;
 
   function getStatusInfo(status) {
     switch(status) {
@@ -3948,6 +3958,26 @@
     const files = filterFiles(sortFiles([...allFiles]));
     const idx = files.findIndex(f => f.id === detailFileId);
     return idx !== -1 && idx < files.length - 1 ? files[idx + 1] : null;
+  }
+
+  function moveFocusedFile(delta) {
+    const files = filterFiles(sortFiles([...allFiles]));
+    if (!files.length) return;
+    focusedFileIdx = Math.max(0, Math.min(files.length - 1, focusedFileIdx + delta));
+    document.querySelectorAll('.file-item').forEach(el => el.classList.remove('keyboard-focused'));
+    const targetId = files[focusedFileIdx].id;
+    const el = document.querySelector(`.file-item[data-id="${targetId}"]`);
+    if (el) {
+      el.classList.add('keyboard-focused');
+      el.scrollIntoView({ block: 'nearest' });
+    }
+  }
+
+  function selectFocusedFile() {
+    const files = filterFiles(sortFiles([...allFiles]));
+    if (focusedFileIdx >= 0 && files[focusedFileIdx]) {
+      openDetail(files[focusedFileIdx]);
+    }
   }
 
   function navigateDetail(dir) {
@@ -4120,7 +4150,7 @@
         }
       })();
     }
-    // 속도 버튼 삽입
+    // 속도 버튼 삽입 (기존 rate-controls)
     const playerEl = document.getElementById('detail-audio-wrap');
     if (playerEl && !playerEl.querySelector('.rate-controls')) {
       const rateDiv = document.createElement('div');
@@ -4135,6 +4165,21 @@
         rateDiv.appendChild(btn);
       });
       playerEl.appendChild(rateDiv);
+    }
+    // speed-bar 삽입 (CSS 클래스 방식)
+    if (playerEl && !playerEl.querySelector('.speed-bar')) {
+      const speedBar = document.createElement('div');
+      speedBar.className = 'speed-bar';
+      speedBar.id = 'speed-bar';
+      SPEED_PRESETS.forEach(s => {
+        const btn = document.createElement('button');
+        btn.className = 'speed-btn' + (s === 1 ? ' active' : '');
+        btn.dataset.rate = s;
+        btn.textContent = s + 'x';
+        btn.onclick = () => setPlaybackRate(s);
+        speedBar.appendChild(btn);
+      });
+      playerEl.appendChild(speedBar);
     }
     // 세그먼트 타임라인 렌더링
     const segTimelineWrap = document.getElementById('seg-timeline-wrap');
@@ -4631,6 +4676,12 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
       font-size:0.7rem; background:var(--surface); border:1px solid var(--border);
       border-radius:10px; padding:1px 6px; color:var(--muted); margin-left:auto;
     }
+
+    /* ── 재생 속도 버튼 ── */
+    .speed-bar { display:flex; gap:4px; padding:4px 0; }
+    .speed-btn { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); padding:2px 8px; font-size:12px; cursor:pointer; color:var(--text-secondary); transition:var(--transition); }
+    .speed-btn:hover { border-color:var(--primary); color:var(--primary); }
+    .speed-btn.active { background:var(--primary); color:#fff; border-color:var(--primary); }
 </style>
 </head>
 <body>
@@ -4801,10 +4852,14 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
     }
   }
 
+  const SPEED_PRESETS = [0.75, 1, 1.25, 1.5, 2];
+
   function setPlaybackRate(rate) {
     const audio = document.getElementById('detail-audio');
     if (audio) audio.playbackRate = rate;
-    localStorage.setItem('playback-rate', rate);
+    playbackRate = rate;
+    localStorage.setItem('pb-rate', rate);
+    // 기존 rate-btn- ID 방식 업데이트
     document.querySelectorAll('[id^="rate-btn-"]').forEach(btn => {
       btn.style.background = 'var(--surface3)';
       btn.style.color = 'var(--text3)';
@@ -4814,6 +4869,10 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
       activeBtn.style.background = 'var(--primary-dim)';
       activeBtn.style.color = 'var(--primary)';
     }
+    // speed-btn 클래스 방식 업데이트
+    document.querySelectorAll('.speed-btn').forEach(btn => {
+      btn.classList.toggle('active', parseFloat(btn.dataset.rate) === rate);
+    });
   }
 
   function formatSize(bytes) {
@@ -4915,12 +4974,9 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
   function applyStoredPlaybackRate() {
     const audio = document.getElementById('detail-audio');
     if (!audio) return;
-    const stored = localStorage.getItem('playback-rate');
+    const stored = localStorage.getItem('pb-rate') || localStorage.getItem('playback-rate');
     if (stored) {
-      audio.playbackRate = parseFloat(stored);
-      document.querySelectorAll('[id^="rate-btn-"]').forEach(b => {
-        b.classList.toggle('active', b.dataset.rate === stored);
-      });
+      setPlaybackRate(parseFloat(stored));
     }
   }
 

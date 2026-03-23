@@ -1602,6 +1602,14 @@
     .meta { color: #666; font-size: 13px; margin-bottom: 24px; }
     .text { line-height: 1.8; font-size: 15px; white-space: pre-wrap; }
     @media print { button { display: none; } }
+
+   .dur-histogram { margin-top: 20px; }
+   .dur-title { font-size: 14px; font-weight: 600; margin-bottom: 10px; }
+   .dur-bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+   .dur-label { font-size: 12px; color: var(--text-secondary); min-width: 70px; }
+   .dur-bar-wrap { flex: 1; height: 16px; background: var(--border); border-radius: 8px; overflow: hidden; }
+   .dur-bar-fill { height: 100%; background: var(--primary); border-radius: 8px; transition: width 0.3s; }
+   .dur-count { font-size: 12px; color: var(--text-secondary); min-width: 30px; text-align: right; }
   </style>
 </head>
 <body>
@@ -4639,19 +4647,26 @@
     showToast('⏩ ' + Math.floor(seconds/60) + ':' + String(Math.floor(seconds%60)).padStart(2,'0') + ' 로 이동');
   }
 
+  function calcTextStats(text) {
+    if (!text) return { chars: 0, words: 0, sentences: 0, minutes: 0 };
+    const clean = text.trim();
+    const chars = clean.length;
+    const words = clean.split(/\s+/).filter(Boolean).length;
+    const sentences = (clean.match(/[.!?。！？]+/g) || []).length;
+    const minutes = Math.ceil(chars / 350);
+    return { chars, words, sentences, minutes };
+  }
+
   function calcReadingTime(text) {
-    const chars = text.length;
-    const words = text.split(/\s+/).filter(Boolean).length;
-    const minutes = Math.ceil(text.length / 350);
-    return { chars, words, minutes };
+    return calcTextStats(text);
   }
 
   function renderTranscriptStats(text) {
     const statsEl = document.getElementById('transcript-stats');
     if (!statsEl) return;
     if (!text || !text.trim()) { statsEl.innerHTML = ''; return; }
-    const stats = calcReadingTime(text);
-    statsEl.innerHTML = `<span>${stats.chars.toLocaleString()}자</span><span>${stats.words.toLocaleString()}단어</span><span>약 ${stats.minutes}분 읽기</span>`;
+    const stats = calcTextStats(text);
+    statsEl.innerHTML = `<span title="글자 수">📝 ${stats.chars.toLocaleString()}자</span><span title="단어 수">📊 ${stats.words.toLocaleString()}단어</span><span title="문장 수">📌 ${stats.sentences}문장</span><span title="읽기 시간">⏱️ 약 ${stats.minutes}분</span>`;
   }
 
   function showTranscriptStats(text) {
@@ -6094,12 +6109,49 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
       <div class="stats-section-title">요일별 녹음 분포</div>
       <div class="day-chart">${dayBarsHtml}</div>
       ${folderBarsHtml.length > 0 ? `<div class="stats-section-title">폴더별 파일 수</div>${folderBarsHtml}` : ''}
+      ${renderDurationHistogram(filteredFiles)}
       <button class="stats-export-btn" onclick="exportCSV()">📄 CSV 내보내기</button>
     `;
 
     const content = document.getElementById('main-content');
     content.innerHTML = html;
     closeSidebar();
+  }
+
+  // ════════════════════════════════════════════
+  // 녹음 길이 분포 히스토그램
+  // ════════════════════════════════════════════
+  function renderDurationHistogram(files) {
+    const buckets = [
+      { label: '0-5분',   min: 0,    max: 300   },
+      { label: '5-15분',  min: 300,  max: 900   },
+      { label: '15-30분', min: 900,  max: 1800  },
+      { label: '30-60분', min: 1800, max: 3600  },
+      { label: '60분+',   min: 3600, max: Infinity },
+    ];
+    const counts = buckets.map(b => {
+      const count = files.filter(f => {
+        const dur = f.duration_seconds != null ? f.duration_seconds : (f.duration || 0);
+        return dur >= b.min && dur < b.max;
+      }).length;
+      return { label: b.label, count };
+    });
+    const maxCount = Math.max(...counts.map(c => c.count), 1);
+    const bars = counts.map(c => ({ ...c, pct: Math.round((c.count / maxCount) * 100) }));
+    return `<div class="dur-histogram">
+      <div class="dur-title">⏱️ 녹음 길이 분포</div>
+      <div class="dur-bars">
+        ${bars.map(b => `
+          <div class="dur-bar-row">
+            <span class="dur-label">${b.label}</span>
+            <div class="dur-bar-wrap">
+              <div class="dur-bar-fill" style="width:${b.pct}%"></div>
+            </div>
+            <span class="dur-count">${b.count}개</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>`;
   }
 
   // ════════════════════════════════════════════

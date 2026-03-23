@@ -810,6 +810,7 @@
 .file-item:hover .file-retry-btn { display:inline-flex; }
 .auto-next-btn { padding:3px 10px; border-radius:6px; font-size:0.8rem; cursor:pointer; border:1px solid var(--border); background:none; color:var(--muted); }
 .auto-next-btn.active { background:var(--primary)20; color:var(--primary); border-color:var(--primary); }
+#auto-scroll-btn.active { color: var(--primary); }
 #transcription-progress-bar {
   display:none; position:fixed; top:0; left:0; right:0; z-index:9998;
   background:linear-gradient(90deg, #6366f1, #8b5cf6); color:#fff;
@@ -1260,6 +1261,7 @@
           <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:6px;" id="transcript-edit-bar">
             <div id="transcript-quality-badge" style="display:none;"></div>
             <div style="display:flex;gap:6px;align-items:center;">
+              <button id="auto-scroll-btn" onclick="toggleAutoScroll()" title="자동 스크롤" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--text3);">📍</button>
               <button onclick="toggleFocusMode()" title="읽기 모드" class="icon-btn focus-mode-toggle" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--text3);">📖</button>
               <button onclick="setTranscriptFontSize(-1)" title="글자 작게" class="icon-btn" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--text3);">A-</button>
               <button onclick="setTranscriptFontSize(1)" title="글자 크게" class="icon-btn" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--text3);">A+</button>
@@ -1411,6 +1413,7 @@
   <button class="ctx-item" id="ctx-color-label" onclick="ctxAction('color-label')">🎨 색상 레이블</button>
   <div id="ctx-color-palette" class="color-palette-inline" style="display:none;"></div>
   <div class="ctx-sep"></div>
+  <button class="ctx-item" id="ctx-trash" onclick="ctxAction('trash')">🗑️ 휴지통</button>
   <button class="ctx-item danger" onclick="ctxAction('delete')">🗑 삭제</button>
 </div>
 
@@ -1703,6 +1706,8 @@
 
   const RECENT_KEY = 'record-recent';
   let activeFilter = 'all'; // 'all' | 'today' | 'starred' | 'recent' | 'pending'
+  let showTrashed = false;
+  let autoScrollTranscript = true;
   let visibleCount = 30;
   const PAGE_SIZE = 30;
   let focusedFileIdx = -1; // 키보드 파일 탐색 인덱스
@@ -2262,6 +2267,7 @@
       <button class="filter-tab ${activeFilter==='recent'?'active':''}" data-filter="recent" onclick="setFilter('recent')">🕐 최근</button>
       <button class="filter-tab ${activeFilter==='error'?'active':''}" data-filter="error" onclick="setFilter('error')">⚠️ 오류</button>
       <button class="filter-tab ${activeFilter==='archived'?'active':''}" data-filter="archived" onclick="setFilter('archived')">📦 보관함</button>
+      <button class="filter-tab ${activeFilter==='trash'?'active':''}" data-filter="trash" onclick="showTrashed=true;setFilter('trash')">🗑️ 휴지통</button>
     </div>`;
     if (files.length === 0) {
       if (q) {
@@ -2715,6 +2721,35 @@
     showToast('보관 해제', 'info'); loadFiles();
   }
 
+  /* ═══ 휴지통 (임시 삭제) ═══ */
+  const TRASH_KEY = 'trashed-files';
+  function getTrashed() {
+    try { return JSON.parse(localStorage.getItem(TRASH_KEY) || '[]'); }
+    catch { return []; }
+  }
+  function isTrashed(id) { return getTrashed().includes(String(id)); }
+  function trashFile(id) {
+    const arr = getTrashed();
+    if (!arr.includes(String(id))) arr.push(String(id));
+    localStorage.setItem(TRASH_KEY, JSON.stringify(arr));
+    showToast('🗑️ 휴지통으로 이동', 'info');
+    renderFiles();
+  }
+  function restoreFile(id) {
+    const arr = getTrashed().filter(x => x !== String(id));
+    localStorage.setItem(TRASH_KEY, JSON.stringify(arr));
+    showToast('♻️ 복원됨', 'success');
+    renderFiles();
+  }
+
+  /* ═══ 자동 스크롤 ═══ */
+  function toggleAutoScroll() {
+    autoScrollTranscript = !autoScrollTranscript;
+    const btn = document.getElementById('auto-scroll-btn');
+    if (btn) btn.classList.toggle('active', autoScrollTranscript);
+    showToast(autoScrollTranscript ? '📍 자동 스크롤 켜짐' : '자동 스크롤 꺼짐');
+  }
+
   /* ═══ 파일 색상 레이블 ═══ */
   const FILE_COLORS_KEY = 'file-colors';
   const COLOR_PALETTE = ['#ef4444','#f97316','#eab308','#22c55e','#3b82f6','#8b5cf6',''];
@@ -2752,6 +2787,10 @@
       if (activeSmartFolder === 'long') return files.filter(f => (f.duration || 0) >= 1800);
       return files;
     }
+    // trash 탭이 아니면 trashed 파일 숨김
+    if (activeFilter !== 'trash') {
+      files = files.filter(f => !isTrashed(f.id));
+    }
     // archived 탭이 아니면 보관된 파일 제외
     if (activeFilter !== 'archived') {
       files = files.filter(f => !isArchived(f.id));
@@ -2774,6 +2813,9 @@
         break;
       case 'archived':
         files = files.filter(f => isArchived(f.id));
+        break;
+      case 'trash':
+        files = files.filter(f => isTrashed(f.id));
         break;
     }
     // advancedFilter 적용
@@ -2804,6 +2846,7 @@
   function setFilter(filter) {
     visibleCount = PAGE_SIZE;
     activeFilter = filter;
+    showTrashed = (filter === 'trash');
     document.querySelectorAll('.filter-tab').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.filter === filter);
     });
@@ -3080,6 +3123,8 @@
     if (pinBtn) pinBtn.textContent = isPinned(id) ? '📌 핀 해제' : '📌 핀 고정';
     const archiveBtn = document.getElementById('ctx-archive');
     if (archiveBtn) archiveBtn.textContent = isArchived(id) ? '📦 보관 해제' : '📦 보관';
+    const trashBtn = document.getElementById('ctx-trash');
+    if (trashBtn) trashBtn.textContent = isTrashed(id) ? '♻️ 복원' : '🗑️ 휴지통';
     // 색상 팔레트 숨김 초기화
     const palette = document.getElementById('ctx-color-palette');
     if (palette) palette.style.display = 'none';
@@ -3111,6 +3156,9 @@
     } else if (action === 'summarize') {
       openDetail(rec.id);
       setTimeout(() => generateSummary(), 500);
+    } else if (action === 'trash') {
+      if (isTrashed(rec.id)) restoreFile(rec.id);
+      else trashFile(rec.id);
     } else if (action === 'archive') {
       if (isArchived(rec.id)) unarchiveFile(rec.id);
       else archiveFile(rec.id);
@@ -4356,7 +4404,9 @@
       if (activeSpan) {
         txEl.querySelectorAll('.seg-ts.playing').forEach(s => s.classList.remove('playing'));
         activeSpan.classList.add('playing');
-        activeSpan.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        if (autoScrollTranscript) {
+          activeSpan.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
       }
       // 세그먼트 타임라인 커서 업데이트
       const cursor = document.getElementById('seg-cursor');

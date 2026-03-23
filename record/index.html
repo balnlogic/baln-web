@@ -231,6 +231,9 @@
     }
     .star-btn:hover { opacity: 0.7; }
     .star-btn.starred { opacity: 1; transform: scale(1.15); }
+    .gain-bar { display:flex; align-items:center; gap:6px; padding:4px 0; flex-wrap:wrap; width:100%; }
+    .gain-btn { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); padding:3px 10px; font-size:12px; cursor:pointer; color:var(--text-secondary); }
+    .gain-btn.active { background:var(--primary); color:#fff; border-color:var(--primary); }
     .filter-tabs {
       display: flex;
       gap: 4px;
@@ -1283,6 +1286,12 @@
         <span id="loop-indicator">&#x1F501; 루프</span>
         <button class="icon-btn" id="audio-download-btn" onclick="downloadAudio()" title="오디오 다운로드" style="margin-left:4px;padding:4px 10px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);font-size:12px;cursor:pointer;">⬇️ 다운로드</button>
         <button class="auto-next-btn" id="auto-next-btn" onclick="toggleAutoPlayNext()" title="연속 재생 켜기/끄기">▶▶ 연속</button>
+        <div class="gain-bar">
+          <span style="font-size:12px;color:var(--text-secondary)">볼륨 부스트</span>
+          <button class="gain-btn active" data-gain="1" onclick="setGain(1)">보통</button>
+          <button class="gain-btn" data-gain="1.5" onclick="setGain(1.5)">+50%</button>
+          <button class="gain-btn" data-gain="2" onclick="setGain(2)">+100%</button>
+        </div>
       </div>
       <div style="margin-top:14px;">
         <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
@@ -1776,6 +1785,15 @@
   let sortOrder = 'date_desc';
   const SORT_KEY = 'sort-prefs';
   const PLAY_HISTORY_KEY = 'play-history';
+  const STARRED_KEY = 'starred-files';
+
+  function getStarred() {
+    try { return new Set(JSON.parse(localStorage.getItem(STARRED_KEY) || '[]')); } catch(e) { return new Set(); }
+  }
+
+  function isStarred(id) {
+    return getStarred().has(id);
+  }
 
   function getPlayHistory() {
     try { return JSON.parse(localStorage.getItem(PLAY_HISTORY_KEY) || '{}'); } catch(e) { return {}; }
@@ -4318,6 +4336,10 @@
   // DETAIL MODAL
   // ════════════════════════════════════════════
   let detailFileId = null; // 현재 상세 모달에서 보고 있는 파일 id
+  let audioContext = null;
+  let gainNode = null;
+  let sourceNode = null;
+  let _audioEQInitialized = false;
   let playbackRate = 1;
 
   function getStatusInfo(status) {
@@ -4516,6 +4538,7 @@
           }
         };
       }
+      initAudioEQ(audioEl);
       initAudioTimeUpdate();
       applyStoredPlaybackRate();
       // 저장된 재생 위치 확인
@@ -4593,6 +4616,28 @@
   // AUDIO SEEK
   // ════════════════════════════════════════════
   var _lastSavedPlayPos = 0;
+  function initAudioEQ(audioEl) {
+    if (_audioEQInitialized) return;
+    try {
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      sourceNode = audioContext.createMediaElementSource(audioEl);
+      gainNode = audioContext.createGain();
+      sourceNode.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      _audioEQInitialized = true;
+    } catch(e) {
+      console.warn('AudioEQ 초기화 실패:', e);
+    }
+  }
+
+  function setGain(value) {
+    if (gainNode) gainNode.gain.value = value;
+    document.querySelectorAll('.gain-btn').forEach(btn => {
+      const btnGain = parseFloat(btn.getAttribute('data-gain'));
+      btn.classList.toggle('active', btnGain === value);
+    });
+  }
+
   function initAudioTimeUpdate() {
     const audio = document.getElementById('detail-audio');
     if (!audio) return;

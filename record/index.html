@@ -1312,6 +1312,7 @@
           <div class="minutes-tab-bar">
             <button class="minutes-tab active" id="minutes-tab-edit" onclick="toggleMinutesView('edit')">편집</button>
             <button class="minutes-tab" id="minutes-tab-preview" onclick="toggleMinutesView('preview')">미리보기</button>
+            <span id="minutes-save-status" style="font-size:12px; color:var(--text-secondary); margin-left:8px;">✅ 저장됨</span>
           </div>
           <div class="transcript-box" id="detail-minutes-content" style="white-space:pre-wrap;outline:none;" contenteditable="false" oninput="resetMinutesAutoSave()"></div>
           <div id="minutes-preview" style="display:none;"></div>
@@ -2533,7 +2534,7 @@
       </div>
       <div class="file-icon">${icon}</div>
       <div class="file-body">
-        <div class="file-title">${pinIcon}<span ondblclick="renameMemo('${f.id}', '${(f.memo || f.file_name).replace(/'/g, "\\'")}', event)" title="더블클릭으로 편집" style="cursor:text;">${titleHtml}</span></div>
+        <div class="file-title">${pinIcon}<span class="file-name" ondblclick="startEditFileName('${f.id}', this)" title="더블클릭으로 파일 이름 편집" style="cursor:text;">${titleHtml}</span></div>
         <div class="file-meta">
           ${folderTag}
           <span class="file-dur">${esc(dur)}</span>
@@ -4830,6 +4831,7 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
     .minutes-tab-bar { display:flex; gap:4px; margin-bottom:8px; }
     .minutes-tab { padding:4px 12px; border-radius:6px; font-size:0.82rem; cursor:pointer; border:1px solid var(--border); background:none; color:var(--muted); }
     .minutes-tab.active { background:var(--primary); color:#fff; border-color:var(--primary); }
+    .file-name.editing { background: var(--surface); border: 1px solid var(--primary); border-radius: var(--radius-sm); padding: 1px 4px; outline: none; }
     #minutes-preview { 
       padding:12px; background:var(--surface); border-radius:8px; min-height:120px;
       font-size:0.9rem; line-height:1.7; color:var(--text);
@@ -5883,6 +5885,68 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
   // ════════════════════════════════════════════
   let minutesAutoSaveTimer = null;
 
+  // ════════════════════════════════════════════
+  // 파일 이름 인라인 편집
+  // ════════════════════════════════════════════
+  let editingFileName = null;
+
+  function startEditFileName(id, el) {
+    if (editingFileName === id) return;
+    editingFileName = id;
+    const origText = el.innerText;
+    el.contentEditable = 'true';
+    el.focus();
+    el.classList.add('editing');
+    // 커서를 텍스트 끝으로
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    range.collapse(false);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+
+    el.addEventListener('keydown', function handler(e) {
+      if (e.key === 'Enter') { e.preventDefault(); el.removeEventListener('keydown', handler); saveFileName(id, el); }
+      if (e.key === 'Escape') { el.removeEventListener('keydown', handler); cancelFileName(el, origText); }
+    });
+    el.addEventListener('blur', function blurHandler() {
+      el.removeEventListener('blur', blurHandler);
+      saveFileName(id, el);
+    });
+  }
+
+  async function saveFileName(id, el) {
+    el.contentEditable = 'false';
+    el.classList.remove('editing');
+    editingFileName = null;
+    const newName = el.innerText.trim();
+    if (!newName) return;
+    const rec = allFiles.find(f => f.id === id);
+    if (!rec) return;
+    if (newName === (rec.file_name || '')) return;
+    await supaFetch(`recordings?id=eq.${id}`, 'PATCH', { file_name: newName });
+    rec.file_name = newName;
+    showToast('\u2705 이름 변경됨');
+  }
+
+  function cancelFileName(el, origText) {
+    el.innerText = origText;
+    el.contentEditable = 'false';
+    el.classList.remove('editing');
+    editingFileName = null;
+  }
+
+  let minutesSaveStatus = 'saved';
+
+  function updateMinutesSaveStatus(status) {
+    minutesSaveStatus = status;
+    const el = document.getElementById('minutes-save-status');
+    if (!el) return;
+    if (status === 'saved')   { el.textContent = '\u2705 저장됨'; el.style.color = '#22c55e'; }
+    if (status === 'unsaved') { el.textContent = '\u25cf 저장 안됨'; el.style.color = '#f97316'; }
+    if (status === 'saving')  { el.textContent = '\u23f3 저장 중...'; el.style.color = 'var(--text-secondary)'; }
+  }
+
   function startMinutesAutoSave() {
     if (minutesAutoSaveTimer) clearInterval(minutesAutoSaveTimer);
     minutesAutoSaveTimer = setInterval(async () => {
@@ -5890,7 +5954,9 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
       if (!el || !detailFileId) return;
       const text = el.innerText || el.value || '';
       if (!text.trim()) return;
+      updateMinutesSaveStatus('saving');
       await supaFetch(`recordings?id=eq.${detailFileId}`, 'PATCH', { formatted_minutes: text });
+      updateMinutesSaveStatus('saved');
       showToast('자동 저장됨', 'info');
       addNotification('autosave', '💾 자동 저장됨');
     }, 30000);
@@ -5901,6 +5967,7 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
   }
 
   function resetMinutesAutoSave() {
+    updateMinutesSaveStatus('unsaved');
     stopMinutesAutoSave();
     startMinutesAutoSave();
   }

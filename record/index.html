@@ -826,6 +826,10 @@
           <div id="detail-search-count" style="font-size:11px;color:var(--text3);margin-top:4px;"></div>
         </div>
         <div id="detail-tab-transcript">
+          <div style="display:flex;justify-content:flex-end;gap:6px;margin-bottom:6px;" id="transcript-edit-bar">
+            <button id="btn-edit-transcript" onclick="toggleTranscriptEdit()" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;color:var(--text3);">✏️ 편집</button>
+            <button id="btn-save-transcript" onclick="saveTranscriptEdit()" style="background:var(--primary);border:none;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;color:#fff;display:none;">💾 저장</button>
+          </div>
           <div class="transcript-box" id="detail-transcript">불러오는 중...</div>
           <div id="transcript-stats" style="display:none;font-size:11px;color:var(--text3);padding:6px 2px;text-align:right;border-top:1px solid var(--border);margin-top:6px;"></div>
           <div style="text-align:right;margin-top:8px;">
@@ -1400,6 +1404,20 @@
         hourBuckets[h]++;
       });
       const maxCount = Math.max(...hourBuckets, 1);
+      const thisWeekFiles = allFiles.filter(f => new Date(f.created_at) >= thisWeekStart);
+      const thisWeekDone = thisWeekFiles.filter(f => f.transcription_status === 2).length;
+      const thisWeekSecs = thisWeekFiles.reduce((s, f) => s + (f.duration || 0), 0);
+      const thisWeekM = Math.round(thisWeekSecs / 60);
+
+      const weekSummaryHtml = thisWeekFiles.length > 0 ? `
+        <div style="background:var(--primary-dim);border:1px solid var(--primary);border-radius:10px;padding:12px 14px;margin-top:14px;">
+          <div style="font-size:12px;font-weight:700;color:var(--primary);margin-bottom:4px;">이번 주</div>
+          <div style="font-size:13px;color:var(--text2);">
+            ${thisWeekFiles.length}개 녹음 · ${thisWeekM}분 · 전사 ${thisWeekDone}/${thisWeekFiles.length}개 완료
+          </div>
+        </div>
+      ` : '';
+
       const barChartHtml = `
   <div style="margin-top:20px;">
     <div style="font-size:12px;font-weight:700;color:var(--text3);margin-bottom:8px;letter-spacing:.05em;">📊 시간대별 녹음</div>
@@ -1462,7 +1480,7 @@
   </button>
 </div>`
       : '';
-    content.innerHTML = `${filterTabsHtml}${statsHtml}${currentView === 'home' ? barChartHtml + timelineHtml : ''}<div class="file-list ${selectedIds.size > 0 ? 'any-selected' : ''}" id="file-list">${listHtml}${loadMoreHtml}</div>`;
+    content.innerHTML = `${filterTabsHtml}${statsHtml}${currentView === 'home' ? barChartHtml + weekSummaryHtml + timelineHtml : ''}<div class="file-list ${selectedIds.size > 0 ? 'any-selected' : ''}" id="file-list">${listHtml}${loadMoreHtml}</div>`;
   }
 
   function renderFileItem(f) {
@@ -2629,6 +2647,50 @@
     updateSidebar();
     renderCurrentView();
     showToast('폴더 변경됨', 'success');
+  }
+
+  let transcriptEditMode = false;
+
+  function toggleTranscriptEdit() {
+    transcriptEditMode = !transcriptEditMode;
+    const txEl = document.getElementById('detail-transcript');
+    const editBtn = document.getElementById('btn-edit-transcript');
+    const saveBtn = document.getElementById('btn-save-transcript');
+    if (!txEl) return;
+    if (transcriptEditMode) {
+      txEl.contentEditable = 'true';
+      txEl.style.border = '1px solid var(--primary)';
+      txEl.style.borderRadius = '6px';
+      txEl.style.padding = '8px';
+      txEl.focus();
+      if (editBtn) editBtn.textContent = '❌ 취소';
+      if (saveBtn) saveBtn.style.display = '';
+    } else {
+      txEl.contentEditable = 'false';
+      txEl.style.border = '';
+      txEl.style.borderRadius = '';
+      txEl.style.padding = '';
+      if (editBtn) editBtn.textContent = '✏️ 편집';
+      if (saveBtn) saveBtn.style.display = 'none';
+      // 취소 시 원본 복원
+      if (detailFileId) {
+        const f = allFiles.find(x => x.id === detailFileId);
+        if (f?.full_text) txEl.textContent = f.full_text;
+      }
+    }
+  }
+
+  async function saveTranscriptEdit() {
+    if (!detailFileId) return;
+    const txEl = document.getElementById('detail-transcript');
+    if (!txEl) return;
+    const newText = txEl.innerText || txEl.textContent || '';
+    await supaFetch(`recordings?id=eq.${detailFileId}`, 'PATCH', { full_text: newText });
+    const f = allFiles.find(x => x.id === detailFileId);
+    if (f) f.full_text = newText;
+    showTranscriptStats(newText);
+    toggleTranscriptEdit(); // 편집 모드 종료
+    showToast('전사 텍스트 저장됨', 'success');
   }
 
   let dragFileId = null;

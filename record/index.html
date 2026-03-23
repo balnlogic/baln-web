@@ -839,6 +839,7 @@
   border:none; border-radius:6px; cursor:pointer; margin-left:6px;
 }
 .file-item:hover .file-retry-btn { display:inline-flex; }
+  mark.key-phrase { background:rgba(255,200,0,0.25); border-bottom:2px solid rgba(255,200,0,0.8); border-radius:2px; color:inherit; }
 .auto-next-btn { padding:3px 10px; border-radius:6px; font-size:0.8rem; cursor:pointer; border:1px solid var(--border); background:none; color:var(--muted); }
 .auto-next-btn.active { background:var(--primary)20; color:var(--primary); border-color:var(--primary); }
 #auto-scroll-btn.active { color: var(--primary); }
@@ -1317,6 +1318,7 @@
         <span id="audio-time-display" style="font-size:12px; color:var(--text-secondary); font-family:monospace; min-width:90px; text-align:center;">0:00 / 0:00</span>
         <button class="icon-btn" id="audio-download-btn" onclick="downloadAudio()" title="오디오 다운로드" style="margin-left:4px;padding:4px 10px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);font-size:12px;cursor:pointer;">⬇️ 다운로드</button>
         <button class="auto-next-btn" id="auto-next-btn" onclick="toggleAutoPlayNext()" title="연속 재생 켜기/끄기">▶▶ 연속</button>
+        <button onclick="(function(){var p=document.getElementById('queue-panel');p.style.display=p.style.display==='none'?'block':'none';})()" title="재생 큐" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--text3);">🎵 큐</button>
         <div class="gain-bar">
           <span style="font-size:12px;color:var(--text-secondary)">볼륨 부스트</span>
           <button class="gain-btn active" data-gain="1" onclick="setGain(1)">보통</button>
@@ -1373,6 +1375,7 @@
               <button onclick="setTranscriptFontSize(1)" title="글자 크게" class="icon-btn" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--text3);">A+</button>
               <button onclick="openFindReplace()" title="찾기/바꾸기" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--text3);">🔍↔</button>
               <button id="btn-edit-transcript" onclick="toggleTranscriptEdit()" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;color:var(--text3);">✏️ 편집</button>
+              <button id="btn-key-phrase" onclick="toggleKeyPhraseHighlight()" title="핵심 구문 하이라이트" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;color:var(--text3);">🔆 핵심 구문</button>
               <button id="btn-save-transcript" onclick="saveTranscriptEdit()" style="background:var(--primary);border:none;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;color:#fff;display:none;">💾 저장</button>
               <button id="btn-undo-transcript" onclick="undoTranscriptEdit()" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;color:var(--text3);display:none;" title="되돌리기 (Ctrl+Z)">↩ 되돌리기</button>
               <div class="export-dropdown" style="position:relative">
@@ -1546,6 +1549,17 @@
   <button class="ctx-item" id="ctx-trash" onclick="ctxAction('trash')">🗑️ 휴지통</button>
   <button class="ctx-item" onclick="openMetaEdit(ctxRec && ctxRec.id)">✏️ 정보 편집</button>
   <button class="ctx-item danger" onclick="ctxAction('delete')">🗑 삭제</button>
+  <div class="ctx-sep"></div>
+  <button class="ctx-item" onclick="addToQueue(ctxRec && ctxRec.id); document.getElementById('ctx-menu').classList.remove('open')">🎵 큐에 추가</button>
+</div>
+
+<!-- ══ 재생 큐 패널 ══ -->
+<div id="queue-panel" style="display:none; position:fixed; bottom:70px; right:20px; width:260px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow-lg); z-index:150; padding:12px;">
+  <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+    <span style="font-size:13px; font-weight:600;">🎵 재생 큐</span>
+    <button onclick="playQueue=[]; playQueueIdx=-1; renderQueue()" style="background:none;border:none;cursor:pointer;font-size:12px;color:var(--text-secondary);">초기화</button>
+  </div>
+  <div id="queue-list" style="max-height:200px; overflow-y:auto;"></div>
 </div>
 
 <!-- ══ 파일 메타데이터 편집 패널 ══ -->
@@ -4658,6 +4672,116 @@
   }
 
   let autoPlayNext = false;
+
+  // ── 재생 큐 ──────────────────────────────────────────────────────────
+  let playQueue = [];
+  let playQueueIdx = -1;
+
+  function addToQueue(id) {
+    if (!id) return;
+    if (playQueue.includes(id)) { showToast('이미 큐에 있습니다', 'info'); return; }
+    playQueue.push(id);
+    showToast('➕ 재생 큐에 추가');
+    renderQueue();
+  }
+
+  function removeFromQueue(idx) {
+    playQueue.splice(idx, 1);
+    if (playQueueIdx >= playQueue.length) playQueueIdx = playQueue.length - 1;
+    renderQueue();
+  }
+
+  function playNext() {
+    if (!playQueue.length) return;
+    playQueueIdx = Math.min(playQueueIdx + 1, playQueue.length - 1);
+    openDetail(playQueue[playQueueIdx]);
+  }
+
+  function playPrev() {
+    if (!playQueue.length) return;
+    playQueueIdx = Math.max(playQueueIdx - 1, 0);
+    openDetail(playQueue[playQueueIdx]);
+  }
+
+  function renderQueue() {
+    const panel = document.getElementById('queue-list');
+    if (!panel) return;
+    if (!playQueue.length) {
+      panel.innerHTML = '<div style="font-size:12px;color:var(--text-secondary);text-align:center;padding:12px 0;">큐가 비어 있습니다</div>';
+      return;
+    }
+    panel.innerHTML = playQueue.map((id, idx) => {
+      const f = allFiles.find(x => x.id === id);
+      const name = f ? (f.topic || f.file_path?.split('/').pop() || id) : id;
+      const active = idx === playQueueIdx ? 'font-weight:600;color:var(--primary);' : '';
+      return `<div style="display:flex;align-items:center;gap:6px;padding:4px 0;font-size:12px;${active}">
+        <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer;" onclick="playQueueIdx=${idx};openDetail(playQueue[${idx}])">${idx+1}. ${name}</span>
+        <button onclick="removeFromQueue(${idx})" style="background:none;border:none;cursor:pointer;color:var(--text-secondary);font-size:11px;flex-shrink:0;">✕</button>
+      </div>`;
+    }).join('');
+  }
+
+  // ── 핵심 구문 추출 ──────────────────────────────────────────────────
+  let keyPhraseHighlight = false;
+
+  function extractKeyPhrases(text) {
+    if (!text) return [];
+    const quotes = [...(text.match(/["\u201c\u2018][^"\u201d\u2019]{5,50}["\u201d\u2019]/g) || [])];
+    const numbers = [...(text.match(/\d+[\s]?(개|명|원|달러|퍼센트|%|배|번|회|분|시간|일|월|년)/g) || [])];
+    const words = text.match(/[가-힣]{3,}/g) || [];
+    const freq = {};
+    words.forEach(w => freq[w] = (freq[w] || 0) + 1);
+    const repeated = Object.entries(freq).filter(([,v]) => v >= 2).map(([k]) => k);
+    return [...new Set([...quotes, ...numbers, ...repeated.slice(0, 5)])];
+  }
+
+  function highlightKeyPhrases(text, phrases) {
+    if (!phrases || !phrases.length) return text;
+    let result = text;
+    phrases.forEach(phrase => {
+      const escaped = phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      result = result.replace(new RegExp(escaped, 'g'), `<mark class="key-phrase">${phrase}</mark>`);
+    });
+    return result;
+  }
+
+  function toggleKeyPhraseHighlight() {
+    keyPhraseHighlight = !keyPhraseHighlight;
+    const btn = document.getElementById('btn-key-phrase');
+    if (btn) btn.style.background = keyPhraseHighlight ? 'rgba(255,200,0,0.2)' : '';
+    const txEl = document.getElementById('detail-transcript');
+    if (!txEl) return;
+    if (keyPhraseHighlight) {
+      const text = txEl.innerText || txEl.textContent || '';
+      const phrases = extractKeyPhrases(text);
+      const html = txEl.innerHTML;
+      // 텍스트 노드에만 하이라이트 적용 (기존 HTML 태그 보호)
+      const tempDiv = document.createElement('div');
+      tempDiv.textContent = text;
+      const plainText = tempDiv.textContent;
+      if (phrases.length) {
+        txEl.dataset.originalHtml = html;
+        let highlighted = esc(plainText);
+        phrases.forEach(phrase => {
+          const escapedPhrase = esc(phrase);
+          highlighted = highlighted.split(escapedPhrase).join(`<mark class="key-phrase">${escapedPhrase}</mark>`);
+        });
+        txEl.innerHTML = highlighted;
+        showToast(`🔆 ${phrases.length}개 핵심 구문 하이라이트`, 'info');
+      } else {
+        showToast('핵심 구문을 찾지 못했습니다', 'info');
+        keyPhraseHighlight = false;
+        if (btn) btn.style.background = '';
+      }
+    } else {
+      if (txEl.dataset.originalHtml) {
+        txEl.innerHTML = txEl.dataset.originalHtml;
+        delete txEl.dataset.originalHtml;
+      }
+      showToast('핵심 구문 하이라이트 꺼짐', 'info');
+    }
+  }
+
   function toggleAutoPlayNext() {
     autoPlayNext = !autoPlayNext;
     const btn = document.getElementById('auto-next-btn');
@@ -4847,7 +4971,9 @@
         waveformData = null;
         initWaveform(urlData.signedUrl);
         audioEl.onended = () => {
-          if (autoPlayNext) {
+          if (playQueueIdx >= 0 && playQueue.length > 0) {
+            playNext();
+          } else if (autoPlayNext) {
             const next = getNextFile();
             if (next) openDetail(next);
           }

@@ -819,6 +819,22 @@
 .cmd-item-title { font-size:0.88rem; font-weight:500; }
 .cmd-item-sub { font-size:0.75rem; color:var(--muted); }
 .cmd-section-label { padding:6px 16px 2px; font-size:0.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em; }
+
+    /* -- 세그먼트 인라인 편집 -- */
+    .seg-edit-input {
+      width:100%; border:1px solid var(--primary); border-radius:4px; padding:2px 6px;
+      background:var(--bg); color:var(--text); font-size:0.88rem;
+    }
+    .seg-text { cursor:text; }
+
+    /* -- 요점 정리 -- */
+    #keypoints-content { padding:8px 0; }
+    #keypoints-content ul { margin:0; padding-left:0; list-style:none; }
+    #keypoints-content li {
+      font-size:0.83rem; color:var(--text); line-height:1.5; margin-bottom:4px;
+      border-left:2px solid var(--primary); padding-left:8px;
+    }
+    details[open] > summary { margin-bottom:8px; }
 </style>
 </head>
 <body>
@@ -1058,6 +1074,10 @@
           <div id="detail-search-count" style="font-size:11px;color:var(--text3);margin-top:4px;"></div>
         </div>
         <div id="detail-tab-transcript">
+          <details id="keypoints-section" style="margin-bottom:12px">
+            <summary style="cursor:pointer;font-size:0.85rem;color:var(--primary);font-weight:600">&#128161; 요점 정리</summary>
+            <div id="keypoints-content"></div>
+          </details>
           <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:6px;" id="transcript-edit-bar">
             <div id="transcript-quality-badge" style="display:none;"></div>
             <div style="display:flex;gap:6px;">
@@ -3368,15 +3388,17 @@
     if (data?.transcription_status === 2) {
       if (data.segments_json && Array.isArray(data.segments_json) && data.segments_json.length > 0) {
         const segsWithSpeaker = assignSpeakers(data.segments_json);
-        const segsHtml = segsWithSpeaker.map(s => {
+        const segsHtml = segsWithSpeaker.map((s, idx) => {
           const startMin = String(Math.floor((s.start||0)/60)).padStart(2,'0');
           const startSec = String(Math.round((s.start||0)%60)).padStart(2,'0');
           const speakerColor = SPEAKER_COLORS[s.speakerIdx % SPEAKER_COLORS.length];
-          return `<div class="seg-item" style="border-left:3px solid ${speakerColor}"><span class="seg-ts" data-time="${s.start||0}" onclick="seekAudio(${s.start||0})">${startMin}:${startSec}</span><span class="seg-text">${esc(s.text||'')}</span></div>`;
+          return `<div class="seg-item" data-idx="${idx}" style="border-left:3px solid ${speakerColor}" ondblclick="editSegment(${idx})"><span class="seg-ts" data-time="${s.start||0}" onclick="seekAudio(${s.start||0})">${startMin}:${startSec}</span><span class="seg-text">${esc(s.text||'')}</span></div>`;
         }).join('');
         txEl.innerHTML = segsHtml;
+        renderKeyPoints(data.full_text || segsWithSpeaker.map(s=>s.text).join(' '));
       } else {
         txEl.textContent = formatTranscriptText(data.full_text) || '(내용 없음)';
+        renderKeyPoints(data.full_text || '');
       }
     } else if (data?.transcription_status === 1) {
       txEl.textContent = '전사 처리 중입니다...';
@@ -4885,6 +4907,95 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
     const row = document.getElementById('ai-row-' + idx);
     if (row) row.className = 'action-item' + (checked.includes(idx) ? ' checked' : '');
   }
+
+  // ============================================
+  // 세그먼트 인라인 편집
+  // ============================================
+  function editSegment(idx) {
+    const rec = allFiles.find(f => f.id === detailFileId);
+    const segs = rec && rec.segments_json ? rec.segments_json : [];
+    const segEl = document.querySelector('.seg-item[data-idx="' + idx + '"] .seg-text');
+    if (!segEl) return;
+    const orig = segs[idx] ? segs[idx].text || '' : '';
+    const escaped = orig.replace(/"/g, '&quot;');
+    segEl.innerHTML = '<input class="seg-edit-input" value="' + escaped + '" onkeydown="handleSegEditKey(event,' + idx + ',this)" onblur="cancelSegEditBlur(' + idx + ',this)">';
+    segEl.querySelector('input').focus();
+  }
+
+  async function saveSegment(idx, text) {
+    const rec = allFiles.find(f => f.id === detailFileId);
+    if (!rec || !rec.segments_json) return;
+    rec.segments_json[idx].text = text;
+    const segEl = document.querySelector('.seg-item[data-idx="' + idx + '"] .seg-text');
+    if (segEl) segEl.textContent = text;
+    await supaFetch('recordings?id=eq.' + detailFileId, 'PATCH', {
+      segments_json: rec.segments_json,
+      full_text: rec.segments_json.map(function(s){ return s.text; }).join(' ')
+    });
+    showToast('세그먼트 저장됨', 'success');
+  }
+
+  function handleSegEditKey(e, idx, input) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      input._saving = true;
+      saveSegment(idx, input.value);
+    } else if (e.key === 'Escape') {
+      input._cancel = true;
+      const rec = allFiles.find(f => f.id === detailFileId);
+      const segs = rec && rec.segments_json ? rec.segments_json : [];
+      const orig = segs[idx] ? segs[idx].text || '' : '';
+      const segEl = input.closest('.seg-text');
+      if (segEl) segEl.textContent = orig;
+    }
+  }
+
+  function cancelSegEditBlur(idx, input) {
+    if (input._saving || input._cancel) return;
+    const rec = allFiles.find(f => f.id === detailFileId);
+    const segs = rec && rec.segments_json ? rec.segments_json : [];
+    const orig = segs[idx] ? segs[idx].text || '' : '';
+    const segEl = input.closest('.seg-text');
+    if (segEl) segEl.textContent = orig;
+  }
+
+  // ============================================
+  // 요점 정리 (로컬 추출)
+  // ============================================
+  function extractKeyPoints(text) {
+    if (!text || text.trim().length < 20) return [];
+    var KEYWORDS = ['결론','따라서','요약','핵심','중요','결정','합의','목표','계획','전략'];
+    var sentences = text.split(/[.!?。]\s+|\n/).map(function(s){ return s.trim(); }).filter(function(s){ return s.length > 10; });
+    if (sentences.length === 0) return [];
+    var total = sentences.length;
+    var scored = sentences.map(function(sent, i) {
+      var score = 0;
+      var words = sent.split(/\s+/).length;
+      if (words >= 10 && words <= 50) score += 2;
+      if (words >= 15 && words <= 35) score += 1;
+      KEYWORDS.forEach(function(kw){ if (sent.includes(kw)) score += 3; });
+      var ratio = i / total;
+      if (ratio < 0.2 || ratio > 0.8) score += 2;
+      return { sent: sent, score: score, origIdx: i };
+    });
+    var top5 = scored.sort(function(a,b){ return b.score - a.score; }).slice(0, 5);
+    top5.sort(function(a,b){ return a.origIdx - b.origIdx; });
+    return top5.map(function(t){ return t.sent; });
+  }
+
+  function renderKeyPoints(text) {
+    var container = document.getElementById('keypoints-content');
+    var section = document.getElementById('keypoints-section');
+    if (!container || !section) return;
+    var points = extractKeyPoints(text);
+    if (points.length === 0) {
+      section.style.display = 'none';
+      return;
+    }
+    section.style.display = '';
+    container.innerHTML = '<ul>' + points.map(function(p){ return '<li>' + esc(p) + '</li>'; }).join('') + '</ul>';
+  }
+
 </script>
 <div class="shortcuts-panel" id="shortcuts-panel">
   <div class="sp-header">

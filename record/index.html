@@ -854,7 +854,8 @@
     <div class="modal-body">
       <div class="detail-meta" id="detail-meta"></div>
       <div id="detail-audio-wrap" style="display:none; margin:14px 0 0;">
-        <audio id="detail-audio" controls></audio>
+        <audio id="detail-audio" controls>
+      <canvas id="waveform-canvas" onclick="waveformClick(event)"></canvas></audio>
       </div>
       <div style="margin-top:14px;">
         <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
@@ -2746,8 +2747,9 @@
 
     if (rec.file_path) {
       const { data: urlData } = await sb.storage.from('recordings').createSignedUrl(rec.file_path, 3600);
-      if (urlData?.signedUrl) { audioEl.src = urlData.signedUrl; audioWrap.style.display = 'block'; }
+      if (urlData?.signedUrl) { audioEl.src = urlData.signedUrl; audioWrap.style.display = 'block'; waveformData = null; initWaveform(urlData.signedUrl); }
       initAudioTimeUpdate();
+      applyStoredPlaybackRate();
     }
     // 속도 버튼 삽입
     const playerEl = document.getElementById('detail-audio-wrap');
@@ -2774,6 +2776,7 @@
     const audio = document.getElementById('detail-audio');
     if (!audio) return;
     audio.addEventListener('timeupdate', () => {
+      if (audio.duration) drawWaveform(audio.currentTime / audio.duration);
       const currentTime = audio.currentTime;
       const txEl = document.getElementById('detail-transcript-content') || document.getElementById('detail-transcript');
       if (!txEl) return;
@@ -3188,6 +3191,7 @@
   function setPlaybackRate(rate) {
     const audio = document.getElementById('detail-audio');
     if (audio) audio.playbackRate = rate;
+    localStorage.setItem('playback-rate', rate);
     document.querySelectorAll('[id^="rate-btn-"]').forEach(btn => {
       btn.style.background = 'var(--surface3)';
       btn.style.color = 'var(--text3)';
@@ -3240,6 +3244,73 @@
     document.getElementById('confirm-dialog').classList.remove('open');
     if (_confirmResolve) { _confirmResolve(result); _confirmResolve = null; }
   }
+
+  // ── 파형 시각화 ──
+  let waveformData = null;
+  let waveformCtx = null;
+  async function initWaveform(audioUrl) {
+    const canvas = document.getElementById('waveform-canvas');
+    if (!canvas) return;
+    waveformCtx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth * window.devicePixelRatio;
+    canvas.height = canvas.offsetHeight * window.devicePixelRatio;
+    waveformCtx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    try {
+      const resp = await fetch(audioUrl);
+      const arrayBuf = await resp.arrayBuffer();
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const decoded = await audioCtx.decodeAudioData(arrayBuf);
+      const raw = decoded.getChannelData(0);
+      const samples = 200;
+      const blockSize = Math.floor(raw.length / samples);
+      waveformData = [];
+      for (let i = 0; i < samples; i++) {
+        let sum = 0;
+        for (let j = 0; j < blockSize; j++) sum += Math.abs(raw[i * blockSize + j]);
+        waveformData.push(sum / blockSize);
+      }
+      const max = Math.max(...waveformData);
+      if (max > 0) waveformData = waveformData.map(v => v / max);
+      drawWaveform(0);
+    } catch(e) { /* 파형 그리기 실패 무시 */ }
+  }
+  function drawWaveform(progress) {
+    const canvas = document.getElementById('waveform-canvas');
+    if (!canvas || !waveformData || !waveformCtx) return;
+    const w = canvas.offsetWidth, h = canvas.offsetHeight;
+    waveformCtx.clearRect(0, 0, w, h);
+    const barW = w / waveformData.length;
+    waveformData.forEach((v, i) => {
+      const barH = Math.max(2, v * h * 0.9);
+      const x = i * barW;
+      const y = (h - barH) / 2;
+      waveformCtx.fillStyle = (i / waveformData.length) < progress
+        ? 'var(--primary, #6366f1)' : 'rgba(150,150,150,0.4)';
+      waveformCtx.fillRect(x + 1, y, Math.max(1, barW - 2), barH);
+    });
+  }
+  function waveformClick(e) {
+    const canvas = document.getElementById('waveform-canvas');
+    const audio = document.getElementById('detail-audio');
+    if (!canvas || !audio || !audio.duration) return;
+    const rect = canvas.getBoundingClientRect();
+    const ratio = (e.clientX - rect.left) / rect.width;
+    audio.currentTime = ratio * audio.duration;
+  }
+
+  // ── 재생 속도 저장/복원 ──
+  function applyStoredPlaybackRate() {
+    const audio = document.getElementById('detail-audio');
+    if (!audio) return;
+    const stored = localStorage.getItem('playback-rate');
+    if (stored) {
+      audio.playbackRate = parseFloat(stored);
+      document.querySelectorAll('[id^="rate-btn-"]').forEach(b => {
+        b.classList.toggle('active', b.dataset.rate === stored);
+      });
+    }
+  }
+
 </script>
 <div class="shortcuts-panel" id="shortcuts-panel">
   <h3>⌨️ 키보드 단축키</h3>

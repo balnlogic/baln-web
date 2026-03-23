@@ -63,6 +63,10 @@
       --yellow: #F57F17;
     }
     mark.highlight { background: rgba(255, 200, 0, 0.3); border-radius: 2px; padding: 0 1px; color: inherit; }
+    #regex-btn.active { background:var(--primary); color:#fff; border-color:var(--primary); }
+    .color-picker-row { display:flex; gap:8px; align-items:center; padding:8px 0; flex-wrap:wrap; }
+    .color-swatch { width:24px; height:24px; border-radius:50%; border:2px solid transparent; cursor:pointer; transition:var(--transition); }
+    .color-swatch:hover { transform:scale(1.2); border-color:var(--text); }
     * { margin:0; padding:0; box-sizing:border-box; }
     body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
 
@@ -1146,6 +1150,7 @@
             onblur="setTimeout(hideSearchHistoryDropdown, 200); if(this.value.trim()) addSearchHistory(this.value.trim());"
             onkeydown="if(event.key==='Enter' && this.value.trim()) { addSearchHistory(this.value.trim()); hideSearchHistoryDropdown(); }" />
           <div id="search-history-dropdown" style="position:absolute;top:100%;left:0;right:0;background:var(--surface);border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.2);z-index:1000;display:none;padding:4px;"></div>
+          <button id="regex-btn" onclick="toggleRegexSearch()" title="정규식 모드" style="padding:4px 8px; background:none; border:1px solid var(--border); border-radius:var(--radius-sm); font-family:monospace; font-size:12px; cursor:pointer; flex-shrink:0;">.*</button>
           <button id="search-clear" onclick="clearSearch()" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text3);font-size:14px;display:none;" title="검색 초기화">×</button>
         </div>
         <div style="position:relative;flex-shrink:0;">
@@ -2048,6 +2053,9 @@
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
       if (themeMode === 'auto') applyTheme('auto');
     });
+    // 커스텀 색상 테마 복원
+    const savedColor = localStorage.getItem('color-theme');
+    if (savedColor) document.documentElement.style.setProperty('--primary', savedColor);
   }
 
   async function checkServerStatus() {
@@ -2584,12 +2592,27 @@
     }
 
     if (q) {
-      files = files.filter(f =>
-        getTitle(f).toLowerCase().includes(q) ||
-        (f.full_text || '').toLowerCase().includes(q) ||
-        (f.topic || '').toLowerCase().includes(q) ||
-        (f.language || '').toLowerCase().includes(q)
-      );
+      if (regexSearchMode) {
+        try {
+          const re = new RegExp(q, 'i');
+          files = files.filter(f => re.test(f.full_text || '') || re.test(getTitle(f)) || re.test(f.topic || '') || re.test(f.language || ''));
+        } catch(e) {
+          // 유효하지 않은 정규식이면 일반 검색으로 폴백
+          files = files.filter(f =>
+            getTitle(f).toLowerCase().includes(q) ||
+            (f.full_text || '').toLowerCase().includes(q) ||
+            (f.topic || '').toLowerCase().includes(q) ||
+            (f.language || '').toLowerCase().includes(q)
+          );
+        }
+      } else {
+        files = files.filter(f =>
+          getTitle(f).toLowerCase().includes(q) ||
+          (f.full_text || '').toLowerCase().includes(q) ||
+          (f.topic || '').toLowerCase().includes(q) ||
+          (f.language || '').toLowerCase().includes(q)
+        );
+      }
     }
 
     files = filterFiles(sortFiles(files));
@@ -6248,7 +6271,24 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
   // ════════════════════════════════════════════
   // 전사 텍스트 하이라이트
   // ════════════════════════════════════════════
+  let regexSearchMode = false;
   let currentQuery = '';
+
+  function toggleRegexSearch() {
+    regexSearchMode = !regexSearchMode;
+    const btn = document.getElementById('regex-btn');
+    if (btn) btn.classList.toggle('active', regexSearchMode);
+    renderCurrentView();
+    showToast(regexSearchMode ? '🔤 정규식 모드' : '일반 검색 모드');
+  }
+
+  const COLOR_THEMES = ['#5865f2', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4'];
+
+  function setColorTheme(color) {
+    document.documentElement.style.setProperty('--primary', color);
+    localStorage.setItem('color-theme', color);
+    showToast('🎨 색상 변경됨');
+  }
 
   function highlightText(text, query) {
     if (!query || !query.trim()) return escHtml(text);
@@ -7349,6 +7389,15 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
         <span>전사 후 자동 요약</span>
         <input type="checkbox" id="setting-autosummarize" onchange="autoSummarize=this.checked; localStorage.setItem('record_autoSummarize', this.checked?'1':'0'); showToast(this.checked?'자동 요약 켜짐':'자동 요약 꺼짐', 'info');">
       </label>
+    </div>
+
+    <!-- 테마 색상 설정 -->
+    <div class="settings-section">
+      <div class="settings-title">테마 색상</div>
+      <div class="color-picker-row">
+        <button class="color-swatch" style="background:#5865f2" onclick="setColorTheme('#5865f2')" title="#5865f2"></button><button class="color-swatch" style="background:#10b981" onclick="setColorTheme('#10b981')" title="#10b981"></button><button class="color-swatch" style="background:#f59e0b" onclick="setColorTheme('#f59e0b')" title="#f59e0b"></button><button class="color-swatch" style="background:#ef4444" onclick="setColorTheme('#ef4444')" title="#ef4444"></button><button class="color-swatch" style="background:#8b5cf6" onclick="setColorTheme('#8b5cf6')" title="#8b5cf6"></button><button class="color-swatch" style="background:#06b6d4" onclick="setColorTheme('#06b6d4')" title="#06b6d4"></button>
+        <input type="color" id="custom-color" onchange="setColorTheme(this.value)" title="직접 선택" style="width:24px;height:24px;border:none;border-radius:50%;cursor:pointer;padding:0;background:none;">
+      </div>
     </div>
 
     <!-- 단축키 설정 -->

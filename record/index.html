@@ -716,6 +716,7 @@
   background: none; padding: 4px;
 }
 .mobile-nav-btn.active { color: var(--primary); }
+  .quality-badge { font-size:0.75rem; padding:2px 8px; border-radius:10px; margin-left:8px; }
 </style>
 </head>
 <body>
@@ -936,9 +937,12 @@
           <div id="detail-search-count" style="font-size:11px;color:var(--text3);margin-top:4px;"></div>
         </div>
         <div id="detail-tab-transcript">
-          <div style="display:flex;justify-content:flex-end;gap:6px;margin-bottom:6px;" id="transcript-edit-bar">
-            <button id="btn-edit-transcript" onclick="toggleTranscriptEdit()" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;color:var(--text3);">✏️ 편집</button>
-            <button id="btn-save-transcript" onclick="saveTranscriptEdit()" style="background:var(--primary);border:none;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;color:#fff;display:none;">💾 저장</button>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:6px;" id="transcript-edit-bar">
+            <div id="transcript-quality-badge" style="display:none;"></div>
+            <div style="display:flex;gap:6px;">
+              <button id="btn-edit-transcript" onclick="toggleTranscriptEdit()" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;color:var(--text3);">✏️ 편집</button>
+              <button id="btn-save-transcript" onclick="saveTranscriptEdit()" style="background:var(--primary);border:none;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;color:#fff;display:none;">💾 저장</button>
+            </div>
           </div>
           <div class="transcript-box" id="detail-transcript">불러오는 중...</div>
           <div id="transcript-stats" style="display:none;font-size:11px;color:var(--text3);padding:6px 2px;text-align:right;border-top:1px solid var(--border);margin-top:6px;"></div>
@@ -2369,7 +2373,22 @@
             renderCurrentView();
           }
         } catch(e) {
-          // 자동 제목 생성 실패는 무시
+          // 서버 실패 시 로컬 키워드 추출로 fallback
+          try {
+            const fullTextData = await sb.from('recordings').select('full_text').eq('id', recId).single();
+            const rawText = fullTextData?.data?.full_text || '';
+            if (rawText) {
+              const keywords = extractKeywords(rawText);
+              if (keywords.length >= 1) {
+                const fallbackTitle = keywords.slice(0, 3).join(', ') + ' 관련 회의';
+                await supaFetch(`recordings?id=eq.${recId}`, 'PATCH', { memo: fallbackTitle });
+                if (rec) rec.memo = fallbackTitle;
+                renderCurrentView();
+              }
+            }
+          } catch(fe) {
+            // 로컬 fallback도 실패하면 무시
+          }
         }
       }
     } catch(e) {
@@ -2808,6 +2827,16 @@
     }
 
     showTranscriptStats(data?.full_text || null);
+
+    // 전사 품질 뱃지
+    const qualityBadgeEl = document.getElementById('transcript-quality-badge');
+    if (data?.full_text && qualityBadgeEl) {
+      const q = calcTranscriptQuality(data.full_text);
+      qualityBadgeEl.innerHTML = `<span class="quality-badge" style="background:${q.color}20; color:${q.color}; border:1px solid ${q.color}40">품질: ${q.label} ${q.score}</span>`;
+      qualityBadgeEl.style.display = '';
+    } else if (qualityBadgeEl) {
+      qualityBadgeEl.style.display = 'none';
+    }
 
     // 정보 탭 채우기
     document.getElementById('info-filename').textContent = rec.file_name || '-';
@@ -3635,6 +3664,58 @@
       openSidebar();
     }
   }
+
+  // ════════════════════════════════════════════
+  // 전사 품질 점수 계산
+  // ════════════════════════════════════════════
+  function calcTranscriptQuality(text) {
+    if (!text || text.trim().length === 0) return { score: 0, label: '낮음', color: '#ef4444' };
+
+    let score = 0;
+
+    // 글자 수 기반 (최대 40점)
+    const len = text.length;
+    if (len >= 500) score += 40;
+    else if (len >= 200) score += 25;
+    else if (len >= 100) score += 15;
+    else score += 5;
+
+    // 한국어 비율 기반 (최대 40점)
+    const koreanChars = (text.match(/[가-힣]/g) || []).length;
+    const totalChars = text.replace(/\s/g, '').length || 1;
+    const korRatio = koreanChars / totalChars;
+    score += Math.round(korRatio * 40);
+
+    // 특수문자 과다 감점 (최대 -20점)
+    const bracketPatterns = (text.match(/\[.*?\]|\(.*?\)/g) || []).length;
+    const penaltyRatio = bracketPatterns / (text.split(/\s+/).length || 1);
+    score -= Math.round(Math.min(penaltyRatio * 40, 20));
+
+    score = Math.max(0, Math.min(100, score));
+
+    if (score <= 30) return { score, label: '낮음', color: '#ef4444' };
+    if (score <= 70) return { score, label: '보통', color: '#f59e0b' };
+    return { score, label: '좋음', color: '#10b981' };
+  }
+
+  // ════════════════════════════════════════════
+  // 키워드 추출
+  // ════════════════════════════════════════════
+  function extractKeywords(text) {
+    const stopwords = ['이', '가', '을', '를', '은', '는', '에', '에서', '의', '이다', '있다', '합니다', '그', '저', '우리', '있는', '하는', '했습니다', '있습니다'];
+    const words = text
+      .replace(/[^가-힣a-zA-Z0-9\s]/g, ' ')
+      .split(/\s+/)
+      .filter(w => w.length >= 2 && !stopwords.includes(w));
+
+    const freq = {};
+    words.forEach(w => { freq[w] = (freq[w] || 0) + 1; });
+    return Object.entries(freq)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([w]) => w);
+  }
+
 </script>
 <div class="shortcuts-panel" id="shortcuts-panel">
   <h3>⌨️ 키보드 단축키</h3>

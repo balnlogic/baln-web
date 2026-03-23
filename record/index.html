@@ -911,9 +911,10 @@
     </div>
     <div class="modal-body">
       <div class="detail-meta" id="detail-meta"></div>
-      <div id="detail-audio-wrap" style="display:none; margin:14px 0 0;">
+      <div id="detail-audio-wrap" style="display:none; margin:14px 0 0; display:none; flex-wrap:wrap; align-items:center; gap:6px;">
         <audio id="detail-audio" controls>
       <canvas id="waveform-canvas" onclick="waveformClick(event)"></canvas></audio>
+        <span id="loop-indicator">&#x1F501; 루프</span>
       </div>
       <div style="margin-top:14px;">
         <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
@@ -2223,6 +2224,19 @@
         if (detailFileId) addBookmark(detailFileId, Math.floor(audioEl.currentTime));
       }
     }
+    // 루프 재생 단축키
+    if (e.key === 'l' && !e.ctrlKey && !e.metaKey && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) {
+      e.preventDefault();
+      toggleLoopMode();
+    }
+    if (e.key === '[' && !e.ctrlKey && !e.metaKey && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) {
+      e.preventDefault();
+      setLoopStart();
+    }
+    if (e.key === ']' && !e.ctrlKey && !e.metaKey && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) {
+      e.preventDefault();
+      setLoopEnd();
+    }
   });
 
   // ════════════════════════════════════════════
@@ -2888,6 +2902,10 @@
     if (!audio) return;
     audio.addEventListener('timeupdate', () => {
       if (audio.duration) drawWaveform(audio.currentTime / audio.duration);
+      // 구간 루프 체크
+      if (loopMode && isFinite(loopEnd) && audio.currentTime >= loopEnd) {
+        audio.currentTime = loopStart;
+      }
       const currentTime = audio.currentTime;
       const txEl = document.getElementById('detail-transcript-content') || document.getElementById('detail-transcript');
       if (!txEl) return;
@@ -3147,6 +3165,13 @@
   .meta { font-size: 13px; color: #666; margin-bottom: 24px; border-bottom: 1px solid #eee; padding-bottom: 12px; }
   pre { white-space: pre-wrap; font-family: inherit; font-size: 14px; }
   @media print { body { padding: 20px; } }
+
+#loop-indicator {
+  display:none; background:var(--primary); color:#fff; font-size:0.72rem;
+  padding:2px 8px; border-radius:10px; margin-left:8px;
+}
+#loop-indicator.active { display:inline-flex; align-items:center; gap:4px; }
+mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
 </style>
 </head>
 <body>
@@ -3234,18 +3259,35 @@
     const el = document.getElementById('detail-transcript');
     const countEl = document.getElementById('detail-search-count');
     if (!el) return;
-    if (!query.trim()) {
-      countEl && (countEl.textContent = '');
+    if (!query || !query.trim()) {
+      if (countEl) countEl.textContent = '';
       el.innerHTML = el.innerHTML.replace(/<mark[^>]*>(.*?)<\/mark>/gi, '$1');
       return;
     }
-    const text = el.innerText || el.textContent || '';
+    const rawText = el.innerText || el.textContent || '';
     const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const regex = new RegExp(escaped, 'gi');
-    const matches = text.match(regex);
+    const matches = rawText.match(regex);
     const count = matches ? matches.length : 0;
-    if (countEl) countEl.textContent = count > 0 ? `${count}개 발견` : '없음';
-    el.innerHTML = el.innerHTML.replace(regex, m => `<mark style="background:#FFD700;color:#000;border-radius:2px;">${m}</mark>`);
+    if (countEl) countEl.textContent = count > 0 ? `${count}개 찾음` : '없음';
+    // innerHTML 내 텍스트 노드만 치환 (태그 속성 건드리지 않음)
+    function walkAndHighlight(node) {
+      if (node.nodeType === 3) {
+        const val = node.nodeValue;
+        if (regex.test(val)) {
+          regex.lastIndex = 0;
+          const span = document.createElement('span');
+          span.innerHTML = val.replace(regex, m => '<mark style="background:#fbbf24;color:#1a1a1a;border-radius:2px;padding:0 2px">' + m + '</mark>');
+          node.parentNode.replaceChild(span, node);
+        }
+        regex.lastIndex = 0;
+      } else if (node.nodeType === 1 && node.tagName !== 'MARK') {
+        Array.from(node.childNodes).forEach(walkAndHighlight);
+      }
+    }
+    // 기존 mark 태그 제거 후 다시 하이라이트
+    el.innerHTML = el.innerHTML.replace(/<mark[^>]*>(.*?)<\/mark>/gi, '$1');
+    walkAndHighlight(el);
   }
 
   function getTitle(rec) {
@@ -3714,6 +3756,56 @@
       .sort((a, b) => b[1] - a[1])
       .slice(0, 5)
       .map(([w]) => w);
+  }
+
+
+  // ════════════════════════════════════════════
+  // 구간 루프 재생
+  // ════════════════════════════════════════════
+  let loopMode = false;
+  let loopStart = 0;
+  let loopEnd = Infinity;
+
+  function toggleLoopMode() {
+    const audio = document.getElementById('detail-audio');
+    if (!audio || !audio.src) return;
+    loopMode = !loopMode;
+    const indicator = document.getElementById('loop-indicator');
+    if (indicator) indicator.classList.toggle('active', loopMode);
+    if (loopMode) {
+      showToast('루프 모드 켜짐 — [ ] 키로 구간 설정', 'info');
+    } else {
+      loopStart = 0; loopEnd = Infinity;
+      showToast('루프 모드 꺼짐', 'info');
+    }
+  }
+
+  function setLoopStart() {
+    const audio = document.getElementById('detail-audio');
+    if (!audio || !audio.src) return;
+    loopStart = audio.currentTime;
+    showToast('루프 시작점: ' + loopStart.toFixed(1) + 's', 'info');
+  }
+
+  function setLoopEnd() {
+    const audio = document.getElementById('detail-audio');
+    if (!audio || !audio.src) return;
+    loopEnd = audio.currentTime;
+    showToast('루프 끝점: ' + loopEnd.toFixed(1) + 's', 'info');
+  }
+
+  // ════════════════════════════════════════════
+  // 전사 텍스트 하이라이트
+  // ════════════════════════════════════════════
+  function highlightText(text, query) {
+    if (!query || !query.trim()) return escHtml(text);
+    const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp('(' + escaped + ')', 'gi');
+    return text.replace(regex, '<mark style="background:#fbbf24;color:#1a1a1a;border-radius:2px;padding:0 2px">$1</mark>');
+  }
+
+  function escHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
 
 </script>

@@ -794,6 +794,7 @@
   .file-grid-card .gc-title { font-weight:600; font-size:0.9rem; margin-bottom:6px; }
   .file-grid-card .gc-date { font-size:0.75rem; color:var(--muted); margin-bottom:8px; }
   .file-grid-card .gc-preview { font-size:0.8rem; color:var(--muted); line-height:1.4; overflow:hidden; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; }
+  .last-played { font-size:11px; color:var(--text-tertiary); }
   .group-header {
     display:flex; align-items:center; justify-content:space-between;
     padding:8px 12px; font-size:0.82rem; font-weight:600; color:var(--muted);
@@ -1296,6 +1297,14 @@
             <summary style="cursor:pointer;font-size:0.85rem;color:var(--primary);font-weight:600">📊 주요 단어</summary>
             <div id="wordfreq-content" style="padding:8px 0;display:flex;flex-wrap:wrap;gap:6px;align-items:baseline"></div>
           </details>
+          <div id="find-replace-panel" style="display:none; padding:8px 12px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); margin-bottom:8px; flex-direction:column; gap:8px;">
+            <div style="display:flex; gap:8px; align-items:center;">
+              <input id="find-input" type="text" placeholder="찾기..." style="flex:1; padding:6px; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--bg); color:var(--text); font-size:13px;">
+              <input id="replace-input" type="text" placeholder="바꿀 내용..." style="flex:1; padding:6px; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--bg); color:var(--text); font-size:13px;">
+              <button onclick="doFindReplace()" style="padding:6px 12px; background:var(--primary); color:#fff; border:none; border-radius:var(--radius-sm); cursor:pointer; font-size:13px;">바꾸기</button>
+              <button onclick="closeFindReplace()" style="padding:6px; background:none; border:none; cursor:pointer; color:var(--text-secondary);">✕</button>
+            </div>
+          </div>
           <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:6px;" id="transcript-edit-bar">
             <div id="transcript-quality-badge" style="display:none;"></div>
             <div style="display:flex;gap:6px;align-items:center;">
@@ -1303,6 +1312,7 @@
               <button onclick="toggleFocusMode()" title="읽기 모드" class="icon-btn focus-mode-toggle" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--text3);">📖</button>
               <button onclick="setTranscriptFontSize(-1)" title="글자 작게" class="icon-btn" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--text3);">A-</button>
               <button onclick="setTranscriptFontSize(1)" title="글자 크게" class="icon-btn" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--text3);">A+</button>
+              <button onclick="openFindReplace()" title="찾기/바꾸기" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--text3);">🔍↔</button>
               <button id="btn-edit-transcript" onclick="toggleTranscriptEdit()" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;color:var(--text3);">✏️ 편집</button>
               <button id="btn-save-transcript" onclick="saveTranscriptEdit()" style="background:var(--primary);border:none;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;color:#fff;display:none;">💾 저장</button>
               <button id="btn-undo-transcript" onclick="undoTranscriptEdit()" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;color:var(--text3);display:none;" title="되돌리기 (Ctrl+Z)">↩ 되돌리기</button>
@@ -1739,6 +1749,49 @@
   let ctxRec = null;
   let sortOrder = 'date_desc';
   const SORT_KEY = 'sort-prefs';
+  const PLAY_HISTORY_KEY = 'play-history';
+
+  function getPlayHistory() {
+    try { return JSON.parse(localStorage.getItem(PLAY_HISTORY_KEY) || '{}'); } catch(e) { return {}; }
+  }
+
+  function recordPlay(id) {
+    const h = getPlayHistory();
+    h[id] = new Date().toISOString();
+    localStorage.setItem(PLAY_HISTORY_KEY, JSON.stringify(h));
+  }
+
+  let findReplaceOpen = false;
+
+  function openFindReplace() {
+    findReplaceOpen = true;
+    const panel = document.getElementById('find-replace-panel');
+    if (panel) { panel.style.display = 'flex'; document.getElementById('find-input')?.focus(); }
+  }
+
+  function closeFindReplace() {
+    findReplaceOpen = false;
+    const panel = document.getElementById('find-replace-panel');
+    if (panel) panel.style.display = 'none';
+  }
+
+  async function doFindReplace() {
+    if (!detailFileId) { showToast('파일을 먼저 선택하세요', 'error'); return; }
+    const findVal = document.getElementById('find-input')?.value || '';
+    const replaceVal = document.getElementById('replace-input')?.value || '';
+    if (!findVal) { showToast('찾을 텍스트를 입력하세요', 'error'); return; }
+    const f = allFiles.find(x => x.id === detailFileId);
+    if (!f || !f.full_text) { showToast('전사 내용이 없습니다', 'error'); return; }
+    let count = 0;
+    const newText = f.full_text.split(findVal).join((() => { count = f.full_text.split(findVal).length - 1; return replaceVal; })());
+    if (count === 0) { showToast('찾는 텍스트가 없습니다', 'info'); return; }
+    await supaFetch('recordings?id=eq.' + detailFileId, 'PATCH', { full_text: newText });
+    f.full_text = newText;
+    const txEl = document.getElementById('detail-transcript');
+    if (txEl) txEl.textContent = newText;
+    showTranscriptStats(newText);
+    showToast('✅ ' + count + '개 바꿈 완료');
+  }
 
   function saveSortPrefs() {
     localStorage.setItem(SORT_KEY, JSON.stringify({ sortOrder }));
@@ -2586,6 +2639,7 @@
           <span class="file-dur">${esc(dur)}</span>
           ${sizeStr ? `<span class="file-size">${esc(sizeStr)}</span>` : ''}
           <span class="file-date">${esc(date)}</span>
+          ${(()=>{ const lp=getPlayHistory()[f.id]; return lp ? `<span class="last-played">▶ ${formatDate(lp)}</span>` : ''; })()}
           ${statusBadge}${minutesBadge}${langBadge}
         </div>
         ${processingBar}
@@ -2604,6 +2658,7 @@
     { key: 'dur_desc', label: '⏱ 긴 순' },
     { key: 'status', label: '✅ 전사상태' },
     { key: 'starred', label: '⭐ 즐겨찾기' },
+    { key: 'played', label: '▶ 최근 재생' },
   ];
 
   function cycleSortOrder() {
@@ -2822,6 +2877,7 @@
       if (sortOrder === 'dur_desc') return (b.duration || 0) - (a.duration || 0);
       if (sortOrder === 'status') return b.transcription_status - a.transcription_status;
       if (sortOrder === 'starred') return (b.starred ? 1 : 0) - (a.starred ? 1 : 0) || new Date(b.created_at) - new Date(a.created_at);
+      if (sortOrder === 'played') { const ph = getPlayHistory(); return (ph[b.id] || '').localeCompare(ph[a.id] || ''); }
       return new Date(b.created_at) - new Date(a.created_at); // date_desc default
     });
   }
@@ -3620,6 +3676,11 @@
       e.preventDefault();
       setLoopEnd();
     }
+    // 찾기/바꾸기 단축키
+    if ((e.ctrlKey || e.metaKey) && e.key === 'h') {
+      const detailModal = document.getElementById('modal-detail');
+      if (detailModal?.classList.contains('open')) { e.preventDefault(); openFindReplace(); return; }
+    }
     // 파일 목록 키보드 탐색
     if (!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) {
       if (e.key === 'ArrowDown') { e.preventDefault(); moveFocusedFile(1); return; }
@@ -4345,6 +4406,7 @@
       if (urlData?.signedUrl) {
         audioEl.src = urlData.signedUrl;
         audioWrap.style.display = 'block';
+        recordPlay(rec.id);
         waveformData = null;
         initWaveform(urlData.signedUrl);
         audioEl.onended = () => {

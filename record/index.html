@@ -706,6 +706,18 @@
 .folder-color-dot { width:20px; height:20px; border-radius:50%; cursor:pointer; border:2px solid transparent; }
 .folder-color-dot:hover { border-color: #fff; transform:scale(1.2); }
 
+/* ── 폴더 아이콘 팔레트 ── */
+#folder-icon-palette { 
+  position:fixed; z-index:1001; background:var(--surface); border:1px solid var(--border);
+  border-radius:8px; padding:8px; display:flex; flex-wrap:wrap; gap:4px; 
+  box-shadow:0 4px 12px rgba(0,0,0,0.2); width:240px;
+}
+.folder-icon-opt { 
+  width:32px; height:32px; display:flex; align-items:center; justify-content:center;
+  border-radius:6px; cursor:pointer; font-size:1.2rem;
+}
+.folder-icon-opt:hover { background:var(--surface); transform:scale(1.2); }
+
 /* ── 모바일 레이아웃 ── */
 @media (max-width: 768px) {
   .sidebar { 
@@ -1717,7 +1729,7 @@
       const active = currentView === 'folder' && currentFolder === t;
       const fColor = getFolderColor(t);
       return `<button class="nav-item sidebar-folder-item ${active ? 'active' : ''}" ondragover="onFolderDragOver(event)" ondragleave="onFolderDragLeave(event)" ondrop="onFolderDrop(${JSON.stringify(t)}, event)" onclick="switchFolder(${JSON.stringify(t)})" oncontextmenu="showFolderContextMenu(event, ${JSON.stringify(t)});return false;">
-        <span class="nav-icon" style="color:${fColor || 'inherit'}">📁</span>
+        <span class="nav-icon" style="color:${fColor || 'inherit'}">${getFolderIcon(t)}</span>
         <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;${fColor ? 'color:'+fColor : ''}">${esc(t)}</span>
         <span class="nav-count">${count}${pendingStr}</span>
       </button>`;
@@ -4417,6 +4429,69 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
   // ════════════════════════════════════════════
   let prevTranscriptionMap = {};
 
+  // ── 폴더 아이콘 ──
+  const FOLDER_ICON_KEY = 'folder-icons';
+  const FOLDER_ICONS = ['📁','📂','🗂️','📋','📊','📝','🎙️','🎵','🏢','🏠','💼','🔬','📱','🌐','⚙️','🎓'];
+
+  function getFolderIcon(folderId) {
+    try {
+      const store = JSON.parse(localStorage.getItem(FOLDER_ICON_KEY) || '{}');
+      return store[folderId] || '📁';
+    } catch(e) { return '📁'; }
+  }
+
+  function setFolderIcon(folderId) {
+    const existingPalette = document.getElementById('folder-icon-palette');
+    if (existingPalette) existingPalette.remove();
+
+    const palette = document.createElement('div');
+    palette.id = 'folder-icon-palette';
+
+    FOLDER_ICONS.forEach(icon => {
+      const opt = document.createElement('div');
+      opt.className = 'folder-icon-opt';
+      opt.textContent = icon;
+      opt.title = icon;
+      opt.onclick = (e) => {
+        e.stopPropagation();
+        try {
+          const store = JSON.parse(localStorage.getItem(FOLDER_ICON_KEY) || '{}');
+          store[folderId] = icon;
+          localStorage.setItem(FOLDER_ICON_KEY, JSON.stringify(store));
+        } catch(err) {}
+        palette.remove();
+        renderFolders();
+      };
+      palette.appendChild(opt);
+    });
+
+    const reset = document.createElement('div');
+    reset.className = 'folder-icon-opt';
+    reset.textContent = '✕';
+    reset.title = '기본 아이콘으로 초기화';
+    reset.style.fontSize = '0.85rem';
+    reset.onclick = (e) => {
+      e.stopPropagation();
+      try {
+        const store = JSON.parse(localStorage.getItem(FOLDER_ICON_KEY) || '{}');
+        delete store[folderId];
+        localStorage.setItem(FOLDER_ICON_KEY, JSON.stringify(store));
+      } catch(err) {}
+      palette.remove();
+      renderFolders();
+    };
+    palette.appendChild(reset);
+
+    document.body.appendChild(palette);
+
+    setTimeout(() => {
+      document.addEventListener('click', function closeIconPalette() {
+        palette.remove();
+        document.removeEventListener('click', closeIconPalette);
+      });
+    }, 0);
+  }
+
   // ── 폴더 색상 ──
   const FOLDER_COLORS = ['#6366f1','#ec4899','#f59e0b','#10b981','#3b82f6','#ef4444','#8b5cf6','#14b8a6'];
 
@@ -4488,7 +4563,8 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
     const menu = document.createElement('div');
     menu.id = 'folder-ctx-menu';
     menu.style.cssText = 'position:fixed;z-index:1001;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:4px;box-shadow:0 4px 12px rgba(0,0,0,0.2);min-width:130px;';
-    menu.innerHTML = `<button onclick="setFolderColorAt(event, '${folderId.replace(/'/g,"\'")}');document.getElementById('folder-ctx-menu').remove();" style="display:block;width:100%;text-align:left;padding:6px 10px;background:none;border:none;cursor:pointer;font-size:13px;color:var(--text);">🎨 색상 변경</button>`;
+    menu.innerHTML = `<button onclick="setFolderColorAt(event, '${folderId.replace(/'/g,"\'")}');document.getElementById('folder-ctx-menu').remove();" style="display:block;width:100%;text-align:left;padding:6px 10px;background:none;border:none;cursor:pointer;font-size:13px;color:var(--text);">🎨 색상 변경</button>
+<button onclick="event.stopPropagation();document.getElementById('folder-ctx-menu').remove();setFolderIconAt(event, '${folderId.replace(/'/g,"\\'")}');" style="display:block;width:100%;text-align:left;padding:6px 10px;background:none;border:none;cursor:pointer;font-size:13px;color:var(--text);">🖼️ 아이콘 변경</button>`;
 
     let x = event.clientX;
     let y = event.clientY;
@@ -4551,6 +4627,65 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
       document.addEventListener('click', function closePalette() {
         palette.remove();
         document.removeEventListener('click', closePalette);
+      });
+    }, 0);
+  }
+
+  function setFolderIconAt(event, folderId) {
+    event.stopPropagation();
+    const existingPalette = document.getElementById('folder-icon-palette');
+    if (existingPalette) existingPalette.remove();
+
+    const palette = document.createElement('div');
+    palette.id = 'folder-icon-palette';
+
+    FOLDER_ICONS.forEach(icon => {
+      const opt = document.createElement('div');
+      opt.className = 'folder-icon-opt';
+      opt.textContent = icon;
+      opt.title = icon;
+      opt.onclick = (e) => {
+        e.stopPropagation();
+        try {
+          const store = JSON.parse(localStorage.getItem(FOLDER_ICON_KEY) || '{}');
+          store[folderId] = icon;
+          localStorage.setItem(FOLDER_ICON_KEY, JSON.stringify(store));
+        } catch(err) {}
+        palette.remove();
+        renderFolders();
+      };
+      palette.appendChild(opt);
+    });
+
+    const reset = document.createElement('div');
+    reset.className = 'folder-icon-opt';
+    reset.textContent = '✕';
+    reset.title = '기본 아이콘으로 초기화';
+    reset.style.fontSize = '0.85rem';
+    reset.onclick = (e) => {
+      e.stopPropagation();
+      try {
+        const store = JSON.parse(localStorage.getItem(FOLDER_ICON_KEY) || '{}');
+        delete store[folderId];
+        localStorage.setItem(FOLDER_ICON_KEY, JSON.stringify(store));
+      } catch(err) {}
+      palette.remove();
+      renderFolders();
+    };
+    palette.appendChild(reset);
+
+    let x = event.clientX;
+    let y = event.clientY;
+    if (x + 250 > window.innerWidth) x = window.innerWidth - 255;
+    if (y + 180 > window.innerHeight) y = window.innerHeight - 185;
+    palette.style.left = x + 'px';
+    palette.style.top = y + 'px';
+    document.body.appendChild(palette);
+
+    setTimeout(() => {
+      document.addEventListener('click', function closeIconPalette() {
+        palette.remove();
+        document.removeEventListener('click', closeIconPalette);
       });
     }, 0);
   }
@@ -4736,6 +4871,63 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
   // ════════════════════════════════════════════
   // 통계 대시보드
   // ════════════════════════════════════════════
+  // ── 중복 파일 감지 ──
+  function findDuplicates() {
+    const groups = [];
+    const visited = new Set();
+
+    // 파일명 기반 중복
+    const nameMap = {};
+    allFiles.forEach(f => {
+      const normalized = (f.file_name || '').replace(/\.[^.]+$/, '').toLowerCase().trim();
+      if (!nameMap[normalized]) nameMap[normalized] = [];
+      nameMap[normalized].push(f.id);
+    });
+    Object.values(nameMap).forEach(ids => {
+      if (ids.length > 1) {
+        groups.push(ids);
+        ids.forEach(id => visited.add(id));
+      }
+    });
+
+    // 전사 내용 기반 중복 (full_text 길이 10% 이내 + 첫 100글자 비교)
+    const transcribed = allFiles.filter(f => f.full_text && f.full_text.length > 20);
+    for (let i = 0; i < transcribed.length; i++) {
+      for (let j = i + 1; j < transcribed.length; j++) {
+        const a = transcribed[i];
+        const b = transcribed[j];
+        if (visited.has(a.id) && visited.has(b.id)) continue;
+        const lenA = a.full_text.length;
+        const lenB = b.full_text.length;
+        const diff = Math.abs(lenA - lenB) / Math.max(lenA, lenB);
+        if (diff <= 0.1) {
+          const headA = a.full_text.slice(0, 100).toLowerCase();
+          const headB = b.full_text.slice(0, 100).toLowerCase();
+          if (headA === headB) {
+            const existingGroup = groups.find(g => g.includes(a.id) || g.includes(b.id));
+            if (existingGroup) {
+              if (!existingGroup.includes(a.id)) existingGroup.push(a.id);
+              if (!existingGroup.includes(b.id)) existingGroup.push(b.id);
+            } else {
+              groups.push([a.id, b.id]);
+            }
+            visited.add(a.id);
+            visited.add(b.id);
+          }
+        }
+      }
+    }
+
+    return groups;
+  }
+
+  function showDuplicates() {
+    const groups = findDuplicates();
+    if (!groups.length) { showToast('중복 파일 없음', 'info'); return; }
+    showToast(`중복 의심: ${groups.length}그룹`, 'info');
+    console.table(groups.map(g => ({ files: g.map(id => allFiles.find(f=>f.id===id)?.file_name).join(', ') })));
+  }
+
   function showStatsView() {
     currentView = 'stats';
     document.querySelectorAll('.nav-item[data-view]').forEach(el => {
@@ -4809,6 +5001,11 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
           <div class="s-label">이번 주 녹음</div>
           <div class="s-value">${thisWeek}</div>
           <div class="s-sub">이번 주 신규</div>
+        </div>
+        <div class="stats-card" onclick="showDuplicates()" style="cursor:pointer">
+          <div class="s-label">중복 의심</div>
+          <div class="s-value" id="dup-count">${findDuplicates().length}</div>
+          <div class="s-sub">쌍</div>
         </div>
       </div>
       <div class="stats-section-title">요일별 녹음 분포</div>

@@ -978,7 +978,12 @@
           <div id="bookmarks-list"></div>
         </div>
         <div id="detail-tab-minutes" style="display:none;">
-          <div class="transcript-box" id="detail-minutes-content" style="white-space:pre-wrap;outline:none;" contenteditable="false"></div>
+          <div class="minutes-tab-bar">
+            <button class="minutes-tab active" id="minutes-tab-edit" onclick="toggleMinutesView('edit')">편집</button>
+            <button class="minutes-tab" id="minutes-tab-preview" onclick="toggleMinutesView('preview')">미리보기</button>
+          </div>
+          <div class="transcript-box" id="detail-minutes-content" style="white-space:pre-wrap;outline:none;" contenteditable="false" oninput="resetMinutesAutoSave()"></div>
+          <div id="minutes-preview" style="display:none;"></div>
           <div style="text-align:right;margin-top:6px;display:none;" id="detail-minutes-actions">
             <button onclick="saveDetailMinutes()" style="background:var(--primary);color:#fff;border:none;border-radius:7px;padding:5px 12px;font-size:12px;cursor:pointer;font-weight:600;">💾 저장</button>
             <button onclick="exportMinutesPDF()" style="background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:5px 12px;font-size:12px;cursor:pointer;color:var(--text2);margin-left:4px;">🖨️ PDF</button>
@@ -3145,6 +3150,7 @@
     const isInfo = tab === 'info';
     document.getElementById('detail-tab-transcript').style.display = isTranscript ? '' : 'none';
     document.getElementById('detail-tab-minutes').style.display = tab === 'minutes' ? '' : 'none';
+    if (tab === 'minutes') { startMinutesAutoSave(); toggleMinutesView('edit'); } else { stopMinutesAutoSave(); }
     document.getElementById('detail-tab-info').style.display = isInfo ? '' : 'none';
     const sw = document.getElementById('detail-search-wrap');
     if (sw) sw.style.display = isTranscript ? '' : 'none';
@@ -3259,6 +3265,19 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
   .folder-bar-count { font-size:0.75rem; color:var(--text3); width:30px; text-align:right; flex-shrink:0; }
   .stats-export-btn { margin:12px 16px 4px; padding:8px 14px; background:none; border:1px solid var(--border); border-radius:8px; color:var(--text3); font-size:12px; cursor:pointer; }
   .stats-export-btn:hover { background:var(--surface2,var(--surface3)); color:var(--text); }
+
+    /* 회의록 편집/미리보기 탭 */
+    .minutes-tab-bar { display:flex; gap:4px; margin-bottom:8px; }
+    .minutes-tab { padding:4px 12px; border-radius:6px; font-size:0.82rem; cursor:pointer; border:1px solid var(--border); background:none; color:var(--muted); }
+    .minutes-tab.active { background:var(--primary); color:#fff; border-color:var(--primary); }
+    #minutes-preview { 
+      padding:12px; background:var(--surface); border-radius:8px; min-height:120px;
+      font-size:0.9rem; line-height:1.7; color:var(--text);
+    }
+    #minutes-preview h2 { font-size:1.1rem; margin:12px 0 6px; border-bottom:1px solid var(--border); padding-bottom:4px; }
+    #minutes-preview h3 { font-size:0.95rem; margin:10px 0 4px; color:var(--primary); }
+    #minutes-preview li { margin:2px 0; padding-left:4px; }
+    #minutes-preview hr { border:none; border-top:1px solid var(--border); margin:8px 0; }
 </style>
 </head>
 <body>
@@ -3298,6 +3317,7 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
     if (id === 'modal-detail') {
       const audio = document.getElementById('detail-audio');
       audio.pause(); audio.src = '';
+      stopMinutesAutoSave();
     }
     if (id === 'modal-upload') {
       document.getElementById('upload-progress').style.display = 'none';
@@ -4076,6 +4096,84 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
     a.click();
     URL.revokeObjectURL(url);
     showToast(`${allFiles.length}개 파일 CSV 내보내기 완료`, 'success');
+  }
+
+
+  // ════════════════════════════════════════════
+  // 회의록 자동 저장 (30초 주기)
+  // ════════════════════════════════════════════
+  let minutesAutoSaveTimer = null;
+
+  function startMinutesAutoSave() {
+    if (minutesAutoSaveTimer) clearInterval(minutesAutoSaveTimer);
+    minutesAutoSaveTimer = setInterval(async () => {
+      const el = document.getElementById('detail-minutes-content');
+      if (!el || !detailFileId) return;
+      const text = el.innerText || el.value || '';
+      if (!text.trim()) return;
+      await supaFetch(`recordings?id=eq.${detailFileId}`, 'PATCH', { formatted_minutes: text });
+      showToast('자동 저장됨', 'info');
+    }, 30000);
+  }
+
+  function stopMinutesAutoSave() {
+    if (minutesAutoSaveTimer) { clearInterval(minutesAutoSaveTimer); minutesAutoSaveTimer = null; }
+  }
+
+  function resetMinutesAutoSave() {
+    stopMinutesAutoSave();
+    startMinutesAutoSave();
+  }
+
+  // ════════════════════════════════════════════
+  // 회의록 마크다운 미리보기
+  // ════════════════════════════════════════════
+  let minutesViewMode = 'edit';
+
+  function markdownToHtml(text) {
+    if (!text) return '';
+    let html = text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+    // 수평선
+    html = html.replace(/^---$/gm, '<hr>');
+    // 제목
+    html = html.replace(/^## (.+)$/gm, '<h3>$1</h3>');
+    html = html.replace(/^# (.+)$/gm, '<h2>$1</h2>');
+    // 굵게, 기울임
+    html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+    // 목록
+    html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
+    // 빈 줄
+    html = html.replace(/\n\n/g, '<br><br>');
+    html = html.replace(/\n/g, '<br>');
+    return html;
+  }
+
+  function toggleMinutesView(mode) {
+    minutesViewMode = mode;
+    const editEl = document.getElementById('detail-minutes-content');
+    const previewEl = document.getElementById('minutes-preview');
+    const editBtn = document.getElementById('minutes-tab-edit');
+    const previewBtn = document.getElementById('minutes-tab-preview');
+
+    if (mode === 'preview') {
+      const text = editEl ? (editEl.innerText || editEl.value || '') : '';
+      if (previewEl) {
+        previewEl.innerHTML = markdownToHtml(text);
+        previewEl.style.display = '';
+      }
+      if (editEl) editEl.style.display = 'none';
+      if (editBtn) editBtn.classList.remove('active');
+      if (previewBtn) previewBtn.classList.add('active');
+    } else {
+      if (previewEl) previewEl.style.display = 'none';
+      if (editEl) editEl.style.display = '';
+      if (editBtn) editBtn.classList.add('active');
+      if (previewBtn) previewBtn.classList.remove('active');
+    }
   }
 
 </script>

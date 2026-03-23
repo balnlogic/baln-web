@@ -504,6 +504,8 @@
     .emo-bar.positive { background:#10b981; }
     .emo-bar.negative { background:#ef4444; }
     .emo-bar.neutral { background:#6b7280; }
+    .emo-timeline { display:flex; flex-wrap:wrap; gap:3px; margin-top:8px; }
+    .emo-dot { width:10px; height:10px; border-radius:50%; cursor:pointer; }
     .quick-note-fab {
       position: fixed;
       bottom: 24px;
@@ -1486,6 +1488,7 @@
       </div>
     </div>
     <div id="emotion-empty" style="font-size:12px;color:var(--text3);">전사 후 분석 가능합니다.</div>
+    <div id="emo-timeline-wrap"></div>
   </div>
   <div class="participants-section" style="margin-top:12px;">
     <div class="info-label" style="font-size:11px;color:var(--text3);margin-bottom:4px;">참가자</div>
@@ -2819,6 +2822,7 @@
     updateActiveFileHighlight();
     initScrollObserver();
     // 컴팩트뷰·미리보기 상태 복원
+    if (sortOrder === 'manual') { setTimeout(initDragSort, 50); }
     const _fl = document.getElementById('file-list');
     if (_fl) {
       _fl.classList.toggle('compact', compactView);
@@ -2906,7 +2910,13 @@
     { key: 'status', label: '✅ 전사상태' },
     { key: 'starred', label: '⭐ 즐겨찾기' },
     { key: 'played', label: '▶ 최근 재생' },
+    { key: 'manual', label: '✋ 수동 정렬' },
   ];
+
+  // ── 수동 정렬 (localStorage) ──────────────────────────────────────────────
+  const MANUAL_ORDER_KEY = 'manual-order';
+  function getManualOrder() { return JSON.parse(localStorage.getItem(MANUAL_ORDER_KEY) || '[]'); }
+  function saveManualOrder(ids) { localStorage.setItem(MANUAL_ORDER_KEY, JSON.stringify(ids)); }
 
   function cycleSortOrder() {
     const idx = SORT_OPTIONS.findIndex(o => o.key === sortOrder);
@@ -3145,6 +3155,14 @@
       if (sortOrder === 'status') return b.transcription_status - a.transcription_status;
       if (sortOrder === 'starred') return (b.starred ? 1 : 0) - (a.starred ? 1 : 0) || new Date(b.created_at) - new Date(a.created_at);
       if (sortOrder === 'played') { const ph = getPlayHistory(); return (ph[b.id] || '').localeCompare(ph[a.id] || ''); }
+      if (sortOrder === 'manual') {
+        const mo = getManualOrder();
+        const ia = mo.indexOf(a.id), ib = mo.indexOf(b.id);
+        if (ia === -1 && ib === -1) return new Date(b.created_at) - new Date(a.created_at);
+        if (ia === -1) return 1;
+        if (ib === -1) return -1;
+        return ia - ib;
+      }
       return new Date(b.created_at) - new Date(a.created_at); // date_desc default
     });
   }
@@ -4688,9 +4706,17 @@
       document.getElementById('emo-bar-neutral').textContent = '중립 ' + emoResult.neutral;
       emoDispEl.style.display = 'flex';
       if (emoEmptyEl) emoEmptyEl.style.display = 'none';
+      // 세그먼트 감정 타임라인
+      const emoTimelineWrap = document.getElementById('emo-timeline-wrap');
+      if (emoTimelineWrap) {
+        const segs = data?.segments_json || [];
+        renderEmotionTimeline(segs, emoTimelineWrap);
+      }
     } else if (emoDispEl) {
       emoDispEl.style.display = 'none';
       if (emoEmptyEl) emoEmptyEl.style.display = '';
+      const emoTimelineWrap = document.getElementById('emo-timeline-wrap');
+      if (emoTimelineWrap) emoTimelineWrap.innerHTML = '';
     }
 
     // 폴더 select 채우기
@@ -5061,6 +5087,64 @@
     dragFileId = null;
     e.currentTarget?.classList.remove('dragging');
     document.querySelectorAll('.sidebar-folder-item.drag-over').forEach(el => el.classList.remove('drag-over'));
+  }
+
+  // ── 파일 목록 수동 정렬 드래그 소트 ─────────────────────────────────────
+  let _dragSortId = null;
+  let _dragSortOver = null;
+
+  function initDragSort() {
+    const fl = document.getElementById('file-list');
+    if (!fl) return;
+    if (sortOrder !== 'manual') return;
+    fl.querySelectorAll('.file-item[data-id]').forEach(el => {
+      el.setAttribute('draggable', 'true');
+      el.removeEventListener('dragstart', _onSortDragStart);
+      el.removeEventListener('dragover', _onSortDragOver);
+      el.removeEventListener('drop', _onSortDrop);
+      el.removeEventListener('dragend', _onSortDragEnd);
+      el.addEventListener('dragstart', _onSortDragStart);
+      el.addEventListener('dragover', _onSortDragOver);
+      el.addEventListener('drop', _onSortDrop);
+      el.addEventListener('dragend', _onSortDragEnd);
+    });
+  }
+
+  function _onSortDragStart(e) {
+    _dragSortId = this.dataset.id;
+    e.dataTransfer.effectAllowed = 'move';
+    setTimeout(() => this.classList.add('dragging'), 0);
+  }
+
+  function _onSortDragOver(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    _dragSortOver = this.dataset.id;
+  }
+
+  function _onSortDragEnd(e) {
+    this.classList.remove('dragging');
+    _dragSortId = null;
+    _dragSortOver = null;
+  }
+
+  function _onSortDrop(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!_dragSortId || !_dragSortOver || _dragSortId === _dragSortOver) return;
+    const fl = document.getElementById('file-list');
+    if (!fl) return;
+    const items = [...fl.querySelectorAll('.file-item[data-id]')];
+    const ids = items.map(el => el.dataset.id);
+    const fromIdx = ids.indexOf(_dragSortId);
+    const toIdx = ids.indexOf(_dragSortOver);
+    if (fromIdx === -1 || toIdx === -1) return;
+    ids.splice(fromIdx, 1);
+    ids.splice(toIdx, 0, _dragSortId);
+    // allFiles에 없는 id도 보존
+    const allIds = [...new Set([...ids, ...getManualOrder()])];
+    saveManualOrder(allIds);
+    renderCurrentView();
   }
 
   function onFolderDragOver(e) {
@@ -6725,6 +6809,24 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
     }
 
     // ── 감정 분석 ────────────────────────────────────────────────────────────
+    function getEmotionScore(text) {
+      const pos = (text.match(/좋|기쁘|감사|훌륭|성공|완료|행복|긍정|동의/g) || []).length;
+      const neg = (text.match(/어렵|힘들|문제|실패|걱정|불안|불만|부정|반대/g) || []).length;
+      return pos - neg;
+    }
+
+    function renderEmotionTimeline(segments, container) {
+      if (!container) return;
+      if (!segments || segments.length === 0) { container.innerHTML = ''; return; }
+      const dots = segments.map((s, i) => {
+        const score = getEmotionScore(s.text || '');
+        const color = score > 0 ? 'var(--success, #10b981)' : score < 0 ? 'var(--error, #ef4444)' : 'var(--border, #6b7280)';
+        const preview = (s.text || '').substring(0, 30).replace(/"/g, '&quot;');
+        return `<div class="emo-dot" title="${preview}" style="background:${color}"></div>`;
+      }).join('');
+      container.innerHTML = `<div class="emo-timeline">${dots}</div>`;
+    }
+
     function analyzeEmotion(text) {
       if (!text) return { positive:0, negative:0, neutral:0, dominant:'neutral', emoji:'😐' };
       const t = text;

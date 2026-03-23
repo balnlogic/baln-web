@@ -910,6 +910,10 @@
   .qa-msg { padding:6px 10px; border-radius:8px; font-size:0.83rem; margin-bottom:4px; line-height:1.5; }
   .qa-user { background:color-mix(in srgb, var(--primary) 13%, transparent); color:var(--text); }
   .qa-assistant { background:var(--surface); border:1px solid var(--border); color:var(--text); }
+
+.filter-row { margin-bottom:10px; }
+.filter-row label { display:block; font-size:0.75rem; color:var(--muted); margin-bottom:4px; }
+.adv-filter-active { background:var(--primary)!important; color:#fff!important; }
 </style>
 </head>
 <body>
@@ -1023,6 +1027,38 @@
             onkeydown="if(event.key==='Enter' && this.value.trim()) { addSearchHistory(this.value.trim()); hideSearchHistoryDropdown(); }" />
           <div id="search-history-dropdown" style="position:absolute;top:100%;left:0;right:0;background:var(--surface);border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.2);z-index:1000;display:none;padding:4px;"></div>
           <button id="search-clear" onclick="clearSearch()" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text3);font-size:14px;display:none;" title="검색 초기화">×</button>
+        </div>
+        <div style="position:relative;flex-shrink:0;">
+          <button id="adv-filter-btn" onclick="toggleAdvancedFilter()" title="고급 필터" style="padding:6px 10px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);font-size:12px;cursor:pointer;white-space:nowrap;">🎛️ 필터</button>
+          <div id="advanced-filter-panel" style="display:none; position:absolute; top:100%; right:0; z-index:300; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px; width:280px; box-shadow:var(--shadow)">
+            <div style="font-size:0.85rem;font-weight:600;margin-bottom:12px">🎛️ 고급 필터</div>
+            <div class="filter-row">
+              <label>날짜 범위</label>
+              <div style="display:flex;gap:4px;align-items:center">
+                <input type="date" id="filter-date-from" style="flex:1;padding:4px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text);font-size:0.8rem">
+                <span style="color:var(--muted)">~</span>
+                <input type="date" id="filter-date-to" style="flex:1;padding:4px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text);font-size:0.8rem">
+              </div>
+            </div>
+            <div class="filter-row">
+              <label>전사 상태</label>
+              <select id="filter-status" style="width:100%;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text);font-size:0.82rem">
+                <option value="">전체</option>
+                <option value="2">완료</option>
+                <option value="0">미완료</option>
+                <option value="1">처리중</option>
+              </select>
+            </div>
+            <div class="filter-row">
+              <label>최소 텍스트 길이</label>
+              <input type="range" id="filter-min-len" min="0" max="1000" step="50" value="0" oninput="document.getElementById('filter-min-len-val').textContent=this.value+'자 이상'" style="width:100%">
+              <span id="filter-min-len-val" style="font-size:0.75rem;color:var(--muted)">0자 이상</span>
+            </div>
+            <div style="display:flex;gap:6px;margin-top:12px">
+              <button onclick="applyAdvancedFilter()" style="flex:1;padding:6px;background:var(--primary);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:0.83rem">적용</button>
+              <button onclick="resetAdvancedFilter()" style="flex:1;padding:6px;background:var(--surface);border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:0.83rem;color:var(--text)">초기화</button>
+            </div>
+          </div>
         </div>
         <div id="topbar-stats" style="display:flex;gap:8px;font-size:11px;color:var(--text3);align-items:center;flex-shrink:0;">
           <span id="ts-total">-</span>
@@ -1165,7 +1201,9 @@
           </details>
           <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:6px;" id="transcript-edit-bar">
             <div id="transcript-quality-badge" style="display:none;"></div>
-            <div style="display:flex;gap:6px;">
+            <div style="display:flex;gap:6px;align-items:center;">
+              <button onclick="setTranscriptFontSize(-1)" title="글자 작게" class="icon-btn" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--text3);">A-</button>
+              <button onclick="setTranscriptFontSize(1)" title="글자 크게" class="icon-btn" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--text3);">A+</button>
               <button id="btn-edit-transcript" onclick="toggleTranscriptEdit()" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;color:var(--text3);">✏️ 편집</button>
               <button id="btn-save-transcript" onclick="saveTranscriptEdit()" style="background:var(--primary);border:none;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;color:#fff;display:none;">💾 저장</button>
               <div class="export-dropdown" style="position:relative">
@@ -2469,18 +2507,38 @@
     }
     switch (activeFilter) {
       case 'today':
-        return files.filter(f => new Date(f.created_at).toDateString() === today);
+        files = files.filter(f => new Date(f.created_at).toDateString() === today);
+        break;
       case 'starred':
-        return files.filter(f => f.starred);
+        files = files.filter(f => f.starred);
+        break;
       case 'recent':
-        return getRecent().filter(f => allFiles.find(x => x.id === f.id));
+        files = getRecent().filter(f => allFiles.find(x => x.id === f.id));
+        break;
       case 'pending':
-        return files.filter(f => f.transcription_status === 0);
+        files = files.filter(f => f.transcription_status === 0);
+        break;
       case 'error':
-        return files.filter(f => f.transcription_status === 3);
-      default:
-        return files;
+        files = files.filter(f => f.transcription_status === 3);
+        break;
     }
+    // advancedFilter 적용
+    if (advancedFilter.dateFrom) {
+      const from = new Date(advancedFilter.dateFrom);
+      files = files.filter(f => new Date(f.created_at) >= from);
+    }
+    if (advancedFilter.dateTo) {
+      const to = new Date(advancedFilter.dateTo);
+      to.setHours(23, 59, 59, 999);
+      files = files.filter(f => new Date(f.created_at) <= to);
+    }
+    if (advancedFilter.status !== '') {
+      files = files.filter(f => String(f.transcription_status) === advancedFilter.status);
+    }
+    if (advancedFilter.minLen > 0) {
+      files = files.filter(f => (f.full_text || '').length >= advancedFilter.minLen);
+    }
+    return files;
   }
 
   function setFilter(filter) {
@@ -3733,6 +3791,7 @@
     audioEl.pause(); audioEl.src = ''; audioWrap.style.display = 'none';
     document.getElementById('detail-transcript').textContent = '불러오는 중...';
     document.getElementById('modal-detail').classList.add('open');
+    applyTranscriptFontSize();
 
     // Minutes tab
     const minutesBtn = document.getElementById('tab-btn-minutes');
@@ -5674,6 +5733,50 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
   function closeModalWithFocus(modalEl) {
     modalEl.classList.remove('open');
     if (_prevFocusEl) { _prevFocusEl.focus(); _prevFocusEl = null; }
+  }
+
+
+  // ── 고급 필터 ──
+  let advancedFilter = { dateFrom: null, dateTo: null, status: '', minLen: 0 };
+  let advFilterActive = false;
+
+  function toggleAdvancedFilter() {
+    const panel = document.getElementById('advanced-filter-panel');
+    if (panel) panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+  }
+  function applyAdvancedFilter() {
+    advancedFilter.dateFrom = document.getElementById('filter-date-from')?.value || null;
+    advancedFilter.dateTo = document.getElementById('filter-date-to')?.value || null;
+    advancedFilter.status = document.getElementById('filter-status')?.value || '';
+    advancedFilter.minLen = parseInt(document.getElementById('filter-min-len')?.value || 0);
+    advFilterActive = !!(advancedFilter.dateFrom || advancedFilter.dateTo || advancedFilter.status || advancedFilter.minLen > 0);
+    document.getElementById('advanced-filter-panel').style.display = 'none';
+    const btn = document.getElementById('adv-filter-btn');
+    if (btn) btn.classList.toggle('adv-filter-active', advFilterActive);
+    loadFiles();
+  }
+  function resetAdvancedFilter() {
+    advancedFilter = { dateFrom: null, dateTo: null, status: '', minLen: 0 };
+    advFilterActive = false;
+    ['filter-date-from','filter-date-to'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+    const sel = document.getElementById('filter-status'); if(sel) sel.value='';
+    const rng = document.getElementById('filter-min-len'); if(rng) rng.value=0;
+    const lbl = document.getElementById('filter-min-len-val'); if(lbl) lbl.textContent='0자 이상';
+    document.getElementById('adv-filter-btn')?.classList.remove('adv-filter-active');
+    document.getElementById('advanced-filter-panel').style.display = 'none';
+    loadFiles();
+  }
+
+  // ── 전사 글꼴 크기 조절 ──
+  let transcriptFontSize = parseInt(localStorage.getItem('transcript-font-size') || 14);
+  function setTranscriptFontSize(delta) {
+    transcriptFontSize = Math.max(10, Math.min(24, transcriptFontSize + delta));
+    localStorage.setItem('transcript-font-size', transcriptFontSize);
+    applyTranscriptFontSize();
+  }
+  function applyTranscriptFontSize() {
+    const el = document.getElementById('detail-transcript');
+    if (el) el.style.fontSize = transcriptFontSize + 'px';
   }
 
 </script>

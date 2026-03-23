@@ -679,6 +679,43 @@
   }
   .bookmark-item:hover { background:var(--primary); color:#fff; }
   #bookmarks-list { padding:8px 0; display:flex; flex-wrap:wrap; gap:4px; min-height:28px; }
+
+/* ── 폴더 색상 팔레트 ── */
+#folder-palette { 
+  position:fixed; z-index:1000; background:var(--surface); border:1px solid var(--border);
+  border-radius:8px; padding:8px; display:flex; gap:6px; box-shadow:0 4px 12px rgba(0,0,0,0.2);
+}
+.folder-color-dot { width:20px; height:20px; border-radius:50%; cursor:pointer; border:2px solid transparent; }
+.folder-color-dot:hover { border-color: #fff; transform:scale(1.2); }
+
+/* ── 모바일 레이아웃 ── */
+@media (max-width: 768px) {
+  .sidebar { 
+    position: fixed; left: 0; top: 0; bottom: 0; z-index: 200;
+    transform: translateX(-100%); transition: transform 0.3s ease;
+  }
+  .sidebar.open { transform: translateX(0); }
+  #sidebar-overlay { 
+    display: none; position: fixed; inset: 0; z-index: 199;
+    background: rgba(0,0,0,0.5);
+  }
+  #sidebar-overlay.show { display: block; }
+  #mobile-nav { 
+    display: flex; position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+    background: var(--surface); border-top: 1px solid var(--border); height: 56px;
+  }
+  .main-content { padding-bottom: 56px; }
+}
+@media (min-width: 769px) {
+  #mobile-nav { display: none; }
+  #sidebar-overlay { display: none !important; }
+}
+.mobile-nav-btn { 
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  font-size: 0.65rem; color: var(--muted); gap: 2px; cursor: pointer; border: none;
+  background: none; padding: 4px;
+}
+.mobile-nav-btn.active { color: var(--primary); }
 </style>
 </head>
 <body>
@@ -1324,9 +1361,10 @@
       const pendingCount = allFiles.filter(f => f.topic === t && f.transcription_status === 0).length;
       const pendingStr = pendingCount > 0 ? ` <span style="color:var(--red);font-size:10px;">+${pendingCount}</span>` : '';
       const active = currentView === 'folder' && currentFolder === t;
-      return `<button class="nav-item sidebar-folder-item ${active ? 'active' : ''}" ondragover="onFolderDragOver(event)" ondragleave="onFolderDragLeave(event)" ondrop="onFolderDrop(${JSON.stringify(t)}, event)" onclick="switchFolder(${JSON.stringify(t)})">
-        <span class="nav-icon">📁</span>
-        <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;">${esc(t)}</span>
+      const fColor = getFolderColor(t);
+      return `<button class="nav-item sidebar-folder-item ${active ? 'active' : ''}" ondragover="onFolderDragOver(event)" ondragleave="onFolderDragLeave(event)" ondrop="onFolderDrop(${JSON.stringify(t)}, event)" onclick="switchFolder(${JSON.stringify(t)})" oncontextmenu="showFolderContextMenu(event, ${JSON.stringify(t)});return false;">
+        <span class="nav-icon" style="color:${fColor || 'inherit'}">📁</span>
+        <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;${fColor ? 'color:'+fColor : ''}">${esc(t)}</span>
         <span class="nav-count">${count}${pendingStr}</span>
       </button>`;
     }).join('');
@@ -3448,6 +3486,155 @@
   // POLLING: prevTranscriptionMap
   // ════════════════════════════════════════════
   let prevTranscriptionMap = {};
+
+  // ── 폴더 색상 ──
+  const FOLDER_COLORS = ['#6366f1','#ec4899','#f59e0b','#10b981','#3b82f6','#ef4444','#8b5cf6','#14b8a6'];
+
+  function getFolderColor(folderId) {
+    return localStorage.getItem('folderColor_' + folderId) || null;
+  }
+
+  function setFolderColor(folderId) {
+    // 기존 팔레트 제거
+    const existing = document.getElementById('folder-palette');
+    if (existing) existing.remove();
+
+    const palette = document.createElement('div');
+    palette.id = 'folder-palette';
+
+    FOLDER_COLORS.forEach(color => {
+      const dot = document.createElement('div');
+      dot.className = 'folder-color-dot';
+      dot.style.background = color;
+      dot.title = color;
+      dot.onclick = (e) => {
+        e.stopPropagation();
+        localStorage.setItem('folderColor_' + folderId, color);
+        palette.remove();
+        renderFolders();
+      };
+      palette.appendChild(dot);
+    });
+
+    // 초기화 버튼
+    const reset = document.createElement('div');
+    reset.className = 'folder-color-dot';
+    reset.style.background = 'var(--surface)';
+    reset.style.border = '2px solid var(--border)';
+    reset.title = '색상 초기화';
+    reset.textContent = '✕';
+    reset.style.fontSize = '10px';
+    reset.style.display = 'flex';
+    reset.style.alignItems = 'center';
+    reset.style.justifyContent = 'center';
+    reset.onclick = (e) => {
+      e.stopPropagation();
+      localStorage.removeItem('folderColor_' + folderId);
+      palette.remove();
+      renderFolders();
+    };
+    palette.appendChild(reset);
+
+    // 이벤트 클릭 위치에 표시
+    document.body.appendChild(palette);
+
+    // 클릭 외부 시 닫기
+    setTimeout(() => {
+      document.addEventListener('click', function closePalette() {
+        palette.remove();
+        document.removeEventListener('click', closePalette);
+      });
+    }, 0);
+  }
+
+
+  function showFolderContextMenu(event, folderId) {
+    event.stopPropagation();
+    // 기존 팔레트/메뉴 닫기
+    const existing = document.getElementById('folder-palette');
+    if (existing) existing.remove();
+
+    // 간단한 컨텍스트 메뉴 (색상 변경)
+    const menu = document.createElement('div');
+    menu.id = 'folder-ctx-menu';
+    menu.style.cssText = 'position:fixed;z-index:1001;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:4px;box-shadow:0 4px 12px rgba(0,0,0,0.2);min-width:130px;';
+    menu.innerHTML = `<button onclick="setFolderColorAt(event, '${folderId.replace(/'/g,"\'")}');document.getElementById('folder-ctx-menu').remove();" style="display:block;width:100%;text-align:left;padding:6px 10px;background:none;border:none;cursor:pointer;font-size:13px;color:var(--text);">🎨 색상 변경</button>`;
+
+    let x = event.clientX;
+    let y = event.clientY;
+    if (x + 150 > window.innerWidth) x = window.innerWidth - 155;
+    menu.style.left = x + 'px';
+    menu.style.top = y + 'px';
+    document.body.appendChild(menu);
+
+    setTimeout(() => {
+      document.addEventListener('click', function closeMenu() {
+        menu.remove();
+        document.removeEventListener('click', closeMenu);
+      });
+    }, 0);
+  }
+
+  function setFolderColorAt(event, folderId) {
+    event.stopPropagation();
+    const existing = document.getElementById('folder-palette');
+    if (existing) existing.remove();
+
+    const palette = document.createElement('div');
+    palette.id = 'folder-palette';
+
+    FOLDER_COLORS.forEach(color => {
+      const dot = document.createElement('div');
+      dot.className = 'folder-color-dot';
+      dot.style.background = color;
+      dot.title = color;
+      dot.onclick = (e) => {
+        e.stopPropagation();
+        localStorage.setItem('folderColor_' + folderId, color);
+        palette.remove();
+        renderFolders();
+      };
+      palette.appendChild(dot);
+    });
+
+    const reset = document.createElement('div');
+    reset.className = 'folder-color-dot';
+    reset.style.cssText = 'background:var(--surface);border:2px solid var(--border);font-size:10px;display:flex;align-items:center;justify-content:center;';
+    reset.title = '색상 초기화';
+    reset.textContent = '✕';
+    reset.onclick = (e) => {
+      e.stopPropagation();
+      localStorage.removeItem('folderColor_' + folderId);
+      palette.remove();
+      renderFolders();
+    };
+    palette.appendChild(reset);
+
+    let x = event.clientX;
+    let y = event.clientY;
+    if (x + 220 > window.innerWidth) x = window.innerWidth - 225;
+    palette.style.left = x + 'px';
+    palette.style.top = y + 'px';
+    document.body.appendChild(palette);
+
+    setTimeout(() => {
+      document.addEventListener('click', function closePalette() {
+        palette.remove();
+        document.removeEventListener('click', closePalette);
+      });
+    }, 0);
+  }
+
+  // ── 모바일 사이드바 토글 ──
+  function toggleMobileSidebar() {
+    const sb = document.querySelector('.sidebar');
+    if (!sb) return;
+    if (sb.classList.contains('open')) {
+      closeSidebar();
+    } else {
+      openSidebar();
+    }
+  }
 </script>
 <div class="shortcuts-panel" id="shortcuts-panel">
   <h3>⌨️ 키보드 단축키</h3>
@@ -3470,5 +3657,12 @@
     <button onclick="toggleQuickNote()" style="background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:6px 12px;font-size:12px;cursor:pointer;color:var(--text2);">닫기</button>
   </div>
 </div>
+
+<nav id="mobile-nav">
+  <button class="mobile-nav-btn" onclick="toggleMobileSidebar()">📁<span>폴더</span></button>
+  <button class="mobile-nav-btn" onclick="setFilter('all')">📋<span>전체</span></button>
+  <button class="mobile-nav-btn" onclick="setFilter('starred')">⭐<span>즐겨찾기</span></button>
+  <button class="mobile-nav-btn" onclick="document.getElementById('search-input').focus()">🔍<span>검색</span></button>
+</nav>
 </body>
 </html>

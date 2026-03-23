@@ -750,8 +750,13 @@
         <div class="topbar-search" style="position:relative;">
           <span style="color:var(--text3); font-size:14px;">🔍</span>
           <input id="search-input" type="search" placeholder="검색 (⌘F)..."
-            oninput="visibleCount = PAGE_SIZE; filterFiles(); const clearBtn = document.getElementById('search-clear'); if (clearBtn) clearBtn.style.display = this.value ? '' : 'none';" />
+            oninput="visibleCount = PAGE_SIZE; renderCurrentView(); const clearBtn = document.getElementById('search-clear'); if (clearBtn) clearBtn.style.display = this.value ? '' : 'none';" />
           <button id="search-clear" onclick="clearSearch()" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text3);font-size:14px;display:none;" title="검색 초기화">×</button>
+        </div>
+        <div id="topbar-stats" style="display:flex;gap:8px;font-size:11px;color:var(--text3);align-items:center;flex-shrink:0;">
+          <span id="ts-total">-</span>
+          <span style="opacity:.4;">·</span>
+          <span id="ts-done" style="color:var(--primary);">-</span>
         </div>
         <button id="sort-btn" onclick="cycleSortOrder()" title="정렬"
           style="flex-shrink:0; padding:6px 10px; border-radius:8px; border:1px solid var(--border); background:var(--surface2); color:var(--text2); font-size:12px; cursor:pointer; white-space:nowrap; transition:background .15s;">
@@ -1230,6 +1235,7 @@
     allFiles = data || [];
     updateSidebar();
     renderCurrentView();
+    updateTopbarStats();
     const syncEl = document.getElementById('last-sync');
     if (syncEl) {
       const now = new Date();
@@ -1324,6 +1330,15 @@
     renderCurrentView();
     updateSidebar();
     closeSidebar();
+  }
+
+  function updateTopbarStats() {
+    const total = allFiles.length;
+    const done = allFiles.filter(f => f.transcription_status === 2).length;
+    const el1 = document.getElementById('ts-total');
+    const el2 = document.getElementById('ts-done');
+    if (el1) el1.textContent = `${total}개`;
+    if (el2) el2.textContent = `전사 ${done}개`;
   }
 
   function renderCurrentView() {
@@ -1598,10 +1613,6 @@
     </div>`;
   }
 
-  function filterFiles() {
-    renderCurrentView();
-  }
-
   const SORT_OPTIONS = [
     { key: 'date_desc', label: '📅 최신순' },
     { key: 'date_asc', label: '📅 오래된순' },
@@ -1834,6 +1845,7 @@
       updateBulkBar();
       updateSidebar();
       renderCurrentView();
+      updateTopbarStats();
     } catch(e) {
       showToast('삭제 오류: ' + e.message, 'error');
     }
@@ -2099,6 +2111,7 @@
       allFiles = allFiles.filter(f => f.id !== id);
       updateSidebar();
       renderCurrentView();
+      updateTopbarStats();
     } catch(e) { showToast('삭제 실패: ' + e.message, 'error'); }
   }
 

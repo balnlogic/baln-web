@@ -810,6 +810,9 @@
 }
 .mobile-nav-btn.active { color: var(--primary); }
   .quality-badge { font-size:0.75rem; padding:2px 8px; border-radius:10px; margin-left:8px; }
+  .quality-report-item { display:flex; gap:6px; font-size:13px; padding:3px 0; }
+  .quality-bad { color: var(--error); }
+  .quality-good { color: var(--success); }
   .view-toggle { display:flex; gap:4px; margin-bottom:12px; }
   .view-toggle-btn { padding:4px 10px; border-radius:6px; font-size:0.8rem; cursor:pointer; border:1px solid var(--border); background:none; color:var(--muted); }
   .view-toggle-btn.active { background:var(--primary); color:#fff; border-color:var(--primary); }
@@ -1325,6 +1328,7 @@
         <span id="audio-time-display" style="font-size:12px; color:var(--text-secondary); font-family:monospace; min-width:90px; text-align:center;">0:00 / 0:00</span>
         <button class="icon-btn" id="audio-download-btn" onclick="downloadAudio()" title="오디오 다운로드" style="margin-left:4px;padding:4px 10px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);font-size:12px;cursor:pointer;">⬇️ 다운로드</button>
         <button class="auto-next-btn" id="auto-next-btn" onclick="toggleAutoPlayNext()" title="연속 재생 켜기/끄기">▶▶ 연속</button>
+        <button id="segment-marker-btn" onclick="toggleSegmentMarkers()" title="세그먼트 마커 켜기/끄기" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--text3);">⏐ 구간</button>
         <button onclick="(function(){var p=document.getElementById('queue-panel');p.style.display=p.style.display==='none'?'block':'none';})()" title="재생 큐" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--text3);">🎵 큐</button>
         <div class="gain-bar">
           <span style="font-size:12px;color:var(--text-secondary)">볼륨 부스트</span>
@@ -1527,6 +1531,10 @@
   <div style="margin-top:12px;">
     <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">액션 아이템</div>
     <div id="action-items-list"></div>
+  </div>
+  <div style="margin-top:12px;">
+    <div style="font-size:11px;color:var(--text3);margin-bottom:6px;">전사 품질 상세</div>
+    <div id="quality-report"></div>
   </div>
 </div>
       </div>
@@ -5069,6 +5077,9 @@
       qualityBadgeEl.style.display = 'none';
     }
 
+    // 품질 보고서 렌더링
+    renderQualityReport(data?.full_text || '');
+
     // 정보 탭 채우기
     document.getElementById('info-filename').textContent = rec.file_name || '-';
     document.getElementById('info-size').textContent = rec.upload_size_bytes ? formatSize(rec.upload_size_bytes) : '-';
@@ -6102,6 +6113,35 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
   // ── 파형 시각화 ──
   let waveformData = null;
   let waveformCtx = null;
+  let showSegmentMarkers = true;
+
+  function drawSegmentMarkers(canvas, ctx, segments, duration) {
+    if (!canvas || !ctx || !segments || !duration || duration <= 0) return;
+    const w = canvas.offsetWidth;
+    const h = canvas.offsetHeight;
+    ctx.save();
+    ctx.strokeStyle = 'rgba(100, 150, 255, 0.5)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3, 3]);
+    segments.forEach(seg => {
+      if (seg.start == null) return;
+      const x = (seg.start / duration) * w;
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, h);
+      ctx.stroke();
+    });
+    ctx.restore();
+  }
+
+  function toggleSegmentMarkers() {
+    showSegmentMarkers = !showSegmentMarkers;
+    const btn = document.getElementById('segment-marker-btn');
+    if (btn) btn.style.color = showSegmentMarkers ? 'var(--primary)' : 'var(--text3)';
+    const audio = document.getElementById('detail-audio');
+    const progress = (audio && audio.duration) ? audio.currentTime / audio.duration : 0;
+    drawWaveform(progress);
+  }
   async function initWaveform(audioUrl) {
     const canvas = document.getElementById('waveform-canvas');
     if (!canvas) return;
@@ -6142,6 +6182,16 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
         ? 'var(--primary, #6366f1)' : 'rgba(150,150,150,0.4)';
       waveformCtx.fillRect(x + 1, y, Math.max(1, barW - 2), barH);
     });
+    // 세그먼트 마커 오버레이
+    if (showSegmentMarkers) {
+      const audioEl = document.getElementById('detail-audio');
+      const totalDur = audioEl ? audioEl.duration : 0;
+      const rec = allFiles && detailFileId ? allFiles.find(f => f.id === detailFileId) : null;
+      const segs = rec && rec.segments_json && Array.isArray(rec.segments_json) ? rec.segments_json : [];
+      if (segs.length > 0 && totalDur > 0) {
+        drawSegmentMarkers(canvas, waveformCtx, segs, totalDur);
+      }
+    }
   }
   function waveformClick(e) {
     const canvas = document.getElementById('waveform-canvas');
@@ -6550,6 +6600,56 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
     } else {
       openSidebar();
     }
+  }
+
+  // ════════════════════════════════════════════
+  // 전사 품질 상세 보고서
+  // ════════════════════════════════════════════
+  function getQualityReport(text) {
+    if (!text || text.length < 10) return { score: 0, label: '없음', details: [] };
+    const details = [];
+    let score = 100;
+
+    // 길이 체크
+    if (text.length < 100) { score -= 30; details.push({ icon:'⚠️', msg:'텍스트가 너무 짧음', bad:true }); }
+    else { details.push({ icon:'✅', msg:`텍스트 길이 양호 (${text.length}자)`, bad:false }); }
+
+    // 반복 감지
+    const words = text.split(/\s+/);
+    const freq = {};
+    words.forEach(w => freq[w] = (freq[w]||0)+1);
+    const maxRepeat = Math.max(...Object.values(freq));
+    if (maxRepeat > 10) { score -= 15; details.push({ icon:'⚠️', msg:`단어 과다 반복 (최대 ${maxRepeat}회)`, bad:true }); }
+    else { details.push({ icon:'✅', msg:'반복 패턴 정상', bad:false }); }
+
+    // 문장 부호
+    const punctCount = (text.match(/[.!?。！？,，、]/g)||[]).length;
+    const sentenceRate = punctCount / (text.length / 100);
+    if (sentenceRate < 0.5) { score -= 10; details.push({ icon:'⚠️', msg:'문장 부호 부족', bad:true }); }
+    else { details.push({ icon:'✅', msg:'문장 구조 양호', bad:false }); }
+
+    score = Math.max(0, Math.min(100, score));
+    const label = score >= 80 ? '우수' : score >= 60 ? '보통' : '낮음';
+    return { score, label, details };
+  }
+
+  function renderQualityReport(text) {
+    const el = document.getElementById('quality-report');
+    if (!el) return;
+    const r = getQualityReport(text);
+    if (!r.details.length) { el.innerHTML = '<div style="font-size:12px;color:var(--text3);">전사 후 분석 가능합니다.</div>'; return; }
+    const barColor = r.score >= 80 ? 'var(--success)' : r.score >= 60 ? '#f59e0b' : 'var(--error)';
+    el.innerHTML = `
+      <div style="margin-bottom:6px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+          <span style="font-size:12px;color:var(--text2);">점수: <b>${r.score}</b> / 100 &nbsp;<span style="color:${barColor}">${r.label}</span></span>
+        </div>
+        <div style="height:6px;background:var(--surface2);border-radius:3px;overflow:hidden;">
+          <div style="height:100%;width:${r.score}%;background:${barColor};border-radius:3px;transition:width .4s;"></div>
+        </div>
+      </div>
+      ${r.details.map(d => `<div class="quality-report-item"><span>${d.icon}</span><span class="${d.bad ? 'quality-bad' : 'quality-good'}">${d.msg}</span></div>`).join('')}
+    `;
   }
 
   // ════════════════════════════════════════════

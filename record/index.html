@@ -965,6 +965,44 @@
   .memo-result-item:hover { background:var(--hover); }
   .memo-result-title { font-size:13px; font-weight:600; color:var(--text); margin-bottom:2px; }
   .memo-result-text { font-size:12px; color:var(--text-secondary); }
+
+  /* ── 인쇄 최적화 ── */
+  @media print {
+    /* 인쇄 시 사이드바, 헤더, 컨트롤 숨김 */
+    #sidebar, #file-list-panel, #header, .toolbar, .audio-controls,
+    .detail-actions, .tab-bar, .btn, button, #cmd-palette, #cmd-palette-overlay,
+    #notification-panel, #qa-panel, #offline-banner { display: none !important; }
+
+    /* 상세 패널 전체 너비로 */
+    #detail-panel, #main-content {
+      width: 100% !important;
+      max-width: 100% !important;
+      padding: 20px !important;
+      background: white !important;
+      color: black !important;
+    }
+
+    /* 전사 텍스트 최적화 */
+    #transcript-view, .transcript-text {
+      font-size: 12pt !important;
+      line-height: 1.6 !important;
+      color: black !important;
+    }
+
+    /* 제목 표시 */
+    #detail-title { font-size: 18pt !important; font-weight: bold !important; color: black !important; }
+
+    /* 페이지 나눔 방지 */
+    .seg-item { page-break-inside: avoid; }
+
+    /* 배경색 제거 */
+    * { background: white !important; box-shadow: none !important; }
+  }
+
+  /* 폴더 이동 select */
+  .detail-folder-row { display:flex; align-items:center; gap:8px; padding:4px 0; }
+  .detail-folder-row label { font-size:13px; color:var(--text-secondary); min-width:48px; }
+  .detail-folder-row select { flex:1; padding:4px 8px; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--surface); color:var(--text); font-size:13px; }
 </style>
 </head>
 <body>
@@ -1346,6 +1384,14 @@
     <div>
       <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">소스</div>
       <div id="info-source" style="font-size:13px;color:var(--text2);"></div>
+    </div>
+  </div>
+  <div style="margin-top:10px;">
+    <div class="detail-folder-row">
+      <label>폴더</label>
+      <select id="detail-folder-select" onchange="moveFolderSelect(detailFileId, this.value)">
+        <option value="">미분류</option>
+      </select>
     </div>
   </div>
   <div style="margin-top:12px;">
@@ -4287,6 +4333,13 @@
       topicSel.innerHTML = `<option value="">폴더 없음</option>${topics.map(t => `<option value="${t}" ${rec.topic === t ? 'selected' : ''}>${t}</option>`).join('')}`;
     }
 
+    // detail-folder-select 채우기
+    const detailFolderSel = document.getElementById('detail-folder-select');
+    if (detailFolderSel) {
+      const folders = [...new Set(allFiles.map(f => f.topic).filter(Boolean))].sort();
+      detailFolderSel.innerHTML = `<option value="">미분류</option>${folders.map(t => `<option value="${t}" ${rec.topic === t ? 'selected' : ''}>${t}</option>`).join('')}`;
+    }
+
     if (rec.file_path) {
       const { data: urlData } = await sb.storage.from('recordings').createSignedUrl(rec.file_path, 3600);
       if (urlData?.signedUrl) {
@@ -4474,6 +4527,15 @@
     updateSidebar();
     renderCurrentView();
     showToast('폴더 변경됨', 'success');
+  }
+
+  async function moveFolderSelect(id, newFolder) {
+    if (!id) return;
+    await supaFetch('recordings?id=eq.' + id, 'PATCH', { topic: newFolder || null });
+    const f = allFiles.find(x => x.id === id);
+    if (f) f.topic = newFolder || null;
+    renderFiles();
+    showToast('\uD83D\uDCC1 ' + (newFolder || '미분류') + '로 이동');
   }
 
   const TRANSCRIPT_HISTORY_KEY = 'transcript-history';

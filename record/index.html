@@ -1031,6 +1031,7 @@
         <button class="bulk-action-btn secondary" onclick="clearSelection()">취소</button>
         <button class="bulk-action-btn secondary" onclick="bulkTranscribe()" id="bulk-transcribe-btn">🧠 전사</button>
         <button class="bulk-action-btn secondary" onclick="bulkStar()" title="선택 파일 즐겨찾기 토글">⭐ 즐겨찾기</button>
+        <button class="bulk-action-btn secondary" id="bulk-compare-btn" onclick="compareSelected()" style="display:none">📋 비교</button>
         <button class="bulk-action-btn danger" onclick="bulkDelete()">🗑 삭제</button>
         <select id="bulk-folder-select" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:12px;color:var(--text2);" onchange="bulkMoveFolder(this.value); this.value='';">
           <option value="">📁 폴더로 이동...</option>
@@ -1756,7 +1757,7 @@
       return `<button class="nav-item sidebar-folder-item ${active ? 'active' : ''}" ondragover="onFolderDragOver(event)" ondragleave="onFolderDragLeave(event)" ondrop="onFolderDrop(${JSON.stringify(t)}, event)" onclick="switchFolder(${JSON.stringify(t)})" oncontextmenu="showFolderContextMenu(event, ${JSON.stringify(t)});return false;">
         <span class="nav-icon" style="color:${fColor || 'inherit'}">${getFolderIcon(t)}</span>
         <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;${fColor ? 'color:'+fColor : ''}">${esc(t)}</span>
-        <span class="nav-count">${count}${pendingStr}</span>
+        <span class="nav-count folder-count">${count}${pendingStr}</span>
       </button>`;
     }).join('');
     folderNav.innerHTML += `<button onclick="createNewFolder()" style="width:100%;padding:6px 12px;background:none;border:1px dashed var(--border);border-radius:8px;color:var(--text3);font-size:12px;cursor:pointer;margin-top:6px;transition:border-color .15s, color .15s;" onmouseover="this.style.borderColor='var(--primary)';this.style.color='var(--primary)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text3)'">
@@ -2465,6 +2466,8 @@
     const bar = document.getElementById('bulk-bar');
     const count = selectedIds.size;
     document.getElementById('sel-count').textContent = `${count}개 선택됨`;
+    const compareBtn = document.getElementById('bulk-compare-btn');
+    if (compareBtn) compareBtn.style.display = count === 2 ? '' : 'none';
     bar.classList.toggle('visible', count > 0);
     // 폴더 select 옵션 동적 채우기
     const bfs = document.getElementById('bulk-folder-select');
@@ -2555,6 +2558,35 @@
     selectedIds.clear();
     renderCurrentView();
     showToast(newVal ? `${ids.length}개 즐겨찾기 추가` : `${ids.length}개 즐겨찾기 해제`, 'success');
+  }
+
+
+  // ── Compare View ──────────────────────────────────
+  function openCompareView(id1, id2) {
+    const f1 = allFiles.find(f => f.id === id1);
+    const f2 = allFiles.find(f => f.id === id2);
+    if (!f1 || !f2) return;
+    const render = (f) => `
+      <div class="compare-title">${f.file_name || '(이름 없음)'}</div>
+      <div class="compare-date">${relativeTime(f.created_at)}</div>
+      <div class="compare-text">${(f.full_text || '전사 없음').substring(0, 3000)}</div>
+    `;
+    document.getElementById('compare-left').innerHTML = render(f1);
+    document.getElementById('compare-right').innerHTML = render(f2);
+    document.getElementById('compare-modal').classList.add('open');
+  }
+  function closeCompareModal() {
+    document.getElementById('compare-modal').classList.remove('open');
+  }
+  function compareSelected() {
+    const ids = [...selectedIds];
+    if (ids.length !== 2) { showToast('파일 2개를 선택하세요', 'info'); return; }
+    openCompareView(ids[0], ids[1]);
+  }
+
+  // ── Folder File Count ─────────────────────────────
+  function getFolderFileCount(folderId) {
+    return allFiles.filter(f => f.folder_id === folderId || f.topic === folderId).length;
   }
 
   async function bulkDelete() {
@@ -4098,6 +4130,29 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
     #minutes-preview h3 { font-size:0.95rem; margin:10px 0 4px; color:var(--primary); }
     #minutes-preview li { margin:2px 0; padding-left:4px; }
     #minutes-preview hr { border:none; border-top:1px solid var(--border); margin:8px 0; }
+
+    /* ── Compare Modal ── */
+    #compare-modal { 
+      display:none; position:fixed; inset:0; z-index:800; background:rgba(0,0,0,0.6);
+    }
+    #compare-modal.open { display:flex; align-items:center; justify-content:center; }
+    #compare-inner { 
+      background:var(--bg); border-radius:16px; width:min(900px,95vw); height:80vh;
+      display:flex; flex-direction:column; overflow:hidden;
+    }
+    .compare-panels { display:grid; grid-template-columns:1fr 1fr; gap:0; flex:1; overflow:hidden; }
+    .compare-panel { padding:16px; overflow-y:auto; border-right:1px solid var(--border); }
+    .compare-panel:last-child { border-right:none; }
+    .compare-title { font-weight:600; font-size:0.95rem; margin-bottom:4px; }
+    .compare-date { font-size:0.78rem; color:var(--muted); margin-bottom:12px; }
+    .compare-text { font-size:0.85rem; line-height:1.7; color:var(--text); white-space:pre-wrap; }
+    #compare-header { display:flex; justify-content:space-between; align-items:center; padding:12px 16px; border-bottom:1px solid var(--border); }
+
+    /* ── Folder Count Badge ── */
+    .folder-count { 
+      font-size:0.7rem; background:var(--surface); border:1px solid var(--border);
+      border-radius:10px; padding:1px 6px; color:var(--muted); margin-left:auto;
+    }
 </style>
 </head>
 <body>
@@ -5551,5 +5606,19 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
   <div id="cmd-results"></div>
 </div>
 
+
+  <!-- Compare Modal -->
+  <div id="compare-modal">
+    <div id="compare-inner">
+      <div id="compare-header">
+        <h3 style="margin:0;font-size:1rem">📋 파일 비교</h3>
+        <button onclick="closeCompareModal()" style="background:none;border:none;cursor:pointer;font-size:1.2rem;color:var(--muted)">✕</button>
+      </div>
+      <div class="compare-panels">
+        <div class="compare-panel" id="compare-left"></div>
+        <div class="compare-panel" id="compare-right"></div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

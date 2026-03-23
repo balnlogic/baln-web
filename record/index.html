@@ -238,6 +238,7 @@
     .gain-bar { display:flex; align-items:center; gap:6px; padding:4px 0; flex-wrap:wrap; width:100%; }
     .gain-btn { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); padding:3px 10px; font-size:12px; cursor:pointer; color:var(--text-secondary); }
     .gain-btn.active { background:var(--primary); color:#fff; border-color:var(--primary); }
+    #compressor-btn.active { background:var(--primary); color:#fff; }
     .filter-tabs {
       display: flex;
       gap: 4px;
@@ -1350,6 +1351,7 @@
           <button class="gain-btn active" data-gain="1" onclick="setGain(1)">보통</button>
           <button class="gain-btn" data-gain="1.5" onclick="setGain(1.5)">+50%</button>
           <button class="gain-btn" data-gain="2" onclick="setGain(2)">+100%</button>
+          <button id="compressor-btn" onclick="toggleCompressor()" title="음성 압축(다이나믹)" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;color:var(--text3);">🎚️ 압축</button>
         </div>
       </div>
       <div style="margin-top:14px;">
@@ -1417,7 +1419,7 @@
               <button onclick="document.getElementById('trans-btns').style.display = document.getElementById('trans-btns').style.display==='none'?'flex':'none'" title="번역" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--text3);">🌐</button>
             </div>
           </div>
-          <div id="transcript-stats" style="display:flex; gap:16px; font-size:12px; color:var(--text-secondary); padding:4px 0; border-bottom:1px solid var(--border); margin-bottom:8px;"></div>
+          <div id="transcript-stats" style="display:flex; gap:16px; font-size:12px; color:var(--text-secondary); padding:4px 0; border-bottom:1px solid var(--border); margin-bottom:8px;"><span id="detected-lang"></span></div>
           <div class="transcript-box" id="detail-transcript">불러오는 중...</div>
           <div class="trans-btns" id="trans-btns" style="display:none;gap:6px;flex-wrap:wrap;margin-top:8px;align-items:center;">
             <button onclick="translateText(currentTranscript, '영어')" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--text);">🇺🇸 영어</button>
@@ -4884,6 +4886,8 @@
   let detailFileId = null; // 현재 상세 모달에서 보고 있는 파일 id
   let audioContext = null;
   let gainNode = null;
+  let compressorNode = null;
+  let compressorEnabled = false;
   let sourceNode = null;
   let _audioEQInitialized = false;
   let playbackRate = 1;
@@ -5315,12 +5319,40 @@
       audioContext = new (window.AudioContext || window.webkitAudioContext)();
       sourceNode = audioContext.createMediaElementSource(audioEl);
       gainNode = audioContext.createGain();
+      compressorNode = audioContext.createDynamicsCompressor();
+      compressorNode.threshold.value = -24;
+      compressorNode.ratio.value = 4;
+      compressorNode.attack.value = 0.003;
+      compressorNode.release.value = 0.25;
+      // 기본: bypass 상태 (gainNode → destination)
       sourceNode.connect(gainNode);
       gainNode.connect(audioContext.destination);
       _audioEQInitialized = true;
     } catch(e) {
       console.warn('AudioEQ 초기화 실패:', e);
     }
+  }
+
+  function toggleCompressor() {
+    compressorEnabled = !compressorEnabled;
+    const btn = document.getElementById('compressor-btn');
+    if (!gainNode || !audioContext) {
+      if (btn) btn.classList.remove('active');
+      compressorEnabled = false;
+      return;
+    }
+    try {
+      gainNode.disconnect();
+      if (compressorEnabled) {
+        gainNode.connect(compressorNode);
+        compressorNode.connect(audioContext.destination);
+      } else {
+        gainNode.connect(audioContext.destination);
+      }
+    } catch(e) {
+      console.warn('Compressor 전환 실패:', e);
+    }
+    if (btn) btn.classList.toggle('active', compressorEnabled);
   }
 
   function setGain(value) {
@@ -5413,7 +5445,9 @@
     if (!statsEl) return;
     if (!text || !text.trim()) { statsEl.innerHTML = ''; return; }
     const stats = calcTextStats(text);
-    statsEl.innerHTML = `<span title="글자 수">📝 ${stats.chars.toLocaleString()}자</span><span title="단어 수">📊 ${stats.words.toLocaleString()}단어</span><span title="문장 수">📌 ${stats.sentences}문장</span><span title="읽기 시간">⏱️ 약 ${stats.minutes}분</span>`;
+    const lang = detectLanguage(text);
+    const langLabel = LANG_LABELS[lang] || LANG_LABELS['unknown'];
+    statsEl.innerHTML = `<span id="detected-lang" title="감지된 언어">${langLabel}</span><span title="글자 수">📝 ${stats.chars.toLocaleString()}자</span><span title="단어 수">📊 ${stats.words.toLocaleString()}단어</span><span title="문장 수">📌 ${stats.sentences}문장</span><span title="읽기 시간">⏱️ 약 ${stats.minutes}분</span>`;
   }
 
   function showTranscriptStats(text) {
@@ -7740,6 +7774,21 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
     container.innerHTML = '<ul>' + points.map(function(p){ return '<li>' + esc(p) + '</li>'; }).join('') + '</ul>';
   }
 
+  // ── 언어 감지 ──
+  const LANG_LABELS = { ko: '🇰🇷 한국어', en: '🇺🇸 영어', ja: '🇯🇵 일본어', mixed: '🌐 혼합', unknown: '❓' };
+  function detectLanguage(text) {
+    if (!text) return 'unknown';
+    const koreanChars = (text.match(/[가-힣]/g) || []).length;
+    const englishChars = (text.match(/[a-zA-Z]/g) || []).length;
+    const japaneseChars = (text.match(/[\u3040-\u30ff\u4e00-\u9faf]/g) || []).length;
+    const total = koreanChars + englishChars + japaneseChars;
+    if (total === 0) return 'unknown';
+    if (koreanChars / total > 0.5) return 'ko';
+    if (japaneseChars / total > 0.4) return 'ja';
+    if (englishChars / total > 0.5) return 'en';
+    return 'mixed';
+  }
+
   // ── 단어 빈도 계산 ──
   var WF_STOPWORDS = new Set(['그리고','그런데','하지만','그래서','따라서','또한','또는','이제','지금','여기','저기','이것','저것','그것','이런','저런','그런','어떤','모든','각각','있다','없다','이다','하다','되다','같다','이고','이며','에서','으로','부터','까지','에게','한다','했다','됩니다','있는','없는','이런','것이','수가','것을','것은','것도','수도','수를','있어','없어','인데','이야','이에','이를','이가','이도','이나','이든','이면','해서','해야','해도','했고','하고','하면','하면서','하여','라고','라는','라면','라도','이라고','이라는','있습니다','없습니다','합니다','됩니다']);
   const STOPWORDS = new Set([
@@ -7753,7 +7802,14 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
   ]);
   function buildWordFreq(text) {
     if (!text) return [];
-    var tokens = text.match(/[가-힣a-zA-Z]{2,}/g) || [];
+    var lang = detectLanguage(text);
+    var tokens;
+    if (lang === 'en') {
+      // 영어: 공백 기반 단어 분리
+      tokens = text.toLowerCase().split(/\s+/).map(function(w) { return w.replace(/[^a-zA-Z]/g, ''); }).filter(function(w) { return w.length >= 2; });
+    } else {
+      tokens = text.match(/[가-힣a-zA-Z]{2,}/g) || [];
+    }
     var freq = {};
     tokens.forEach(function(w) {
       // 2글자 미만 제외

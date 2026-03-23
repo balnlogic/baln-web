@@ -845,6 +845,8 @@
 }
 .file-item:hover .file-retry-btn { display:inline-flex; }
   mark.key-phrase { background:rgba(255,200,0,0.25); border-bottom:2px solid rgba(255,200,0,0.8); border-radius:2px; color:inherit; }
+  mark.diff-only-left { background: rgba(255, 100, 100, 0.2); border-radius: 2px; color: inherit; }
+  mark.diff-only-right { background: rgba(100, 200, 100, 0.2); border-radius: 2px; color: inherit; }
 .auto-next-btn { padding:3px 10px; border-radius:6px; font-size:0.8rem; cursor:pointer; border:1px solid var(--border); background:none; color:var(--muted); }
 .auto-next-btn.active { background:var(--primary)20; color:var(--primary); border-color:var(--primary); }
 #auto-scroll-btn.active { color: var(--primary); }
@@ -3640,17 +3642,45 @@
 
 
   // ── Compare View ──────────────────────────────────
+  function diffTexts(text1, text2) {
+    const words1 = new Set(text1.split(/\s+/).filter(Boolean));
+    const words2 = new Set(text2.split(/\s+/).filter(Boolean));
+    const onlyIn1 = [...words1].filter(w => !words2.has(w));
+    const onlyIn2 = [...words2].filter(w => !words1.has(w));
+
+    function highlight(text, unique, cls) {
+      let result = text;
+      unique.forEach(w => {
+        const re = new RegExp(`\\b${w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'g');
+        result = result.replace(re, `<mark class="${cls}">${w}</mark>`);
+      });
+      return result;
+    }
+
+    return {
+      html1: highlight(text1, onlyIn1, 'diff-only-left'),
+      html2: highlight(text2, onlyIn2, 'diff-only-right'),
+      commonCount: [...words1].filter(w => words2.has(w)).length,
+      diff1Count: onlyIn1.length,
+      diff2Count: onlyIn2.length,
+    };
+  }
+
   function openCompareView(id1, id2) {
     const f1 = allFiles.find(f => f.id === id1);
     const f2 = allFiles.find(f => f.id === id2);
     if (!f1 || !f2) return;
-    const render = (f) => `
+    const text1 = (f1.full_text || '전사 없음').substring(0, 3000);
+    const text2 = (f2.full_text || '전사 없음').substring(0, 3000);
+    const diff = diffTexts(text1, text2);
+    const render = (f, html, diffCount) => `
       <div class="compare-title">${f.file_name || '(이름 없음)'}</div>
       <div class="compare-date">${relativeTime(f.created_at)}</div>
-      <div class="compare-text">${(f.full_text || '전사 없음').substring(0, 3000)}</div>
+      <div class="compare-text">${html}</div>
+      <div style="margin-top:8px;font-size:11px;color:var(--text-muted)">공통 단어 ${diff.commonCount}개 &nbsp;·&nbsp; 차이 ${diffCount}개</div>
     `;
-    document.getElementById('compare-left').innerHTML = render(f1);
-    document.getElementById('compare-right').innerHTML = render(f2);
+    document.getElementById('compare-left').innerHTML = render(f1, diff.html1, diff.diff1Count);
+    document.getElementById('compare-right').innerHTML = render(f2, diff.html2, diff.diff2Count);
     document.getElementById('compare-modal').classList.add('open');
   }
   function closeCompareModal() {

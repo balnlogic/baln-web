@@ -796,6 +796,29 @@
 .action-item label { font-size:0.85rem; color:var(--text); cursor:pointer; line-height:1.4; }
 .action-item.checked label { text-decoration:line-through; color:var(--muted); }
 #action-items-list { margin-top:4px; }
+#cmd-palette {
+  display:none; position:fixed; top:20%; left:50%; transform:translateX(-50%);
+  width:min(560px, 90vw); z-index:10001; background:var(--surface);
+  border:1px solid var(--border); border-radius:16px; box-shadow:0 24px 64px rgba(0,0,0,0.4);
+  overflow:hidden;
+}
+#cmd-palette.open { display:block; }
+#cmd-input {
+  width:100%; padding:16px; border:none; background:transparent; color:var(--text);
+  font-size:1rem; outline:none; border-bottom:1px solid var(--border);
+  box-sizing:border-box;
+}
+#cmd-results { max-height:360px; overflow-y:auto; }
+.cmd-item {
+  display:flex; align-items:center; gap:10px; padding:10px 16px; cursor:pointer;
+  font-size:0.9rem; border-radius:0;
+}
+.cmd-item:hover, .cmd-item.selected { background:color-mix(in srgb, var(--primary) 12%, var(--surface)); }
+.cmd-item-icon { width:28px; height:28px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:1rem; background:var(--bg); flex-shrink:0; }
+.cmd-item-text { flex:1; }
+.cmd-item-title { font-size:0.88rem; font-weight:500; }
+.cmd-item-sub { font-size:0.75rem; color:var(--muted); }
+.cmd-section-label { padding:6px 16px 2px; font-size:0.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em; }
 </style>
 </head>
 <body>
@@ -2521,9 +2544,144 @@
   }
 
 
+  // ════════════════════════════════════════════
+  // COMMAND PALETTE
+  // ════════════════════════════════════════════
+  let cmdPaletteOpen = false;
+  let cmdSelectedIdx = 0;
+  const CMD_COMMANDS = [
+    { icon:'📊', title:'통계 보기', sub:'대시보드로 이동', action: () => showStatsView() },
+    { icon:'🔍', title:'검색창 포커스', sub:'/ 단축키와 동일', action: () => document.getElementById('search-input').focus() },
+    { icon:'📥', title:'CSV 내보내기', sub:'전체 데이터 다운로드', action: () => exportCSV() },
+    { icon:'⌨️', title:'단축키 도움말', sub:'? 단축키와 동일', action: () => toggleShortcutsPanel() },
+    { icon:'🎨', title:'테마 토글', sub:'다크/라이트 전환', action: () => toggleTheme() },
+    { icon:'🔔', title:'알림 설정', sub:'브라우저 알림 권한', action: () => requestNotificationPermission() },
+  ];
+
+  function openCmdPalette() {
+    cmdPaletteOpen = true;
+    cmdSelectedIdx = 0;
+    document.getElementById('cmd-palette').classList.add('open');
+    document.getElementById('cmd-palette-overlay').style.display = 'block';
+    setTimeout(() => document.getElementById('cmd-input').focus(), 50);
+    updateCmdResults('');
+  }
+
+  function closeCmdPalette() {
+    cmdPaletteOpen = false;
+    document.getElementById('cmd-palette').classList.remove('open');
+    document.getElementById('cmd-palette-overlay').style.display = 'none';
+    document.getElementById('cmd-input').value = '';
+  }
+
+  function updateCmdResults(query) {
+    const q = query.toLowerCase();
+    const resultsEl = document.getElementById('cmd-results');
+    let items = [];
+
+    // 파일 검색
+    if (q) {
+      const matchedFiles = searchFiles(q, allFiles).slice(0, 8);
+      if (matchedFiles.length > 0) {
+        items.push({ type: 'section', label: '파일' });
+        matchedFiles.forEach(f => {
+          const name = (f.file_name || '').toLowerCase();
+          const text = (f.full_text || '').toLowerCase();
+          const topic = (f.topic || '').toLowerCase();
+          let matchIcon = '📄';
+          let matchSub = f.topic || formatDuration(f.duration || 0);
+          if (!name.includes(q) && text.includes(q)) { matchIcon = '📝'; matchSub = '전사 내용 매칭'; }
+          else if (!name.includes(q) && topic.includes(q)) { matchIcon = '🏷️'; matchSub = f.topic; }
+          items.push({ icon: matchIcon, title: getTitle(f), sub: matchSub, action: () => openDetail(f.id) });
+        });
+      }
+    }
+
+    // 명령 필터링
+    const matchedCmds = q
+      ? CMD_COMMANDS.filter(c => c.title.toLowerCase().includes(q) || c.sub.toLowerCase().includes(q))
+      : CMD_COMMANDS;
+    if (matchedCmds.length > 0) {
+      items.push({ type: 'section', label: '명령' });
+      matchedCmds.forEach(c => items.push(c));
+    }
+
+    // 렌더링
+    let html = '';
+    let itemIdx = 0;
+    items.forEach(item => {
+      if (item.type === 'section') {
+        html += `<div class="cmd-section-label">${item.label}</div>`;
+        return;
+      }
+      const sel = itemIdx === cmdSelectedIdx ? ' selected' : '';
+      html += `<div class="cmd-item${sel}" data-idx="${itemIdx}" onmouseenter="cmdSelectedIdx=${itemIdx};renderCmdSelection()" onclick="executeCmdItem(${itemIdx})">
+        <div class="cmd-item-icon">${item.icon}</div>
+        <div class="cmd-item-text">
+          <div class="cmd-item-title">${item.title}</div>
+          <div class="cmd-item-sub">${item.sub}</div>
+        </div>
+      </div>`;
+      itemIdx++;
+    });
+
+    resultsEl.innerHTML = html || '<div style="padding:20px;text-align:center;color:var(--muted);font-size:0.85rem;">결과 없음</div>';
+    resultsEl._items = items.filter(i => i.type !== 'section');
+  }
+
+  function renderCmdSelection() {
+    document.querySelectorAll('.cmd-item').forEach((el, i) => {
+      el.classList.toggle('selected', i === cmdSelectedIdx);
+    });
+  }
+
+  function executeCmdItem(idx) {
+    const resultsEl = document.getElementById('cmd-results');
+    const items = resultsEl._items || [];
+    if (items[idx] && items[idx].action) {
+      closeCmdPalette();
+      items[idx].action();
+    }
+  }
+
+  function handleCmdKey(e) {
+    const resultsEl = document.getElementById('cmd-results');
+    const items = (resultsEl._items || []);
+    const total = items.length;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      cmdSelectedIdx = (cmdSelectedIdx + 1) % Math.max(total, 1);
+      renderCmdSelection();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      cmdSelectedIdx = (cmdSelectedIdx - 1 + Math.max(total, 1)) % Math.max(total, 1);
+      renderCmdSelection();
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      executeCmdItem(cmdSelectedIdx);
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      closeCmdPalette();
+    }
+  }
+
+  // searchFiles: 다중 필드 검색
+  function searchFiles(query, files) {
+    if (!query) return files;
+    const q = query.toLowerCase();
+    return files.filter(f => {
+      const name = (f.file_name || '').toLowerCase();
+      const text = (f.full_text || '').toLowerCase();
+      const topic = (f.topic || '').toLowerCase();
+      const memo = (f.memo || '').toLowerCase();
+      return name.includes(q) || text.includes(q) || topic.includes(q) || memo.includes(q);
+    });
+  }
+
   document.addEventListener('click', closeCtxMenu);
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') { closeCtxMenu(); closeAllModals(); document.getElementById('shortcuts-panel')?.classList.remove('open'); const si = document.getElementById('search-input'); if (si && document.activeElement === si) { si.blur(); si.value = ''; si.dispatchEvent(new Event('input')); } }
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); if (cmdPaletteOpen) { closeCmdPalette(); } else { openCmdPalette(); } return; }
+    if (e.key === 'Escape') { if (cmdPaletteOpen) { closeCmdPalette(); return; } closeCtxMenu(); closeAllModals(); document.getElementById('shortcuts-panel')?.classList.remove('open'); const si = document.getElementById('search-input'); if (si && document.activeElement === si) { si.blur(); si.value = ''; si.dispatchEvent(new Event('input')); } }
     // 검색창 포커스
     if (e.key === '/' && !e.ctrlKey && !e.metaKey && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
       e.preventDefault();
@@ -4787,5 +4945,11 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
   <button class="mobile-nav-btn" onclick="setFilter('starred')">⭐<span>즐겨찾기</span></button>
   <button class="mobile-nav-btn" onclick="document.getElementById('search-input').focus()">🔍<span>검색</span></button>
 </nav>
+<div id="cmd-palette-overlay" onclick="closeCmdPalette()" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.5)"></div>
+<div id="cmd-palette">
+  <input id="cmd-input" placeholder="파일 검색 또는 명령 입력..." autocomplete="off" oninput="updateCmdResults(this.value)" onkeydown="handleCmdKey(event)">
+  <div id="cmd-results"></div>
+</div>
+
 </body>
 </html>

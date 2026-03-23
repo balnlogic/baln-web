@@ -62,6 +62,7 @@
       --blue: #1565C0;
       --yellow: #F57F17;
     }
+    mark.highlight { background: rgba(255, 200, 0, 0.3); border-radius: 2px; padding: 0 1px; color: inherit; }
     * { margin:0; padding:0; box-sizing:border-box; }
     body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
 
@@ -1128,7 +1129,7 @@
         <div class="topbar-search" style="position:relative;">
           <span style="color:var(--text3); font-size:14px;">🔍</span>
           <input id="search-input" type="search" placeholder="검색 (⌘F)..."
-            oninput="visibleCount = PAGE_SIZE; renderCurrentView(); const clearBtn = document.getElementById('search-clear'); if (clearBtn) clearBtn.style.display = this.value ? '' : 'none'; hideSearchHistoryDropdown();"
+            oninput="currentQuery = this.value.toLowerCase().trim(); visibleCount = PAGE_SIZE; renderCurrentView(); const clearBtn = document.getElementById('search-clear'); if (clearBtn) clearBtn.style.display = this.value ? '' : 'none'; hideSearchHistoryDropdown();"
             onfocus="showSearchHistoryDropdown();"
             onblur="setTimeout(hideSearchHistoryDropdown, 200); if(this.value.trim()) addSearchHistory(this.value.trim());"
             onkeydown="if(event.key==='Enter' && this.value.trim()) { addSearchHistory(this.value.trim()); hideSearchHistoryDropdown(); }" />
@@ -1187,7 +1188,7 @@
         <button onclick="toggleNotificationPanel(event)" title="알림 센터" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:4px 6px;border-radius:6px;line-height:1;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text3)'">🔔</button>
         <span id="notif-badge"></span>
       </div>
-      <button id="theme-toggle-btn" onclick="toggleTheme()" title="테마 변경" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:4px 6px;border-radius:6px;line-height:1;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text3)'">☀️</button>
+      <button id="theme-toggle-btn" onclick="cycleTheme()" title="테마 변경" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:4px 6px;border-radius:6px;line-height:1;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text3)'">☀️</button>
       </div>
       <!-- Memo Search Panel -->
       <div id="memo-search-panel" style="display:none; position:fixed; top:60px; right:20px; width:320px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow-lg); z-index:150; padding:16px; flex-direction:column; gap:8px;">
@@ -1868,12 +1869,39 @@
   }
 
 
-  function toggleTheme() {
-    const isLight = document.body.classList.toggle('light-theme');
-    localStorage.setItem('record_theme', isLight ? 'light' : 'dark');
+  let themeMode = 'auto';
+
+  function applyTheme(mode) {
+    themeMode = mode;
+    let isDark;
+    if (mode === 'auto') {
+      isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    } else {
+      isDark = mode === 'dark';
+    }
+    if (isDark) {
+      document.body.classList.remove('light-theme');
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.body.classList.add('light-theme');
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+    localStorage.setItem('record_themeMode', mode);
     const btn = document.getElementById('theme-toggle-btn');
-    if (btn) btn.textContent = isLight ? '🌙' : '☀️';
+    if (btn) {
+      const icons = { auto: '🌗', dark: '🌙', light: '☀️' };
+      btn.textContent = icons[mode] || '🌗';
+    }
   }
+
+  function cycleTheme() {
+    const order = ['auto', 'dark', 'light'];
+    const next = order[(order.indexOf(themeMode) + 1) % order.length];
+    applyTheme(next);
+  }
+
+  // 하위 호환: 기존 코드에서 toggleTheme()을 호출하는 경우를 위해 유지
+  function toggleTheme() { cycleTheme(); }
 
   function toggleAutoSummarize(val) {
     localStorage.setItem('record_autoSummarize', val ? '1' : '0');
@@ -1933,12 +1961,14 @@
   }
 
   function initTheme() {
-    const saved = localStorage.getItem('record_theme');
-    if (saved === 'light') {
-      document.body.classList.add('light-theme');
-    }
-    const btn = document.getElementById('theme-toggle-btn');
-    if (btn) btn.textContent = document.body.classList.contains('light-theme') ? '🌙' : '☀️';
+    const saved = localStorage.getItem('record_themeMode') || localStorage.getItem('record_theme') || 'auto';
+    // 구버전 호환: 'light'/'dark' 값은 그대로 사용, 없으면 'auto'
+    const mode = (saved === 'light' || saved === 'dark') ? saved : 'auto';
+    applyTheme(mode);
+    // 시스템 테마 변경 감지
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+      if (themeMode === 'auto') applyTheme('auto');
+    });
   }
 
   async function checkServerStatus() {
@@ -2653,7 +2683,7 @@
     const icon = sourceIcon;
 
     const processingBar = f.transcription_status === 1 ? '<div class="processing-bar"></div>' : '';
-    const previewText = f.full_text ? `<div class="file-preview">${f.full_text.substring(0, 80).trim()}...</div>` : '';
+    const previewText = f.full_text ? `<div class="file-preview">${highlightText(f.full_text.substring(0, 80).trim(), currentQuery)}...</div>` : '';
     const copyBtn = f.transcription_status === 2
       ? `<button class="file-copy-btn" onclick="copyFileText('${f.id}', event)" title="전사 텍스트 복사">복사</button>`
       : '';
@@ -3523,7 +3553,7 @@
     { icon:'🔍', title:'검색창 포커스', sub:'/ 단축키와 동일', action: () => document.getElementById('search-input').focus() },
     { icon:'📥', title:'CSV 내보내기', sub:'전체 데이터 다운로드', action: () => exportCSV() },
     { icon:'⌨️', title:'단축키 도움말', sub:'? 단축키와 동일', action: () => toggleShortcutsPanel() },
-    { icon:'🎨', title:'테마 토글', sub:'다크/라이트 전환', action: () => toggleTheme() },
+    { icon:'🎨', title:'테마 토글', sub:'다크/라이트 전환', action: () => cycleTheme() },
     { icon:'🔔', title:'알림 설정', sub:'브라우저 알림 권한', action: () => requestNotificationPermission() },
     { icon:'🏷️', title:'선택 파일 자동 분류', sub:'서버 필요', action: () => bulkClassify() },
     { icon:'📝', title:'선택 파일 일괄 요약', sub:'최대 5개, 서버 필요', action: () => bulkSummarize() },
@@ -5818,6 +5848,8 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
   // ════════════════════════════════════════════
   // 전사 텍스트 하이라이트
   // ════════════════════════════════════════════
+  let currentQuery = '';
+
   function highlightText(text, query) {
     if (!query || !query.trim()) return escHtml(text);
     const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');

@@ -914,6 +914,22 @@
 .filter-row { margin-bottom:10px; }
 .filter-row label { display:block; font-size:0.75rem; color:var(--muted); margin-bottom:4px; }
 .adv-filter-active { background:var(--primary)!important; color:#fff!important; }
+
+    /* Segment Timeline */
+    .seg-timeline {
+      position:relative; height:24px; background:var(--surface); border-radius:6px;
+      overflow:hidden; margin:8px 0; cursor:pointer;
+    }
+    .seg-timeline-track { position:absolute; inset:0; }
+    .seg-timeline-bar {
+      position:absolute; top:4px; bottom:4px; background:var(--primary); opacity:0.5;
+      border-radius:2px; cursor:pointer;
+    }
+    .seg-timeline-bar:hover { opacity:0.9; }
+    .seg-timeline-cursor {
+      position:absolute; top:0; bottom:0; width:2px; background:#fff;
+      opacity:0.8; pointer-events:none; transition:left 0.1s linear;
+    }
 </style>
 </head>
 <body>
@@ -1060,7 +1076,7 @@
             </div>
           </div>
         </div>
-        <div id="topbar-stats" style="display:flex;gap:8px;font-size:11px;color:var(--text3);align-items:center;flex-shrink:0;">
+        <div id="topbar-stats" style="display:flex;gap:8px;font-size:11px;color:var(--text3);align-items:center;flex-shrink:0;"><span id="ts-progress-ring" style="display:inline-flex;align-items:center;"></span>
           <span id="ts-total">-</span>
           <span style="opacity:.4;">·</span>
           <span id="ts-done" style="color:var(--primary);">-</span>
@@ -1161,7 +1177,7 @@
     </div>
     <div class="modal-body">
       <div class="detail-meta" id="detail-meta"></div>
-      <div id="detail-audio-wrap" style="display:none; margin:14px 0 0; display:none; flex-wrap:wrap; align-items:center; gap:6px;">
+      <div id="detail-audio-wrap" style="display:none; margin:14px 0 0; display:none; flex-wrap:wrap; align-items:center; gap:6px;"><div id="seg-timeline-wrap" style="width:100%;display:none;"></div>
         <audio id="detail-audio" controls>
       <canvas id="waveform-canvas" onclick="waveformClick(event)"></canvas></audio>
         <span id="loop-indicator">&#x1F501; 루프</span>
@@ -1934,6 +1950,38 @@
     closeSidebar();
   }
 
+
+  function renderProgressRing(done, total) {
+    const pct = total > 0 ? done / total : 0;
+    const r = 40, circ = 2 * Math.PI * r;
+    const dash = pct * circ;
+    return `<svg width="100" height="100" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="${r}" fill="none" stroke="var(--border)" stroke-width="10"/>
+      <circle cx="50" cy="50" r="${r}" fill="none" stroke="var(--primary)" stroke-width="10"
+        stroke-dasharray="${dash.toFixed(1)} ${circ.toFixed(1)}"
+        stroke-dashoffset="${circ/4}" stroke-linecap="round"
+        style="transition:stroke-dasharray 0.6s ease"/>
+      <text x="50" y="46" text-anchor="middle" dominant-baseline="middle" fill="var(--text)" font-size="14" font-weight="700">${Math.round(pct*100)}%</text>
+      <text x="50" y="62" text-anchor="middle" fill="var(--muted)" font-size="9">${done}/${total}</text>
+    </svg>`;
+  }
+
+  function renderSegmentTimeline(segments, totalDuration) {
+    if (!segments || !segments.length || !totalDuration) return '';
+    const bars = segments.map(s => {
+      const left = (s.start / totalDuration * 100).toFixed(2);
+      const width = Math.max(0.5, ((s.end - s.start) / totalDuration * 100)).toFixed(2);
+      return `<div class="seg-timeline-bar"
+        style="left:${left}%;width:${width}%"
+        onclick="seekAudio(${s.start})"
+        title="${formatTime(s.start)}: ${(s.text||'').substring(0,40)}"></div>`;
+    }).join('');
+    return `<div class="seg-timeline" id="seg-timeline">
+      <div class="seg-timeline-track">${bars}</div>
+      <div class="seg-timeline-cursor" id="seg-cursor" style="left:0%"></div>
+    </div>`;
+  }
+
   function updateTopbarStats() {
     const total = allFiles.length;
     const done = allFiles.filter(f => f.transcription_status === 2).length;
@@ -1941,6 +1989,8 @@
     const el2 = document.getElementById('ts-done');
     if (el1) el1.textContent = `${total}개`;
     if (el2) el2.textContent = `전사 ${done}개`;
+    const ringEl = document.getElementById('ts-progress-ring');
+    if (ringEl) ringEl.innerHTML = renderProgressRing(done, total);
   }
 
 
@@ -3948,6 +3998,19 @@
       });
       playerEl.appendChild(rateDiv);
     }
+    // 세그먼트 타임라인 렌더링
+    const segTimelineWrap = document.getElementById('seg-timeline-wrap');
+    if (segTimelineWrap) {
+      if (data && data.segments_json && Array.isArray(data.segments_json) && data.segments_json.length > 0) {
+        const totalDur = rec.duration || 0;
+        segTimelineWrap.innerHTML = renderSegmentTimeline(data.segments_json, totalDur);
+        segTimelineWrap.style.display = '';
+      } else {
+        segTimelineWrap.innerHTML = '';
+        segTimelineWrap.style.display = 'none';
+      }
+    }
+
     // 북마크 렌더링
     renderBookmarks(rec.id);
   }
@@ -3984,6 +4047,11 @@
         txEl.querySelectorAll('.seg-ts.playing').forEach(s => s.classList.remove('playing'));
         activeSpan.classList.add('playing');
         activeSpan.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      // 세그먼트 타임라인 커서 업데이트
+      const cursor = document.getElementById('seg-cursor');
+      if (cursor && audio.duration) {
+        cursor.style.left = (audio.currentTime / audio.duration * 100) + '%';
       }
     });
   }

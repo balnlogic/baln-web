@@ -1197,6 +1197,7 @@
         <div id="server-status-badge" class="server-status" title="로컬 전사 서버 (포트 7432)">
           <span class="dot"></span>
           <span class="label">서버 확인 중</span>
+          <div id="server-stats-detail" style="font-size:11px; color:var(--text-secondary); margin-top:2px;"></div>
         </div>
         <span class="unsaved-indicator" id="unsaved-indicator">● 저장되지 않음</span>
         <button onclick="toggleMemoSearch()" title="메모 검색" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:4px 6px;border-radius:6px;line-height:1;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text3)'">📝</button>
@@ -1535,7 +1536,22 @@
   <div id="ctx-color-palette" class="color-palette-inline" style="display:none;"></div>
   <div class="ctx-sep"></div>
   <button class="ctx-item" id="ctx-trash" onclick="ctxAction('trash')">🗑️ 휴지통</button>
+  <button class="ctx-item" onclick="openMetaEdit(ctxRec && ctxRec.id)">✏️ 정보 편집</button>
   <button class="ctx-item danger" onclick="ctxAction('delete')">🗑 삭제</button>
+</div>
+
+<!-- ══ 파일 메타데이터 편집 패널 ══ -->
+<div id="meta-edit-panel" style="display:none; position:fixed; bottom:0; left:0; right:0; background:var(--surface); border-top:1px solid var(--border); padding:20px; z-index:200; flex-direction:column; gap:12px; box-shadow:0 -4px 20px rgba(0,0,0,0.1);">
+  <div style="display:flex; justify-content:space-between; align-items:center;">
+    <div style="font-weight:600;">✏️ 파일 정보 편집</div>
+    <button onclick="document.getElementById('meta-edit-panel').style.display='none'">✕</button>
+  </div>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+    <div><label style="font-size:12px; color:var(--text-secondary);">제목</label><input id="meta-edit-topic" style="width:100%; padding:6px; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--bg); color:var(--text); margin-top:2px;"></div>
+    <div><label style="font-size:12px; color:var(--text-secondary);">폴더</label><input id="meta-edit-folder" style="width:100%; padding:6px; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--bg); color:var(--text); margin-top:2px;"></div>
+  </div>
+  <div><label style="font-size:12px; color:var(--text-secondary);">메모</label><textarea id="meta-edit-memo" rows="2" style="width:100%; padding:6px; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--bg); color:var(--text); margin-top:2px; resize:none;"></textarea></div>
+  <button onclick="saveMetaEdit()" style="padding:8px 20px; background:var(--primary); color:#fff; border:none; border-radius:var(--radius-sm); cursor:pointer; align-self:flex-end;">저장</button>
 </div>
 
 
@@ -2058,7 +2074,61 @@
     if (savedColor) document.documentElement.style.setProperty('--primary', savedColor);
   }
 
-  async function checkServerStatus() {
+  // ── 파일 메타데이터 편집 ──
+  let metaEditFileId = null;
+
+  function openMetaEdit(id) {
+    const rec = allFiles.find(f => f.id === id);
+    if (!rec) return;
+    metaEditFileId = id;
+    document.getElementById('meta-edit-topic').value = rec.topic || rec.file_name || '';
+    document.getElementById('meta-edit-folder').value = rec.folder || '';
+    document.getElementById('meta-edit-memo').value = rec.memo || '';
+    document.getElementById('meta-edit-panel').style.display = 'flex';
+  }
+
+  async function saveMetaEdit() {
+    if (!metaEditFileId) return;
+    const updates = {
+      topic: document.getElementById('meta-edit-topic').value,
+      folder: document.getElementById('meta-edit-folder').value,
+      memo: document.getElementById('meta-edit-memo').value,
+    };
+    await supaFetch('PATCH', 'recordings?id=eq.' + metaEditFileId, updates);
+    const idx = allFiles.findIndex(f => f.id === metaEditFileId);
+    if (idx !== -1) Object.assign(allFiles[idx], updates);
+    renderFiles();
+    document.getElementById('meta-edit-panel').style.display = 'none';
+    showToast('파일 정보가 저장되었습니다.');
+  }
+
+  // ── 서버 상태 상세 모니터링 ──
+  let serverStats = {};
+
+  async function fetchServerStats() {
+    try {
+      const res = await fetch('http://localhost:7432/status', { signal: AbortSignal.timeout(2000) });
+      const data = await res.json();
+      serverStats = data;
+      updateServerStatsUI(data);
+    } catch(e) { serverStats = {}; }
+  }
+
+  function updateServerStatsUI(data) {
+    const detail = document.getElementById('server-stats-detail');
+    if (!detail) return;
+    const parts = [];
+    if (data.queue !== undefined) parts.push(`대기: ${data.queue}`);
+    if (data.processing !== undefined) parts.push(`처리중: ${data.processing}`);
+    if (data.completed !== undefined) parts.push(`완료: ${data.completed}`);
+    if (data.uptime !== undefined) {
+      const mins = Math.floor(data.uptime / 60);
+      parts.push(`가동: ${mins}분`);
+    }
+    detail.textContent = parts.join(' · ');
+  }
+
+    async function checkServerStatus() {
     const badge = document.getElementById('server-status-badge');
     if (!badge) return;
     try {
@@ -2138,6 +2208,7 @@
       const isOffline = badge && badge.classList.contains('offline');
       _serverCheckInterval = setInterval(async () => {
         await checkServerStatus();
+        fetchServerStats();
         scheduleServerCheck();
       }, isOffline ? 10000 : 60000);
     }
@@ -3606,6 +3677,8 @@
     } else if (action === 'archive') {
       if (isArchived(rec.id)) unarchiveFile(rec.id);
       else archiveFile(rec.id);
+    } else if (action === 'meta-edit') {
+      openMetaEdit(rec.id);
     } else if (action === 'color-label') {
       const palette = document.getElementById('ctx-color-palette');
       if (!palette) return;

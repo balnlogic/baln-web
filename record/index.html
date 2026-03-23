@@ -276,6 +276,14 @@
     .server-status.online { color: #22c55e; }
     .server-status.offline .dot { background: var(--red); }
     .server-status.offline { color: var(--red); }
+    .unsaved-indicator {
+      font-size:11px;
+      color:var(--yellow);
+      display:none;
+      align-items:center;
+      gap:4px;
+    }
+    .unsaved-indicator.visible { display:flex; }
     .shortcuts-panel {
       position: fixed;
       top: 50%;
@@ -661,6 +669,10 @@
             <input type="checkbox" id="auto-summarize-toggle" onchange="toggleAutoSummarize(this.checked)" style="accent-color:var(--primary);" />
             전사 완료 시 자동 요약
           </label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text3);cursor:pointer;margin-top:4px;">
+            <input type="checkbox" id="notify-toggle" onchange="toggleNotify(this.checked)" style="accent-color:var(--primary);" />
+            전사 완료 알림
+          </label>
         </div>
         <button class="logout-btn" onclick="logout()">로그아웃</button>
       </div>
@@ -686,6 +698,7 @@
           <span class="dot"></span>
           <span class="label">서버 확인 중</span>
         </div>
+        <span class="unsaved-indicator" id="unsaved-indicator">● 저장되지 않음</span>
         <button onclick="toggleShortcutsPanel()" title="키보드 단축키 (?)" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:4px 6px;border-radius:6px;line-height:1;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text3)'">?</button>
         <button id="theme-toggle-btn" onclick="toggleTheme()" title="테마 변경" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:4px 6px;border-radius:6px;line-height:1;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text3)'">☀️</button>
       </div>
@@ -835,7 +848,7 @@
   </div>
   <div style="margin-top:12px;">
     <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">메모/제목</div>
-    <input id="info-memo" type="text" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:13px;color:var(--text);" placeholder="제목 입력..." onblur="saveInfoMemo()" />
+    <input id="info-memo" type="text" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:13px;color:var(--text);" placeholder="제목 입력..." oninput="setUnsaved(true)" onblur="saveInfoMemo()" />
   </div>
   <div style="margin-top:10px;">
     <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">폴더/주제</div>
@@ -1016,10 +1029,45 @@
     showToast(val ? '자동 요약 켜짐' : '자동 요약 꺼짐', 'info');
   }
 
+
+  function toggleNotify(val) {
+    if (val) {
+      requestNotificationPermission();
+      localStorage.setItem('record_notify', '1');
+    } else {
+      localStorage.setItem('record_notify', '0');
+    }
+  }
+
+  function initNotify() {
+    const saved = localStorage.getItem('record_notify') !== '0';
+    const el = document.getElementById('notify-toggle');
+    if (el) el.checked = saved && Notification.permission === 'granted';
+  }
+
+  function setUnsaved(val) {
+    const el = document.getElementById('unsaved-indicator');
+    if (el) el.classList.toggle('visible', val);
+  }
+
   function initAutoSummarize() {
     const val = localStorage.getItem('record_autoSummarize') === '1';
     const el = document.getElementById('auto-summarize-toggle');
     if (el) el.checked = val;
+  }
+
+
+  async function requestNotificationPermission() {
+    if (!('Notification' in window)) return;
+    if (Notification.permission === 'default') {
+      const perm = await Notification.requestPermission();
+      if (perm === 'granted') showToast('알림이 활성화됐습니다', 'success');
+    }
+  }
+
+  function showNotification(title, body) {
+    if (!('Notification' in window) || Notification.permission !== 'granted') return;
+    new Notification(title, { body, icon: '/favicon.ico' });
   }
 
   function initTheme() {
@@ -1066,6 +1114,7 @@
     startPolling();
     initTheme();
     initAutoSummarize();
+    initNotify();
     checkServerStatus();
     setInterval(checkServerStatus, 30000);
   }
@@ -1114,11 +1163,16 @@
         if (data && data.transcription_status !== 1) {
           const rec = allFiles.find(f => f.id === id);
           if (rec) {
+            const wasProcessing = rec.transcription_status === 1;
             rec.transcription_status = data.transcription_status;
             rec.full_text = data.full_text;
             rec.language = data.language;
             if (data.memo) rec.memo = data.memo;
             if (data.topic) rec.topic = data.topic;
+            const notifyEnabled = localStorage.getItem('record_notify') !== '0';
+            if (data.transcription_status === 2 && wasProcessing && notifyEnabled) {
+              showNotification('전사 완료', `"${getTitle(rec)}" 전사가 완료됐습니다`);
+            }
           }
         }
       }
@@ -2480,6 +2534,7 @@
     const f = allFiles.find(x => x.id === detailFileId);
     if (f) f.formatted_minutes = text;
     document.getElementById('detail-minutes-actions').style.display = 'none';
+    setUnsaved(false);
     showToast('회의록 저장됨', 'success');
   }
 
@@ -2489,6 +2544,7 @@
     await supaFetch(`recordings?id=eq.${detailFileId}`, 'PATCH', { memo: val });
     const f = allFiles.find(x => x.id === detailFileId);
     if (f) f.memo = val;
+    setUnsaved(false);
     renderCurrentView();
     showToast('메모 저장됨', 'success');
   }

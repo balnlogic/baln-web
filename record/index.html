@@ -489,6 +489,9 @@
       padding: 0 2px;
     }
     .seg-item { display:flex; gap:8px; padding:4px 0; align-items:flex-start; border-left:3px solid transparent; padding-left:8px; margin-bottom:4px; border-radius:0 4px 4px 0; }
+    .seg-copy-btn { opacity: 0; background: none; border: none; cursor: pointer; padding: 2px 4px; border-radius: var(--radius-sm); transition: var(--transition); font-size: 12px; }
+    .seg-item:hover .seg-copy-btn { opacity: 1; }
+    .seg-copy-btn:hover { background: var(--hover); }
     .seg-speaker-label { font-size:0.7rem; color:var(--muted); min-width:48px; padding-top:2px; }
     .emotion-display { display:flex; align-items:center; gap:12px; padding:8px 0; }
     .emotion-emoji { font-size:2rem; }
@@ -3089,6 +3092,23 @@
     }
   }
 
+  function copySegmentText(text) {
+    navigator.clipboard.writeText(text).then(() => showToast('📋 복사됨'));
+  }
+
+  function bulkMoveToFolder(folder) {
+    bulkMoveFolder(folder);
+  }
+
+  function populateBulkFolderSelect() {
+    const bfs = document.getElementById('bulk-folder-select');
+    if (!bfs) return;
+    const topics = [...new Set(allFiles.map(f => f.topic).filter(Boolean))].sort();
+    bfs.innerHTML = '<option value="">📁 폴더로 이동...</option>' +
+      '<option value="__none__">📭 폴더 없음</option>' +
+      topics.map(t => `<option value="${t.replace(/"/g,'&quot;')}">📁 ${t}</option>`).join('');
+  }
+
   async function bulkMoveFolder(topic) {
     if (topic === '') return;
     const realTopic = topic === '__none__' ? null : topic;
@@ -4367,7 +4387,7 @@
           const startMin = String(Math.floor((s.start||0)/60)).padStart(2,'0');
           const startSec = String(Math.round((s.start||0)%60)).padStart(2,'0');
           const speakerColor = SPEAKER_COLORS[s.speakerIdx % SPEAKER_COLORS.length];
-          return `<div class="seg-item" data-idx="${idx}" style="border-left:3px solid ${speakerColor}" ondblclick="editSegment(${idx})"><span class="seg-ts" data-time="${s.start||0}" onclick="jumpToTime(${s.start||0})">${startMin}:${startSec}</span><span class="seg-text">${esc(s.text||'')}</span></div>`;
+          return `<div class="seg-item" data-idx="${idx}" style="border-left:3px solid ${speakerColor}" ondblclick="editSegment(${idx})"><span class="seg-ts" data-time="${s.start||0}" onclick="jumpToTime(${s.start||0})">${startMin}:${startSec}</span><span class="seg-text">${esc(s.text||'')}</span><button class="seg-copy-btn" onclick="copySegmentText('${(s.text||'').replace(/'/g, \"\\'\")}'" title="복사">📋</button></div>`;
         }).join('');
         txEl.innerHTML = segsHtml;
         renderKeyPoints(data.full_text || segsWithSpeaker.map(s=>s.text).join(' '));

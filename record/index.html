@@ -887,6 +887,11 @@
   /* ── 핀 고정 ── */
   .pin-indicator { color:#f59e0b; font-size:0.8rem; margin-right:2px; }
   .file-item.pinned { border-left:3px solid #f59e0b !important; }
+  /* ── 색상 레이블 ── */
+  .color-palette-inline { display:flex; gap:4px; padding:4px 8px; align-items:center; }
+  .clr-dot { width:16px; height:16px; border-radius:50%; cursor:pointer; border:2px solid transparent; flex-shrink:0; }
+  .clr-dot:hover { border-color:#fff; transform:scale(1.2); }
+  .clr-none { background:var(--surface); border:1px solid var(--border) !important; font-size:0.6rem; display:flex; align-items:center; justify-content:center; }
 
   /* ── 알림 센터 ── */
   #notification-panel { 
@@ -1354,6 +1359,10 @@
     📁 폴더로 이동
     <div class="ctx-submenu" id="ctx-folder-submenu"></div>
   </div>
+  <div class="ctx-sep"></div>
+  <button class="ctx-item" id="ctx-archive" onclick="ctxAction('archive')">📦 보관</button>
+  <button class="ctx-item" id="ctx-color-label" onclick="ctxAction('color-label')">🎨 색상 레이블</button>
+  <div id="ctx-color-palette" class="color-palette-inline" style="display:none;"></div>
   <div class="ctx-sep"></div>
   <button class="ctx-item danger" onclick="ctxAction('delete')">🗑 삭제</button>
 </div>
@@ -2104,6 +2113,7 @@
       <button class="filter-tab ${activeFilter==='pending'?'active':''}" data-filter="pending" onclick="setFilter('pending')">⏳ 미전사</button>
       <button class="filter-tab ${activeFilter==='recent'?'active':''}" data-filter="recent" onclick="setFilter('recent')">🕐 최근</button>
       <button class="filter-tab ${activeFilter==='error'?'active':''}" data-filter="error" onclick="setFilter('error')">⚠️ 오류</button>
+      <button class="filter-tab ${activeFilter==='archived'?'active':''}" data-filter="archived" onclick="setFilter('archived')">📦 보관함</button>
     </div>`;
     if (files.length === 0) {
       if (q) {
@@ -2360,7 +2370,9 @@
     ].filter(Boolean).join('\n');
     const pinned = isPinned(f.id);
     const pinIcon = pinned ? '<span class="pin-indicator">📌</span>' : '';
-    return `<div class="file-item ${isSelected ? 'selected' : ''}${pinned ? ' pinned' : ''}" data-id="${f.id}" draggable="true" ondragstart="onFileDragStart('${f.id}', event)" ondragend="onFileDragEnd(event)" onclick="handleFileClick(event, '${f.id}')" title="${fileInfo}">
+    const fileColor = getFileColor(f.id);
+    const colorStyle = fileColor ? `border-left:3px solid ${fileColor};` : '';
+    return `<div class="file-item ${isSelected ? 'selected' : ''}${pinned ? ' pinned' : ''}" data-id="${f.id}" draggable="true" ondragstart="onFileDragStart('${f.id}', event)" ondragend="onFileDragEnd(event)" onclick="handleFileClick(event, '${f.id}')" title="${fileInfo}" style="${colorStyle}">
       <div class="file-check" onclick="event.stopPropagation()">
         <input type="checkbox" ${isSelected ? 'checked' : ''}
           onchange="toggleSelect('${f.id}', this.checked)" />
@@ -2536,6 +2548,40 @@
     loadFiles();
   }
 
+  /* ═══ 보관함 ═══ */
+  const ARCHIVED_KEY = 'archived-files';
+  function getArchived() {
+    try { return new Set(JSON.parse(localStorage.getItem(ARCHIVED_KEY)||'[]')); }
+    catch { return new Set(); }
+  }
+  function isArchived(id) { return getArchived().has(String(id)); }
+  function archiveFile(id) {
+    const s = getArchived(); s.add(String(id));
+    localStorage.setItem(ARCHIVED_KEY, JSON.stringify([...s]));
+    showToast('보관함으로 이동', 'info'); loadFiles();
+  }
+  function unarchiveFile(id) {
+    const s = getArchived(); s.delete(String(id));
+    localStorage.setItem(ARCHIVED_KEY, JSON.stringify([...s]));
+    showToast('보관 해제', 'info'); loadFiles();
+  }
+
+  /* ═══ 파일 색상 레이블 ═══ */
+  const FILE_COLORS_KEY = 'file-colors';
+  const COLOR_PALETTE = ['#ef4444','#f97316','#eab308','#22c55e','#3b82f6','#8b5cf6',''];
+  function getFileColor(id) {
+    try { const m = JSON.parse(localStorage.getItem(FILE_COLORS_KEY)||'{}'); return m[String(id)] || ''; }
+    catch { return ''; }
+  }
+  function setFileColor(id, color) {
+    try {
+      const m = JSON.parse(localStorage.getItem(FILE_COLORS_KEY)||'{}');
+      if (color) m[String(id)] = color; else delete m[String(id)];
+      localStorage.setItem(FILE_COLORS_KEY, JSON.stringify(m));
+    } catch {}
+    closeCtxMenu(); loadFiles();
+  }
+
   function sortFiles(files) {
     return [...files].sort((a, b) => {
       const pa = isPinned(a.id), pb = isPinned(b.id);
@@ -2557,6 +2603,10 @@
       if (activeSmartFolder === 'long') return files.filter(f => (f.duration || 0) >= 1800);
       return files;
     }
+    // archived 탭이 아니면 보관된 파일 제외
+    if (activeFilter !== 'archived') {
+      files = files.filter(f => !isArchived(f.id));
+    }
     switch (activeFilter) {
       case 'today':
         files = files.filter(f => new Date(f.created_at).toDateString() === today);
@@ -2572,6 +2622,9 @@
         break;
       case 'error':
         files = files.filter(f => f.transcription_status === 3);
+        break;
+      case 'archived':
+        files = files.filter(f => isArchived(f.id));
         break;
     }
     // advancedFilter 적용
@@ -2870,6 +2923,11 @@
     }
     const pinBtn = document.getElementById('ctx-pin');
     if (pinBtn) pinBtn.textContent = isPinned(id) ? '📌 핀 해제' : '📌 핀 고정';
+    const archiveBtn = document.getElementById('ctx-archive');
+    if (archiveBtn) archiveBtn.textContent = isArchived(id) ? '📦 보관 해제' : '📦 보관';
+    // 색상 팔레트 숨김 초기화
+    const palette = document.getElementById('ctx-color-palette');
+    if (palette) palette.style.display = 'none';
     menu.classList.add('open');
     event.stopPropagation();
   }
@@ -2898,6 +2956,19 @@
     } else if (action === 'summarize') {
       openDetail(rec.id);
       setTimeout(() => generateSummary(), 500);
+    } else if (action === 'archive') {
+      if (isArchived(rec.id)) unarchiveFile(rec.id);
+      else archiveFile(rec.id);
+    } else if (action === 'color-label') {
+      const palette = document.getElementById('ctx-color-palette');
+      if (!palette) return;
+      const visible = palette.style.display !== 'none';
+      if (visible) { palette.style.display = 'none'; return; }
+      palette.innerHTML = COLOR_PALETTE.map(c =>
+        c ? `<div class="clr-dot" style="background:${c};${getFileColor(rec.id)===c?'border-color:#fff;transform:scale(1.2);':''}" onclick="setFileColor('${rec.id}','${c}')"></div>`
+          : `<div class="clr-dot clr-none" title="없음" onclick="setFileColor('${rec.id}','')">✕</div>`
+      ).join('');
+      palette.style.display = 'flex';
     }
   }
 

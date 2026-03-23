@@ -738,6 +738,17 @@
   .view-toggle { display:flex; gap:4px; margin-bottom:12px; }
   .view-toggle-btn { padding:4px 10px; border-radius:6px; font-size:0.8rem; cursor:pointer; border:1px solid var(--border); background:none; color:var(--muted); }
   .view-toggle-btn.active { background:var(--primary); color:#fff; border-color:var(--primary); }
+  .export-dropdown { position:relative; display:inline-block; }
+  #export-menu { position:absolute; top:100%; right:0; z-index:200; }
+  .file-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px; padding:12px; }
+  .file-grid-card { 
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:14px; cursor:pointer; transition:box-shadow 0.15s;
+  }
+  .file-grid-card:hover { box-shadow:0 4px 16px rgba(0,0,0,0.15); }
+  .file-grid-card .gc-title { font-weight:600; font-size:0.9rem; margin-bottom:6px; }
+  .file-grid-card .gc-date { font-size:0.75rem; color:var(--muted); margin-bottom:8px; }
+  .file-grid-card .gc-preview { font-size:0.8rem; color:var(--muted); line-height:1.4; overflow:hidden; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; }
   .group-header {
     display:flex; align-items:center; justify-content:space-between;
     padding:8px 12px; font-size:0.82rem; font-weight:600; color:var(--muted);
@@ -1029,6 +1040,14 @@
             <div style="display:flex;gap:6px;">
               <button id="btn-edit-transcript" onclick="toggleTranscriptEdit()" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;color:var(--text3);">✏️ 편집</button>
               <button id="btn-save-transcript" onclick="saveTranscriptEdit()" style="background:var(--primary);border:none;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;color:#fff;display:none;">💾 저장</button>
+              <div class="export-dropdown" style="position:relative">
+                <button class="icon-btn" onclick="toggleExportMenu()" title="내보내기" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;color:var(--text3);">↗ 내보내기</button>
+                <div id="export-menu" class="ctx-menu" style="display:none; top:100%; right:0; min-width:140px;">
+                  <div class="ctx-item" onclick="exportTranscript('txt');hideExportMenu()">📄 TXT</div>
+                  <div class="ctx-item" onclick="exportTranscript('srt');hideExportMenu()">🎬 SRT 자막</div>
+                  <div class="ctx-item" onclick="exportTranscript('json');hideExportMenu()">📦 JSON</div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="transcript-box" id="detail-transcript">불러오는 중...</div>
@@ -1221,6 +1240,55 @@
   // Toast queue system
   const toastQueue = [];
   let toastActive = false;
+  async function exportTranscript(format) {
+    const rec = allFiles.find(f => f.id === detailFileId);
+    if (!rec) return;
+    let content, filename, mime;
+    if (format === 'txt') {
+      content = rec.full_text || '';
+      filename = (rec.file_name || 'transcript') + '.txt';
+      mime = 'text/plain';
+    } else if (format === 'srt') {
+      const segs = rec.segments_json || [];
+      content = segs.map((s, i) => {
+        const start = formatSrtTime(s.start || 0);
+        const end = formatSrtTime(s.end || 0);
+        return `${i+1}\n${start} --> ${end}\n${s.text}\n`;
+      }).join('\n');
+      filename = (rec.file_name || 'transcript') + '.srt';
+      mime = 'text/plain';
+    } else if (format === 'json') {
+      content = JSON.stringify({ id: rec.id, file_name: rec.file_name, created_at: rec.created_at, full_text: rec.full_text, segments: rec.segments_json }, null, 2);
+      filename = (rec.file_name || 'transcript') + '.json';
+      mime = 'application/json';
+    }
+    const blob = new Blob(['\uFEFF' + content], { type: mime + ';charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = filename; a.click();
+    URL.revokeObjectURL(url);
+    showToast(format.toUpperCase() + ' 내보내기 완료', 'success');
+  }
+
+  function formatSrtTime(sec) {
+    const h = Math.floor(sec/3600);
+    const m = Math.floor((sec%3600)/60);
+    const s = Math.floor(sec%60);
+    const ms = Math.round((sec%1)*1000);
+    return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')},${String(ms).padStart(3,'0')}`;
+  }
+
+  function toggleExportMenu() {
+    const menu = document.getElementById('export-menu');
+    if (!menu) return;
+    const isHidden = menu.style.display === 'none' || menu.style.display === '';
+    menu.style.display = isHidden ? 'block' : 'none';
+  }
+
+  function hideExportMenu() {
+    const menu = document.getElementById('export-menu');
+    if (menu) menu.style.display = 'none';
+  }
+
   function showToast(msg, type = 'info') {
     if (toastQueue.length >= 5) toastQueue.shift(); // 최대 5개, 초과 시 오래된 것 제거
     toastQueue.push({ msg, type });
@@ -1598,6 +1666,21 @@
     renderCurrentView();
   }
 
+  function renderGridView(files) {
+    if (!files || files.length === 0) return '<div style="padding:24px;text-align:center;color:var(--muted)">즐겨찾기한 파일이 없습니다.</div>';
+    const cards = files.map(f => {
+      const title = getTitle(f);
+      const date = relativeTime(f.created_at);
+      const preview = (f.full_text || '').slice(0, 120);
+      return `<div class="file-grid-card" onclick="openDetail('${f.id}')">
+        <div class="gc-title">${title}</div>
+        <div class="gc-date">${date}</div>
+        <div class="gc-preview">${preview ? preview + (f.full_text && f.full_text.length > 120 ? '...' : '') : '<span style="color:var(--muted);font-style:italic">전사 없음</span>'}</div>
+      </div>`;
+    }).join('');
+    return `<div class="file-grid">${cards}</div>`;
+  }
+
   function renderGroupedView(files, groupByFn, labelFn) {
     const groups = {};
     const order = [];
@@ -1854,7 +1937,9 @@
     let listHtml = '';
     let loadMoreHtml = '';
 
-    if (viewMode === 'date' && currentView !== 'home') {
+    if (viewMode === 'grid' && activeFilter === 'starred') {
+      groupedHtml = renderGridView(files);
+    } else if (viewMode === 'date' && currentView !== 'home') {
       groupedHtml = renderGroupedView(
         files,
         f => {
@@ -1881,6 +1966,7 @@
       <button class="view-toggle-btn ${viewMode==='list'?'active':''}" onclick="setViewMode('list')">📋 목록</button>
       <button class="view-toggle-btn ${viewMode==='date'?'active':''}" onclick="setViewMode('date')">📅 날짜별</button>
       <button class="view-toggle-btn ${viewMode==='folder'?'active':''}" onclick="setViewMode('folder')">📁 폴더별</button>
+      ${activeFilter==='starred' ? `<button id="view-grid-btn" class="view-toggle-btn ${viewMode==='grid'?'active':''}" onclick="setViewMode('grid')">⬛ 그리드</button>` : ''}
     </div>` : '';
 
     if (groupedHtml) {

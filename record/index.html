@@ -1365,10 +1365,20 @@
                   <div class="ctx-item" onclick="exportPDF();hideExportMenu()">📄 PDF</div>
                 </div>
               </div>
+              <button onclick="document.getElementById('trans-btns').style.display = document.getElementById('trans-btns').style.display==='none'?'flex':'none'" title="번역" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--text3);">🌐</button>
             </div>
           </div>
           <div id="transcript-stats" style="display:flex; gap:16px; font-size:12px; color:var(--text-secondary); padding:4px 0; border-bottom:1px solid var(--border); margin-bottom:8px;"></div>
           <div class="transcript-box" id="detail-transcript">불러오는 중...</div>
+          <div class="trans-btns" id="trans-btns" style="display:none;gap:6px;flex-wrap:wrap;margin-top:8px;align-items:center;">
+            <button onclick="translateText(currentTranscript, '영어')" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--text);">🇺🇸 영어</button>
+            <button onclick="translateText(currentTranscript, '일본어')" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--text);">🇯🇵 일본어</button>
+            <button onclick="translateText(currentTranscript, '중국어')" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--text);">🇨🇳 중국어</button>
+            <button onclick="document.getElementById('translation-panel').style.display='none'" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--text3);margin-left:auto;">✕</button>
+          </div>
+          <div id="translation-panel" style="display:none; margin-top:12px; padding:12px; background:var(--bg); border:1px solid var(--border); border-radius:var(--radius);">
+            <div id="translation-content"></div>
+          </div>
           <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
             <button onclick="toggleQaPanel()" style="background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.5);border-radius:7px;padding:5px 12px;font-size:12px;color:#f59e0b;cursor:pointer;font-weight:600;">❓ 질문</button>
             <div style="display:flex;gap:6px;">
@@ -1798,6 +1808,8 @@
   let selectedIds = new Set();
   let ctxRecId = null;
   let ctxRec = null;
+  let currentTranscript = '';
+  let isLoadingMore = false;
   let sortOrder = 'date_desc';
   const SORT_KEY = 'sort-prefs';
   const PLAY_HISTORY_KEY = 'play-history';
@@ -2742,7 +2754,7 @@
     if (groupedHtml) {
       content.innerHTML = `${filterTabsHtml}${viewToggleHtml}${statsHtml}<div class="file-list ${selectedIds.size > 0 ? 'any-selected' : ''}" id="file-list">${groupedHtml}</div>`;
     } else {
-      content.innerHTML = `${filterTabsHtml}${viewToggleHtml}${statsHtml}${currentView === 'home' ? barChartHtml + weekSummaryHtml + timelineHtml : ''}<div class="file-list ${selectedIds.size > 0 ? 'any-selected' : ''}" id="file-list">${listHtml}${loadMoreHtml}</div>`;
+      content.innerHTML = `${filterTabsHtml}${viewToggleHtml}${statsHtml}${currentView === 'home' ? barChartHtml + weekSummaryHtml + timelineHtml : ''}<div class="file-list ${selectedIds.size > 0 ? 'any-selected' : ''}" id="file-list">${listHtml}${loadMoreHtml}<div id="load-more-indicator" style="display:none; text-align:center; padding:16px; color:var(--text-secondary); font-size:13px;"><span>⏳ 불러오는 중...</span></div></div>`;
     }
     updateActiveFileHighlight();
     initScrollObserver();
@@ -3171,15 +3183,31 @@
   }
 
   function loadMoreFiles() {
+    if (isLoadingMore) return;
     // scroll-sentinel가 있다는 것은 더 로드할 파일이 있다는 뜻
     const sentinel = document.getElementById('scroll-sentinel');
     if (!sentinel) return;
+    isLoadingMore = true;
     const loadingEl = document.getElementById('scroll-loading');
     if (loadingEl) loadingEl.style.display = '';
+    const indicator = document.getElementById('load-more-indicator');
+    if (indicator) indicator.style.display = '';
     setTimeout(() => {
       visibleCount += PAGE_SIZE;
       renderCurrentView();
+      isLoadingMore = false;
       if (loadingEl) loadingEl.style.display = 'none';
+      const ind2 = document.getElementById('load-more-indicator');
+      if (ind2) {
+        const newSentinel = document.getElementById('scroll-sentinel');
+        if (!newSentinel) {
+          ind2.innerHTML = '<span>✅ 모두 불러왔습니다</span>';
+          ind2.style.display = '';
+          setTimeout(() => { ind2.style.display = 'none'; }, 2000);
+        } else {
+          ind2.style.display = 'none';
+        }
+      }
       setTimeout(initScrollObserver, 50);
     }, 200);
   }
@@ -4558,6 +4586,7 @@
       txEl.textContent = '아직 전사되지 않았습니다. ··· 메뉴에서 [전사하기]를 사용하세요.';
     }
 
+    currentTranscript = data?.full_text || '';
     showTranscriptStats(data?.full_text || null);
 
     // 전사 품질 뱃지
@@ -5033,6 +5062,34 @@
 ');
     }
     return result;
+  }
+
+  async function translateText(text, targetLang) {
+    if (!text) return;
+    showToast('🌐 번역 중...');
+    try {
+      const res = await fetch('http://localhost:7432/summarize', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          text: `다음 텍스트를 ${targetLang}로 번역해줘. 번역문만 출력:\n\n${text.substring(0, 3000)}`
+        })
+      });
+      const data = await res.json();
+      if (data.summary) {
+        showTranslation(data.summary, targetLang);
+      }
+    } catch(e) {
+      showToast('❌ 번역 실패 (서버 연결 확인)', 'error');
+    }
+  }
+
+  function showTranslation(text, lang) {
+    const panel = document.getElementById('translation-panel');
+    const contentEl = document.getElementById('translation-content');
+    if (!panel || !contentEl) return;
+    contentEl.innerHTML = `<div class="trans-header" style="font-weight:600;font-size:13px;margin-bottom:8px;color:var(--text);">🌐 번역 (${lang})</div><div class="trans-body" style="font-size:13px;line-height:1.6;color:var(--text2);white-space:pre-wrap;">${esc(text)}</div>`;
+    panel.style.display = '';
   }
 
   async function generateSummary() {

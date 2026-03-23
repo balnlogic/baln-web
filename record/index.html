@@ -582,6 +582,18 @@
     .file-item:hover .more-btn { opacity:1; }
     .more-btn:hover { background:var(--surface3); color:var(--text); }
 
+    /* ══ COMPACT VIEW ══ */
+    #file-list.compact .file-item { padding: 6px 12px; }
+    #file-list.compact .file-meta { display: none; }
+    #file-list.compact .file-tags { display: none; }
+    #file-list.compact .file-name { font-size: 13px; }
+    #file-list.compact .file-status { font-size: 11px; }
+    #file-list.compact .file-preview { display: none; }
+
+    /* ══ FILE PREVIEW ══ */
+    .file-preview { font-size: 12px; color: var(--text-tertiary); margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    #file-list.no-preview .file-preview { display: none; }
+
     /* ══ CONTEXT MENU ══ */
     .ctx-menu {
       display:none; position:fixed; z-index:500;
@@ -2264,10 +2276,28 @@
   // VIEW MODE (목록/날짜별/폴더별)
   // ════════════════════════════════════════════
   let viewMode = 'list'; // 'list' | 'date' | 'folder'
+  let compactView = localStorage.getItem('compact-view') === '1';
+  let previewVisible = localStorage.getItem('preview-visible') !== '0';
 
   function setViewMode(mode) {
     viewMode = mode;
     renderCurrentView();
+  }
+
+  function toggleCompactView() {
+    compactView = !compactView;
+    const fl = document.getElementById('file-list');
+    if (fl) fl.classList.toggle('compact', compactView);
+    localStorage.setItem('compact-view', compactView ? '1' : '0');
+    showToast(compactView ? '📋 컴팩트 뷰' : '📄 기본 뷰');
+  }
+
+  function togglePreview() {
+    previewVisible = !previewVisible;
+    const fl = document.getElementById('file-list');
+    if (fl) fl.classList.toggle('no-preview', !previewVisible);
+    localStorage.setItem('preview-visible', previewVisible ? '1' : '0');
+    showToast(previewVisible ? '👁️ 미리보기 켜짐' : '미리보기 꺼짐');
   }
 
   function renderGridView(files) {
@@ -2573,6 +2603,8 @@
       <button class="view-toggle-btn ${viewMode==='date'?'active':''}" onclick="setViewMode('date')">📅 날짜별</button>
       <button class="view-toggle-btn ${viewMode==='folder'?'active':''}" onclick="setViewMode('folder')">📁 폴더별</button>
       ${activeFilter==='starred' ? `<button id="view-grid-btn" class="view-toggle-btn ${viewMode==='grid'?'active':''}" onclick="setViewMode('grid')">⬛ 그리드</button>` : ''}
+      <button onclick="toggleCompactView()" title="컴팩트 뷰">☰</button>
+      <button onclick="togglePreview()" title="미리보기">👁️</button>
     </div>` : '';
 
     if (groupedHtml) {
@@ -2582,6 +2614,12 @@
     }
     updateActiveFileHighlight();
     initScrollObserver();
+    // 컴팩트뷰·미리보기 상태 복원
+    const _fl = document.getElementById('file-list');
+    if (_fl) {
+      _fl.classList.toggle('compact', compactView);
+      _fl.classList.toggle('no-preview', !previewVisible);
+    }
   }
 
   function renderFileItem(f) {
@@ -2612,6 +2650,7 @@
     const icon = sourceIcon;
 
     const processingBar = f.transcription_status === 1 ? '<div class="processing-bar"></div>' : '';
+    const previewText = f.full_text ? `<div class="file-preview">${f.full_text.substring(0, 80).trim()}...</div>` : '';
     const copyBtn = f.transcription_status === 2
       ? `<button class="file-copy-btn" onclick="copyFileText('${f.id}', event)" title="전사 텍스트 복사">복사</button>`
       : '';
@@ -2644,6 +2683,7 @@
           ${(()=>{ const lp=getPlayHistory()[f.id]; return lp ? `<span class="last-played">▶ ${formatDate(lp)}</span>` : ''; })()}
           ${statusBadge}${minutesBadge}${langBadge}
         </div>
+        ${previewText}
         ${processingBar}
       </div>
       <div class="file-more">

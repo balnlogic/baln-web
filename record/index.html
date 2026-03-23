@@ -1025,6 +1025,8 @@
   .detail-folder-row select { flex:1; padding:4px 8px; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--surface); color:var(--text); font-size:13px; }
     .stats-period-btn { padding:6px 14px; border:1px solid var(--border); border-radius:var(--radius); background:var(--surface); color:var(--text-secondary); cursor:pointer; font-size:13px; }
     .stats-period-btn.active { background:var(--primary); color:#fff; border-color:var(--primary); }
+  .ts-para { margin-bottom: 12px; line-height: 1.7; }
+  .ts-para:last-child { margin-bottom: 0; }
 </style>
 </head>
 <body>
@@ -2757,6 +2759,7 @@
     { key: 'date_desc', label: '📅 최신순' },
     { key: 'date_asc', label: '📅 오래된순' },
     { key: 'dur_desc', label: '⏱ 긴 순' },
+    { key: 'duration', label: '🕐 녹음 길이순' },
     { key: 'status', label: '✅ 전사상태' },
     { key: 'starred', label: '⭐ 즐겨찾기' },
     { key: 'played', label: '▶ 최근 재생' },
@@ -2783,6 +2786,24 @@
   }
 
   // 자동 단락 구분: 문장 끝(. ? ! 등) 기준으로 3~5문장마다 단락 나누기
+  function formatTranscriptParagraphs(text) {
+    if (!text) return '';
+    // 이미 줄바꿈이 여러 개면 그대로 문단 분리
+    if ((text.match(/\n/g) || []).length > 3) {
+      return text.split(/\n+/).filter(Boolean).map(p => `<p class="ts-para">${p}</p>`).join('');
+    }
+    // 200자마다 문장 종료 지점에서 분리
+    const sentences = text.split(/(?<=[.!?。！？])\s+/);
+    const paras = [];
+    let cur = '';
+    for (const s of sentences) {
+      cur += (cur ? ' ' : '') + s;
+      if (cur.length >= 200) { paras.push(cur); cur = ''; }
+    }
+    if (cur) paras.push(cur);
+    return paras.map(p => `<p class="ts-para">${p}</p>`).join('');
+  }
+
   function formatTranscriptText(text) {
     if (!text) return '';
     const sentences = text.match(/[^.!?。]+[.!?。]*/g) || [text];
@@ -2976,6 +2997,7 @@
       if (!pa && pb) return 1;
       if (sortOrder === 'date_asc') return new Date(a.created_at) - new Date(b.created_at);
       if (sortOrder === 'dur_desc') return (b.duration || 0) - (a.duration || 0);
+      if (sortOrder === 'duration') return (b.duration_seconds != null ? b.duration_seconds : (b.duration || 0)) - (a.duration_seconds != null ? a.duration_seconds : (a.duration || 0));
       if (sortOrder === 'status') return b.transcription_status - a.transcription_status;
       if (sortOrder === 'starred') return (b.starred ? 1 : 0) - (a.starred ? 1 : 0) || new Date(b.created_at) - new Date(a.created_at);
       if (sortOrder === 'played') { const ph = getPlayHistory(); return (ph[b.id] || '').localeCompare(ph[a.id] || ''); }
@@ -4453,7 +4475,7 @@
         renderKeyPoints(data.full_text || segsWithSpeaker.map(s=>s.text).join(' '));
         renderWordFreq(data.full_text || segsWithSpeaker.map(s=>s.text).join(' '));
       } else {
-        txEl.textContent = formatTranscriptText(data.full_text) || '(내용 없음)';
+        txEl.innerHTML = formatTranscriptParagraphs(data.full_text) || '(내용 없음)';
         renderKeyPoints(data.full_text || '');
         renderWordFreq(data.full_text || '');
       }
@@ -5286,6 +5308,13 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
     return name || '제목 없음';
   }
 
+  function formatDuration(seconds) {
+    if (!seconds) return '-';
+    const m = Math.floor(seconds / 60);
+    const s = Math.floor(seconds % 60);
+    return m > 0 ? `${m}분 ${s}초` : `${s}초`;
+  }
+
   function formatDur(seconds) {
     if (!seconds && seconds !== 0) return '-';
     const s = Math.round(seconds);
@@ -6079,6 +6108,8 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
     const done = filteredFiles.filter(f => f.transcription_status === 2).length;
     const rate = total ? Math.round(done / total * 100) : 0;
     const totalSecs = filteredFiles.reduce((s, f) => s + (f.duration || 0), 0);
+    const filesWithDur = filteredFiles.filter(f => (f.duration_seconds != null ? f.duration_seconds : f.duration) > 0);
+    const avgSec = filesWithDur.length > 0 ? Math.round(filesWithDur.reduce((s, f) => s + (f.duration_seconds != null ? f.duration_seconds : (f.duration || 0)), 0) / filesWithDur.length) : 0;
     const totalH = Math.floor(totalSecs / 3600);
     const totalM = Math.floor((totalSecs % 3600) / 60);
     const totalTimeStr = totalH > 0 ? `${totalH}시간 ${totalM}분` : `${totalM}분`;
@@ -6144,6 +6175,11 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
           <div class="s-label">이번 주 녹음</div>
           <div class="s-value">${thisWeek}</div>
           <div class="s-sub">이번 주 신규</div>
+        </div>
+        <div class="stats-card">
+          <div class="s-label">평균 녹음 시간</div>
+          <div class="s-value" style="font-size:1.1rem;">${formatDuration(avgSec)}</div>
+          <div class="s-sub">파일당 평균</div>
         </div>
         <div class="stats-card" onclick="showDuplicates()" style="cursor:pointer">
           <div class="s-label">중복 의심</div>

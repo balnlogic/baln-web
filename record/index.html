@@ -1381,7 +1381,7 @@
             <div id="keypoints-content"></div>
           </details>
           <details id="wordfreq-section" style="margin-bottom:12px">
-            <summary style="cursor:pointer;font-size:0.85rem;color:var(--primary);font-weight:600">📊 주요 단어</summary>
+            <summary style="cursor:pointer;font-size:0.85rem;color:var(--primary);font-weight:600;display:flex;align-items:center;gap:8px;">📊 주요 단어<label style="display:flex;align-items:center;gap:4px;font-size:0.75rem;color:var(--text3);font-weight:400;cursor:pointer;" onclick="event.stopPropagation()"><input type="checkbox" id="stopwords-toggle" checked onchange="stopwordsEnabled=this.checked; var t=document.getElementById('current-wordfreq-text'); if(t) renderWordFreq(t.dataset.text||'')" style="cursor:pointer;"> 불용어 제외</label></summary>
             <div id="wordfreq-content" style="padding:8px 0;display:flex;flex-wrap:wrap;gap:6px;align-items:baseline"></div>
           </details>
           <div id="find-replace-panel" style="display:none; padding:8px 12px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); margin-bottom:8px; flex-direction:column; gap:8px;">
@@ -2031,9 +2031,12 @@
   let autoScrollTranscript = true;
   let visibleCount = 30;
   const PAGE_SIZE = 30;
+  const VIRTUAL_ROW_HEIGHT = 80;
+  let virtualScrollEnabled = false;
   let focusedFileIdx = -1; // 키보드 파일 탐색 인덱스
   let focusModeActive = false;
   let memoSearchQuery = '';
+  let stopwordsEnabled = true;
 
   // Recorder
   let mediaRecorder = null;
@@ -3015,11 +3018,18 @@
         key => key === '__none__' ? '📁 미분류' : '📁 ' + key
       );
     } else {
-      const pagedFiles = files.slice(0, visibleCount);
-      listHtml = pagedFiles.map(f => renderFileItem(f)).join('');
-      loadMoreHtml = totalCount > visibleCount
-        ? `<div id="scroll-sentinel" style="height:20px;margin:8px 0"></div><div id="scroll-loading" style="display:none;text-align:center;padding:12px;color:var(--muted);font-size:0.85rem">⏳ 불러오는 중...</div>`
-        : '';
+      if (totalCount > 100) {
+        virtualScrollEnabled = true;
+        listHtml = renderVirtualFiles(files);
+        loadMoreHtml = '';
+      } else {
+        virtualScrollEnabled = false;
+        const pagedFiles = files.slice(0, visibleCount);
+        listHtml = pagedFiles.map(f => renderFileItem(f)).join('');
+        loadMoreHtml = totalCount > visibleCount
+          ? `<div id="scroll-sentinel" style="height:20px;margin:8px 0"></div><div id="scroll-loading" style="display:none;text-align:center;padding:12px;color:var(--muted);font-size:0.85rem">⏳ 불러오는 중...</div>`
+          : '';
+      }
     }
 
     const viewToggleHtml = currentView !== 'home' ? `<div class="view-toggle">
@@ -3040,6 +3050,7 @@
     }
     updateActiveFileHighlight();
     initScrollObserver();
+    if (virtualScrollEnabled) initVirtualScroll();
     // 컴팩트뷰·미리보기 상태 복원
     if (sortOrder === 'manual') { setTimeout(initDragSort, 50); }
     const _fl = document.getElementById('file-list');
@@ -3464,6 +3475,28 @@
       btn.classList.toggle('active', btn.dataset.filter === filter);
     });
     renderCurrentView();
+  }
+
+  function renderVirtualFiles(files) {
+    // 100개 초과 시 IntersectionObserver 기반 lazy rendering
+    // 초기에는 PAGE_SIZE * 2 개만 렌더링하고, 스크롤 시 추가 로드
+    virtualScrollEnabled = true;
+    visibleCount = Math.min(visibleCount, files.length);
+    const initialFiles = files.slice(0, Math.min(PAGE_SIZE * 2, files.length));
+    let html = initialFiles.map(f => renderFileItem(f)).join('');
+    if (files.length > PAGE_SIZE * 2) {
+      html += `<div id="scroll-sentinel" style="height:20px;margin:8px 0"></div><div id="scroll-loading" style="display:none;text-align:center;padding:12px;color:var(--muted);font-size:0.85rem">⏳ 불러오는 중...</div>`;
+    }
+    return html;
+  }
+
+  function initVirtualScroll() {
+    const fileList = document.getElementById('file-list');
+    if (!fileList) return;
+    // 파일 수 > 100 개일 때 자동 활성화 (initScrollObserver가 실제 동작 담당)
+    if (virtualScrollEnabled) {
+      initScrollObserver();
+    }
   }
 
   function loadMore() {
@@ -7709,12 +7742,28 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
 
   // ── 단어 빈도 계산 ──
   var WF_STOPWORDS = new Set(['그리고','그런데','하지만','그래서','따라서','또한','또는','이제','지금','여기','저기','이것','저것','그것','이런','저런','그런','어떤','모든','각각','있다','없다','이다','하다','되다','같다','이고','이며','에서','으로','부터','까지','에게','한다','했다','됩니다','있는','없는','이런','것이','수가','것을','것은','것도','수도','수를','있어','없어','인데','이야','이에','이를','이가','이도','이나','이든','이면','해서','해야','해도','했고','하고','하면','하면서','하여','라고','라는','라면','라도','이라고','이라는','있습니다','없습니다','합니다','됩니다']);
+  const STOPWORDS = new Set([
+    '이', '그', '저', '것', '수', '등', '및', '또', '더', '그리고', '하지만',
+    '그런데', '그래서', '때문에', '있는', '없는', '하는', '있어', '없어',
+    '이다', '있다', '없다', '했다', '한다', '합니다', '됩니다', '있습니다',
+    '에서', '에게', '으로', '부터', '까지', '의해', '위해', '통해',
+    'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for',
+    'of', 'with', 'by', 'from', 'is', 'are', 'was', 'were', 'be', 'been',
+    '그', '나', '우리', '저', '너', '당신', '그들', '우리들'
+  ]);
   function buildWordFreq(text) {
     if (!text) return [];
-    var tokens = text.match(/[가-힣]{2,}/g) || [];
+    var tokens = text.match(/[가-힣a-zA-Z]{2,}/g) || [];
     var freq = {};
     tokens.forEach(function(w) {
-      if (!WF_STOPWORDS.has(w)) freq[w] = (freq[w] || 0) + 1;
+      // 2글자 미만 제외
+      if (w.length < 2) return;
+      // 숫자만으로 이루어진 단어 제외
+      if (/^\d+$/.test(w)) return;
+      // 불용어 필터 적용
+      if (stopwordsEnabled && (WF_STOPWORDS.has(w) || STOPWORDS.has(w))) return;
+      if (!stopwordsEnabled && WF_STOPWORDS.has(w)) return;
+      freq[w] = (freq[w] || 0) + 1;
     });
     var entries = Object.entries(freq).sort(function(a, b) { return b[1] - a[1]; });
     return entries.slice(0, 15).map(function(e) { return { word: e[0], count: e[1] }; });
@@ -7790,6 +7839,15 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
     var section = document.getElementById('wordfreq-section');
     var container = document.getElementById('wordfreq-content');
     if (!section || !container) return;
+    // 현재 텍스트를 저장해 불용어 토글 시 재렌더링에 사용
+    var textStore = document.getElementById('current-wordfreq-text');
+    if (!textStore) {
+      textStore = document.createElement('span');
+      textStore.id = 'current-wordfreq-text';
+      textStore.style.display = 'none';
+      section.appendChild(textStore);
+    }
+    textStore.dataset.text = text || '';
     var words = buildWordFreq(text);
     if (words.length === 0) { section.style.display = 'none'; return; }
     section.style.display = '';

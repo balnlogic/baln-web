@@ -671,6 +671,14 @@
     border-left: 3px solid var(--primary);
     background: color-mix(in srgb, var(--primary) 8%, var(--surface));
   }
+
+  .bookmark-item {
+    display:inline-flex; align-items:center; gap:4px; padding:3px 8px;
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    font-size:0.8rem; cursor:pointer; margin:2px;
+  }
+  .bookmark-item:hover { background:var(--primary); color:#fff; }
+  #bookmarks-list { padding:8px 0; display:flex; flex-wrap:wrap; gap:4px; min-height:28px; }
 </style>
 </head>
 <body>
@@ -902,6 +910,7 @@
             <button onclick="quickMinutes()" style="background:rgba(59,130,246,.1);border:1px solid #3B82F6;border-radius:7px;padding:5px 12px;font-size:12px;color:#3B82F6;cursor:pointer;font-weight:600;margin-left:6px;">📋 회의록</button>
           </div>
           <div class="summary-box" id="detail-summary"></div>
+          <div id="bookmarks-list"></div>
         </div>
         <div id="detail-tab-minutes" style="display:none;">
           <div class="transcript-box" id="detail-minutes-content" style="white-space:pre-wrap;outline:none;" contenteditable="false"></div>
@@ -1288,6 +1297,7 @@
             const notifyEnabled = localStorage.getItem('record_notify') !== '0';
             if (data.transcription_status === 2 && wasProcessing && notifyEnabled) {
               showNotification('전사 완료', `"${getTitle(rec)}" 전사가 완료됐습니다`);
+              showToast(getTitle(rec) + ' 전사 완료!', 'success');
             }
           }
         }
@@ -2163,6 +2173,14 @@
       e.preventDefault();
       navigateDetail(e.key === 'ArrowLeft' ? -1 : 1);
     }
+    if (e.key === 'b' && !e.ctrlKey && !e.metaKey && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) {
+      const detailModal = document.getElementById('modal-detail');
+      const audioEl = document.getElementById('detail-audio');
+      if (detailModal?.classList.contains('open') && audioEl && audioEl.src && !audioEl.paused) {
+        e.preventDefault();
+        if (detailFileId) addBookmark(detailFileId, Math.floor(audioEl.currentTime));
+      }
+    }
   });
 
   // ════════════════════════════════════════════
@@ -2791,6 +2809,8 @@
       });
       playerEl.appendChild(rateDiv);
     }
+    // 북마크 렌더링
+    renderBookmarks(rec.id);
   }
 
   // ════════════════════════════════════════════
@@ -3366,6 +3386,68 @@
     });
   }
 
+
+  // ════════════════════════════════════════════
+  // AUDIO BOOKMARKS
+  // ════════════════════════════════════════════
+  const BOOKMARKS_KEY = 'audio-bookmarks';
+
+  function formatTime(sec) {
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60);
+    return String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  }
+
+  function getBookmarks(recId) {
+    try {
+      const all = JSON.parse(localStorage.getItem(BOOKMARKS_KEY) || '{}');
+      return all[recId] || [];
+    } catch(e) { return []; }
+  }
+
+  function addBookmark(recId, seconds) {
+    try {
+      const all = JSON.parse(localStorage.getItem(BOOKMARKS_KEY) || '{}');
+      const list = all[recId] || [];
+      if (!list.includes(seconds)) {
+        list.push(seconds);
+        list.sort((a, b) => a - b);
+        if (list.length > 20) list.splice(0, list.length - 20);
+        all[recId] = list;
+        localStorage.setItem(BOOKMARKS_KEY, JSON.stringify(all));
+      }
+      renderBookmarks(recId);
+      showToast(formatTime(seconds) + ' 북마크 추가됨', 'success');
+    } catch(e) {}
+  }
+
+  function removeBookmark(recId, seconds) {
+    try {
+      const all = JSON.parse(localStorage.getItem(BOOKMARKS_KEY) || '{}');
+      const list = (all[recId] || []).filter(s => s !== seconds);
+      all[recId] = list;
+      localStorage.setItem(BOOKMARKS_KEY, JSON.stringify(all));
+      renderBookmarks(recId);
+    } catch(e) {}
+  }
+
+  function renderBookmarks(recId) {
+    const container = document.getElementById('bookmarks-list');
+    if (!container) return;
+    const list = getBookmarks(recId);
+    if (list.length === 0) {
+      container.innerHTML = '<span style="font-size:0.8rem;color:var(--text3);">B 키로 북마크 추가</span>';
+      return;
+    }
+    container.innerHTML = list.map(sec =>
+      `<span class="bookmark-item" onclick="seekAudio(${sec})">${formatTime(sec)} <span onclick="event.stopPropagation();removeBookmark(${JSON.stringify(recId)},${sec})" style="opacity:0.6;font-size:0.9em;">×</span></span>`
+    ).join('');
+  }
+
+  // ════════════════════════════════════════════
+  // POLLING: prevTranscriptionMap
+  // ════════════════════════════════════════════
+  let prevTranscriptionMap = {};
 </script>
 <div class="shortcuts-panel" id="shortcuts-panel">
   <h3>⌨️ 키보드 단축키</h3>

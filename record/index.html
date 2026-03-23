@@ -1193,6 +1193,7 @@
         <span class="unsaved-indicator" id="unsaved-indicator">● 저장되지 않음</span>
         <button onclick="toggleMemoSearch()" title="메모 검색" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:4px 6px;border-radius:6px;line-height:1;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text3)'">📝</button>
         <button onclick="toggleShortcutsPanel()" title="키보드 단축키 (?)" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:4px 6px;border-radius:6px;line-height:1;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text3)'">?</button>
+        <button onclick="toggleActivityPanel(event)" title="오늘의 활동" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:4px 6px;border-radius:6px;line-height:1;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text3)'">📋 오늘</button>
         <div class="notif-btn-wrap">
         <button onclick="toggleNotificationPanel(event)" title="알림 센터" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:4px 6px;border-radius:6px;line-height:1;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text3)'">🔔</button>
         <span id="notif-badge"></span>
@@ -1203,6 +1204,12 @@
       <div id="memo-search-panel" style="display:none; position:fixed; top:60px; right:20px; width:320px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow-lg); z-index:150; padding:16px; flex-direction:column; gap:8px;">
         <input id="memo-search-input" type="text" placeholder="메모 검색..." oninput="searchMemos(this.value)" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--bg); color:var(--text); box-sizing:border-box;">
         <div id="memo-search-results" style="max-height:300px; overflow-y:auto;"></div>
+      </div>
+
+      <!-- Activity Panel -->
+      <div id="activity-panel" style="display:none; position:fixed; top:60px; right:60px; width:280px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow-lg); z-index:150; padding:16px; max-height:400px; overflow-y:auto;">
+        <div style="font-size:14px; font-weight:600; margin-bottom:12px;">📋 오늘의 활동</div>
+        <div id="activity-list"></div>
       </div>
 
       <!-- Bulk bar -->
@@ -1450,7 +1457,10 @@
   <div style="margin-top:10px;">
     <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">태그</div>
     <div id="detail-tags"></div>
-    <input id="tag-input" placeholder="태그 추가 후 Enter" onkeydown="if(event.key==='Enter'&&this.value.trim()){addFileTag(detailFileId,this.value);this.value='';}" />
+    <div style="position:relative;">
+    <input id="tag-input" placeholder="태그 추가 후 Enter" onkeydown="if(event.key==='Enter'&&this.value.trim()){addFileTag(detailFileId,this.value);this.value='';renderTagSuggestions();}" oninput="showTagSuggestions(this, this.value)" onblur="setTimeout(()=>{const s=document.getElementById('tag-suggestions');if(s)s.style.display='none';},200)" />
+    <div id="tag-suggestions" style="display:none; position:absolute; top:100%; left:0; right:0; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); z-index:50; max-height:150px; overflow-y:auto;"></div>
+    </div>
   </div>
   <div style="margin-top:12px;">
     <div style="font-size:11px;color:var(--text3);margin-bottom:6px;">감정 분석</div>
@@ -2228,6 +2238,7 @@
               showNotification('전사 완료', `"${getTitle(rec)}" 전사가 완료됐습니다`);
               showToast(getTitle(rec) + ' 전사 완료!', 'success');
               addNotification('transcription', '✅ ' + getTitle(rec) + ' 전사 완료', rec.id);
+              logActivity('transcribed', getTitle(rec));
             }
           }
         }
@@ -2843,6 +2854,7 @@
     btn.classList.toggle('starred', newVal);
     btn.textContent = newVal ? '⭐' : '☆';
     await supaFetch(`recordings?id=eq.${id}`, 'PATCH', { starred: newVal });
+    if (newVal) logActivity('star', getTitle(f));
   }
 
   // 자동 단락 구분: 문장 끝(. ? ! 등) 기준으로 3~5문장마다 단락 나누기
@@ -4481,6 +4493,7 @@
     detailFileId = rec.id;
     addRecent(rec.id);
     updateActiveFileHighlight();
+    logActivity('open', getTitle(rec));
     document.getElementById('detail-title').textContent = getTitle(rec);
     const dur = formatDur(rec.duration);
     const date = formatDate(rec.created_at);
@@ -5174,6 +5187,10 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
 .file-tag .rm-tag:hover { opacity:1; }
 #detail-tags { display:flex; flex-wrap:wrap; gap:4px; margin-bottom:8px; min-height:24px; }
 #tag-input { width:100%; padding:6px 10px; border:1px solid var(--border); border-radius:8px; background:var(--surface); color:var(--text); font-size:0.85rem; }
+.tag-suggestion-item { padding: 6px 10px; cursor: pointer; font-size: 13px; }
+.tag-suggestion-item:hover { background: var(--hover); }
+.activity-item { display:flex; gap:8px; padding:6px 0; border-bottom:1px solid var(--border); font-size:13px; }
+.activity-time { color:var(--text-secondary); font-size:11px; min-width:40px; }
 
   /* ── 통계 대시보드 ── */
   .stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; padding:16px; }
@@ -6030,6 +6047,55 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
   }
 
   // ════════════════════════════════════════════
+  // SESSION ACTIVITY TIMELINE
+  // ════════════════════════════════════════════
+  const SESSION_ACTIVITY_KEY = 'session-activity';
+
+  function logActivity(type, label) {
+    try {
+      const acts = JSON.parse(sessionStorage.getItem(SESSION_ACTIVITY_KEY) || '[]');
+      acts.unshift({ type, label, time: new Date().toISOString() });
+      sessionStorage.setItem(SESSION_ACTIVITY_KEY, JSON.stringify(acts.slice(0, 20)));
+      renderActivityPanel();
+    } catch {}
+  }
+
+  function renderActivityPanel() {
+    const list = document.getElementById('activity-list');
+    if (!list) return;
+    try {
+      const acts = JSON.parse(sessionStorage.getItem(SESSION_ACTIVITY_KEY) || '[]');
+      if (!acts.length) {
+        list.innerHTML = '<div style="color:var(--text-secondary);font-size:13px;padding:8px 0;">아직 활동이 없습니다.</div>';
+        return;
+      }
+      const iconMap = { open:'📂', transcribed:'✅', star:'⭐' };
+      list.innerHTML = acts.map(a => {
+        const t = new Date(a.time);
+        const hm = t.getHours().toString().padStart(2,'0') + ':' + t.getMinutes().toString().padStart(2,'0');
+        return `<div class="activity-item"><span class="activity-time">${hm}</span><span>${iconMap[a.type]||'•'}</span><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${a.label}</span></div>`;
+      }).join('');
+    } catch {}
+  }
+
+  function toggleActivityPanel(e) {
+    if (e) e.stopPropagation();
+    const panel = document.getElementById('activity-panel');
+    if (!panel) return;
+    const isVisible = panel.style.display !== 'none';
+    panel.style.display = isVisible ? 'none' : 'block';
+    if (!isVisible) renderActivityPanel();
+  }
+
+  // 외부 클릭 시 activity-panel 닫기
+  document.addEventListener('click', function(e) {
+    const panel = document.getElementById('activity-panel');
+    if (panel && panel.style.display !== 'none' && !panel.contains(e.target)) {
+      panel.style.display = 'none';
+    }
+  });
+
+  // ════════════════════════════════════════════
   // FILE TAGS (localStorage fallback)
   // ════════════════════════════════════════════
   const TAGS_KEY = 'file-tags';
@@ -6054,6 +6120,25 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
       }
     } catch {}
     renderFileTags(recId);
+  }
+
+  function getAllTags() {
+    const tags = new Set();
+    allFiles.forEach(f => { const t = getFileTags(f.id); t.forEach(tag => tags.add(tag)); });
+    return [...tags];
+  }
+
+  function showTagSuggestions(input, query) {
+    const container = document.getElementById('tag-suggestions');
+    if (!container) return;
+    query = (query || '').trim().toLowerCase();
+    if (!query) { container.style.display = 'none'; return; }
+    const matches = getAllTags().filter(t => t.toLowerCase().includes(query) && t.toLowerCase() !== query);
+    if (!matches.length) { container.style.display = 'none'; return; }
+    container.innerHTML = matches.map(t =>
+      `<div class="tag-suggestion-item" onmousedown="addFileTag(detailFileId,${JSON.stringify(t)});document.getElementById('tag-input').value='';document.getElementById('tag-suggestions').style.display='none';">${t}</div>`
+    ).join('');
+    container.style.display = 'block';
   }
 
   function removeFileTag(recId, tag) {

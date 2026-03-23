@@ -284,6 +284,12 @@
       gap:4px;
     }
     .unsaved-indicator.visible { display:flex; }
+    .file-item[draggable="true"] { cursor: grab; }
+    .file-item.dragging { opacity: 0.4; }
+    .sidebar-folder-item.drag-over {
+      background: var(--primary-dim) !important;
+      border: 1px dashed var(--primary) !important;
+    }
     .shortcuts-panel {
       position: fixed;
       top: 50%;
@@ -448,6 +454,12 @@
       transition: text-decoration-color .15s;
     }
     .seg-ts:hover { text-decoration-color: var(--primary); }
+    .seg-ts.playing {
+      background: var(--primary-dim);
+      color: var(--primary);
+      border-radius: 3px;
+      padding: 0 2px;
+    }
     .summary-box {
       background: var(--surface2);
       border-radius: 10px;
@@ -648,7 +660,7 @@
           <span class="nav-icon">📋</span> 모든 파일
           <span class="nav-count" id="cnt-all">0</span>
         </button>
-        <button class="nav-item" data-view="unclassified" onclick="switchView('unclassified')">
+        <button class="nav-item sidebar-folder-item" data-view="unclassified" ondragover="onFolderDragOver(event)" ondragleave="onFolderDragLeave(event)" ondrop="onFolderDrop(null, event)" onclick="switchView('unclassified')">
           <span class="nav-icon">📂</span> 미분류
           <span class="nav-count" id="cnt-uncl">0</span>
         </button>
@@ -1198,7 +1210,7 @@
       const pendingCount = allFiles.filter(f => f.topic === t && f.transcription_status === 0).length;
       const pendingStr = pendingCount > 0 ? ` <span style="color:var(--red);font-size:10px;">+${pendingCount}</span>` : '';
       const active = currentView === 'folder' && currentFolder === t;
-      return `<button class="nav-item ${active ? 'active' : ''}" onclick="switchFolder(${JSON.stringify(t)})">
+      return `<button class="nav-item sidebar-folder-item ${active ? 'active' : ''}" ondragover="onFolderDragOver(event)" ondragleave="onFolderDragLeave(event)" ondrop="onFolderDrop(${JSON.stringify(t)}, event)" onclick="switchFolder(${JSON.stringify(t)})">
         <span class="nav-icon">📁</span>
         <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;">${esc(t)}</span>
         <span class="nav-count">${count}${pendingStr}</span>
@@ -1468,7 +1480,7 @@
       f.source ? `소스: ${f.source}` : '',
       f.created_at ? `생성: ${new Date(f.created_at).toLocaleString('ko-KR')}` : ''
     ].filter(Boolean).join('\n');
-    return `<div class="file-item ${isSelected ? 'selected' : ''}" data-id="${f.id}" onclick="handleFileClick(event, '${f.id}')" title="${fileInfo}">
+    return `<div class="file-item ${isSelected ? 'selected' : ''}" data-id="${f.id}" draggable="true" ondragstart="onFileDragStart('${f.id}', event)" ondragend="onFileDragEnd(event)" onclick="handleFileClick(event, '${f.id}')" title="${fileInfo}">
       <div class="file-check" onclick="event.stopPropagation()">
         <input type="checkbox" ${isSelected ? 'checked' : ''}
           onchange="toggleSelect('${f.id}', this.checked)" />
@@ -1811,7 +1823,7 @@
 
   async function moveToFolder(topic) {
     closeCtxMenu();
-    const rec = ctxRec;
+    const rec = ctxRec || (dragFileId ? allFiles.find(f => f.id === dragFileId) : null);
     if (!rec) return;
     await supaFetch(`recordings?id=eq.${rec.id}`, 'PATCH', { topic: topic });
     const f = allFiles.find(x => x.id === rec.id);
@@ -2469,7 +2481,7 @@
         const segsHtml = data.segments_json.map(s => {
           const startMin = String(Math.floor((s.start||0)/60)).padStart(2,'0');
           const startSec = String(Math.round((s.start||0)%60)).padStart(2,'0');
-          return `<span class="seg-ts" onclick="seekAudio(${s.start||0})">${startMin}:${startSec}</span>${esc(s.text||'')}`;
+          return `<span class="seg-ts" data-time="${s.start||0}" onclick="seekAudio(${s.start||0})">${startMin}:${startSec}</span>${esc(s.text||'')}`;
         }).join('\n');
         txEl.innerHTML = segsHtml;
       } else {
@@ -2502,12 +2514,34 @@
     if (rec.file_path) {
       const { data: urlData } = await sb.storage.from('recordings').createSignedUrl(rec.file_path, 3600);
       if (urlData?.signedUrl) { audioEl.src = urlData.signedUrl; audioWrap.style.display = 'block'; }
+      initAudioTimeUpdate();
     }
   }
 
   // ════════════════════════════════════════════
   // AUDIO SEEK
   // ════════════════════════════════════════════
+  function initAudioTimeUpdate() {
+    const audio = document.getElementById('detail-audio');
+    if (!audio) return;
+    audio.addEventListener('timeupdate', () => {
+      const currentTime = audio.currentTime;
+      const txEl = document.getElementById('detail-transcript-content') || document.getElementById('detail-transcript');
+      if (!txEl) return;
+      const spans = txEl.querySelectorAll('.seg-ts');
+      let activeSpan = null;
+      spans.forEach(span => {
+        const t = parseFloat(span.getAttribute('data-time') || span.onclick?.toString().match(/seekAudio\((\d+\.?\d*)\)/)?.[1] || 0);
+        if (t <= currentTime) activeSpan = span;
+      });
+      if (activeSpan) {
+        txEl.querySelectorAll('.seg-ts.playing').forEach(s => s.classList.remove('playing'));
+        activeSpan.classList.add('playing');
+        activeSpan.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    });
+  }
+
   function seekAudio(seconds) {
     const audio = document.getElementById('detail-audio');
     if (!audio) return;
@@ -2557,6 +2591,41 @@
     updateSidebar();
     renderCurrentView();
     showToast('폴더 변경됨', 'success');
+  }
+
+  let dragFileId = null;
+
+  function onFileDragStart(id, e) {
+    dragFileId = id;
+    e.dataTransfer.effectAllowed = 'move';
+    setTimeout(() => {
+      const el = e.currentTarget;
+      if (el) el.classList.add('dragging');
+    }, 0);
+  }
+
+  function onFileDragEnd(e) {
+    dragFileId = null;
+    e.currentTarget?.classList.remove('dragging');
+    document.querySelectorAll('.sidebar-folder-item.drag-over').forEach(el => el.classList.remove('drag-over'));
+  }
+
+  function onFolderDragOver(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    e.currentTarget.classList.add('drag-over');
+  }
+
+  function onFolderDragLeave(e) {
+    e.currentTarget.classList.remove('drag-over');
+  }
+
+  async function onFolderDrop(topic, e) {
+    e.preventDefault();
+    e.currentTarget.classList.remove('drag-over');
+    if (!dragFileId) return;
+    await moveToFolder(topic);
+    dragFileId = null;
   }
 
   function quickMinutes() {

@@ -1104,6 +1104,8 @@
         <button class="bulk-action-btn secondary" onclick="clearSelection()">취소</button>
         <button class="bulk-action-btn secondary" onclick="bulkTranscribe()" id="bulk-transcribe-btn">🧠 전사</button>
         <button class="bulk-action-btn secondary" onclick="bulkStar()" title="선택 파일 즐겨찾기 토글">⭐ 즐겨찾기</button>
+        <button class="bulk-action-btn secondary" onclick="bulkClassify()" title="선택 파일 AI 자동 분류">🏷️ 분류</button>
+        <button class="bulk-action-btn secondary" onclick="bulkSummarize()" title="선택 파일 일괄 요약 (최대 5개)">📝 일괄요약</button>
         <button class="bulk-action-btn secondary" id="bulk-compare-btn" onclick="compareSelected()" style="display:none">📋 비교</button>
         <button class="bulk-action-btn danger" onclick="bulkDelete()">🗑 삭제</button>
         <select id="bulk-folder-select" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:12px;color:var(--text2);" onchange="bulkMoveFolder(this.value); this.value='';">
@@ -3051,6 +3053,9 @@
     { icon:'⌨️', title:'단축키 도움말', sub:'? 단축키와 동일', action: () => toggleShortcutsPanel() },
     { icon:'🎨', title:'테마 토글', sub:'다크/라이트 전환', action: () => toggleTheme() },
     { icon:'🔔', title:'알림 설정', sub:'브라우저 알림 권한', action: () => requestNotificationPermission() },
+    { icon:'🏷️', title:'선택 파일 자동 분류', sub:'서버 필요', action: () => bulkClassify() },
+    { icon:'📝', title:'선택 파일 일괄 요약', sub:'최대 5개, 서버 필요', action: () => bulkSummarize() },
+    { icon:'📊', title:'중복 파일 감지', sub:'유사 파일 찾기', action: () => showDuplicates() },
   ];
 
   function openCmdPalette() {
@@ -5845,6 +5850,43 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
   function applyTranscriptFontSize() {
     const el = document.getElementById('detail-transcript');
     if (el) el.style.fontSize = transcriptFontSize + 'px';
+  }
+
+
+  async function bulkClassify() {
+    const ids = [...bulkSelected];
+    if (!ids.length) { showToast('파일을 선택하세요', 'info'); return; }
+    let done = 0;
+    for (const id of ids) {
+      try {
+        showToast(`분류 중... (${done+1}/${ids.length})`, 'info');
+        await fetch('http://127.0.0.1:7432/classify', {
+          method: 'POST', headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ recId: id })
+        });
+        done++;
+      } catch(e) {}
+    }
+    showToast(`${done}개 분류 완료`, 'success');
+    await loadFiles();
+  }
+
+  async function bulkSummarize() {
+    const ids = [...bulkSelected].slice(0, 5);
+    if (!ids.length) { showToast('파일을 선택하세요', 'info'); return; }
+    showToast(`${ids.length}개 요약 중...`, 'info');
+    try {
+      const resp = await fetch('http://127.0.0.1:7432/batch-summarize', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ recIds: ids })
+      });
+      const { results } = await resp.json();
+      const ok = results.filter(r => !r.error).length;
+      showToast(`${ok}개 요약 완료`, 'success');
+      await loadFiles();
+    } catch(e) {
+      showToast('서버 연결 실패', 'error');
+    }
   }
 
 </script>

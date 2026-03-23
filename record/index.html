@@ -1105,12 +1105,27 @@
 
 
       <div class="nav-section">
-        <div class="smart-folders-label">스마트 폴더</div>
+        <div class="smart-folders-label" style="display:flex;align-items:center;justify-content:space-between;">
+          <span>스마트 폴더</span>
+          <button onclick="document.getElementById('smart-rule-form').style.display=document.getElementById('smart-rule-form').style.display==='none'?'block':'none'" style="background:none;border:none;cursor:pointer;color:var(--text3);font-size:14px;padding:0 2px;" title="커스텀 규칙 추가">+</button>
+        </div>
+        <div id="smart-rule-form" style="display:none; padding:8px; background:var(--bg); border-radius:var(--radius-sm); margin:4px 0;">
+          <input id="srf-name" placeholder="이름" style="width:100%; margin-bottom:4px; padding:4px; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--surface); color:var(--text); font-size:12px;">
+          <select id="srf-condition" style="width:100%; margin-bottom:4px; padding:4px; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--surface); color:var(--text); font-size:12px;">
+            <option value="keyword">키워드 포함</option>
+            <option value="tag">태그</option>
+            <option value="duration_gt">길이 초과(초)</option>
+            <option value="duration_lt">길이 미만(초)</option>
+          </select>
+          <input id="srf-value" placeholder="값" style="width:100%; margin-bottom:4px; padding:4px; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--surface); color:var(--text); font-size:12px;">
+          <button onclick="addSmartRule(document.getElementById('srf-name').value, document.getElementById('srf-condition').value, document.getElementById('srf-value').value, '🔖'); document.getElementById('smart-rule-form').style.display='none'" style="padding:4px 8px; background:var(--primary); color:#fff; border:none; border-radius:var(--radius-sm); cursor:pointer; font-size:12px;">추가</button>
+        </div>
         <div id="smart-folders-nav">
           <button class="smart-folder-item" data-sf="today" onclick="setSmartFolder('today')">📝 오늘의 회의 <span class="sf-count" id="sf-today" style="display:none">0</span></button>
           <button class="smart-folder-item" data-sf="pending" onclick="setSmartFolder('pending')">⚡ 처리 필요 <span class="sf-count" id="sf-pending" style="display:none">0</span></button>
           <button class="smart-folder-item" data-sf="long" onclick="setSmartFolder('long')">📊 긴 녹음 (30분+) <span class="sf-count" id="sf-long" style="display:none">0</span></button>
         </div>
+        <div id="smart-custom-rules-nav"></div>
       </div>
 
       <div class="nav-section">
@@ -2644,6 +2659,8 @@
     if (elAutonext) elAutonext.checked = autoPlayNext;
     const elAutoSum = document.getElementById('setting-autosummarize');
     if (elAutoSum) elAutoSum.checked = autoSummarize;
+    const elHoverPreview = document.getElementById('setting-hover-preview');
+    if (elHoverPreview) elHoverPreview.checked = hoverPreviewEnabled;
     // 커스텀 단축키 표시 업데이트
     const keys = getCustomKeys();
     const keySearch = document.getElementById('key-search');
@@ -3077,7 +3094,7 @@
     const pinIcon = pinned ? '<span class="pin-indicator">📌</span>' : '';
     const fileColor = getFileColor(f.id);
     const colorStyle = fileColor ? `border-left:3px solid ${fileColor};` : '';
-    return `<div class="file-item ${isSelected ? 'selected' : ''}${pinned ? ' pinned' : ''}" data-id="${f.id}" draggable="true" ondragstart="onFileDragStart('${f.id}', event)" ondragend="onFileDragEnd(event)" onclick="handleFileClick(event, '${f.id}')" title="${fileInfo}" style="${colorStyle}">
+    return `<div class="file-item ${isSelected ? 'selected' : ''}${pinned ? ' pinned' : ''}" data-id="${f.id}" draggable="true" ondragstart="onFileDragStart('${f.id}', event)" ondragend="onFileDragEnd(event)" onclick="handleFileClick(event, '${f.id}')" onmouseenter="startHoverPreview('${f.id}')" onmouseleave="stopHoverPreview()" title="${fileInfo}" style="${colorStyle}">
       <div class="file-check" onclick="event.stopPropagation()">
         <input type="checkbox" ${isSelected ? 'checked' : ''}
           onchange="toggleSelect('${f.id}', this.checked)" />
@@ -3375,6 +3392,12 @@
       if (activeSmartFolder === 'today') return files.filter(f => new Date(f.created_at).toDateString() === today);
       if (activeSmartFolder === 'pending') return files.filter(f => f.transcription_status === 0);
       if (activeSmartFolder === 'long') return files.filter(f => (f.duration || 0) >= 1800);
+      // 커스텀 스마트 규칙
+      if (activeSmartFolder && activeSmartFolder.startsWith('smart_')) {
+        const ruleId = parseInt(activeSmartFolder.replace('smart_', ''));
+        const rule = getSmartRules().find(r => r.id === ruleId);
+        if (rule) return files.filter(f => evalSmartRule(f, rule));
+      }
       return files;
     }
     // trash 탭이 아니면 trashed 파일 숨김
@@ -4831,6 +4854,28 @@
   let sourceNode = null;
   let _audioEQInitialized = false;
   let playbackRate = 1;
+  let hoverPreviewEnabled = localStorage.getItem('hover-preview') === '1';
+  let hoverPreviewAudio = null;
+  let hoverPreviewTimer = null;
+
+  function startHoverPreview(id) {
+    if (!hoverPreviewEnabled) return;
+    stopHoverPreview();
+    const rec = allFiles.find(f => f.id === id || f.id === parseInt(id));
+    if (!rec || !rec.file_path) return;
+    sb.storage.from('recordings').createSignedUrl(rec.file_path, 300).then(({ data }) => {
+      if (!data?.signedUrl) return;
+      hoverPreviewAudio = new Audio(data.signedUrl);
+      hoverPreviewAudio.volume = 0.3;
+      hoverPreviewAudio.play().catch(() => {});
+      hoverPreviewTimer = setTimeout(stopHoverPreview, 5000);
+    });
+  }
+
+  function stopHoverPreview() {
+    if (hoverPreviewTimer) { clearTimeout(hoverPreviewTimer); hoverPreviewTimer = null; }
+    if (hoverPreviewAudio) { hoverPreviewAudio.pause(); hoverPreviewAudio = null; }
+  }
 
   function getStatusInfo(status) {
     switch(status) {
@@ -5424,6 +5469,7 @@
       const el = document.getElementById(id);
       if (el) { el.textContent = n; el.style.display = n > 0 ? '' : 'none'; }
     });
+    renderCustomSmartRules();
   }
 
   let transcriptEditMode = false;
@@ -6776,6 +6822,60 @@ mark { background:#fbbf24; color:#1a1a1a; border-radius:2px; padding:0 2px; }
   // ════════════════════════════════════════════
   // SMART FOLDERS
   // ════════════════════════════════════════════
+  const SMART_RULES_KEY = 'smart-rules';
+
+  function getSmartRules() {
+    try { return JSON.parse(localStorage.getItem(SMART_RULES_KEY) || '[]'); } catch { return []; }
+  }
+
+  function evalSmartRule(file, rule) {
+    switch(rule.condition) {
+      case 'keyword': return (file.full_text||'').includes(rule.value) || (file.topic||'').includes(rule.value);
+      case 'folder': return file.folder === rule.value;
+      case 'duration_gt': return (file.duration_seconds||0) > parseInt(rule.value);
+      case 'duration_lt': return (file.duration_seconds||0) < parseInt(rule.value);
+      case 'tag': return getFileTags(file.id).includes(rule.value);
+      default: return false;
+    }
+  }
+
+  function addSmartRule(name, condition, value, icon) {
+    name = (name || '').trim();
+    value = (value || '').trim();
+    if (!name || !value) { showToast('이름과 값을 모두 입력해주세요', 'warn'); return; }
+    const rules = getSmartRules();
+    rules.push({ id: Date.now(), name, condition, value, icon: icon || '🔖' });
+    localStorage.setItem(SMART_RULES_KEY, JSON.stringify(rules));
+    renderCustomSmartRules();
+    showToast('스마트 폴더가 추가되었습니다', 'success');
+  }
+
+  function deleteSmartRule(id) {
+    const rules = getSmartRules().filter(r => r.id !== id);
+    localStorage.setItem(SMART_RULES_KEY, JSON.stringify(rules));
+    if (activeSmartFolder === 'smart_' + id) { activeSmartFolder = null; currentView = 'home'; renderCurrentView(); }
+    renderCustomSmartRules();
+  }
+
+  function renderCustomSmartRules() {
+    const nav = document.getElementById('smart-custom-rules-nav');
+    if (!nav) return;
+    const rules = getSmartRules();
+    if (!rules.length) { nav.innerHTML = ''; return; }
+    nav.innerHTML = rules.map(rule => {
+      const sfKey = 'smart_' + rule.id;
+      const count = allFiles.filter(f => evalSmartRule(f, rule)).length;
+      const isActive = activeSmartFolder === sfKey;
+      return `<button class="smart-folder-item${isActive ? ' active' : ''}" data-sf="${sfKey}" onclick="setSmartFolder('${sfKey}')" style="display:flex;align-items:center;justify-content:space-between;width:100%;">
+        <span>${rule.icon} ${rule.name}</span>
+        <span style="display:flex;align-items:center;gap:4px;">
+          ${count > 0 ? `<span class="sf-count" style="display:inline;">${count}</span>` : ''}
+          <span onclick="event.stopPropagation();deleteSmartRule(${rule.id})" style="cursor:pointer;color:var(--text3);font-size:10px;padding:0 2px;" title="삭제">✕</span>
+        </span>
+      </button>`;
+    }).join('');
+  }
+
   let activeSmartFolder = null;
 
   function setSmartFolder(sf) {
@@ -8049,6 +8149,10 @@ ${p.a}`).join('
       <label class="settings-row">
         <span>자동 다음 재생</span>
         <input type="checkbox" id="setting-autonext" onchange="toggleAutoPlayNext()">
+      </label>
+      <label class="settings-row">
+        <span>호버 미리 듣기</span>
+        <input type="checkbox" id="setting-hover-preview" onchange="hoverPreviewEnabled=this.checked; localStorage.setItem('hover-preview', this.checked?'1':'0')">
       </label>
     </div>
 

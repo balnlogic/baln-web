@@ -2431,7 +2431,7 @@
         document.getElementById('manage-detail-content').prepend(loadingMsg);
 
         // Edge Function 호출
-        const response = await fetch('https://ruqeinfcqhgexrckonsy.supabase.co/functions/v1/daily-briefing', {
+        const response = await fetch('https://phtnyimwjbrlwcsakjvl.supabase.co/functions/v1/daily-briefing', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${sessionServiceKey}`,
@@ -2484,8 +2484,8 @@
 
       if (id === 'jimmyjeon420@gmail.com' && pw === 'qnwkehlwk1$') {
         try {
-          const url = 'https://ruqeinfcqhgexrckonsy.supabase.co';
-          const key = atob('ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW5KMWNXVnBibVpqY1doblpYaHlZMnR2Ym5ONUlpd2ljbTlzWlNJNkluTmxjblpwWTJWZmNtOXNaU0lzSW1saGRDSTZNVGMyT1RJeE1UZ3dPU3dpWlhod0lqb3lNRGcwTnpnM09EQTVmUS5DTlA3dUQxSEJqVnVTU1Z4YWFnWHR5cVRFMnFsN3NfT21yeE5hcDdlajlR');
+          const url = 'https://phtnyimwjbrlwcsakjvl.supabase.co';
+          const key = atob('ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW5Cb2RHNTVhVzEzYW1KeWJIZGpjMkZyYW5ac0lpd2ljbTlzWlNJNkluTmxjblpwWTJWZmNtOXNaU0lzSW1saGRDSTZNVGMzTlRJNE16STFOQ3dpWlhod0lqb3lNRGt3T0RVNU1qVTBmUS5iTmRqY05OVGZpV001UUFSUkRhYXJVWWFySy1RT2Fxdll4eW9QLUxLa1ln');
           sb = window.supabase.createClient(url, key, { auth: { autoRefreshToken: false, persistSession: false } });
           sessionServiceKey = key;
           localStorage.setItem('baln_admin_url', url);
@@ -4689,8 +4689,8 @@
       // 자동 로그인 (이전에 로그인한 적 있으면)
       if (localStorage.getItem('baln_admin_logged_in') === 'true') {
         try {
-          const url = 'https://ruqeinfcqhgexrckonsy.supabase.co';
-          const key = atob('ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW5KMWNXVnBibVpqY1doblpYaHlZMnR2Ym5ONUlpd2ljbTlzWlNJNkluTmxjblpwWTJWZmNtOXNaU0lzSW1saGRDSTZNVGMyT1RJeE1UZ3dPU3dpWlhod0lqb3lNRGcwTnpnM09EQTVmUS5DTlA3dUQxSEJqVnVTU1Z4YWFnWHR5cVRFMnFsN3NfT21yeE5hcDdlajlR');
+          const url = 'https://phtnyimwjbrlwcsakjvl.supabase.co';
+          const key = atob('ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW5Cb2RHNTVhVzEzYW1KeWJIZGpjMkZyYW5ac0lpd2ljbTlzWlNJNkluTmxjblpwWTJWZmNtOXNaU0lzSW1saGRDSTZNVGMzTlRJNE16STFOQ3dpWlhod0lqb3lNRGt3T0RVNU1qVTBmUS5iTmRqY05OVGZpV001UUFSUkRhYXJVWWFySy1RT2Fxdll4eW9QLUxLa1ln');
           sb = window.supabase.createClient(url, key, { auth: { autoRefreshToken: false, persistSession: false } });
           sessionServiceKey = key;
           document.getElementById('login-screen').style.display = 'none';

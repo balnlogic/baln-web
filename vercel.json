@@ -1,0 +1,21 @@
+{
+  "routes": [
+    { "handle": "filesystem" },
+    {
+      "src": "/briefing$",
+      "dest": "https://encar-briefing.vercel.app/"
+    },
+    {
+      "src": "/briefing/(.*)",
+      "dest": "https://encar-briefing.vercel.app/$1"
+    },
+    {
+      "src": "/_next/(.*)",
+      "dest": "https://encar-briefing.vercel.app/_next/$1"
+    },
+    {
+      "src": "/api/briefing/(.*)",
+      "dest": "https://encar-briefing.vercel.app/api/briefing/$1"
+    }
+  ]
+}

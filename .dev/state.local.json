@@ -1,0 +1,11 @@
+{
+  "68329f21-f4b5-4570-bb32-f0ab77fb1700": {
+    "created_at": "2026-03-22T00:04:11Z",
+    "agents": {},
+    "ultrawork": {
+      "phase": "specify_interview",
+      "iteration": 0,
+      "max_iterations": 10
+    }
+  }
+}

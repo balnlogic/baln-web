@@ -65,6 +65,25 @@ background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size
     
             <div class="folium-map" id="map_6ee1b3d421865bb227167cf30e0814da" ></div>
         
+<script>
+(function(){
+  var maps = document.querySelectorAll(".folium-map");
+  if(!maps.length) return;
+  setTimeout(function(){
+    for(var key in window){
+      if(window[key] instanceof L.Map){
+        var m = window[key];
+        m.setMaxBounds([[-85,-180],[85,180]]);
+        m.options.maxBoundsViscosity = 1.0;
+        m.options.worldCopyJump = false;
+        m.setMinZoom(2);
+        m.eachLayer(function(l){ if(l.options && l.setUrl){ l.options.noWrap = true; }});
+        break;
+      }
+    }
+  }, 500);
+})();
+</script>
 </body>
 <script>
     

@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_a9084ce8f8e1b8cbf13c756f06c343ff {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    <div style="position:fixed;bottom:30px;left:30px;z-index:999;background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size:12px;line-height:2">
+    <b style="font-size:14px">🫧 전세계 프리다이빙</b><br><small>총 24곳</small><br><span style="color:#ff00ff">● 10점(2)</span> <span style="color:#cc00cc">● 9점(8)</span> <span style="color:#ffcc00">● 8점(13)</span> <span style="color:#ff9900">● 7점(1)</span> </div>
+    
+            <div class="folium-map" id="map_a9084ce8f8e1b8cbf13c756f06c343ff" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_a9084ce8f8e1b8cbf13c756f06c343ff = L.map(
+                "map_a9084ce8f8e1b8cbf13c756f06c343ff",
+                {
+                    center: [20.0, 30.0],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 2,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_8a3cc9c6dbb0b852d45ad62eef68187d = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_8a3cc9c6dbb0b852d45ad62eef68187d.addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+            var circle_marker_571c05a27225ed850057c0955538078b = L.circleMarker(
+                [28.57, 34.54],
+                {"bubblingMouseEvents": true, "color": "#ff00ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff00ff", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 18.0, "stroke": true, "weight": 2}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+        var popup_524ffc1b32e34b1a958cf4ee597994c3 = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_9b379abec208bfed115b4ccb40dba25b = $(`<div id="html_9b379abec208bfed115b4ccb40dba25b" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff00ff">🫧 Dahab Blue Hole</h3><b>Egypt</b> | 10/10     <hr style="margin:3px 0"><i>프리다이빙 메카. 130m 블루홀</i></div></div>`)[0];
+                popup_524ffc1b32e34b1a958cf4ee597994c3.setContent(html_9b379abec208bfed115b4ccb40dba25b);
+            
+        
+
+        circle_marker_571c05a27225ed850057c0955538078b.bindPopup(popup_524ffc1b32e34b1a958cf4ee597994c3)
+        ;
+
+        
+    
+    
+            circle_marker_571c05a27225ed850057c0955538078b.bindTooltip(
+                `<div>
+                     🫧 Dahab Blue Hole 10/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_283fc99792b2c9540fbb8e2dd487ab2c = L.marker(
+                [28.57, 34.54],
+                {
+}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+            var div_icon_510cd301ddb5df40d18e64d162026146 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ff00ff;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eDahab Blue Hole\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_283fc99792b2c9540fbb8e2dd487ab2c.setIcon(div_icon_510cd301ddb5df40d18e64d162026146);
+            
+    
+            var circle_marker_36f5f70082e866e0e50496de55ea1006 = L.circleMarker(
+                [23.11, -75.11],
+                {"bubblingMouseEvents": true, "color": "#ff00ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff00ff", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 18.0, "stroke": true, "weight": 2}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+        var popup_93b2e141b33998d76b6458d7d8b6e62f = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_25d7b66d9c4997ddf7696c92b797f257 = $(`<div id="html_25d7b66d9c4997ddf7696c92b797f257" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff00ff">🫧 Dean's Blue Hole</h3><b>Bahamas</b> | 10/10     <hr style="margin:3px 0"><i>세계 최심 202m. Vertical Blue 대회</i></div></div>`)[0];
+                popup_93b2e141b33998d76b6458d7d8b6e62f.setContent(html_25d7b66d9c4997ddf7696c92b797f257);
+            
+        
+
+        circle_marker_36f5f70082e866e0e50496de55ea1006.bindPopup(popup_93b2e141b33998d76b6458d7d8b6e62f)
+        ;
+
+        
+    
+    
+            circle_marker_36f5f70082e866e0e50496de55ea1006.bindTooltip(
+                `<div>
+                     🫧 Dean's Blue Hole 10/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_dcac09cac3bd600319b6d5846c011c38 = L.marker(
+                [23.11, -75.11],
+                {
+}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+            var div_icon_f0d8d007b44c474180fade295f874821 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ff00ff;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eDean\u0027s Blue Hole\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_dcac09cac3bd600319b6d5846c011c38.setIcon(div_icon_f0d8d007b44c474180fade295f874821);
+            
+    
+            var circle_marker_d0a04acf21a6c66bbf8524bc89777f85 = L.circleMarker(
+                [9.56, 123.77],
+                {"bubblingMouseEvents": true, "color": "#cc00cc", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#cc00cc", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.2, "stroke": true, "weight": 2}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+        var popup_76a2cd844440692a8192a8b9855b6bee = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_5b4f0180a54cce3fde0a0abd0766cba7 = $(`<div id="html_5b4f0180a54cce3fde0a0abd0766cba7" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff00ff">🫧 Panglao</h3><b>Philippines</b> | 9/10     <hr style="margin:3px 0"><i>한국인 훈련 1순위. 따뜻+저렴</i></div></div>`)[0];
+                popup_76a2cd844440692a8192a8b9855b6bee.setContent(html_5b4f0180a54cce3fde0a0abd0766cba7);
+            
+        
+
+        circle_marker_d0a04acf21a6c66bbf8524bc89777f85.bindPopup(popup_76a2cd844440692a8192a8b9855b6bee)
+        ;
+
+        
+    
+    
+            circle_marker_d0a04acf21a6c66bbf8524bc89777f85.bindTooltip(
+                `<div>
+                     🫧 Panglao 9/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_911450dd42cfb534d889d2d8a6ae9188 = L.marker(
+                [9.56, 123.77],
+                {
+}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+            var div_icon_13bd18c415cc58218772b3f52e13b678 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#cc00cc;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003ePanglao\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_911450dd42cfb534d889d2d8a6ae9188.setIcon(div_icon_13bd18c415cc58218772b3f52e13b678);
+            
+    
+            var circle_marker_4507c69fd4c2ea0d569c4ca19d5ac3b8 = L.circleMarker(
+                [20.21, -87.43],
+                {"bubblingMouseEvents": true, "color": "#cc00cc", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#cc00cc", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.2, "stroke": true, "weight": 2}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+        var popup_0735d12930fb075a50c4f58ad7f62477 = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_a5c8fe1adcf638d930efca3f7a9dfd36 = $(`<div id="html_a5c8fe1adcf638d930efca3f7a9dfd36" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff00ff">🫧 Cenotes Mexico</h3><b>Mexico</b> | 9/10     <hr style="margin:3px 0"><i>시야 50m 석회암 동굴</i></div></div>`)[0];
+                popup_0735d12930fb075a50c4f58ad7f62477.setContent(html_a5c8fe1adcf638d930efca3f7a9dfd36);
+            
+        
+
+        circle_marker_4507c69fd4c2ea0d569c4ca19d5ac3b8.bindPopup(popup_0735d12930fb075a50c4f58ad7f62477)
+        ;
+
+        
+    
+    
+            circle_marker_4507c69fd4c2ea0d569c4ca19d5ac3b8.bindTooltip(
+                `<div>
+                     🫧 Cenotes Mexico 9/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_eb49b796e5f5cf007d161e5a6157f757 = L.marker(
+                [20.21, -87.43],
+                {
+}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+            var div_icon_8a028f66fef17bb35c7bf073df4abd27 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#cc00cc;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eCenotes Mexico\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_eb49b796e5f5cf007d161e5a6157f757.setIcon(div_icon_8a028f66fef17bb35c7bf073df4abd27);
+            
+    
+            var circle_marker_c8e0774b778d28c94e6489169c272ff0 = L.circleMarker(
+                [-8.35, 115.64],
+                {"bubblingMouseEvents": true, "color": "#cc00cc", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#cc00cc", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.2, "stroke": true, "weight": 2}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+        var popup_9cd00417c56f712a4fcee53394621bfc = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_b7d3e9ade436aafeb7b8be677c040a52 = $(`<div id="html_b7d3e9ade436aafeb7b8be677c040a52" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff00ff">🫧 Amed Bali</h3><b>Indonesia</b> | 9/10     <hr style="margin:3px 0"><i>해변→60m 절벽. 난파선</i></div></div>`)[0];
+                popup_9cd00417c56f712a4fcee53394621bfc.setContent(html_b7d3e9ade436aafeb7b8be677c040a52);
+            
+        
+
+        circle_marker_c8e0774b778d28c94e6489169c272ff0.bindPopup(popup_9cd00417c56f712a4fcee53394621bfc)
+        ;
+
+        
+    
+    
+            circle_marker_c8e0774b778d28c94e6489169c272ff0.bindTooltip(
+                `<div>
+                     🫧 Amed Bali 9/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_7f3c6c6a065709e2dc74bdd7d74035f9 = L.marker(
+                [-8.35, 115.64],
+                {
+}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+            var div_icon_2830276171775e152faa01806c709c00 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#cc00cc;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eAmed Bali\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_7f3c6c6a065709e2dc74bdd7d74035f9.setIcon(div_icon_2830276171775e152faa01806c709c00);
+            
+    
+            var circle_marker_6caff11cabb4fb597d62d5a13af4e0b1 = L.circleMarker(
+                [37.04, 22.11],
+                {"bubblingMouseEvents": true, "color": "#cc00cc", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#cc00cc", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.2, "stroke": true, "weight": 2}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+        var popup_c0a809a4c44cb7b256825bc7e208d05c = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_f0eaf0d54d14a87dfdd5fa62a1e5fe1d = $(`<div id="html_f0eaf0d54d14a87dfdd5fa62a1e5fe1d" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff00ff">🫧 Kalamata</h3><b>Greece</b> | 9/10     <hr style="margin:3px 0"><i>AIDA 세계선수권 개최지</i></div></div>`)[0];
+                popup_c0a809a4c44cb7b256825bc7e208d05c.setContent(html_f0eaf0d54d14a87dfdd5fa62a1e5fe1d);
+            
+        
+
+        circle_marker_6caff11cabb4fb597d62d5a13af4e0b1.bindPopup(popup_c0a809a4c44cb7b256825bc7e208d05c)
+        ;
+
+        
+    
+    
+            circle_marker_6caff11cabb4fb597d62d5a13af4e0b1.bindTooltip(
+                `<div>
+                     🫧 Kalamata 9/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_bd3a21687525b43496583158740641ce = L.marker(
+                [37.04, 22.11],
+                {
+}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+            var div_icon_294b7d71e6742ae55b64d14458f99b2e = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#cc00cc;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eKalamata\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_bd3a21687525b43496583158740641ce.setIcon(div_icon_294b7d71e6742ae55b64d14458f99b2e);
+            
+    
+            var circle_marker_f735ce5c0457b2072927f2426ae147fc = L.circleMarker(
+                [9.95, 123.4],
+                {"bubblingMouseEvents": true, "color": "#cc00cc", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#cc00cc", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.2, "stroke": true, "weight": 2}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+        var popup_3581c26fca7041afa5986b565749a54d = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_d801d104dd684abc5f0258f20b1ad815 = $(`<div id="html_d801d104dd684abc5f0258f20b1ad815" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff00ff">🫧 Moalboal</h3><b>Philippines</b> | 9/10     <hr style="margin:3px 0"><i>정어리 토네이도+거북이</i></div></div>`)[0];
+                popup_3581c26fca7041afa5986b565749a54d.setContent(html_d801d104dd684abc5f0258f20b1ad815);
+            
+        
+
+        circle_marker_f735ce5c0457b2072927f2426ae147fc.bindPopup(popup_3581c26fca7041afa5986b565749a54d)
+        ;
+
+        
+    
+    
+            circle_marker_f735ce5c0457b2072927f2426ae147fc.bindTooltip(
+                `<div>
+                     🫧 Moalboal 9/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_9aa6dbe21326e50aba71e5db6ad18af5 = L.marker(
+                [9.95, 123.4],
+                {
+}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+            var div_icon_47978f451562446123a7882dd50efc98 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#cc00cc;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eMoalboal\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_9aa6dbe21326e50aba71e5db6ad18af5.setIcon(div_icon_47978f451562446123a7882dd50efc98);
+            
+    
+            var circle_marker_a826693fc2175188451bebd70b08d771 = L.circleMarker(
+                [15.3, -61.39],
+                {"bubblingMouseEvents": true, "color": "#cc00cc", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#cc00cc", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.2, "stroke": true, "weight": 2}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+        var popup_b9abb37bbd2f38aea3696daafd4669c3 = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_62d82e5657e61a95fc8bfb1fa167fc23 = $(`<div id="html_62d82e5657e61a95fc8bfb1fa167fc23" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff00ff">🫧 Dominica</h3><b>Dominica</b> | 9/10     <hr style="margin:3px 0"><i>향유고래와 눈 맞춤</i></div></div>`)[0];
+                popup_b9abb37bbd2f38aea3696daafd4669c3.setContent(html_62d82e5657e61a95fc8bfb1fa167fc23);
+            
+        
+
+        circle_marker_a826693fc2175188451bebd70b08d771.bindPopup(popup_b9abb37bbd2f38aea3696daafd4669c3)
+        ;
+
+        
+    
+    
+            circle_marker_a826693fc2175188451bebd70b08d771.bindTooltip(
+                `<div>
+                     🫧 Dominica 9/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_78a8dfd1a390bb3c834e661550a1c9c5 = L.marker(
+                [15.3, -61.39],
+                {
+}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+            var div_icon_9e9f7514124e21a7aba5fce6e24c3113 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#cc00cc;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eDominica\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_78a8dfd1a390bb3c834e661550a1c9c5.setIcon(div_icon_9e9f7514124e21a7aba5fce6e24c3113);
+            
+    
+            var circle_marker_54ca5d22e489e91313c11dfcfb4fa24e = L.circleMarker(
+                [-8.73, 115.54],
+                {"bubblingMouseEvents": true, "color": "#cc00cc", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#cc00cc", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.2, "stroke": true, "weight": 2}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+        var popup_b5a6554d8b3d575cda02cf7c9159f8e2 = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_7c775387d8376c32aa73bc548018aaf6 = $(`<div id="html_7c775387d8376c32aa73bc548018aaf6" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff00ff">🫧 Nusa Penida</h3><b>Indonesia</b> | 9/10     <hr style="margin:3px 0"><i>만타+개복치</i></div></div>`)[0];
+                popup_b5a6554d8b3d575cda02cf7c9159f8e2.setContent(html_7c775387d8376c32aa73bc548018aaf6);
+            
+        
+
+        circle_marker_54ca5d22e489e91313c11dfcfb4fa24e.bindPopup(popup_b5a6554d8b3d575cda02cf7c9159f8e2)
+        ;
+
+        
+    
+    
+            circle_marker_54ca5d22e489e91313c11dfcfb4fa24e.bindTooltip(
+                `<div>
+                     🫧 Nusa Penida 9/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_8e966ada77793bedc1b3a17f3d3dffda = L.marker(
+                [-8.73, 115.54],
+                {
+}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+            var div_icon_d3af1e1c5a3fc439516e197623411d16 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#cc00cc;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eNusa Penida\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_8e966ada77793bedc1b3a17f3d3dffda.setIcon(div_icon_d3af1e1c5a3fc439516e197623411d16);
+            
+    
+            var circle_marker_1aa4d924aa3cec99a3f7dc0a62e0466f = L.circleMarker(
+                [-31.63, 29.54],
+                {"bubblingMouseEvents": true, "color": "#cc00cc", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#cc00cc", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.2, "stroke": true, "weight": 2}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+        var popup_3b15a5fa24cb6aaf4349d8d3100b664f = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_8c467ff8c923c1e2bdbca1611823a6e0 = $(`<div id="html_8c467ff8c923c1e2bdbca1611823a6e0" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff00ff">🫧 Sardine Run</h3><b>South Africa</b> | 9/10     <hr style="margin:3px 0"><i>지구 최대 해양 대이동</i></div></div>`)[0];
+                popup_3b15a5fa24cb6aaf4349d8d3100b664f.setContent(html_8c467ff8c923c1e2bdbca1611823a6e0);
+            
+        
+
+        circle_marker_1aa4d924aa3cec99a3f7dc0a62e0466f.bindPopup(popup_3b15a5fa24cb6aaf4349d8d3100b664f)
+        ;
+
+        
+    
+    
+            circle_marker_1aa4d924aa3cec99a3f7dc0a62e0466f.bindTooltip(
+                `<div>
+                     🫧 Sardine Run 9/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_22aafa1b57408faccfed267b5a5e503f = L.marker(
+                [-31.63, 29.54],
+                {
+}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+            var div_icon_5c661788148127d3a31866af5d93d10a = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#cc00cc;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eSardine Run\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_22aafa1b57408faccfed267b5a5e503f.setIcon(div_icon_5c661788148127d3a31866af5d93d10a);
+            
+    
+            var circle_marker_8be1b993ef6b18b9062ed654a3176c02 = L.circleMarker(
+                [36.05, 14.19],
+                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+        var popup_5d14dd0a8d1bdbc8b4c35da60fd6eac8 = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_5ec45e9945c7ab055d087566850a98e1 = $(`<div id="html_5ec45e9945c7ab055d087566850a98e1" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff00ff">🫧 Blue Hole Gozo</h3><b>Malta</b> | 8/10     <hr style="margin:3px 0"><i>지중해 석회암 아치</i></div></div>`)[0];
+                popup_5d14dd0a8d1bdbc8b4c35da60fd6eac8.setContent(html_5ec45e9945c7ab055d087566850a98e1);
+            
+        
+
+        circle_marker_8be1b993ef6b18b9062ed654a3176c02.bindPopup(popup_5d14dd0a8d1bdbc8b4c35da60fd6eac8)
+        ;
+
+        
+    
+    
+            circle_marker_8be1b993ef6b18b9062ed654a3176c02.bindTooltip(
+                `<div>
+                     🫧 Blue Hole Gozo 8/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_275f11c587ce37d086018cd2efd89af6 = L.marker(
+                [36.05, 14.19],
+                {
+}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+            var div_icon_b4a4cff6e7f4b4a3d2e24a0368e1061a = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eBlue Hole Gozo\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_275f11c587ce37d086018cd2efd89af6.setIcon(div_icon_b4a4cff6e7f4b4a3d2e24a0368e1061a);
+            
+    
+            var circle_marker_6d5e1badc01c30cb2a7fab08047da29e = L.circleMarker(
+                [16.32, -86.53],
+                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+        var popup_32d5efc373350d4780b39f47062f80f8 = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_71c36424c57ee4b62fd1d5ab04ab48c1 = $(`<div id="html_71c36424c57ee4b62fd1d5ab04ab48c1" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff00ff">🫧 Roatan</h3><b>Honduras</b> | 8/10     <hr style="margin:3px 0"><i>돌고래+산호 절벽</i></div></div>`)[0];
+                popup_32d5efc373350d4780b39f47062f80f8.setContent(html_71c36424c57ee4b62fd1d5ab04ab48c1);
+            
+        
+
+        circle_marker_6d5e1badc01c30cb2a7fab08047da29e.bindPopup(popup_32d5efc373350d4780b39f47062f80f8)
+        ;
+
+        
+    
+    
+            circle_marker_6d5e1badc01c30cb2a7fab08047da29e.bindTooltip(
+                `<div>
+                     🫧 Roatan 8/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_635f1e1bb3f4b64bec456f70d528d5d3 = L.marker(
+                [16.32, -86.53],
+                {
+}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+            var div_icon_24069c623a8f9baa5df614acdde31ddd = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eRoatan\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_635f1e1bb3f4b64bec456f70d528d5d3.setIcon(div_icon_24069c623a8f9baa5df614acdde31ddd);
+            
+    
+            var circle_marker_92447d57daeccaee0d9372fa74cb88d1 = L.circleMarker(
+                [28.29, -16.63],
+                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+        var popup_e583d9c7348c3f0351e17cd0dd5cbcf7 = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_8ce49b200fac54b2acd604bd92455c86 = $(`<div id="html_8ce49b200fac54b2acd604bd92455c86" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff00ff">🫧 Tenerife</h3><b>Spain</b> | 8/10     <hr style="margin:3px 0"><i>파일럿 고래 상주</i></div></div>`)[0];
+                popup_e583d9c7348c3f0351e17cd0dd5cbcf7.setContent(html_8ce49b200fac54b2acd604bd92455c86);
+            
+        
+
+        circle_marker_92447d57daeccaee0d9372fa74cb88d1.bindPopup(popup_e583d9c7348c3f0351e17cd0dd5cbcf7)
+        ;
+
+        
+    
+    
+            circle_marker_92447d57daeccaee0d9372fa74cb88d1.bindTooltip(
+                `<div>
+                     🫧 Tenerife 8/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_9f1d0bf978f53a0cfd0f417cb0ae53a5 = L.marker(
+                [28.29, -16.63],
+                {
+}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+            var div_icon_1c3d13bbf6c6d917014c2d186367c92c = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eTenerife\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_9f1d0bf978f53a0cfd0f417cb0ae53a5.setIcon(div_icon_1c3d13bbf6c6d917014c2d186367c92c);
+            
+    
+            var circle_marker_89d7fa1816bc0e3c0b5aef91db1bda05 = L.circleMarker(
+                [10.1, 99.84],
+                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+        var popup_4aef86dec9811faaa888f59cc737f094 = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_42298dd8c491f36c246621b85dbb9bb7 = $(`<div id="html_42298dd8c491f36c246621b85dbb9bb7" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff00ff">🫧 Koh Tao</h3><b>Thailand</b> | 8/10     <hr style="margin:3px 0"><i>세계 다이빙 교육 수도</i></div></div>`)[0];
+                popup_4aef86dec9811faaa888f59cc737f094.setContent(html_42298dd8c491f36c246621b85dbb9bb7);
+            
+        
+
+        circle_marker_89d7fa1816bc0e3c0b5aef91db1bda05.bindPopup(popup_4aef86dec9811faaa888f59cc737f094)
+        ;
+
+        
+    
+    
+            circle_marker_89d7fa1816bc0e3c0b5aef91db1bda05.bindTooltip(
+                `<div>
+                     🫧 Koh Tao 8/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_552d263c81ff1f04debb7843567269b7 = L.marker(
+                [10.1, 99.84],
+                {
+}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+            var div_icon_aea70727c9fc32bfe25f3dc363bd1542 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eKoh Tao\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_552d263c81ff1f04debb7843567269b7.setIcon(div_icon_aea70727c9fc32bfe25f3dc363bd1542);
+            
+    
+            var circle_marker_d1cde6fa9a6c46e492fad8d8b16a31e7 = L.circleMarker(
+                [19.64, -156.0],
+                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+        var popup_8840fe6f436dab622e29fd71e20abfe0 = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_a528549b02ded0470966ed86b3c681fa = $(`<div id="html_a528549b02ded0470966ed86b3c681fa" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff00ff">🫧 Kona Hawaii</h3><b>USA</b> | 8/10     <hr style="margin:3px 0"><i>야간 만타레이</i></div></div>`)[0];
+                popup_8840fe6f436dab622e29fd71e20abfe0.setContent(html_a528549b02ded0470966ed86b3c681fa);
+            
+        
+
+        circle_marker_d1cde6fa9a6c46e492fad8d8b16a31e7.bindPopup(popup_8840fe6f436dab622e29fd71e20abfe0)
+        ;
+
+        
+    
+    
+            circle_marker_d1cde6fa9a6c46e492fad8d8b16a31e7.bindTooltip(
+                `<div>
+                     🫧 Kona Hawaii 8/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_f0623d7e26b7cf2c6f3348c09ab5894e = L.marker(
+                [19.64, -156.0],
+                {
+}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+            var div_icon_fa6e3b82b92b0527bfc9b676feed0479 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eKona Hawaii\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_f0623d7e26b7cf2c6f3348c09ab5894e.setIcon(div_icon_fa6e3b82b92b0527bfc9b676feed0479);
+            
+    
+            var circle_marker_7f0dc8ccaf04adffa4d7ec096083a46a = L.circleMarker(
+                [27.92, 34.33],
+                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+        var popup_ce43e1e2a1370d5d5166ca99ada2f8f8 = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_7ec26943996630cd3a75b35990ce53cc = $(`<div id="html_7ec26943996630cd3a75b35990ce53cc" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff00ff">🫧 Sharm el-Sheikh</h3><b>Egypt</b> | 8/10     <hr style="margin:3px 0"><i>홍해 산호+난파선</i></div></div>`)[0];
+                popup_ce43e1e2a1370d5d5166ca99ada2f8f8.setContent(html_7ec26943996630cd3a75b35990ce53cc);
+            
+        
+
+        circle_marker_7f0dc8ccaf04adffa4d7ec096083a46a.bindPopup(popup_ce43e1e2a1370d5d5166ca99ada2f8f8)
+        ;
+
+        
+    
+    
+            circle_marker_7f0dc8ccaf04adffa4d7ec096083a46a.bindTooltip(
+                `<div>
+                     🫧 Sharm el-Sheikh 8/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_a2bda07a420b5668bfc4b0b2acb47ec3 = L.marker(
+                [27.92, 34.33],
+                {
+}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+            var div_icon_6283484c02790273f2d34a9cf07d23b8 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eSharm el-Sheikh\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_a2bda07a420b5668bfc4b0b2acb47ec3.setIcon(div_icon_6283484c02790273f2d34a9cf07d23b8);
+            
+    
+            var circle_marker_121d0cff6706a7850475f172e74bd0e6 = L.circleMarker(
+                [12.14, -68.27],
+                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+        var popup_716ef9208f91ec386a4d826ec62c4d11 = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_12a1300c86c6769c0be657ac80da000e = $(`<div id="html_12a1300c86c6769c0be657ac80da000e" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff00ff">🫧 Bonaire</h3><b>Netherlands</b> | 8/10     <hr style="margin:3px 0"><i>섬 전체 해양공원</i></div></div>`)[0];
+                popup_716ef9208f91ec386a4d826ec62c4d11.setContent(html_12a1300c86c6769c0be657ac80da000e);
+            
+        
+
+        circle_marker_121d0cff6706a7850475f172e74bd0e6.bindPopup(popup_716ef9208f91ec386a4d826ec62c4d11)
+        ;
+
+        
+    
+    
+            circle_marker_121d0cff6706a7850475f172e74bd0e6.bindTooltip(
+                `<div>
+                     🫧 Bonaire 8/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_1bdd9bce24c656936a6ec8413be975af = L.marker(
+                [12.14, -68.27],
+                {
+}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+            var div_icon_fda2f9dd3acdfe5d0be4823505712bb5 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eBonaire\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_1bdd9bce24c656936a6ec8413be975af.setIcon(div_icon_fda2f9dd3acdfe5d0be4823505712bb5);
+            
+    
+            var circle_marker_e5dfb5296ae2b9415bddffa331431844 = L.circleMarker(
+                [9.07, 123.27],
+                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+        var popup_5ea54df44a4bd25ec467f4d418d784fe = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_c2b7c6efd14ac5518767ec812f723d6f = $(`<div id="html_c2b7c6efd14ac5518767ec812f723d6f" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff00ff">🫧 Apo Island</h3><b>Philippines</b> | 8/10     <hr style="margin:3px 0"><i>거북이 수십 마리</i></div></div>`)[0];
+                popup_5ea54df44a4bd25ec467f4d418d784fe.setContent(html_c2b7c6efd14ac5518767ec812f723d6f);
+            
+        
+
+        circle_marker_e5dfb5296ae2b9415bddffa331431844.bindPopup(popup_5ea54df44a4bd25ec467f4d418d784fe)
+        ;
+
+        
+    
+    
+            circle_marker_e5dfb5296ae2b9415bddffa331431844.bindTooltip(
+                `<div>
+                     🫧 Apo Island 8/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_254f7e773b49746557156f2e5c8d3a76 = L.marker(
+                [9.07, 123.27],
+                {
+}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+            var div_icon_5aafcde12bf1578433994adb5f9b6bfb = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eApo Island\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_254f7e773b49746557156f2e5c8d3a76.setIcon(div_icon_5aafcde12bf1578433994adb5f9b6bfb);
+            
+    
+            var circle_marker_6955bf9889750ad50c5e214c2c7d3774 = L.circleMarker(
+                [17.32, -87.53],
+                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+        var popup_2c336a6a1dcce18d2e9f684829bd0e62 = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_470240863660135c52d5f843162190fe = $(`<div id="html_470240863660135c52d5f843162190fe" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff00ff">🫧 Blue Hole Belize</h3><b>Belize</b> | 8/10     <hr style="margin:3px 0"><i>직경 300m. 종유석</i></div></div>`)[0];
+                popup_2c336a6a1dcce18d2e9f684829bd0e62.setContent(html_470240863660135c52d5f843162190fe);
+            
+        
+
+        circle_marker_6955bf9889750ad50c5e214c2c7d3774.bindPopup(popup_2c336a6a1dcce18d2e9f684829bd0e62)
+        ;
+
+        
+    
+    
+            circle_marker_6955bf9889750ad50c5e214c2c7d3774.bindTooltip(
+                `<div>
+                     🫧 Blue Hole Belize 8/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_ae297d118a4ae25d096675ea7f35791c = L.marker(
+                [17.32, -87.53],
+                {
+}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+            var div_icon_bf950ca6568584bced47c8202fb74fec = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eBlue Hole Belize\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_ae297d118a4ae25d096675ea7f35791c.setIcon(div_icon_bf950ca6568584bced47c8202fb74fec);
+            
+    
+            var circle_marker_3ed3bd816ca4e1ec5928e7040cd95c15 = L.circleMarker(
+                [25.07, 34.9],
+                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+        var popup_33f070499986532e1c980d68b06cc9b5 = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_88308c191d718dd53ea4a2358fc0b0e4 = $(`<div id="html_88308c191d718dd53ea4a2358fc0b0e4" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff00ff">🫧 Marsa Alam</h3><b>Egypt</b> | 8/10     <hr style="margin:3px 0"><i>듀공+돌고래</i></div></div>`)[0];
+                popup_33f070499986532e1c980d68b06cc9b5.setContent(html_88308c191d718dd53ea4a2358fc0b0e4);
+            
+        
+
+        circle_marker_3ed3bd816ca4e1ec5928e7040cd95c15.bindPopup(popup_33f070499986532e1c980d68b06cc9b5)
+        ;
+
+        
+    
+    
+            circle_marker_3ed3bd816ca4e1ec5928e7040cd95c15.bindTooltip(
+                `<div>
+                     🫧 Marsa Alam 8/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_c101523e4400f4719cadb24923015782 = L.marker(
+                [25.07, 34.9],
+                {
+}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+            var div_icon_769943b752b2fd6668610599f3f4a5cc = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eMarsa Alam\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_c101523e4400f4719cadb24923015782.setIcon(div_icon_769943b752b2fd6668610599f3f4a5cc);
+            
+    
+            var circle_marker_5c3bb212fe48534ee4d934987a3de50a = L.circleMarker(
+                [43.71, 7.31],
+                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+        var popup_8979e535421de08197db9852630135e3 = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_67ae67f9132baa720e487b81bbb36ddf = $(`<div id="html_67ae67f9132baa720e487b81bbb36ddf" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff00ff">🫧 Villefranche</h3><b>France</b> | 8/10     <hr style="margin:3px 0"><i>코트다쥐르 AIDA 대회장</i></div></div>`)[0];
+                popup_8979e535421de08197db9852630135e3.setContent(html_67ae67f9132baa720e487b81bbb36ddf);
+            
+        
+
+        circle_marker_5c3bb212fe48534ee4d934987a3de50a.bindPopup(popup_8979e535421de08197db9852630135e3)
+        ;
+
+        
+    
+    
+            circle_marker_5c3bb212fe48534ee4d934987a3de50a.bindTooltip(
+                `<div>
+                     🫧 Villefranche 8/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_50cd90fd4c62ed7e3b316c42807a94b8 = L.marker(
+                [43.71, 7.31],
+                {
+}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+            var div_icon_f7febddb0e668dfc7b53476dc0145c2d = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eVillefranche\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_50cd90fd4c62ed7e3b316c42807a94b8.setIcon(div_icon_f7febddb0e668dfc7b53476dc0145c2d);
+            
+    
+            var circle_marker_daa6266cd126f0bd5c3d8b5f96f8be0e = L.circleMarker(
+                [34.9, 33.63],
+                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+        var popup_5eee98ed4eac98cf690cf9080250de98 = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_dc7cf6d1e2353113a241dbfc0d9cc619 = $(`<div id="html_dc7cf6d1e2353113a241dbfc0d9cc619" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff00ff">🫧 Larnaca Zenobia</h3><b>Cyprus</b> | 8/10     <hr style="margin:3px 0"><i>172m 난파선 프리다이빙</i></div></div>`)[0];
+                popup_5eee98ed4eac98cf690cf9080250de98.setContent(html_dc7cf6d1e2353113a241dbfc0d9cc619);
+            
+        
+
+        circle_marker_daa6266cd126f0bd5c3d8b5f96f8be0e.bindPopup(popup_5eee98ed4eac98cf690cf9080250de98)
+        ;
+
+        
+    
+    
+            circle_marker_daa6266cd126f0bd5c3d8b5f96f8be0e.bindTooltip(
+                `<div>
+                     🫧 Larnaca Zenobia 8/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_27859f01a046820afc8a0401ca6d2087 = L.marker(
+                [34.9, 33.63],
+                {
+}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+            var div_icon_98130caeb5422e55c36b7dc5b16e21a0 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eLarnaca Zenobia\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_27859f01a046820afc8a0401ca6d2087.setIcon(div_icon_98130caeb5422e55c36b7dc5b16e21a0);
+            
+    
+            var circle_marker_5c3cb625f1797c67be619bc6faf67dda = L.circleMarker(
+                [9.23, 123.39],
+                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+        var popup_5dae944aef57b4b3c8de8c8498324765 = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_6be625f0a7bc13bb7915efbec6ca7824 = $(`<div id="html_6be625f0a7bc13bb7915efbec6ca7824" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff00ff">🫧 Sumilon</h3><b>Philippines</b> | 8/10     <hr style="margin:3px 0"><i>고래상어+크리스탈 라군</i></div></div>`)[0];
+                popup_5dae944aef57b4b3c8de8c8498324765.setContent(html_6be625f0a7bc13bb7915efbec6ca7824);
+            
+        
+
+        circle_marker_5c3cb625f1797c67be619bc6faf67dda.bindPopup(popup_5dae944aef57b4b3c8de8c8498324765)
+        ;
+
+        
+    
+    
+            circle_marker_5c3cb625f1797c67be619bc6faf67dda.bindTooltip(
+                `<div>
+                     🫧 Sumilon 8/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_c860cb2902d098e8b8558f6686a5f3d9 = L.marker(
+                [9.23, 123.39],
+                {
+}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+            var div_icon_5e827ab9cb5331df71c689dffbdde575 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eSumilon\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_c860cb2902d098e8b8558f6686a5f3d9.setIcon(div_icon_5e827ab9cb5331df71c689dffbdde575);
+            
+    
+            var circle_marker_398c93882ce0ac736d0aa498d322c9b8 = L.circleMarker(
+                [33.5, 126.53],
+                {"bubblingMouseEvents": true, "color": "#ff9900", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff9900", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 12.6, "stroke": true, "weight": 2}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+        var popup_29f5f1afa6ff89619bb66d5b388b24e6 = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_52bca1bf7d4321deeeba303c637c30a9 = $(`<div id="html_52bca1bf7d4321deeeba303c637c30a9" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff00ff">🫧 Jeju</h3><b>South Korea</b> | 7/10     <hr style="margin:3px 0"><i>해녀 문화. 국내 접근 최고</i></div></div>`)[0];
+                popup_29f5f1afa6ff89619bb66d5b388b24e6.setContent(html_52bca1bf7d4321deeeba303c637c30a9);
+            
+        
+
+        circle_marker_398c93882ce0ac736d0aa498d322c9b8.bindPopup(popup_29f5f1afa6ff89619bb66d5b388b24e6)
+        ;
+
+        
+    
+    
+            circle_marker_398c93882ce0ac736d0aa498d322c9b8.bindTooltip(
+                `<div>
+                     🫧 Jeju 7/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_50f9965032e31481d310b735b6693cfe = L.marker(
+                [33.5, 126.53],
+                {
+}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+            var div_icon_642cb074e08221ded34e170f86c3f2fa = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eJeju\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_50f9965032e31481d310b735b6693cfe.setIcon(div_icon_642cb074e08221ded34e170f86c3f2fa);
+            
+    
+            var marker_3779f2b8afccadf0fd0367ab5f84b014 = L.marker(
+                [37.5, 126.9],
+                {
+}
+            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
+        
+    
+            var icon_25e2de7d044e14072cd543619855a4ac = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "plane",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_3d250d7f354ce1eaeb75aefdf0ba2af1 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_8632040f141b96cc284f5df574520a00 = $(`<div id="html_8632040f141b96cc284f5df574520a00" style="width: 100.0%; height: 100.0%;">인천공항</div>`)[0];
+                popup_3d250d7f354ce1eaeb75aefdf0ba2af1.setContent(html_8632040f141b96cc284f5df574520a00);
+            
+        
+
+        marker_3779f2b8afccadf0fd0367ab5f84b014.bindPopup(popup_3d250d7f354ce1eaeb75aefdf0ba2af1)
+        ;
+
+        
+    
+    
+                marker_3779f2b8afccadf0fd0367ab5f84b014.setIcon(icon_25e2de7d044e14072cd543619855a4ac);
+            
+</script>
+</html>

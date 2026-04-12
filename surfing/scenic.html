@@ -65,6 +65,25 @@ window[k].setMinZoom(2);}}catch(e){}}},1000);});</script></head>
     
             <div class="folium-map" id="map_cf3b7a484704f7ceb78e93685477bb9f" ></div>
         
+
+<script>
+document.addEventListener('click', function(e) {
+  setTimeout(function() {
+    var popups = document.querySelectorAll('.leaflet-popup-content');
+    popups.forEach(function(p) {
+      if (p.querySelector('.photo-link')) return;
+      var h3 = p.querySelector('h3');
+      if (!h3) return;
+      var name = h3.textContent.replace(/[^a-zA-Z0-9 ]/g, '').trim();
+      var link = document.createElement('div');
+      link.className = 'photo-link';
+      link.style.cssText = 'margin-top:6px;text-align:center;';
+      link.innerHTML = '<a href="https://www.google.com/search?q=' + encodeURIComponent(name) + '&tbm=isch" target="_blank" style="color:#00ff88;font-size:11px;text-decoration:none;">📷 사진 보기 (Google Images)</a>';
+      p.appendChild(link);
+    });
+  }, 100);
+});
+</script>
 </body>
 <script>
     

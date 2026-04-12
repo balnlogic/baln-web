@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <style>
-        #map_e623b9134cb1aaf0 { position:relative; width:100%; height:100%; left:0; top:0; }
+        #map_7efd1ca9371fe0ed { position:absolute; top:0; bottom:0; left:0; right:0; }
         .leaflet-container { font-size:1rem; }
         html, body { width:100%; height:100%; margin:0; padding:0; }
     </style>
@@ -22,10 +22,10 @@
     <span style="color:#ff0055">● 10점(2)</span> <span style="color:#00ff88">● 9점(8)</span> <span style="color:#ffcc00">● 8점(13)</span> <span style="color:#ff9900">● 7점(2)</span><br>
     <small>●실선=직항 ○점선=경유 | 클릭→상세</small></div>
 
-    <div class="folium-map" id="map_e623b9134cb1aaf0"></div>
+    <div class="folium-map" id="map_7efd1ca9371fe0ed"></div>
 
 <script>
-var map_e623b9134cb1aaf0 = L.map("map_e623b9134cb1aaf0", {
+var map_7efd1ca9371fe0ed = L.map("map_7efd1ca9371fe0ed", {
     center: [5.0,90.0],
     crs: L.CRS.EPSG3857,
     zoom: 2,
@@ -37,515 +37,515 @@ var map_e623b9134cb1aaf0 = L.map("map_e623b9134cb1aaf0", {
     minZoom: 2
 });
 
-var tile_55bc0f2485e3972c = L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+var tile_281880a18eb98f93 = L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
     minZoom:0, maxZoom:18, maxNativeZoom:18, noWrap:true,
     attribution:"CartoDB", subdomains:"abc", detectRetina:false, tms:false, opacity:1
-}).addTo(map_e623b9134cb1aaf0);
+}).addTo(map_7efd1ca9371fe0ed);
 
 
-var cm_6d9dea1781a9f2e0 = L.marker([28.572,34.538]).addTo(map_e623b9134cb1aaf0);
-var icon_cm_6d9dea1781a9f2e0 = L.divIcon({
+var cm_0bc23de5840422b9 = L.marker([28.572,34.538]).addTo(map_7efd1ca9371fe0ed);
+var icon_cm_0bc23de5840422b9 = L.divIcon({
     html:'<div style="width:40px;height:40px;border:2.5px dashed #ff0055;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-20px;margin-top:-20px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_6d9dea1781a9f2e0.setIcon(icon_cm_6d9dea1781a9f2e0);
-var pop_599d5401b8a0fe3b = L.popup({maxWidth:340});
-var html_b194f37b13964327 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff0055">Blue Hole Dahab 👑</h3>   <b>Egypt</b> | 10/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 130m | 시야 30-40m<br>🌡️ 수온 24°C | 해류 없음<br>💰 $50/day | ✈️ ~12h | 🔄경유<br>📅 3월, 4월, 5월, 6월 외 3개월<br>🏊 프리다이빙 스쿨 다수. AIDA/SSI 코스. 딥라인 상시 설치. 프리다이빙 전용 플랫폼<hr style="margin:3px 0">   <i>프리다이버의 성지로 전 세계에서 모여드는 메카. 수직 절벽 안쪽 깊이 130m+ 의 원형 구멍이 압도적인 뷰를 선사. 56m 아치 통과 도전으로 세계 기록이 다수 수립된 전설적인 곳.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Swiss Inn Resort Dahab ($80-150/night)<br>🏨 Carnelia Island Resort ($120-200/night)<br>🏨 Nesima Resort ($60-100/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Ralph&#x27;s German Bakery (Google 4.6)<br>🍽️ Lakhbati Restaurant (Google 4.5)<br>🍽️ The Lighthouse (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 아치(56m) 통과 시 질소마취 위험 극심. 매년 사망사고 발생. 절대 혼자 잠수 금지, 버디 시스템 필수. 경험자 동반 없이 30m 이상 금지</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 프리다이빙 강사 2-3명 상주 (시즌별). 카카오톡 오픈채팅 &#x27;다합 프리다이빙&#x27; 검색</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Blue Hole Dahab Egypt&tbm=isch" target="_blank"      style="color:#ff0055;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_599d5401b8a0fe3b.setContent(html_b194f37b13964327);
-cm_6d9dea1781a9f2e0.bindPopup(pop_599d5401b8a0fe3b);
-cm_6d9dea1781a9f2e0.bindTooltip(`<div>Blue Hole Dahab 10/10</div>`,{sticky:true});
+cm_0bc23de5840422b9.setIcon(icon_cm_0bc23de5840422b9);
+var pop_0e85071006a6830b = L.popup({maxWidth:340});
+var html_af10f38207ca83a4 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff0055">Blue Hole Dahab 👑</h3>   <b>Egypt</b> | 10/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 130m | 시야 30-40m<br>🌡️ 수온 24°C | 해류 없음<br>💰 $50/day | ✈️ ~12h | 🔄경유<br>📅 3월, 4월, 5월, 6월 외 3개월<br>🏊 프리다이빙 스쿨 다수. AIDA/SSI 코스. 딥라인 상시 설치. 프리다이빙 전용 플랫폼<hr style="margin:3px 0">   <i>프리다이버의 성지로 전 세계에서 모여드는 메카. 수직 절벽 안쪽 깊이 130m+ 의 원형 구멍이 압도적인 뷰를 선사. 56m 아치 통과 도전으로 세계 기록이 다수 수립된 전설적인 곳.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Swiss Inn Resort Dahab ($80-150/night)<br>🏨 Carnelia Island Resort ($120-200/night)<br>🏨 Nesima Resort ($60-100/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Ralph&#x27;s German Bakery (Google 4.6)<br>🍽️ Lakhbati Restaurant (Google 4.5)<br>🍽️ The Lighthouse (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 아치(56m) 통과 시 질소마취 위험 극심. 매년 사망사고 발생. 절대 혼자 잠수 금지, 버디 시스템 필수. 경험자 동반 없이 30m 이상 금지</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 프리다이빙 강사 2-3명 상주 (시즌별). 카카오톡 오픈채팅 &#x27;다합 프리다이빙&#x27; 검색</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Blue Hole Dahab Egypt&tbm=isch" target="_blank"      style="color:#ff0055;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_0e85071006a6830b.setContent(html_af10f38207ca83a4);
+cm_0bc23de5840422b9.bindPopup(pop_0e85071006a6830b);
+cm_0bc23de5840422b9.bindTooltip(`<div>Blue Hole Dahab 10/10</div>`,{sticky:true});
 
 
-var lbl_2335786d8c2e3a5a = L.marker([28.572,34.538]).addTo(map_e623b9134cb1aaf0);
-var icon_lbl_2335786d8c2e3a5a = L.divIcon({
+var lbl_5374f88f80f04fbb = L.marker([28.572,34.538]).addTo(map_7efd1ca9371fe0ed);
+var icon_lbl_5374f88f80f04fbb = L.divIcon({
     html:'<div style="font-size:9px;color:#ff0055;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Blue Hole Dahab</div>',
     className:'empty'
 });
-lbl_2335786d8c2e3a5a.setIcon(icon_lbl_2335786d8c2e3a5a);
+lbl_5374f88f80f04fbb.setIcon(icon_lbl_5374f88f80f04fbb);
 
 
-var cm_149ca4e372417d9e = L.marker([23.073,-74.978]).addTo(map_e623b9134cb1aaf0);
-var icon_cm_149ca4e372417d9e = L.divIcon({
+var cm_c7b16c2889d26edd = L.marker([23.073,-74.978]).addTo(map_7efd1ca9371fe0ed);
+var icon_cm_c7b16c2889d26edd = L.divIcon({
     html:'<div style="width:40px;height:40px;border:2.5px dashed #ff0055;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-20px;margin-top:-20px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_149ca4e372417d9e.setIcon(icon_cm_149ca4e372417d9e);
-var pop_fc278bc10dcfd2f6 = L.popup({maxWidth:340});
-var html_f3709a6e4ac630ed = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff0055">Dean&#x27;s Blue Hole 👑</h3>   <b>Bahamas</b> | 10/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 202m | 시야 40-60m<br>🌡️ 수온 27°C | 해류 없음<br>💰 $80/day | ✈️ ~20h | 🔄경유<br>📅 4월, 5월, 6월, 7월 외 3개월<br>🏊 Vertical Blue 대회 전용 설비. 딥라인 상시 설치. Freediving Instructors International 코스<hr style="margin:3px 0">   <i>세계에서 가장 깊은 해수 블루홀(202m). Vertical Blue 세계선수권 개최지로 수많은 세계 기록이 이곳에서 탄생했다. 반원형 해변으로 둘러싸인 신비로운 자연 환경이 압권.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Stella Maris Resort Club ($150-280/night)<br>🏨 Cape Santa Maria Beach Resort ($200-400/night)<br>🏨 Chez Pierre ($80-120/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Stella Maris Restaurant (Google 4.3)<br>🍽️ Max&#x27;s Conch Bar &amp; Grill (Google 4.5)<br>🍽️ Thompson Bay Inn (Google 4.2)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 202m 초심층 구멍으로 역류 및 수직 하강 기류 주의. 고도 훈련된 전문가 외 50m 이상 잠수 금지. 현지 가이드 동반 필수</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 영어권 프리다이빙 스쿨 이용 필수</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Dean&#x27;s Blue Hole Bahamas&tbm=isch" target="_blank"      style="color:#ff0055;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_fc278bc10dcfd2f6.setContent(html_f3709a6e4ac630ed);
-cm_149ca4e372417d9e.bindPopup(pop_fc278bc10dcfd2f6);
-cm_149ca4e372417d9e.bindTooltip(`<div>Dean's Blue Hole 10/10</div>`,{sticky:true});
+cm_c7b16c2889d26edd.setIcon(icon_cm_c7b16c2889d26edd);
+var pop_47fa0b6af9b252bc = L.popup({maxWidth:340});
+var html_9958b1735bc1802c = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff0055">Dean&#x27;s Blue Hole 👑</h3>   <b>Bahamas</b> | 10/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 202m | 시야 40-60m<br>🌡️ 수온 27°C | 해류 없음<br>💰 $80/day | ✈️ ~20h | 🔄경유<br>📅 4월, 5월, 6월, 7월 외 3개월<br>🏊 Vertical Blue 대회 전용 설비. 딥라인 상시 설치. Freediving Instructors International 코스<hr style="margin:3px 0">   <i>세계에서 가장 깊은 해수 블루홀(202m). Vertical Blue 세계선수권 개최지로 수많은 세계 기록이 이곳에서 탄생했다. 반원형 해변으로 둘러싸인 신비로운 자연 환경이 압권.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Stella Maris Resort Club ($150-280/night)<br>🏨 Cape Santa Maria Beach Resort ($200-400/night)<br>🏨 Chez Pierre ($80-120/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Stella Maris Restaurant (Google 4.3)<br>🍽️ Max&#x27;s Conch Bar &amp; Grill (Google 4.5)<br>🍽️ Thompson Bay Inn (Google 4.2)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 202m 초심층 구멍으로 역류 및 수직 하강 기류 주의. 고도 훈련된 전문가 외 50m 이상 잠수 금지. 현지 가이드 동반 필수</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 영어권 프리다이빙 스쿨 이용 필수</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Dean&#x27;s Blue Hole Bahamas&tbm=isch" target="_blank"      style="color:#ff0055;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_47fa0b6af9b252bc.setContent(html_9958b1735bc1802c);
+cm_c7b16c2889d26edd.bindPopup(pop_47fa0b6af9b252bc);
+cm_c7b16c2889d26edd.bindTooltip(`<div>Dean's Blue Hole 10/10</div>`,{sticky:true});
 
 
-var lbl_0615d9b7cf28d69c = L.marker([23.073,-74.978]).addTo(map_e623b9134cb1aaf0);
-var icon_lbl_0615d9b7cf28d69c = L.divIcon({
+var lbl_91b943cc6bc4c465 = L.marker([23.073,-74.978]).addTo(map_7efd1ca9371fe0ed);
+var icon_lbl_91b943cc6bc4c465 = L.divIcon({
     html:'<div style="font-size:9px;color:#ff0055;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Dean's Blue Hole</div>',
     className:'empty'
 });
-lbl_0615d9b7cf28d69c.setIcon(icon_lbl_0615d9b7cf28d69c);
+lbl_91b943cc6bc4c465.setIcon(icon_lbl_91b943cc6bc4c465);
 
 
-var cm_4e91f2a8a9bc828a = L.circleMarker([9.512,123.704],{
+var cm_4c33d08a47af9eef = L.circleMarker([9.512,123.704],{
     color:"#00ff88",fill:true,fillColor:"#00ff88",fillOpacity:0.85,
     radius:16,weight:2
-}).addTo(map_e623b9134cb1aaf0);
-var pop_d52182da3d8466e4 = L.popup({maxWidth:340});
-var html_805e328315719706 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Panglao (Balicasag Island)</h3>   <b>Philippines</b> | 9/10 | ✈️직항<hr style="margin:3px 0">   🌊 최대수심 50m | 시야 20-30m<br>🌡️ 수온 28°C | 해류 약-중<br>💰 $35/day | ✈️ ~4h | ✈️직항<br>📅 3월, 4월, 5월, 11월 외 3개월<br>🏊 AIDA/Molchanovs 코스 제공 스쿨 다수. 팡글라오 해변 딥라인 설치. 프리다이빙 전문 리조트 다수<hr style="margin:3px 0">   <i>발리카삭 섬의 드롭오프는 세계 최고 수준의 프리다이빙 환경. 5m 플랫폼에서 시작해 수직 절벽을 따라 50m+ 까지 내려가는 스릴. 세부에서 버스+배로 접근 가능한 코성비 최고 스팟.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Amarela Resort ($80-180/night)<br>🏨 Henann Resort Alona Beach ($60-120/night)<br>🏨 Aquatica Beach Resort ($40-80/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Hama Restaurant (Google 4.5)<br>🍽️ Bohol Bee Farm Restaurant (Google 4.6)<br>🍽️ Zara&#x27;s Restaurant Alona (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 발리카삭 드롭오프는 강한 조류가 갑자기 발생. 조류 방향 확인 후 입수. 만타레이와의 충돌 주의</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 프리다이빙 강사 다수 (팡글라오/알로나비치). 한국어 커뮤니티 활발</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Panglao (Balicasag Island) Philippines&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_d52182da3d8466e4.setContent(html_805e328315719706);
-cm_4e91f2a8a9bc828a.bindPopup(pop_d52182da3d8466e4);
-cm_4e91f2a8a9bc828a.bindTooltip(`<div>Panglao (Balicasag Island) 9/10</div>`,{sticky:true});
+}).addTo(map_7efd1ca9371fe0ed);
+var pop_653b599c8838d634 = L.popup({maxWidth:340});
+var html_1c2b20b2742b2707 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Panglao (Balicasag Island)</h3>   <b>Philippines</b> | 9/10 | ✈️직항<hr style="margin:3px 0">   🌊 최대수심 50m | 시야 20-30m<br>🌡️ 수온 28°C | 해류 약-중<br>💰 $35/day | ✈️ ~4h | ✈️직항<br>📅 3월, 4월, 5월, 11월 외 3개월<br>🏊 AIDA/Molchanovs 코스 제공 스쿨 다수. 팡글라오 해변 딥라인 설치. 프리다이빙 전문 리조트 다수<hr style="margin:3px 0">   <i>발리카삭 섬의 드롭오프는 세계 최고 수준의 프리다이빙 환경. 5m 플랫폼에서 시작해 수직 절벽을 따라 50m+ 까지 내려가는 스릴. 세부에서 버스+배로 접근 가능한 코성비 최고 스팟.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Amarela Resort ($80-180/night)<br>🏨 Henann Resort Alona Beach ($60-120/night)<br>🏨 Aquatica Beach Resort ($40-80/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Hama Restaurant (Google 4.5)<br>🍽️ Bohol Bee Farm Restaurant (Google 4.6)<br>🍽️ Zara&#x27;s Restaurant Alona (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 발리카삭 드롭오프는 강한 조류가 갑자기 발생. 조류 방향 확인 후 입수. 만타레이와의 충돌 주의</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 프리다이빙 강사 다수 (팡글라오/알로나비치). 한국어 커뮤니티 활발</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Panglao (Balicasag Island) Philippines&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_653b599c8838d634.setContent(html_1c2b20b2742b2707);
+cm_4c33d08a47af9eef.bindPopup(pop_653b599c8838d634);
+cm_4c33d08a47af9eef.bindTooltip(`<div>Panglao (Balicasag Island) 9/10</div>`,{sticky:true});
 
 
-var lbl_eb668acb3842f9ee = L.marker([9.512,123.704]).addTo(map_e623b9134cb1aaf0);
-var icon_lbl_eb668acb3842f9ee = L.divIcon({
+var lbl_82864b27282c3f96 = L.marker([9.512,123.704]).addTo(map_7efd1ca9371fe0ed);
+var icon_lbl_82864b27282c3f96 = L.divIcon({
     html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Panglao (Balicasag Island)</div>',
     className:'empty'
 });
-lbl_eb668acb3842f9ee.setIcon(icon_lbl_eb668acb3842f9ee);
+lbl_82864b27282c3f96.setIcon(icon_lbl_82864b27282c3f96);
 
 
-var cm_6d9f60d1045099d9 = L.circleMarker([-8.35,115.638],{
+var cm_a62d22eea72cfed4 = L.circleMarker([-8.35,115.638],{
     color:"#00ff88",fill:true,fillColor:"#00ff88",fillOpacity:0.85,
     radius:16,weight:2
-}).addTo(map_e623b9134cb1aaf0);
-var pop_7c7f67650f66c7b4 = L.popup({maxWidth:340});
-var html_ae08e6820eb58d99 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Amed</h3>   <b>Indonesia</b> | 9/10 | ✈️직항<hr style="margin:3px 0">   🌊 최대수심 60m | 시야 15-30m<br>🌡️ 수온 27°C | 해류 약<br>💰 $30/day | ✈️ ~7h | ✈️직항<br>📅 4월, 5월, 6월, 7월 외 3개월<br>🏊 Apnea Total, Deep Emotions 등 프리다이빙 전문 스쿨. AIDA/SSI 코스. 아파르 마스크 배급 가능<hr style="margin:3px 0">   <i>발리 동쪽 끝의 조용한 어촌 마을로 프리다이빙 성지가 된 곳. USS 리버티 침선(최대 30m)은 프리다이빙으로 탐험 가능한 세계 최고 난파선 중 하나. 발리 특유의 문화와 자연이 공존하는 힐링 스팟.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Amed Café &amp; Bungalows ($25-60/night)<br>🏨 Blue Moon Villas ($50-120/night)<br>🏨 Solaluna Beach Retreat ($80-200/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Wawa Wewe II (Google 4.6)<br>🍽️ Restaurant Gede (Google 4.4)<br>🍽️ Topi Inn Restaurant (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 리버티 침선 내부 진입 금지 (엔탱글먼트 위험). 동쪽 조류 갑작스러운 변화 주의. 선박 항행 구역 주의</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 프리다이빙 강사 1-2명 상주. 카카오톡 &#x27;발리 아메드 프리다이빙&#x27; 검색</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Amed Indonesia&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_7c7f67650f66c7b4.setContent(html_ae08e6820eb58d99);
-cm_6d9f60d1045099d9.bindPopup(pop_7c7f67650f66c7b4);
-cm_6d9f60d1045099d9.bindTooltip(`<div>Amed 9/10</div>`,{sticky:true});
+}).addTo(map_7efd1ca9371fe0ed);
+var pop_c21a879bf2b2b2db = L.popup({maxWidth:340});
+var html_993c91ee3f4ca647 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Amed</h3>   <b>Indonesia</b> | 9/10 | ✈️직항<hr style="margin:3px 0">   🌊 최대수심 60m | 시야 15-30m<br>🌡️ 수온 27°C | 해류 약<br>💰 $30/day | ✈️ ~7h | ✈️직항<br>📅 4월, 5월, 6월, 7월 외 3개월<br>🏊 Apnea Total, Deep Emotions 등 프리다이빙 전문 스쿨. AIDA/SSI 코스. 아파르 마스크 배급 가능<hr style="margin:3px 0">   <i>발리 동쪽 끝의 조용한 어촌 마을로 프리다이빙 성지가 된 곳. USS 리버티 침선(최대 30m)은 프리다이빙으로 탐험 가능한 세계 최고 난파선 중 하나. 발리 특유의 문화와 자연이 공존하는 힐링 스팟.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Amed Café &amp; Bungalows ($25-60/night)<br>🏨 Blue Moon Villas ($50-120/night)<br>🏨 Solaluna Beach Retreat ($80-200/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Wawa Wewe II (Google 4.6)<br>🍽️ Restaurant Gede (Google 4.4)<br>🍽️ Topi Inn Restaurant (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 리버티 침선 내부 진입 금지 (엔탱글먼트 위험). 동쪽 조류 갑작스러운 변화 주의. 선박 항행 구역 주의</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 프리다이빙 강사 1-2명 상주. 카카오톡 &#x27;발리 아메드 프리다이빙&#x27; 검색</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Amed Indonesia&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_c21a879bf2b2b2db.setContent(html_993c91ee3f4ca647);
+cm_a62d22eea72cfed4.bindPopup(pop_c21a879bf2b2b2db);
+cm_a62d22eea72cfed4.bindTooltip(`<div>Amed 9/10</div>`,{sticky:true});
 
 
-var lbl_7e20737d76e471eb = L.marker([-8.35,115.638]).addTo(map_e623b9134cb1aaf0);
-var icon_lbl_7e20737d76e471eb = L.divIcon({
+var lbl_8dbce5feaefec51b = L.marker([-8.35,115.638]).addTo(map_7efd1ca9371fe0ed);
+var icon_lbl_8dbce5feaefec51b = L.divIcon({
     html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Amed</div>',
     className:'empty'
 });
-lbl_7e20737d76e471eb.setIcon(icon_lbl_7e20737d76e471eb);
+lbl_8dbce5feaefec51b.setIcon(icon_lbl_8dbce5feaefec51b);
 
 
-var cm_c1ccce47ef25cf84 = L.marker([20.198,-87.458]).addTo(map_e623b9134cb1aaf0);
-var icon_cm_c1ccce47ef25cf84 = L.divIcon({
+var cm_8a4278596ed0de7d = L.marker([20.198,-87.458]).addTo(map_7efd1ca9371fe0ed);
+var icon_cm_8a4278596ed0de7d = L.divIcon({
     html:'<div style="width:36px;height:36px;border:2.5px dashed #00ff88;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-18px;margin-top:-18px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_c1ccce47ef25cf84.setIcon(icon_cm_c1ccce47ef25cf84);
-var pop_d9893ba95ce20d15 = L.popup({maxWidth:340});
-var html_276dc22d1fcc184b = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Cenote Angelita</h3>   <b>Mexico</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 60m | 시야 25-40m<br>🌡️ 수온 24°C | 해류 없음<br>💰 $45/day | ✈️ ~18h | 🔄경유<br>📅 2월, 3월, 4월, 5월 외 2개월<br>🏊 Tulum 내 AIDA/SSI 스쿨 다수. 세노테 투어 가이드 필수 동반. 딥라인 비상설 (예약 시 설치)<hr style="margin:3px 0">   <i>수심 30m에서 나타나는 황화수소층이 마치 지하 강처럼 보이는 마법같은 광경. 투명한 담수 위로 짙은 구름이 깔린 장면은 전 세계 언더워터 포토그래퍼들의 버킷리스트. 지구상 가장 신비로운 프리다이빙 환경.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Azulik Tulum ($300-600/night)<br>🏨 Be Tulum Boutique Hotel ($150-300/night)<br>🏨 Aldea Canzul ($80-160/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Hartwood (Google 4.7)<br>🍽️ El Camello Jr (Google 4.5)<br>🍽️ Gitano Tulum (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 황화수소층 통과 시 독성 가스 흡입 위험. 반드시 현지 공인 가이드 동반. 일 방문객 수 제한으로 사전 예약 필수</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 영어/스페인어 가이드 이용</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Cenote Angelita Mexico&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_d9893ba95ce20d15.setContent(html_276dc22d1fcc184b);
-cm_c1ccce47ef25cf84.bindPopup(pop_d9893ba95ce20d15);
-cm_c1ccce47ef25cf84.bindTooltip(`<div>Cenote Angelita 9/10</div>`,{sticky:true});
+cm_8a4278596ed0de7d.setIcon(icon_cm_8a4278596ed0de7d);
+var pop_8dd24efe2aaaeab4 = L.popup({maxWidth:340});
+var html_cd3b198886a32b06 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Cenote Angelita</h3>   <b>Mexico</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 60m | 시야 25-40m<br>🌡️ 수온 24°C | 해류 없음<br>💰 $45/day | ✈️ ~18h | 🔄경유<br>📅 2월, 3월, 4월, 5월 외 2개월<br>🏊 Tulum 내 AIDA/SSI 스쿨 다수. 세노테 투어 가이드 필수 동반. 딥라인 비상설 (예약 시 설치)<hr style="margin:3px 0">   <i>수심 30m에서 나타나는 황화수소층이 마치 지하 강처럼 보이는 마법같은 광경. 투명한 담수 위로 짙은 구름이 깔린 장면은 전 세계 언더워터 포토그래퍼들의 버킷리스트. 지구상 가장 신비로운 프리다이빙 환경.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Azulik Tulum ($300-600/night)<br>🏨 Be Tulum Boutique Hotel ($150-300/night)<br>🏨 Aldea Canzul ($80-160/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Hartwood (Google 4.7)<br>🍽️ El Camello Jr (Google 4.5)<br>🍽️ Gitano Tulum (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 황화수소층 통과 시 독성 가스 흡입 위험. 반드시 현지 공인 가이드 동반. 일 방문객 수 제한으로 사전 예약 필수</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 영어/스페인어 가이드 이용</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Cenote Angelita Mexico&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_8dd24efe2aaaeab4.setContent(html_cd3b198886a32b06);
+cm_8a4278596ed0de7d.bindPopup(pop_8dd24efe2aaaeab4);
+cm_8a4278596ed0de7d.bindTooltip(`<div>Cenote Angelita 9/10</div>`,{sticky:true});
 
 
-var lbl_c856c41ceef7b2ae = L.marker([20.198,-87.458]).addTo(map_e623b9134cb1aaf0);
-var icon_lbl_c856c41ceef7b2ae = L.divIcon({
+var lbl_c1b86ff0419e56ff = L.marker([20.198,-87.458]).addTo(map_7efd1ca9371fe0ed);
+var icon_lbl_c1b86ff0419e56ff = L.divIcon({
     html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Cenote Angelita</div>',
     className:'empty'
 });
-lbl_c856c41ceef7b2ae.setIcon(icon_lbl_c856c41ceef7b2ae);
+lbl_c1b86ff0419e56ff.setIcon(icon_lbl_c1b86ff0419e56ff);
 
 
-var cm_b2507361964967ec = L.marker([23.31,-75.12]).addTo(map_e623b9134cb1aaf0);
-var icon_cm_b2507361964967ec = L.divIcon({
+var cm_7877ce3c283eab3a = L.marker([23.31,-75.12]).addTo(map_7efd1ca9371fe0ed);
+var icon_cm_7877ce3c283eab3a = L.divIcon({
     html:'<div style="width:36px;height:36px;border:2.5px dashed #00ff88;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-18px;margin-top:-18px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_b2507361964967ec.setIcon(icon_cm_b2507361964967ec);
-var pop_0500eae0eef7155e = L.popup({maxWidth:340});
-var html_05f401f13490a1eb = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Vertical Blue (Long Island)</h3>   <b>Bahamas</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 100m | 시야 40-60m<br>🌡️ 수온 27°C | 해류 없음<br>💰 $100/day | ✈️ ~20h | 🔄경유<br>📅 4월, 5월, 6월, 7월 외 2개월<br>🏊 Vertical Blue 공식 대회 시설. 세계 최고 수준 딥라인/안전 시스템. 비시즌 캠프 운영<hr style="margin:3px 0">   <i>William Trubridge가 설립한 세계 최고 권위의 프리다이빙 대회 Vertical Blue의 홈. Dean&#x27;s Blue Hole(202m)에서 수백 개의 세계 기록이 탄생했다. 극도로 조용하고 맑은 환경에서 최고의 집중 훈련 가능.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Stella Maris Resort Club ($150-280/night)<br>🏨 Cape Santa Maria Beach Resort ($200-400/night)<br>🏨 Long Island Breeze Resort ($100-180/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Stella Maris Bar &amp; Restaurant (Google 4.3)<br>🍽️ Max&#x27;s Conch Bar (Google 4.5)<br>🍽️ Rowdy Boys Bar &amp; Grill (Google 4.2)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 딥다이빙 훈련 시 전문 안전 다이버 필수 배치. 고도 훈련 없이 60m+ 잠수 금지. 기압 변화 적응 기간 필요</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. William Trubridge 또는 공인 강사 코스 이용</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Vertical Blue (Long Island) Bahamas&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_0500eae0eef7155e.setContent(html_05f401f13490a1eb);
-cm_b2507361964967ec.bindPopup(pop_0500eae0eef7155e);
-cm_b2507361964967ec.bindTooltip(`<div>Vertical Blue (Long Island) 9/10</div>`,{sticky:true});
+cm_7877ce3c283eab3a.setIcon(icon_cm_7877ce3c283eab3a);
+var pop_580019888e71eb14 = L.popup({maxWidth:340});
+var html_9c5a37c1280c66a3 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Vertical Blue (Long Island)</h3>   <b>Bahamas</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 100m | 시야 40-60m<br>🌡️ 수온 27°C | 해류 없음<br>💰 $100/day | ✈️ ~20h | 🔄경유<br>📅 4월, 5월, 6월, 7월 외 2개월<br>🏊 Vertical Blue 공식 대회 시설. 세계 최고 수준 딥라인/안전 시스템. 비시즌 캠프 운영<hr style="margin:3px 0">   <i>William Trubridge가 설립한 세계 최고 권위의 프리다이빙 대회 Vertical Blue의 홈. Dean&#x27;s Blue Hole(202m)에서 수백 개의 세계 기록이 탄생했다. 극도로 조용하고 맑은 환경에서 최고의 집중 훈련 가능.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Stella Maris Resort Club ($150-280/night)<br>🏨 Cape Santa Maria Beach Resort ($200-400/night)<br>🏨 Long Island Breeze Resort ($100-180/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Stella Maris Bar &amp; Restaurant (Google 4.3)<br>🍽️ Max&#x27;s Conch Bar (Google 4.5)<br>🍽️ Rowdy Boys Bar &amp; Grill (Google 4.2)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 딥다이빙 훈련 시 전문 안전 다이버 필수 배치. 고도 훈련 없이 60m+ 잠수 금지. 기압 변화 적응 기간 필요</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. William Trubridge 또는 공인 강사 코스 이용</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Vertical Blue (Long Island) Bahamas&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_580019888e71eb14.setContent(html_9c5a37c1280c66a3);
+cm_7877ce3c283eab3a.bindPopup(pop_580019888e71eb14);
+cm_7877ce3c283eab3a.bindTooltip(`<div>Vertical Blue (Long Island) 9/10</div>`,{sticky:true});
 
 
-var lbl_1f40ffd3487cbbd8 = L.marker([23.31,-75.12]).addTo(map_e623b9134cb1aaf0);
-var icon_lbl_1f40ffd3487cbbd8 = L.divIcon({
+var lbl_3c584bd12ca460e3 = L.marker([23.31,-75.12]).addTo(map_7efd1ca9371fe0ed);
+var icon_lbl_3c584bd12ca460e3 = L.divIcon({
     html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Vertical Blue (Long Island)</div>',
     className:'empty'
 });
-lbl_1f40ffd3487cbbd8.setIcon(icon_lbl_1f40ffd3487cbbd8);
+lbl_3c584bd12ca460e3.setIcon(icon_lbl_3c584bd12ca460e3);
 
 
-var cm_bea2f05967386c44 = L.circleMarker([10.092,99.84],{
+var cm_4868802b5485854b = L.circleMarker([10.092,99.84],{
     color:"#00ff88",fill:true,fillColor:"#00ff88",fillOpacity:0.85,
     radius:16,weight:2
-}).addTo(map_e623b9134cb1aaf0);
-var pop_2415a2b90b41762b = L.popup({maxWidth:340});
-var html_81064abdb58b23bf = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Koh Tao</h3>   <b>Thailand</b> | 9/10 | ✈️직항<hr style="margin:3px 0">   🌊 최대수심 40m | 시야 15-25m<br>🌡️ 수온 29°C | 해류 약<br>💰 $25/day | ✈️ ~6h | ✈️직항<br>📅 3월, 4월, 5월, 6월 외 4개월<br>🏊 Apnea Total, Blue Immersion 등 AIDA 공인 스쿨. 입문자용 3일 코스부터 컴피티션 레벨 훈련까지. 딥라인 전용 포인트<hr style="margin:3px 0">   <i>동남아 최대의 다이빙/프리다이빙 허브로 전 세계 다이버가 집결하는 곳. 깨끗한 물과 다양한 포인트, 저렴한 물가가 장기 훈련에 최적. 고래상어 시즌(4-5월)에는 버킷리스트 경험 가능.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Sairee Cottage Resort ($30-80/night)<br>🏨 Koh Tao Coral Grand Resort ($60-150/night)<br>🏨 In Touch Resort ($20-50/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Zanzibar Restaurant Koh Tao (Google 4.6)<br>🍽️ Barracuda Restaurant &amp; Bar (Google 4.4)<br>🍽️ Coffee Corner (Google 4.5)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 고래상어 접촉 금지 (법적 제재). 야간 잠수 시 조명 필수. 보트 항로 주의. 조류 변화 빠름</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 프리다이빙 강사 3-5명 상주. 한국인 운영 게스트하우스 다수. 카카오톡 &#x27;코타오 프리다이빙&#x27; 검색</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Koh Tao Thailand&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_2415a2b90b41762b.setContent(html_81064abdb58b23bf);
-cm_bea2f05967386c44.bindPopup(pop_2415a2b90b41762b);
-cm_bea2f05967386c44.bindTooltip(`<div>Koh Tao 9/10</div>`,{sticky:true});
+}).addTo(map_7efd1ca9371fe0ed);
+var pop_fdee87a304670ed4 = L.popup({maxWidth:340});
+var html_9a4a67bccf31dc2c = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Koh Tao</h3>   <b>Thailand</b> | 9/10 | ✈️직항<hr style="margin:3px 0">   🌊 최대수심 40m | 시야 15-25m<br>🌡️ 수온 29°C | 해류 약<br>💰 $25/day | ✈️ ~6h | ✈️직항<br>📅 3월, 4월, 5월, 6월 외 4개월<br>🏊 Apnea Total, Blue Immersion 등 AIDA 공인 스쿨. 입문자용 3일 코스부터 컴피티션 레벨 훈련까지. 딥라인 전용 포인트<hr style="margin:3px 0">   <i>동남아 최대의 다이빙/프리다이빙 허브로 전 세계 다이버가 집결하는 곳. 깨끗한 물과 다양한 포인트, 저렴한 물가가 장기 훈련에 최적. 고래상어 시즌(4-5월)에는 버킷리스트 경험 가능.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Sairee Cottage Resort ($30-80/night)<br>🏨 Koh Tao Coral Grand Resort ($60-150/night)<br>🏨 In Touch Resort ($20-50/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Zanzibar Restaurant Koh Tao (Google 4.6)<br>🍽️ Barracuda Restaurant &amp; Bar (Google 4.4)<br>🍽️ Coffee Corner (Google 4.5)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 고래상어 접촉 금지 (법적 제재). 야간 잠수 시 조명 필수. 보트 항로 주의. 조류 변화 빠름</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 프리다이빙 강사 3-5명 상주. 한국인 운영 게스트하우스 다수. 카카오톡 &#x27;코타오 프리다이빙&#x27; 검색</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Koh Tao Thailand&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_fdee87a304670ed4.setContent(html_9a4a67bccf31dc2c);
+cm_4868802b5485854b.bindPopup(pop_fdee87a304670ed4);
+cm_4868802b5485854b.bindTooltip(`<div>Koh Tao 9/10</div>`,{sticky:true});
 
 
-var lbl_91845b3ba3486e55 = L.marker([10.092,99.84]).addTo(map_e623b9134cb1aaf0);
-var icon_lbl_91845b3ba3486e55 = L.divIcon({
+var lbl_59345cde5a2679bf = L.marker([10.092,99.84]).addTo(map_7efd1ca9371fe0ed);
+var icon_lbl_59345cde5a2679bf = L.divIcon({
     html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Koh Tao</div>',
     className:'empty'
 });
-lbl_91845b3ba3486e55.setIcon(icon_lbl_91845b3ba3486e55);
+lbl_59345cde5a2679bf.setIcon(icon_lbl_59345cde5a2679bf);
 
 
-var cm_ee38d41dad82b1d2 = L.marker([-6.165,39.19]).addTo(map_e623b9134cb1aaf0);
-var icon_cm_ee38d41dad82b1d2 = L.divIcon({
+var cm_79612f499802fa68 = L.marker([-6.165,39.19]).addTo(map_7efd1ca9371fe0ed);
+var icon_cm_79612f499802fa68 = L.divIcon({
     html:'<div style="width:36px;height:36px;border:2.5px dashed #00ff88;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-18px;margin-top:-18px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_ee38d41dad82b1d2.setIcon(icon_cm_ee38d41dad82b1d2);
-var pop_7bdbbea8d757569b = L.popup({maxWidth:340});
-var html_04083fe9c48d5e2a = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Zanzibar</h3>   <b>Tanzania</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 35m | 시야 15-25m<br>🌡️ 수온 27°C | 해류 약-중<br>💰 $40/day | ✈️ ~13h | 🔄경유<br>📅 6월, 7월, 8월, 9월 외 1개월<br>🏊 One Ocean 등 PADI/AIDA 스쿨. 프리다이빙 전용 투어 운영. 웽기 섬 전용 딥라인<hr style="margin:3px 0">   <i>인도양의 보석으로 불리는 잔지바르에서 만나는 야생 돌고래 경험은 세계 최고 수준. 웽기 만의 병코돌고래 무리와 자유롭게 수영하는 경험은 프리다이빙으로만 가능한 특별한 순간.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Baraza Resort &amp; Spa ($300-600/night)<br>🏨 Manta Resort ($200-400/night)<br>🏨 Essque Zalu Zanzibar ($250-500/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Emerson Spice Rooftop Restaurant (Google 4.7)<br>🍽️ The Rock Restaurant (Google 4.5)<br>🍽️ Forodhani Gardens Night Market (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 돌고래 자극 금지 (야생 보호 규정). 만조 시 강한 해류 주의. 조석 변화 크므로 현지 가이드 동반 필수</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 영어 가이드 이용. 현지 스쿨 한국어 지원 부재</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Zanzibar Tanzania&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_7bdbbea8d757569b.setContent(html_04083fe9c48d5e2a);
-cm_ee38d41dad82b1d2.bindPopup(pop_7bdbbea8d757569b);
-cm_ee38d41dad82b1d2.bindTooltip(`<div>Zanzibar 9/10</div>`,{sticky:true});
+cm_79612f499802fa68.setIcon(icon_cm_79612f499802fa68);
+var pop_f2f7d2284381fc62 = L.popup({maxWidth:340});
+var html_d5fbaf8844ff793d = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Zanzibar</h3>   <b>Tanzania</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 35m | 시야 15-25m<br>🌡️ 수온 27°C | 해류 약-중<br>💰 $40/day | ✈️ ~13h | 🔄경유<br>📅 6월, 7월, 8월, 9월 외 1개월<br>🏊 One Ocean 등 PADI/AIDA 스쿨. 프리다이빙 전용 투어 운영. 웽기 섬 전용 딥라인<hr style="margin:3px 0">   <i>인도양의 보석으로 불리는 잔지바르에서 만나는 야생 돌고래 경험은 세계 최고 수준. 웽기 만의 병코돌고래 무리와 자유롭게 수영하는 경험은 프리다이빙으로만 가능한 특별한 순간.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Baraza Resort &amp; Spa ($300-600/night)<br>🏨 Manta Resort ($200-400/night)<br>🏨 Essque Zalu Zanzibar ($250-500/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Emerson Spice Rooftop Restaurant (Google 4.7)<br>🍽️ The Rock Restaurant (Google 4.5)<br>🍽️ Forodhani Gardens Night Market (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 돌고래 자극 금지 (야생 보호 규정). 만조 시 강한 해류 주의. 조석 변화 크므로 현지 가이드 동반 필수</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 영어 가이드 이용. 현지 스쿨 한국어 지원 부재</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Zanzibar Tanzania&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_f2f7d2284381fc62.setContent(html_d5fbaf8844ff793d);
+cm_79612f499802fa68.bindPopup(pop_f2f7d2284381fc62);
+cm_79612f499802fa68.bindTooltip(`<div>Zanzibar 9/10</div>`,{sticky:true});
 
 
-var lbl_c49693e018775c54 = L.marker([-6.165,39.19]).addTo(map_e623b9134cb1aaf0);
-var icon_lbl_c49693e018775c54 = L.divIcon({
+var lbl_15cf8b2bc870d6be = L.marker([-6.165,39.19]).addTo(map_7efd1ca9371fe0ed);
+var icon_lbl_15cf8b2bc870d6be = L.divIcon({
     html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Zanzibar</div>',
     className:'empty'
 });
-lbl_c49693e018775c54.setIcon(icon_lbl_c49693e018775c54);
+lbl_15cf8b2bc870d6be.setIcon(icon_lbl_15cf8b2bc870d6be);
 
 
-var cm_41f1770b10a68797 = L.marker([36.053,14.189]).addTo(map_e623b9134cb1aaf0);
-var icon_cm_41f1770b10a68797 = L.divIcon({
+var cm_3a8ac633a70443b5 = L.marker([36.053,14.189]).addTo(map_7efd1ca9371fe0ed);
+var icon_cm_3a8ac633a70443b5 = L.divIcon({
     html:'<div style="width:36px;height:36px;border:2.5px dashed #00ff88;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-18px;margin-top:-18px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_41f1770b10a68797.setIcon(icon_cm_41f1770b10a68797);
-var pop_3b7f687426920e5c = L.popup({maxWidth:340});
-var html_f0c07c647e7ac448 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Blue Hole Gozo</h3>   <b>Malta</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 60m | 시야 25-40m<br>🌡️ 수온 21°C | 해류 약<br>💰 $60/day | ✈️ ~14h | 🔄경유<br>📅 5월, 6월, 7월, 8월 외 2개월<br>🏊 Gozo Aqua Sports, Atlantis Gozo 등 AIDA 스쿨. 블루홀 전용 딥라인. Azure Window 붕괴 이후 새로운 포인트 개척<hr style="margin:3px 0">   <i>지중해 최고의 프리다이빙 포인트로 수직 60m 절벽 아래 동굴로 이어지는 장관. 붕괴한 Azure Window의 잔해와 새로운 조형물이 독특한 수중 환경을 만들어냄. 유럽 내 프리다이빙 커뮤니티의 핵심 허브.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Kempinski Hotel San Lawrenz ($150-300/night)<br>🏨 Ta&#x27; Cenc &amp; Spa ($120-250/night)<br>🏨 San Andrea Hotel Xlendi ($60-120/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Il-Kartell Restaurant (Google 4.6)<br>🍽️ Ta&#x27; Rikardu (Google 4.5)<br>🍽️ Boat House Xlendi (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 블루홀 내부 오버행 구조로 비상 탈출 복잡. 조류가 갑자기 강해질 수 있음. 단독 잠수 금지</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 영어 가이드 풍부. 유럽 프리다이버들의 집결지</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Blue Hole Gozo Malta&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_3b7f687426920e5c.setContent(html_f0c07c647e7ac448);
-cm_41f1770b10a68797.bindPopup(pop_3b7f687426920e5c);
-cm_41f1770b10a68797.bindTooltip(`<div>Blue Hole Gozo 9/10</div>`,{sticky:true});
+cm_3a8ac633a70443b5.setIcon(icon_cm_3a8ac633a70443b5);
+var pop_b65fb70fda42d24b = L.popup({maxWidth:340});
+var html_96bdd60ab757b7dd = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Blue Hole Gozo</h3>   <b>Malta</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 60m | 시야 25-40m<br>🌡️ 수온 21°C | 해류 약<br>💰 $60/day | ✈️ ~14h | 🔄경유<br>📅 5월, 6월, 7월, 8월 외 2개월<br>🏊 Gozo Aqua Sports, Atlantis Gozo 등 AIDA 스쿨. 블루홀 전용 딥라인. Azure Window 붕괴 이후 새로운 포인트 개척<hr style="margin:3px 0">   <i>지중해 최고의 프리다이빙 포인트로 수직 60m 절벽 아래 동굴로 이어지는 장관. 붕괴한 Azure Window의 잔해와 새로운 조형물이 독특한 수중 환경을 만들어냄. 유럽 내 프리다이빙 커뮤니티의 핵심 허브.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Kempinski Hotel San Lawrenz ($150-300/night)<br>🏨 Ta&#x27; Cenc &amp; Spa ($120-250/night)<br>🏨 San Andrea Hotel Xlendi ($60-120/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Il-Kartell Restaurant (Google 4.6)<br>🍽️ Ta&#x27; Rikardu (Google 4.5)<br>🍽️ Boat House Xlendi (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 블루홀 내부 오버행 구조로 비상 탈출 복잡. 조류가 갑자기 강해질 수 있음. 단독 잠수 금지</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 영어 가이드 풍부. 유럽 프리다이버들의 집결지</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Blue Hole Gozo Malta&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_b65fb70fda42d24b.setContent(html_96bdd60ab757b7dd);
+cm_3a8ac633a70443b5.bindPopup(pop_b65fb70fda42d24b);
+cm_3a8ac633a70443b5.bindTooltip(`<div>Blue Hole Gozo 9/10</div>`,{sticky:true});
 
 
-var lbl_a0999bf07c08643b = L.marker([36.053,14.189]).addTo(map_e623b9134cb1aaf0);
-var icon_lbl_a0999bf07c08643b = L.divIcon({
+var lbl_5b5a142d8475c224 = L.marker([36.053,14.189]).addTo(map_7efd1ca9371fe0ed);
+var icon_lbl_5b5a142d8475c224 = L.divIcon({
     html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Blue Hole Gozo</div>',
     className:'empty'
 });
-lbl_a0999bf07c08643b.setIcon(icon_lbl_a0999bf07c08643b);
+lbl_5b5a142d8475c224.setIcon(icon_lbl_5b5a142d8475c224);
 
 
-var cm_21c077b510d7c829 = L.marker([28.291,-16.629]).addTo(map_e623b9134cb1aaf0);
-var icon_cm_21c077b510d7c829 = L.divIcon({
+var cm_232f042bff62dc9f = L.marker([28.291,-16.629]).addTo(map_7efd1ca9371fe0ed);
+var icon_cm_232f042bff62dc9f = L.divIcon({
     html:'<div style="width:36px;height:36px;border:2.5px dashed #00ff88;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-18px;margin-top:-18px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_21c077b510d7c829.setIcon(icon_cm_21c077b510d7c829);
-var pop_e971e5e616a98ba6 = L.popup({maxWidth:340});
-var html_6e4ca78b6a6ab47b = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Tenerife</h3>   <b>Spain</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 50m | 시야 20-35m<br>🌡️ 수온 22°C | 해류 약<br>💰 $55/day | ✈️ ~15h | 🔄경유<br>📅 3월, 4월, 5월, 6월 외 4개월<br>🏊 Freediving Canarias, Apnea Spain 등 AIDA 공인 스쿨. 유럽 랭킹 대회 개최지. 연중 온화한 기후<hr style="margin:3px 0">   <i>유럽에서 연중 프리다이빙이 가능한 최고의 스팟. 파일럿 고래와 돌고래를 물 밖에서가 아닌 바다에서 함께 수영하는 경험은 테네리페만의 특권. 테이데 화산섬의 신비로운 지형이 수중에도 이어짐.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Gran Hotel Bahia del Duque ($200-400/night)<br>🏨 Vincci La Plantacion del Sur ($150-300/night)<br>🏨 Hotel Botanico &amp; The Oriental Spa Garden ($180-350/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ El Molino Blanco (Google 4.5)<br>🍽️ Restaurante Sol y Sombra (Google 4.4)<br>🍽️ La Vieja Restaurant (Google 4.6)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 고래·돌고래 접근 규정 준수 필수 (5m 이내 금지). 조류 예측 어려움. 선박 왕래 많은 구역 주의</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 영어/스페인어 가이드. 유럽 거주 한국인 커뮤니티</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Tenerife Spain&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_e971e5e616a98ba6.setContent(html_6e4ca78b6a6ab47b);
-cm_21c077b510d7c829.bindPopup(pop_e971e5e616a98ba6);
-cm_21c077b510d7c829.bindTooltip(`<div>Tenerife 9/10</div>`,{sticky:true});
+cm_232f042bff62dc9f.setIcon(icon_cm_232f042bff62dc9f);
+var pop_ef5a8aace7e528c0 = L.popup({maxWidth:340});
+var html_3186651d4af471a4 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Tenerife</h3>   <b>Spain</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 50m | 시야 20-35m<br>🌡️ 수온 22°C | 해류 약<br>💰 $55/day | ✈️ ~15h | 🔄경유<br>📅 3월, 4월, 5월, 6월 외 4개월<br>🏊 Freediving Canarias, Apnea Spain 등 AIDA 공인 스쿨. 유럽 랭킹 대회 개최지. 연중 온화한 기후<hr style="margin:3px 0">   <i>유럽에서 연중 프리다이빙이 가능한 최고의 스팟. 파일럿 고래와 돌고래를 물 밖에서가 아닌 바다에서 함께 수영하는 경험은 테네리페만의 특권. 테이데 화산섬의 신비로운 지형이 수중에도 이어짐.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Gran Hotel Bahia del Duque ($200-400/night)<br>🏨 Vincci La Plantacion del Sur ($150-300/night)<br>🏨 Hotel Botanico &amp; The Oriental Spa Garden ($180-350/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ El Molino Blanco (Google 4.5)<br>🍽️ Restaurante Sol y Sombra (Google 4.4)<br>🍽️ La Vieja Restaurant (Google 4.6)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 고래·돌고래 접근 규정 준수 필수 (5m 이내 금지). 조류 예측 어려움. 선박 왕래 많은 구역 주의</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 영어/스페인어 가이드. 유럽 거주 한국인 커뮤니티</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Tenerife Spain&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_ef5a8aace7e528c0.setContent(html_3186651d4af471a4);
+cm_232f042bff62dc9f.bindPopup(pop_ef5a8aace7e528c0);
+cm_232f042bff62dc9f.bindTooltip(`<div>Tenerife 9/10</div>`,{sticky:true});
 
 
-var lbl_8b5a5625fd986053 = L.marker([28.291,-16.629]).addTo(map_e623b9134cb1aaf0);
-var icon_lbl_8b5a5625fd986053 = L.divIcon({
+var lbl_737e8459691cbaee = L.marker([28.291,-16.629]).addTo(map_7efd1ca9371fe0ed);
+var icon_lbl_737e8459691cbaee = L.divIcon({
     html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Tenerife</div>',
     className:'empty'
 });
-lbl_8b5a5625fd986053.setIcon(icon_lbl_8b5a5625fd986053);
+lbl_737e8459691cbaee.setIcon(icon_lbl_737e8459691cbaee);
 
 
-var cm_5edb8b6d80dbe046 = L.circleMarker([-8.726,115.544],{
+var cm_21dcf8885bcec64d = L.circleMarker([-8.726,115.544],{
     color:"#ffcc00",fill:true,fillColor:"#ffcc00",fillOpacity:0.85,
     radius:14,weight:2
-}).addTo(map_e623b9134cb1aaf0);
-var pop_80271d379a569d81 = L.popup({maxWidth:340});
-var html_c400281a79a5a4ee = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Nusa Penida</h3>   <b>Indonesia</b> | 8/10 | ✈️직항<hr style="margin:3px 0">   🌊 최대수심 30m | 시야 10-25m<br>🌡️ 수온 22°C | 해류 중-강<br>💰 $35/day | ✈️ ~7h | ✈️직항<br>📅 4월, 5월, 6월, 7월 외 3개월<br>🏊 Amed/Sanur 기반 스쿨에서 당일치기 투어. 만타포인트 투어 운영. 현지 가이드 의무<hr style="margin:3px 0">   <i>몰라몰라(개복치)와 만타레이를 동시에 볼 수 있는 세계 유일에 가까운 포인트. 강한 조류가 만들어내는 차가운 용승이 대형 해양생물을 끌어들이는 원리. 프리다이빙 실력이 있어야 조류를 활용한 드리프트가 가능.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Semabu Hills Nusa Penida ($50-120/night)<br>🏨 Adiwana Warnakali ($100-220/night)<br>🏨 Queen Garden Resort ($30-60/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Warung Sunset Nusa Penida (Google 4.4)<br>🍽️ Penida Colada (Google 4.5)<br>🍽️ Ped Beach Restaurant (Google 4.2)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 강한 조류로 순식간에 먼 바다로 이탈 가능. 입문자 단독 잠수 절대 금지. 몰라몰라 시즌 수온 17-20도로 풀수트 필수</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 1-2명 (발리/눔 기반). 한국어 다이빙 투어 예약 가능</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Nusa Penida Indonesia&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_80271d379a569d81.setContent(html_c400281a79a5a4ee);
-cm_5edb8b6d80dbe046.bindPopup(pop_80271d379a569d81);
-cm_5edb8b6d80dbe046.bindTooltip(`<div>Nusa Penida 8/10</div>`,{sticky:true});
+}).addTo(map_7efd1ca9371fe0ed);
+var pop_b3656b1df8dc069e = L.popup({maxWidth:340});
+var html_2c2da7a576ce33ec = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Nusa Penida</h3>   <b>Indonesia</b> | 8/10 | ✈️직항<hr style="margin:3px 0">   🌊 최대수심 30m | 시야 10-25m<br>🌡️ 수온 22°C | 해류 중-강<br>💰 $35/day | ✈️ ~7h | ✈️직항<br>📅 4월, 5월, 6월, 7월 외 3개월<br>🏊 Amed/Sanur 기반 스쿨에서 당일치기 투어. 만타포인트 투어 운영. 현지 가이드 의무<hr style="margin:3px 0">   <i>몰라몰라(개복치)와 만타레이를 동시에 볼 수 있는 세계 유일에 가까운 포인트. 강한 조류가 만들어내는 차가운 용승이 대형 해양생물을 끌어들이는 원리. 프리다이빙 실력이 있어야 조류를 활용한 드리프트가 가능.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Semabu Hills Nusa Penida ($50-120/night)<br>🏨 Adiwana Warnakali ($100-220/night)<br>🏨 Queen Garden Resort ($30-60/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Warung Sunset Nusa Penida (Google 4.4)<br>🍽️ Penida Colada (Google 4.5)<br>🍽️ Ped Beach Restaurant (Google 4.2)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 강한 조류로 순식간에 먼 바다로 이탈 가능. 입문자 단독 잠수 절대 금지. 몰라몰라 시즌 수온 17-20도로 풀수트 필수</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 1-2명 (발리/눔 기반). 한국어 다이빙 투어 예약 가능</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Nusa Penida Indonesia&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_b3656b1df8dc069e.setContent(html_2c2da7a576ce33ec);
+cm_21dcf8885bcec64d.bindPopup(pop_b3656b1df8dc069e);
+cm_21dcf8885bcec64d.bindTooltip(`<div>Nusa Penida 8/10</div>`,{sticky:true});
 
 
-var lbl_4c8d5434db5eec65 = L.marker([-8.726,115.544]).addTo(map_e623b9134cb1aaf0);
-var icon_lbl_4c8d5434db5eec65 = L.divIcon({
+var lbl_2aae71f4759b540d = L.marker([-8.726,115.544]).addTo(map_7efd1ca9371fe0ed);
+var icon_lbl_2aae71f4759b540d = L.divIcon({
     html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Nusa Penida</div>',
     className:'empty'
 });
-lbl_4c8d5434db5eec65.setIcon(icon_lbl_4c8d5434db5eec65);
+lbl_2aae71f4759b540d.setIcon(icon_lbl_2aae71f4759b540d);
 
 
-var cm_6df33e742d6f0774 = L.circleMarker([9.938,123.398],{
+var cm_6da3a78ae32b1a7c = L.circleMarker([9.938,123.398],{
     color:"#ffcc00",fill:true,fillColor:"#ffcc00",fillOpacity:0.85,
     radius:14,weight:2
-}).addTo(map_e623b9134cb1aaf0);
-var pop_8ded26b1aa722183 = L.popup({maxWidth:340});
-var html_54d016ded5293cbc = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Moalboal</h3>   <b>Philippines</b> | 8/10 | ✈️직항<hr style="margin:3px 0">   🌊 최대수심 40m | 시야 15-25m<br>🌡️ 수온 28°C | 해류 약-중<br>💰 $30/day | ✈️ ~4h | ✈️직항<br>📅 11월, 12월, 1월, 2월 외 3개월<br>🏊 Ocean Safari, Savedra Dive Center 등 AIDA 스쿨. 세부에서 2시간 거리. 정어리 토네이도 전용 투어<hr style="margin:3px 0">   <i>수백만 마리의 정어리가 만들어내는 토네이도 현상은 프리다이빙으로만 완벽히 경험 가능. 그 속에서 바다거북이 유유히 헤엄치는 장면은 일생에 한 번의 경험. 세부에서 당일치기로 접근 가능한 효율적인 위치.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Magic Island Resort ($40-80/night)<br>🏨 Club Serena Resort ($60-130/night)<br>🏨 Savedra Beach Resort ($30-60/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ The Hut Restaurant (Google 4.4)<br>🍽️ Chili Bar (Google 4.3)<br>🍽️ Lantaw Native Restaurant (Google 4.5)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 정어리 무리 밀도로 방향 감각 상실 주의. 조류 방향 확인 필수. 드롭오프 진입 시 강한 하강류 주의</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 프리다이빙 강사 2-3명 (세부/모알보알). 한국어 투어 예약 가능</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Moalboal Philippines&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_8ded26b1aa722183.setContent(html_54d016ded5293cbc);
-cm_6df33e742d6f0774.bindPopup(pop_8ded26b1aa722183);
-cm_6df33e742d6f0774.bindTooltip(`<div>Moalboal 8/10</div>`,{sticky:true});
+}).addTo(map_7efd1ca9371fe0ed);
+var pop_c9e1529585f9effa = L.popup({maxWidth:340});
+var html_9868938ab160d9ad = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Moalboal</h3>   <b>Philippines</b> | 8/10 | ✈️직항<hr style="margin:3px 0">   🌊 최대수심 40m | 시야 15-25m<br>🌡️ 수온 28°C | 해류 약-중<br>💰 $30/day | ✈️ ~4h | ✈️직항<br>📅 11월, 12월, 1월, 2월 외 3개월<br>🏊 Ocean Safari, Savedra Dive Center 등 AIDA 스쿨. 세부에서 2시간 거리. 정어리 토네이도 전용 투어<hr style="margin:3px 0">   <i>수백만 마리의 정어리가 만들어내는 토네이도 현상은 프리다이빙으로만 완벽히 경험 가능. 그 속에서 바다거북이 유유히 헤엄치는 장면은 일생에 한 번의 경험. 세부에서 당일치기로 접근 가능한 효율적인 위치.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Magic Island Resort ($40-80/night)<br>🏨 Club Serena Resort ($60-130/night)<br>🏨 Savedra Beach Resort ($30-60/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ The Hut Restaurant (Google 4.4)<br>🍽️ Chili Bar (Google 4.3)<br>🍽️ Lantaw Native Restaurant (Google 4.5)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 정어리 무리 밀도로 방향 감각 상실 주의. 조류 방향 확인 필수. 드롭오프 진입 시 강한 하강류 주의</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 프리다이빙 강사 2-3명 (세부/모알보알). 한국어 투어 예약 가능</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Moalboal Philippines&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_c9e1529585f9effa.setContent(html_9868938ab160d9ad);
+cm_6da3a78ae32b1a7c.bindPopup(pop_c9e1529585f9effa);
+cm_6da3a78ae32b1a7c.bindTooltip(`<div>Moalboal 8/10</div>`,{sticky:true});
 
 
-var lbl_110ad97ac7ea0817 = L.marker([9.938,123.398]).addTo(map_e623b9134cb1aaf0);
-var icon_lbl_110ad97ac7ea0817 = L.divIcon({
+var lbl_7acc3683179aa1c3 = L.marker([9.938,123.398]).addTo(map_7efd1ca9371fe0ed);
+var icon_lbl_7acc3683179aa1c3 = L.divIcon({
     html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Moalboal</div>',
     className:'empty'
 });
-lbl_110ad97ac7ea0817.setIcon(icon_lbl_110ad97ac7ea0817);
+lbl_7acc3683179aa1c3.setIcon(icon_lbl_7acc3683179aa1c3);
 
 
-var cm_85854fd92daaa7f8 = L.circleMarker([33.501,126.952],{
+var cm_3cf6dbaa74b0ae86 = L.circleMarker([33.501,126.952],{
     color:"#ffcc00",fill:true,fillColor:"#ffcc00",fillOpacity:0.85,
     radius:14,weight:2
-}).addTo(map_e623b9134cb1aaf0);
-var pop_ac9716d5e70a6116 = L.popup({maxWidth:340});
-var html_80beed04a6195767 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Jeju Udo</h3>   <b>South Korea</b> | 8/10 | ✈️직항<hr style="margin:3px 0">   🌊 최대수심 20m | 시야 5-15m<br>🌡️ 수온 18°C | 해류 약<br>💰 $20/day | ✈️ ~1h | ✈️직항<br>📅 6월, 7월, 8월, 9월<br>🏊 해녀 체험 프로그램. 제주 프리다이빙 스쿨 다수. SSI/AIDA 코스. 한국 프리다이빙 협회 공인 강습<hr style="margin:3px 0">   <i>유네스코 인류무형문화유산 제주 해녀 문화를 직접 체험할 수 있는 유일한 곳. 우도의 에메랄드빛 산호 모래 해변(홍조단괴)과 맑은 물이 국내 최고 수준. 한국인에게 가장 접근성 좋은 프리다이빙 성지.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 우도 해녀의집 게스트하우스 (5-8만원/night)<br>🏨 우도 파라다이스 호텔 (8-15만원/night)<br>🏨 삼달리 해변 민박 (4-7만원/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ 우도 해녀 식당 (해산물) (Google 4.5)<br>🍽️ 천진항 횟집 (Google 4.4)<br>🍽️ 우도 땅콩 아이스크림 가게 (Google 4.6)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 여름 해파리 쏘임 주의. 수온 급강하 구간 존재. 해녀 작업 구역 진입 금지. 조류 변화 주의</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국어 완전 지원. 해녀 문화 체험 프로그램. 전국 프리다이빙 동호회 정기 모임</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Jeju Udo South Korea&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_ac9716d5e70a6116.setContent(html_80beed04a6195767);
-cm_85854fd92daaa7f8.bindPopup(pop_ac9716d5e70a6116);
-cm_85854fd92daaa7f8.bindTooltip(`<div>Jeju Udo 8/10</div>`,{sticky:true});
+}).addTo(map_7efd1ca9371fe0ed);
+var pop_fb12f10147fe8da5 = L.popup({maxWidth:340});
+var html_2ac36d8131e3c021 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Jeju Udo</h3>   <b>South Korea</b> | 8/10 | ✈️직항<hr style="margin:3px 0">   🌊 최대수심 20m | 시야 5-15m<br>🌡️ 수온 18°C | 해류 약<br>💰 $20/day | ✈️ ~1h | ✈️직항<br>📅 6월, 7월, 8월, 9월<br>🏊 해녀 체험 프로그램. 제주 프리다이빙 스쿨 다수. SSI/AIDA 코스. 한국 프리다이빙 협회 공인 강습<hr style="margin:3px 0">   <i>유네스코 인류무형문화유산 제주 해녀 문화를 직접 체험할 수 있는 유일한 곳. 우도의 에메랄드빛 산호 모래 해변(홍조단괴)과 맑은 물이 국내 최고 수준. 한국인에게 가장 접근성 좋은 프리다이빙 성지.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 우도 해녀의집 게스트하우스 (5-8만원/night)<br>🏨 우도 파라다이스 호텔 (8-15만원/night)<br>🏨 삼달리 해변 민박 (4-7만원/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ 우도 해녀 식당 (해산물) (Google 4.5)<br>🍽️ 천진항 횟집 (Google 4.4)<br>🍽️ 우도 땅콩 아이스크림 가게 (Google 4.6)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 여름 해파리 쏘임 주의. 수온 급강하 구간 존재. 해녀 작업 구역 진입 금지. 조류 변화 주의</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국어 완전 지원. 해녀 문화 체험 프로그램. 전국 프리다이빙 동호회 정기 모임</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Jeju Udo South Korea&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_fb12f10147fe8da5.setContent(html_2ac36d8131e3c021);
+cm_3cf6dbaa74b0ae86.bindPopup(pop_fb12f10147fe8da5);
+cm_3cf6dbaa74b0ae86.bindTooltip(`<div>Jeju Udo 8/10</div>`,{sticky:true});
 
 
-var lbl_5b484b4ec017bea7 = L.marker([33.501,126.952]).addTo(map_e623b9134cb1aaf0);
-var icon_lbl_5b484b4ec017bea7 = L.divIcon({
+var lbl_42a5ddacda9d9888 = L.marker([33.501,126.952]).addTo(map_7efd1ca9371fe0ed);
+var icon_lbl_42a5ddacda9d9888 = L.divIcon({
     html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Jeju Udo</div>',
     className:'empty'
 });
-lbl_5b484b4ec017bea7.setIcon(icon_lbl_5b484b4ec017bea7);
+lbl_42a5ddacda9d9888.setIcon(icon_lbl_42a5ddacda9d9888);
 
 
-var cm_8f15f0864021e67d = L.marker([37.038,22.115]).addTo(map_e623b9134cb1aaf0);
-var icon_cm_8f15f0864021e67d = L.divIcon({
+var cm_9dde79fffd4b1925 = L.marker([37.038,22.115]).addTo(map_7efd1ca9371fe0ed);
+var icon_cm_9dde79fffd4b1925 = L.divIcon({
     html:'<div style="width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_8f15f0864021e67d.setIcon(icon_cm_8f15f0864021e67d);
-var pop_fdbecfbc7d06abe0 = L.popup({maxWidth:340});
-var html_c06a2e0aa52b4e82 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Kalamata</h3>   <b>Greece</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 50m | 시야 20-35m<br>🌡️ 수온 23°C | 해류 없음-약<br>💰 $50/day | ✈️ ~13h | 🔄경유<br>📅 5월, 6월, 7월, 8월 외 2개월<br>🏊 Performance Freediving International 코스. 유럽 챔피언십 개최지. 전용 딥라인 시설. Halykon Days 등 집중 캠프<hr style="margin:3px 0">   <i>Herbert Nitsch 등 세계 최고 프리다이버들이 훈련하는 곳. 지중해의 맑고 잔잔한 물과 그리스 특유의 고대 문명이 어우러지는 특별한 환경. 한국에서 멀지만 유럽 훈련 캠프로 인기.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Filoxenia Hotel Kalamata ($80-150/night)<br>🏨 Ibis Styles Kalamata ($60-100/night)<br>🏨 Oceanis Hotel ($50-80/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Spialia Restaurant (Google 4.6)<br>🍽️ Ta Rolla (Google 4.5)<br>🍽️ To Dichtari (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 딥라인 훈련 시 수면 대기 다이버 필수. 지중해 물리기 해파리 주의. 선박 왕래 구역 표식 확인</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 영어 완전 지원. 국제 캠프 한국인 참가자 다수</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Kalamata Greece&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_fdbecfbc7d06abe0.setContent(html_c06a2e0aa52b4e82);
-cm_8f15f0864021e67d.bindPopup(pop_fdbecfbc7d06abe0);
-cm_8f15f0864021e67d.bindTooltip(`<div>Kalamata 8/10</div>`,{sticky:true});
+cm_9dde79fffd4b1925.setIcon(icon_cm_9dde79fffd4b1925);
+var pop_fd0a86008bb6cdab = L.popup({maxWidth:340});
+var html_4793d50489ee0bc3 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Kalamata</h3>   <b>Greece</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 50m | 시야 20-35m<br>🌡️ 수온 23°C | 해류 없음-약<br>💰 $50/day | ✈️ ~13h | 🔄경유<br>📅 5월, 6월, 7월, 8월 외 2개월<br>🏊 Performance Freediving International 코스. 유럽 챔피언십 개최지. 전용 딥라인 시설. Halykon Days 등 집중 캠프<hr style="margin:3px 0">   <i>Herbert Nitsch 등 세계 최고 프리다이버들이 훈련하는 곳. 지중해의 맑고 잔잔한 물과 그리스 특유의 고대 문명이 어우러지는 특별한 환경. 한국에서 멀지만 유럽 훈련 캠프로 인기.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Filoxenia Hotel Kalamata ($80-150/night)<br>🏨 Ibis Styles Kalamata ($60-100/night)<br>🏨 Oceanis Hotel ($50-80/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Spialia Restaurant (Google 4.6)<br>🍽️ Ta Rolla (Google 4.5)<br>🍽️ To Dichtari (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 딥라인 훈련 시 수면 대기 다이버 필수. 지중해 물리기 해파리 주의. 선박 왕래 구역 표식 확인</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 영어 완전 지원. 국제 캠프 한국인 참가자 다수</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Kalamata Greece&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_fd0a86008bb6cdab.setContent(html_4793d50489ee0bc3);
+cm_9dde79fffd4b1925.bindPopup(pop_fd0a86008bb6cdab);
+cm_9dde79fffd4b1925.bindTooltip(`<div>Kalamata 8/10</div>`,{sticky:true});
 
 
-var lbl_21454f2be11003ce = L.marker([37.038,22.115]).addTo(map_e623b9134cb1aaf0);
-var icon_lbl_21454f2be11003ce = L.divIcon({
+var lbl_48146d6183c1f894 = L.marker([37.038,22.115]).addTo(map_7efd1ca9371fe0ed);
+var icon_lbl_48146d6183c1f894 = L.divIcon({
     html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Kalamata</div>',
     className:'empty'
 });
-lbl_21454f2be11003ce.setIcon(icon_lbl_21454f2be11003ce);
+lbl_48146d6183c1f894.setIcon(icon_lbl_48146d6183c1f894);
 
 
-var cm_f6bd29cf16acd167 = L.marker([36.201,29.638]).addTo(map_e623b9134cb1aaf0);
-var icon_cm_f6bd29cf16acd167 = L.divIcon({
+var cm_ee16e026de568b66 = L.marker([36.201,29.638]).addTo(map_7efd1ca9371fe0ed);
+var icon_cm_ee16e026de568b66 = L.divIcon({
     html:'<div style="width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_f6bd29cf16acd167.setIcon(icon_cm_f6bd29cf16acd167);
-var pop_461eb2fb3fb07802 = L.popup({maxWidth:340});
-var html_829e878fa316ba00 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Kas</h3>   <b>Turkey</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 45m | 시야 20-35m<br>🌡️ 수온 24°C | 해류 없음-약<br>💰 $45/day | ✈️ ~12h | 🔄경유<br>📅 5월, 6월, 7월, 8월 외 2개월<br>🏊 Bougainville Dive Center, SubMarina 등 AIDA 스쿨. 지중해 프리다이빙 대회 정기 개최. 침선 투어 병행 가능<hr style="margin:3px 0">   <i>터키의 지중해 최고 보석 카쉬에서 즐기는 프리다이빙. 앞바다에 수몰된 리키아 고대 도시 유적을 프리다이빙으로 탐험하는 독특한 경험이 가능. 그리스 카스텔로리조 섬이 지척으로 보이는 국경 위 투명한 바다.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Aquapark Hotel Kas ($80-160/night)<br>🏨 Mimosa Hotel ($60-100/night)<br>🏨 Hideaway Hotel ($100-200/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Bi Lokma (Google 4.7)<br>🍽️ Blu Bar Restaurant (Google 4.5)<br>🍽️ Chez Evy (Google 4.6)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 유적 접촉 금지 (문화재 보호). 수중 동굴 진입 전문가 외 금지. 여름 성수기 선박 왕래 주의</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 영어 가이드 풍부. 터키 여행 한국인 커뮤니티</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Kas Turkey&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_461eb2fb3fb07802.setContent(html_829e878fa316ba00);
-cm_f6bd29cf16acd167.bindPopup(pop_461eb2fb3fb07802);
-cm_f6bd29cf16acd167.bindTooltip(`<div>Kas 8/10</div>`,{sticky:true});
+cm_ee16e026de568b66.setIcon(icon_cm_ee16e026de568b66);
+var pop_d0518480d3ce4637 = L.popup({maxWidth:340});
+var html_94e95208c107f249 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Kas</h3>   <b>Turkey</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 45m | 시야 20-35m<br>🌡️ 수온 24°C | 해류 없음-약<br>💰 $45/day | ✈️ ~12h | 🔄경유<br>📅 5월, 6월, 7월, 8월 외 2개월<br>🏊 Bougainville Dive Center, SubMarina 등 AIDA 스쿨. 지중해 프리다이빙 대회 정기 개최. 침선 투어 병행 가능<hr style="margin:3px 0">   <i>터키의 지중해 최고 보석 카쉬에서 즐기는 프리다이빙. 앞바다에 수몰된 리키아 고대 도시 유적을 프리다이빙으로 탐험하는 독특한 경험이 가능. 그리스 카스텔로리조 섬이 지척으로 보이는 국경 위 투명한 바다.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Aquapark Hotel Kas ($80-160/night)<br>🏨 Mimosa Hotel ($60-100/night)<br>🏨 Hideaway Hotel ($100-200/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Bi Lokma (Google 4.7)<br>🍽️ Blu Bar Restaurant (Google 4.5)<br>🍽️ Chez Evy (Google 4.6)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 유적 접촉 금지 (문화재 보호). 수중 동굴 진입 전문가 외 금지. 여름 성수기 선박 왕래 주의</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 영어 가이드 풍부. 터키 여행 한국인 커뮤니티</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Kas Turkey&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_d0518480d3ce4637.setContent(html_94e95208c107f249);
+cm_ee16e026de568b66.bindPopup(pop_d0518480d3ce4637);
+cm_ee16e026de568b66.bindTooltip(`<div>Kas 8/10</div>`,{sticky:true});
 
 
-var lbl_338bacd1cfce01d8 = L.marker([36.201,29.638]).addTo(map_e623b9134cb1aaf0);
-var icon_lbl_338bacd1cfce01d8 = L.divIcon({
+var lbl_d30d841f20e350bd = L.marker([36.201,29.638]).addTo(map_7efd1ca9371fe0ed);
+var icon_lbl_d30d841f20e350bd = L.divIcon({
     html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Kas</div>',
     className:'empty'
 });
-lbl_338bacd1cfce01d8.setIcon(icon_lbl_338bacd1cfce01d8);
+lbl_d30d841f20e350bd.setIcon(icon_lbl_d30d841f20e350bd);
 
 
-var cm_25b082c7cd94b11e = L.marker([27.912,34.33]).addTo(map_e623b9134cb1aaf0);
-var icon_cm_25b082c7cd94b11e = L.divIcon({
+var cm_baf7c5232d23ebf1 = L.marker([27.912,34.33]).addTo(map_7efd1ca9371fe0ed);
+var icon_cm_baf7c5232d23ebf1 = L.divIcon({
     html:'<div style="width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_25b082c7cd94b11e.setIcon(icon_cm_25b082c7cd94b11e);
-var pop_e3bc265bb1bc845f = L.popup({maxWidth:340});
-var html_33a787857b55fe20 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Sharm el-Sheikh</h3>   <b>Egypt</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 60m | 시야 25-40m<br>🌡️ 수온 24°C | 해류 약-중<br>💰 $55/day | ✈️ ~12h | 🔄경유<br>📅 3월, 4월, 5월, 9월 외 2개월<br>🏊 Ras Mohamed 국립공원 인근. AIDA/SSI 스쿨 다수. 리조트 전용 딥라인 시설<hr style="margin:3px 0">   <i>다합과 더불어 이집트 홍해 최고의 프리다이빙 포인트. 라스 모하메드 국립공원의 드롭오프는 수직 60m 절벽 아래로 펼쳐지는 산호 정원이 일품. 세계적인 리조트 인프라로 고급 여행과의 조합 최적.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Four Seasons Resort Sharm el Sheikh ($200-450/night)<br>🏨 Hilton Sharks Bay Resort ($100-200/night)<br>🏨 Baron Resort Sharm el-Sheikh ($80-160/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Alfredo&#x27;s Restaurant (Google 4.5)<br>🍽️ Farsha Cafe (Google 4.6)<br>🍽️ La Luna Restaurant (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 상어 구역 표식 준수. 조류 강도 일일 변화 큼. 리조트 구역 외 단독 잠수 금지</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 1-2명 (시즌별). 이집트 다합/샤름 한국인 커뮤니티</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Sharm el-Sheikh Egypt&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_e3bc265bb1bc845f.setContent(html_33a787857b55fe20);
-cm_25b082c7cd94b11e.bindPopup(pop_e3bc265bb1bc845f);
-cm_25b082c7cd94b11e.bindTooltip(`<div>Sharm el-Sheikh 8/10</div>`,{sticky:true});
+cm_baf7c5232d23ebf1.setIcon(icon_cm_baf7c5232d23ebf1);
+var pop_25da68dea0c672d0 = L.popup({maxWidth:340});
+var html_e5f3dd8f642cabf1 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Sharm el-Sheikh</h3>   <b>Egypt</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 60m | 시야 25-40m<br>🌡️ 수온 24°C | 해류 약-중<br>💰 $55/day | ✈️ ~12h | 🔄경유<br>📅 3월, 4월, 5월, 9월 외 2개월<br>🏊 Ras Mohamed 국립공원 인근. AIDA/SSI 스쿨 다수. 리조트 전용 딥라인 시설<hr style="margin:3px 0">   <i>다합과 더불어 이집트 홍해 최고의 프리다이빙 포인트. 라스 모하메드 국립공원의 드롭오프는 수직 60m 절벽 아래로 펼쳐지는 산호 정원이 일품. 세계적인 리조트 인프라로 고급 여행과의 조합 최적.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Four Seasons Resort Sharm el Sheikh ($200-450/night)<br>🏨 Hilton Sharks Bay Resort ($100-200/night)<br>🏨 Baron Resort Sharm el-Sheikh ($80-160/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Alfredo&#x27;s Restaurant (Google 4.5)<br>🍽️ Farsha Cafe (Google 4.6)<br>🍽️ La Luna Restaurant (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 상어 구역 표식 준수. 조류 강도 일일 변화 큼. 리조트 구역 외 단독 잠수 금지</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 1-2명 (시즌별). 이집트 다합/샤름 한국인 커뮤니티</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Sharm el-Sheikh Egypt&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_25da68dea0c672d0.setContent(html_e5f3dd8f642cabf1);
+cm_baf7c5232d23ebf1.bindPopup(pop_25da68dea0c672d0);
+cm_baf7c5232d23ebf1.bindTooltip(`<div>Sharm el-Sheikh 8/10</div>`,{sticky:true});
 
 
-var lbl_535d9c4011e9ea96 = L.marker([27.912,34.33]).addTo(map_e623b9134cb1aaf0);
-var icon_lbl_535d9c4011e9ea96 = L.divIcon({
+var lbl_5be2edd1696116c9 = L.marker([27.912,34.33]).addTo(map_7efd1ca9371fe0ed);
+var icon_lbl_5be2edd1696116c9 = L.divIcon({
     html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Sharm el-Sheikh</div>',
     className:'empty'
 });
-lbl_535d9c4011e9ea96.setIcon(icon_lbl_535d9c4011e9ea96);
+lbl_5be2edd1696116c9.setIcon(icon_lbl_5be2edd1696116c9);
 
 
-var cm_68ed94837c112f91 = L.marker([15.415,-61.371]).addTo(map_e623b9134cb1aaf0);
-var icon_cm_68ed94837c112f91 = L.divIcon({
+var cm_966b1c8012186ec8 = L.marker([15.415,-61.371]).addTo(map_7efd1ca9371fe0ed);
+var icon_cm_966b1c8012186ec8 = L.divIcon({
     html:'<div style="width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_68ed94837c112f91.setIcon(icon_cm_68ed94837c112f91);
-var pop_dbbeb8e26c9aa3fd = L.popup({maxWidth:340});
-var html_5be9ffc8b450c14f = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Dominica</h3>   <b>Dominica</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 40m | 시야 20-30m<br>🌡️ 수온 27°C | 해류 약<br>💰 $70/day | ✈️ ~22h | 🔄경유<br>📅 2월, 3월, 4월, 5월 외 3개월<br>🏊 Dive Dominica, Anchorage Dive Center 등 AIDA 스쿨. 고래 관찰 전용 투어. 산호초 회복 지역 보호<hr style="margin:3px 0">   <i>세계 유일 향유고래 연중 서식지로 프리다이빙으로 고래를 만날 수 있는 지구상 유일한 곳. 거대한 고래와 물속에서 눈을 마주치는 경험은 언어로 표현할 수 없다. 카리브해의 숨겨진 보석.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Secret Bay ($400-800/night)<br>🏨 Anchorage Hotel &amp; Dive Center ($100-200/night)<br>🏨 Fort Young Hotel ($120-220/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Pearl&#x27;s Cuisine (Google 4.6)<br>🍽️ Cocorico Cafe &amp; Patisserie (Google 4.5)<br>🍽️ Rhymer&#x27;s Beach Bar &amp; Restaurant (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 향유고래 접근 거리 규정 준수 필수 (소리 자극 금지). 이코클리 지정 가이드 동반 의무. 강한 이안류 구간 존재</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 영어 가이드. 한국인 방문객 극소수</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Dominica Dominica&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_dbbeb8e26c9aa3fd.setContent(html_5be9ffc8b450c14f);
-cm_68ed94837c112f91.bindPopup(pop_dbbeb8e26c9aa3fd);
-cm_68ed94837c112f91.bindTooltip(`<div>Dominica 8/10</div>`,{sticky:true});
+cm_966b1c8012186ec8.setIcon(icon_cm_966b1c8012186ec8);
+var pop_c2e9c2bcf33ed9a1 = L.popup({maxWidth:340});
+var html_438ef0e05a98eed6 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Dominica</h3>   <b>Dominica</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 40m | 시야 20-30m<br>🌡️ 수온 27°C | 해류 약<br>💰 $70/day | ✈️ ~22h | 🔄경유<br>📅 2월, 3월, 4월, 5월 외 3개월<br>🏊 Dive Dominica, Anchorage Dive Center 등 AIDA 스쿨. 고래 관찰 전용 투어. 산호초 회복 지역 보호<hr style="margin:3px 0">   <i>세계 유일 향유고래 연중 서식지로 프리다이빙으로 고래를 만날 수 있는 지구상 유일한 곳. 거대한 고래와 물속에서 눈을 마주치는 경험은 언어로 표현할 수 없다. 카리브해의 숨겨진 보석.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Secret Bay ($400-800/night)<br>🏨 Anchorage Hotel &amp; Dive Center ($100-200/night)<br>🏨 Fort Young Hotel ($120-220/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Pearl&#x27;s Cuisine (Google 4.6)<br>🍽️ Cocorico Cafe &amp; Patisserie (Google 4.5)<br>🍽️ Rhymer&#x27;s Beach Bar &amp; Restaurant (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 향유고래 접근 거리 규정 준수 필수 (소리 자극 금지). 이코클리 지정 가이드 동반 의무. 강한 이안류 구간 존재</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 영어 가이드. 한국인 방문객 극소수</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Dominica Dominica&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_c2e9c2bcf33ed9a1.setContent(html_438ef0e05a98eed6);
+cm_966b1c8012186ec8.bindPopup(pop_c2e9c2bcf33ed9a1);
+cm_966b1c8012186ec8.bindTooltip(`<div>Dominica 8/10</div>`,{sticky:true});
 
 
-var lbl_de691a63258d083a = L.marker([15.415,-61.371]).addTo(map_e623b9134cb1aaf0);
-var icon_lbl_de691a63258d083a = L.divIcon({
+var lbl_4551c0eb219dd3aa = L.marker([15.415,-61.371]).addTo(map_7efd1ca9371fe0ed);
+var icon_lbl_4551c0eb219dd3aa = L.divIcon({
     html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Dominica</div>',
     className:'empty'
 });
-lbl_de691a63258d083a.setIcon(icon_lbl_de691a63258d083a);
+lbl_4551c0eb219dd3aa.setIcon(icon_lbl_4551c0eb219dd3aa);
 
 
-var cm_0b99b6ce90286cae = L.marker([16.32,-86.53]).addTo(map_e623b9134cb1aaf0);
-var icon_cm_0b99b6ce90286cae = L.divIcon({
+var cm_fe00cfad8f0830a7 = L.marker([16.32,-86.53]).addTo(map_7efd1ca9371fe0ed);
+var icon_cm_fe00cfad8f0830a7 = L.divIcon({
     html:'<div style="width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_0b99b6ce90286cae.setIcon(icon_cm_0b99b6ce90286cae);
-var pop_2112c2ceffd3c34b = L.popup({maxWidth:340});
-var html_a35553b4afcb421c = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Roatan</h3>   <b>Honduras</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 50m | 시야 20-35m<br>🌡️ 수온 28°C | 해류 약<br>💰 $60/day | ✈️ ~22h | 🔄경유<br>📅 2월, 3월, 4월, 5월 외 4개월<br>🏊 Freedive Roatan, Coconut Tree Divers 등 AIDA 스쿨. 메소아메리카 산호초 직접 접근. 선박 투어 필수<hr style="margin:3px 0">   <i>세계 2위 규모 메소아메리카 산호초(Great Maya Reef) 바로 앞에 위치한 섬. 카리브해 스타일의 느긋한 분위기와 미국 직항로로 중미 여행자에게 인기. 형형색색 산호 정원 위를 프리다이빙으로 날아다니는 경험.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Anthony&#x27;s Key Resort ($150-300/night)<br>🏨 Turquoise Bay Dive &amp; Beach Resort ($100-200/night)<br>🏨 West Bay Lodge ($60-120/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ The Lighthouse Restaurant (Google 4.5)<br>🍽️ Sundowners Bar &amp; Grill (Google 4.4)<br>🍽️ Bite on the Beach (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 산호 접촉 엄금 (법적 제재). 선크림 사용 금지 구역 존재. 고래상어 시즌 선박 왕래 급증</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 영어 완전 지원</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Roatan Honduras&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_2112c2ceffd3c34b.setContent(html_a35553b4afcb421c);
-cm_0b99b6ce90286cae.bindPopup(pop_2112c2ceffd3c34b);
-cm_0b99b6ce90286cae.bindTooltip(`<div>Roatan 8/10</div>`,{sticky:true});
+cm_fe00cfad8f0830a7.setIcon(icon_cm_fe00cfad8f0830a7);
+var pop_f5114df121bcae52 = L.popup({maxWidth:340});
+var html_1aab075fe4e9ba2b = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Roatan</h3>   <b>Honduras</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 50m | 시야 20-35m<br>🌡️ 수온 28°C | 해류 약<br>💰 $60/day | ✈️ ~22h | 🔄경유<br>📅 2월, 3월, 4월, 5월 외 4개월<br>🏊 Freedive Roatan, Coconut Tree Divers 등 AIDA 스쿨. 메소아메리카 산호초 직접 접근. 선박 투어 필수<hr style="margin:3px 0">   <i>세계 2위 규모 메소아메리카 산호초(Great Maya Reef) 바로 앞에 위치한 섬. 카리브해 스타일의 느긋한 분위기와 미국 직항로로 중미 여행자에게 인기. 형형색색 산호 정원 위를 프리다이빙으로 날아다니는 경험.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Anthony&#x27;s Key Resort ($150-300/night)<br>🏨 Turquoise Bay Dive &amp; Beach Resort ($100-200/night)<br>🏨 West Bay Lodge ($60-120/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ The Lighthouse Restaurant (Google 4.5)<br>🍽️ Sundowners Bar &amp; Grill (Google 4.4)<br>🍽️ Bite on the Beach (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 산호 접촉 엄금 (법적 제재). 선크림 사용 금지 구역 존재. 고래상어 시즌 선박 왕래 급증</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 영어 완전 지원</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Roatan Honduras&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_f5114df121bcae52.setContent(html_1aab075fe4e9ba2b);
+cm_fe00cfad8f0830a7.bindPopup(pop_f5114df121bcae52);
+cm_fe00cfad8f0830a7.bindTooltip(`<div>Roatan 8/10</div>`,{sticky:true});
 
 
-var lbl_1396a609b9b4ea64 = L.marker([16.32,-86.53]).addTo(map_e623b9134cb1aaf0);
-var icon_lbl_1396a609b9b4ea64 = L.divIcon({
+var lbl_63180b430cfbf10a = L.marker([16.32,-86.53]).addTo(map_7efd1ca9371fe0ed);
+var icon_lbl_63180b430cfbf10a = L.divIcon({
     html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Roatan</div>',
     className:'empty'
 });
-lbl_1396a609b9b4ea64.setIcon(icon_lbl_1396a609b9b4ea64);
+lbl_63180b430cfbf10a.setIcon(icon_lbl_63180b430cfbf10a);
 
 
-var cm_1b7b6651a55ad055 = L.circleMarker([9.525,123.395],{
+var cm_863234211c2e83b1 = L.circleMarker([9.525,123.395],{
     color:"#ffcc00",fill:true,fillColor:"#ffcc00",fillOpacity:0.85,
     radius:14,weight:2
-}).addTo(map_e623b9134cb1aaf0);
-var pop_79ee52eb6854ae9f = L.popup({maxWidth:340});
-var html_e20610ac7736e599 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Oslob</h3>   <b>Philippines</b> | 8/10 | ✈️직항<hr style="margin:3px 0">   🌊 최대수심 35m | 시야 10-20m<br>🌡️ 수온 28°C | 해류 약<br>💰 $35/day | ✈️ ~4h | ✈️직항<br>📅 11월, 12월, 1월, 2월 외 3개월<br>🏊 Sumilon Bluewater Island 리조트 다이브 센터. 고래상어 투어 전문 운영. 세부 기반 스쿨 당일치기 가능<hr style="margin:3px 0">   <i>세계에서 고래상어를 가장 확실하게 볼 수 있는 곳. 현지 어부들의 먹이 제공으로 연중 고래상어 30+ 마리 상주. 프리다이빙으로 옆에서 수영하는 경험은 스쿠버 다이빙과 차원이 다른 자유로움.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Sumilon Bluewater Island Resort ($120-250/night)<br>🏨 Cebu White Sands Resort ($60-120/night)<br>🏨 Ocean Breeze Oslob ($30-60/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Bela&#x27;s Garden &amp; Seafood (Google 4.5)<br>🍽️ Ocean Breeze Restaurant (Google 4.3)<br>🍽️ Balai Oslob Restaurant (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 먹이 제공 행위 동참 금지 (윤리적 관광). 고래상어 지느러미·꼬리 접촉 금지. 안내 선박 프로펠러 위험</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 가이드 다수. 세부 기반 한국어 투어 예약 매우 활발</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Oslob Philippines&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_79ee52eb6854ae9f.setContent(html_e20610ac7736e599);
-cm_1b7b6651a55ad055.bindPopup(pop_79ee52eb6854ae9f);
-cm_1b7b6651a55ad055.bindTooltip(`<div>Oslob 8/10</div>`,{sticky:true});
+}).addTo(map_7efd1ca9371fe0ed);
+var pop_9a98733fe716823b = L.popup({maxWidth:340});
+var html_ded38aff96d6e4bc = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Oslob</h3>   <b>Philippines</b> | 8/10 | ✈️직항<hr style="margin:3px 0">   🌊 최대수심 35m | 시야 10-20m<br>🌡️ 수온 28°C | 해류 약<br>💰 $35/day | ✈️ ~4h | ✈️직항<br>📅 11월, 12월, 1월, 2월 외 3개월<br>🏊 Sumilon Bluewater Island 리조트 다이브 센터. 고래상어 투어 전문 운영. 세부 기반 스쿨 당일치기 가능<hr style="margin:3px 0">   <i>세계에서 고래상어를 가장 확실하게 볼 수 있는 곳. 현지 어부들의 먹이 제공으로 연중 고래상어 30+ 마리 상주. 프리다이빙으로 옆에서 수영하는 경험은 스쿠버 다이빙과 차원이 다른 자유로움.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Sumilon Bluewater Island Resort ($120-250/night)<br>🏨 Cebu White Sands Resort ($60-120/night)<br>🏨 Ocean Breeze Oslob ($30-60/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Bela&#x27;s Garden &amp; Seafood (Google 4.5)<br>🍽️ Ocean Breeze Restaurant (Google 4.3)<br>🍽️ Balai Oslob Restaurant (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 먹이 제공 행위 동참 금지 (윤리적 관광). 고래상어 지느러미·꼬리 접촉 금지. 안내 선박 프로펠러 위험</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 가이드 다수. 세부 기반 한국어 투어 예약 매우 활발</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Oslob Philippines&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_9a98733fe716823b.setContent(html_ded38aff96d6e4bc);
+cm_863234211c2e83b1.bindPopup(pop_9a98733fe716823b);
+cm_863234211c2e83b1.bindTooltip(`<div>Oslob 8/10</div>`,{sticky:true});
 
 
-var lbl_ec166b52a6e96412 = L.marker([9.525,123.395]).addTo(map_e623b9134cb1aaf0);
-var icon_lbl_ec166b52a6e96412 = L.divIcon({
+var lbl_6a95d275dc81e964 = L.marker([9.525,123.395]).addTo(map_7efd1ca9371fe0ed);
+var icon_lbl_6a95d275dc81e964 = L.divIcon({
     html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Oslob</div>',
     className:'empty'
 });
-lbl_ec166b52a6e96412.setIcon(icon_lbl_ec166b52a6e96412);
+lbl_6a95d275dc81e964.setIcon(icon_lbl_6a95d275dc81e964);
 
 
-var cm_5faa2742afb85558 = L.marker([25.128,56.327]).addTo(map_e623b9134cb1aaf0);
-var icon_cm_5faa2742afb85558 = L.divIcon({
+var cm_503b36c65f9fab08 = L.marker([25.128,56.327]).addTo(map_7efd1ca9371fe0ed);
+var icon_cm_503b36c65f9fab08 = L.divIcon({
     html:'<div style="width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_5faa2742afb85558.setIcon(icon_cm_5faa2742afb85558);
-var pop_cdea29823a77e94d = L.popup({maxWidth:340});
-var html_c9cb6f7c8ae8677f = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Fujairah</h3>   <b>UAE</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 30m | 시야 10-20m<br>🌡️ 수온 27°C | 해류 약<br>💰 $65/day | ✈️ ~10h | 🔄경유<br>📅 10월, 11월, 12월, 1월 외 3개월<br>🏊 7Seas Divers, Freestyle Divers 등 AIDA 스쿨. Snoopy Island 전용 포인트. UAE 프리다이빙 협회 공인<hr style="margin:3px 0">   <i>두바이/아부다비 경유 중동 여행 시 추가할 수 있는 숨겨진 프리다이빙 스팟. 스누피 섬 주변의 완만한 산호초는 입문자에게도 안전하고 재미있는 환경. 오만만의 맑은 물이 페르시아만보다 훨씬 투명.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Fujairah Rotana Resort &amp; Spa ($120-250/night)<br>🏨 Ibis Styles Fujairah ($60-100/night)<br>🏨 Al Bahar Hotel &amp; Resort ($80-160/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ La Mer Restaurant (Google 4.5)<br>🍽️ The Square Restaurant &amp; Terrace (Google 4.4)<br>🍽️ Seaview Restaurant (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 보트 교통량 증가 시기 조심. 산호 접촉 금지 (UAE 환경부 규정). 여름 수온 33°C 이상 탈수 위험</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 영어/아랍어 가이드. UAE 거주 한국인 경유 연결 가능</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Fujairah UAE&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_cdea29823a77e94d.setContent(html_c9cb6f7c8ae8677f);
-cm_5faa2742afb85558.bindPopup(pop_cdea29823a77e94d);
-cm_5faa2742afb85558.bindTooltip(`<div>Fujairah 8/10</div>`,{sticky:true});
+cm_503b36c65f9fab08.setIcon(icon_cm_503b36c65f9fab08);
+var pop_701922c11864da84 = L.popup({maxWidth:340});
+var html_2303f475fdff1865 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Fujairah</h3>   <b>UAE</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 30m | 시야 10-20m<br>🌡️ 수온 27°C | 해류 약<br>💰 $65/day | ✈️ ~10h | 🔄경유<br>📅 10월, 11월, 12월, 1월 외 3개월<br>🏊 7Seas Divers, Freestyle Divers 등 AIDA 스쿨. Snoopy Island 전용 포인트. UAE 프리다이빙 협회 공인<hr style="margin:3px 0">   <i>두바이/아부다비 경유 중동 여행 시 추가할 수 있는 숨겨진 프리다이빙 스팟. 스누피 섬 주변의 완만한 산호초는 입문자에게도 안전하고 재미있는 환경. 오만만의 맑은 물이 페르시아만보다 훨씬 투명.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Fujairah Rotana Resort &amp; Spa ($120-250/night)<br>🏨 Ibis Styles Fujairah ($60-100/night)<br>🏨 Al Bahar Hotel &amp; Resort ($80-160/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ La Mer Restaurant (Google 4.5)<br>🍽️ The Square Restaurant &amp; Terrace (Google 4.4)<br>🍽️ Seaview Restaurant (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 보트 교통량 증가 시기 조심. 산호 접촉 금지 (UAE 환경부 규정). 여름 수온 33°C 이상 탈수 위험</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 영어/아랍어 가이드. UAE 거주 한국인 경유 연결 가능</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Fujairah UAE&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_701922c11864da84.setContent(html_2303f475fdff1865);
+cm_503b36c65f9fab08.bindPopup(pop_701922c11864da84);
+cm_503b36c65f9fab08.bindTooltip(`<div>Fujairah 8/10</div>`,{sticky:true});
 
 
-var lbl_02bdadad7128e96d = L.marker([25.128,56.327]).addTo(map_e623b9134cb1aaf0);
-var icon_lbl_02bdadad7128e96d = L.divIcon({
+var lbl_ced99cfa2bc7a5d6 = L.marker([25.128,56.327]).addTo(map_7efd1ca9371fe0ed);
+var icon_lbl_ced99cfa2bc7a5d6 = L.divIcon({
     html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Fujairah</div>',
     className:'empty'
 });
-lbl_02bdadad7128e96d.setIcon(icon_lbl_02bdadad7128e96d);
+lbl_ced99cfa2bc7a5d6.setIcon(icon_lbl_ced99cfa2bc7a5d6);
 
 
-var cm_5358dc8fc93d385c = L.marker([43.703,7.319]).addTo(map_e623b9134cb1aaf0);
-var icon_cm_5358dc8fc93d385c = L.divIcon({
+var cm_1e51085675e62537 = L.marker([43.703,7.319]).addTo(map_7efd1ca9371fe0ed);
+var icon_cm_1e51085675e62537 = L.divIcon({
     html:'<div style="width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_5358dc8fc93d385c.setIcon(icon_cm_5358dc8fc93d385c);
-var pop_eab71a5842cc4321 = L.popup({maxWidth:340});
-var html_9f169b151281cd8e = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Villefranche-sur-Mer</h3>   <b>France</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 35m | 시야 15-30m<br>🌡️ 수온 20°C | 해류 없음-약<br>💰 $70/day | ✈️ ~14h | 🔄경유<br>📅 5월, 6월, 7월, 8월 외 2개월<br>🏊 Club de Plongée de Villefranche, Centre International de Plongée 등 코스 제공. CMAS/AIDA 인증. 니스 공항 15분<hr style="margin:3px 0">   <i>니스 옆의 아름다운 만에서 즐기는 코트다쥐르 프리다이빙. 유럽 최고 부촌에 위치한 이국적인 환경이 독특한 경험을 선사. 모나코까지 이어지는 프리다이빙 투어로 지중해 럭셔리 여행과 완벽한 조합.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Hotel Welcome ($150-300/night)<br>🏨 La Flore Hotel ($100-200/night)<br>🏨 Hotel Provencal ($80-160/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ La Mère Germaine (Google 4.5)<br>🍽️ Le Cosmo Restaurant (Google 4.4)<br>🍽️ Le Serre Restaurant (Google 4.6)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 여름 요트 왕래 극도로 많음. 부이 및 안전 깃발 필수. 해파리 대량 발생 시기(8-9월) 주의</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 프랑스어/영어 가이드</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Villefranche-sur-Mer France&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_eab71a5842cc4321.setContent(html_9f169b151281cd8e);
-cm_5358dc8fc93d385c.bindPopup(pop_eab71a5842cc4321);
-cm_5358dc8fc93d385c.bindTooltip(`<div>Villefranche-sur-Mer 8/10</div>`,{sticky:true});
+cm_1e51085675e62537.setIcon(icon_cm_1e51085675e62537);
+var pop_7cad2bd22ea2a9a0 = L.popup({maxWidth:340});
+var html_129160c13913579e = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Villefranche-sur-Mer</h3>   <b>France</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 35m | 시야 15-30m<br>🌡️ 수온 20°C | 해류 없음-약<br>💰 $70/day | ✈️ ~14h | 🔄경유<br>📅 5월, 6월, 7월, 8월 외 2개월<br>🏊 Club de Plongée de Villefranche, Centre International de Plongée 등 코스 제공. CMAS/AIDA 인증. 니스 공항 15분<hr style="margin:3px 0">   <i>니스 옆의 아름다운 만에서 즐기는 코트다쥐르 프리다이빙. 유럽 최고 부촌에 위치한 이국적인 환경이 독특한 경험을 선사. 모나코까지 이어지는 프리다이빙 투어로 지중해 럭셔리 여행과 완벽한 조합.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Hotel Welcome ($150-300/night)<br>🏨 La Flore Hotel ($100-200/night)<br>🏨 Hotel Provencal ($80-160/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ La Mère Germaine (Google 4.5)<br>🍽️ Le Cosmo Restaurant (Google 4.4)<br>🍽️ Le Serre Restaurant (Google 4.6)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 여름 요트 왕래 극도로 많음. 부이 및 안전 깃발 필수. 해파리 대량 발생 시기(8-9월) 주의</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 프랑스어/영어 가이드</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Villefranche-sur-Mer France&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_7cad2bd22ea2a9a0.setContent(html_129160c13913579e);
+cm_1e51085675e62537.bindPopup(pop_7cad2bd22ea2a9a0);
+cm_1e51085675e62537.bindTooltip(`<div>Villefranche-sur-Mer 8/10</div>`,{sticky:true});
 
 
-var lbl_f61eacaf304f94f3 = L.marker([43.703,7.319]).addTo(map_e623b9134cb1aaf0);
-var icon_lbl_f61eacaf304f94f3 = L.divIcon({
+var lbl_86108696cba2935e = L.marker([43.703,7.319]).addTo(map_7efd1ca9371fe0ed);
+var icon_lbl_86108696cba2935e = L.divIcon({
     html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Villefranche-sur-Mer</div>',
     className:'empty'
 });
-lbl_f61eacaf304f94f3.setIcon(icon_lbl_f61eacaf304f94f3);
+lbl_86108696cba2935e.setIcon(icon_lbl_86108696cba2935e);
 
 
-var cm_165ce80e3e268e07 = L.circleMarker([26.336,127.8],{
+var cm_0ff8e20c64050516 = L.circleMarker([26.336,127.8],{
     color:"#ffcc00",fill:true,fillColor:"#ffcc00",fillOpacity:0.85,
     radius:14,weight:2
-}).addTo(map_e623b9134cb1aaf0);
-var pop_83bdb46d9aedd78b = L.popup({maxWidth:340});
-var html_2a1c90fc9fdbba37 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Okinawa</h3>   <b>Japan</b> | 8/10 | ✈️직항<hr style="margin:3px 0">   🌊 최대수심 35m | 시야 15-30m<br>🌡️ 수온 24°C | 해류 약<br>💰 $55/day | ✈️ ~2h | ✈️직항<br>📅 4월, 5월, 6월, 7월 외 3개월<br>🏊 Palau Nakagusuku 등 AIDA/SSI 스쿨. 오키나와 프리다이빙 협회 공인. 케라마 제도 전용 투어<hr style="margin:3px 0">   <i>한국에서 가장 가까운 고품질 프리다이빙 스팟. 케라마 제도의 에메랄드빛 바다는 가시거리 30m+에 도달하는 날이 많다. 오키나와 고유의 류큐 문화와 미군기지가 공존하는 독특한 분위기.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Halekulani Okinawa ($300-600/night)<br>🏨 Hyatt Regency Naha ($150-300/night)<br>🏨 Manza Beach Hotel ($100-200/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Zakuro (Naha Steakhouse) (Google 4.5)<br>🍽️ Yunangi (Google 4.6)<br>🍽️ Pocchi (오키나와 소바) (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 하부 섬 진입 규정 확인 필수. 산호 접촉 엄금. 태풍 시즌(8-9월) 기상 변화 빠름</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국어 다이빙 투어 다수 운영. 한국인 거주자 커뮤니티 활발. 오키나와 한인회</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Okinawa Japan&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_83bdb46d9aedd78b.setContent(html_2a1c90fc9fdbba37);
-cm_165ce80e3e268e07.bindPopup(pop_83bdb46d9aedd78b);
-cm_165ce80e3e268e07.bindTooltip(`<div>Okinawa 8/10</div>`,{sticky:true});
+}).addTo(map_7efd1ca9371fe0ed);
+var pop_d666b087e28d7ead = L.popup({maxWidth:340});
+var html_9cfc174b5030d68e = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Okinawa</h3>   <b>Japan</b> | 8/10 | ✈️직항<hr style="margin:3px 0">   🌊 최대수심 35m | 시야 15-30m<br>🌡️ 수온 24°C | 해류 약<br>💰 $55/day | ✈️ ~2h | ✈️직항<br>📅 4월, 5월, 6월, 7월 외 3개월<br>🏊 Palau Nakagusuku 등 AIDA/SSI 스쿨. 오키나와 프리다이빙 협회 공인. 케라마 제도 전용 투어<hr style="margin:3px 0">   <i>한국에서 가장 가까운 고품질 프리다이빙 스팟. 케라마 제도의 에메랄드빛 바다는 가시거리 30m+에 도달하는 날이 많다. 오키나와 고유의 류큐 문화와 미군기지가 공존하는 독특한 분위기.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Halekulani Okinawa ($300-600/night)<br>🏨 Hyatt Regency Naha ($150-300/night)<br>🏨 Manza Beach Hotel ($100-200/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Zakuro (Naha Steakhouse) (Google 4.5)<br>🍽️ Yunangi (Google 4.6)<br>🍽️ Pocchi (오키나와 소바) (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 하부 섬 진입 규정 확인 필수. 산호 접촉 엄금. 태풍 시즌(8-9월) 기상 변화 빠름</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국어 다이빙 투어 다수 운영. 한국인 거주자 커뮤니티 활발. 오키나와 한인회</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Okinawa Japan&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_d666b087e28d7ead.setContent(html_9cfc174b5030d68e);
+cm_0ff8e20c64050516.bindPopup(pop_d666b087e28d7ead);
+cm_0ff8e20c64050516.bindTooltip(`<div>Okinawa 8/10</div>`,{sticky:true});
 
 
-var lbl_d4ef43d757f7d94f = L.marker([26.336,127.8]).addTo(map_e623b9134cb1aaf0);
-var icon_lbl_d4ef43d757f7d94f = L.divIcon({
+var lbl_fd2b64a55b93edce = L.marker([26.336,127.8]).addTo(map_7efd1ca9371fe0ed);
+var icon_lbl_fd2b64a55b93edce = L.divIcon({
     html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Okinawa</div>',
     className:'empty'
 });
-lbl_d4ef43d757f7d94f.setIcon(icon_lbl_d4ef43d757f7d94f);
+lbl_fd2b64a55b93edce.setIcon(icon_lbl_fd2b64a55b93edce);
 
 
-var cm_89f09736749b29a8 = L.circleMarker([8.65,97.64],{
+var cm_05e0931fb4c8eca0 = L.circleMarker([8.65,97.64],{
     color:"#ffcc00",fill:true,fillColor:"#ffcc00",fillOpacity:0.85,
     radius:14,weight:2
-}).addTo(map_e623b9134cb1aaf0);
-var pop_918d9488b95c3469 = L.popup({maxWidth:340});
-var html_71c31df9cda60aef = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Similan Islands</h3>   <b>Thailand</b> | 8/10 | ✈️직항<hr style="margin:3px 0">   🌊 최대수심 40m | 시야 20-35m<br>🌡️ 수온 29°C | 해류 중<br>💰 $40/day | ✈️ ~7h | ✈️직항<br>📅 11월, 12월, 1월, 2월 외 2개월<br>🏊 Khao Lak 기반 리브어보드 투어. 국립공원 입장 허가 필요. PADI/AIDA 스쿨 카오락 다수<hr style="margin:3px 0">   <i>태국 국립해양공원 시밀란 제도는 세계 10대 다이빙 포인트 단골 등장지. 화강암 바위와 산호 정원이 만들어내는 독특한 수중 지형. 11-4월만 개방되는 한정된 접근이 원시 자연을 보존.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Sarojin Resort Khao Lak ($200-400/night)<br>🏨 Khaolak Emerald Beach Resort ($80-160/night)<br>🏨 Poseidon Bungalows ($30-60/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Boat &amp; Bell Restaurant (Google 4.5)<br>🍽️ Phulay Bay Resort Restaurant (Google 4.6)<br>🍽️ Khao Lak Night Market (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 국립공원 구역 내 산호 절대 접촉 금지. 리브어보드 탑승 전 건강 체크 필수. 오픈 바다 중간 조류 위험</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국어 리브어보드 투어 운영 (카오락). 카카오톡 &#x27;시밀란 프리다이빙&#x27; 검색</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Similan Islands Thailand&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_918d9488b95c3469.setContent(html_71c31df9cda60aef);
-cm_89f09736749b29a8.bindPopup(pop_918d9488b95c3469);
-cm_89f09736749b29a8.bindTooltip(`<div>Similan Islands 8/10</div>`,{sticky:true});
+}).addTo(map_7efd1ca9371fe0ed);
+var pop_29bcb2b5057cc14d = L.popup({maxWidth:340});
+var html_70c544ea7d6e882a = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Similan Islands</h3>   <b>Thailand</b> | 8/10 | ✈️직항<hr style="margin:3px 0">   🌊 최대수심 40m | 시야 20-35m<br>🌡️ 수온 29°C | 해류 중<br>💰 $40/day | ✈️ ~7h | ✈️직항<br>📅 11월, 12월, 1월, 2월 외 2개월<br>🏊 Khao Lak 기반 리브어보드 투어. 국립공원 입장 허가 필요. PADI/AIDA 스쿨 카오락 다수<hr style="margin:3px 0">   <i>태국 국립해양공원 시밀란 제도는 세계 10대 다이빙 포인트 단골 등장지. 화강암 바위와 산호 정원이 만들어내는 독특한 수중 지형. 11-4월만 개방되는 한정된 접근이 원시 자연을 보존.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Sarojin Resort Khao Lak ($200-400/night)<br>🏨 Khaolak Emerald Beach Resort ($80-160/night)<br>🏨 Poseidon Bungalows ($30-60/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Boat &amp; Bell Restaurant (Google 4.5)<br>🍽️ Phulay Bay Resort Restaurant (Google 4.6)<br>🍽️ Khao Lak Night Market (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 국립공원 구역 내 산호 절대 접촉 금지. 리브어보드 탑승 전 건강 체크 필수. 오픈 바다 중간 조류 위험</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국어 리브어보드 투어 운영 (카오락). 카카오톡 &#x27;시밀란 프리다이빙&#x27; 검색</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Similan Islands Thailand&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_29bcb2b5057cc14d.setContent(html_70c544ea7d6e882a);
+cm_05e0931fb4c8eca0.bindPopup(pop_29bcb2b5057cc14d);
+cm_05e0931fb4c8eca0.bindTooltip(`<div>Similan Islands 8/10</div>`,{sticky:true});
 
 
-var lbl_933716c4ee6e2abd = L.marker([8.65,97.64]).addTo(map_e623b9134cb1aaf0);
-var icon_lbl_933716c4ee6e2abd = L.divIcon({
+var lbl_6b87f95be99afbba = L.marker([8.65,97.64]).addTo(map_7efd1ca9371fe0ed);
+var icon_lbl_6b87f95be99afbba = L.divIcon({
     html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Similan Islands</div>',
     className:'empty'
 });
-lbl_933716c4ee6e2abd.setIcon(icon_lbl_933716c4ee6e2abd);
+lbl_6b87f95be99afbba.setIcon(icon_lbl_6b87f95be99afbba);
 
 
-var cm_877bbec8cb533409 = L.marker([5.904,102.696]).addTo(map_e623b9134cb1aaf0);
-var icon_cm_877bbec8cb533409 = L.divIcon({
+var cm_d96938d42322eb90 = L.marker([5.904,102.696]).addTo(map_7efd1ca9371fe0ed);
+var icon_cm_d96938d42322eb90 = L.divIcon({
     html:'<div style="width:28px;height:28px;border:2.5px dashed #ff9900;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-14px;margin-top:-14px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_877bbec8cb533409.setIcon(icon_cm_877bbec8cb533409);
-var pop_2e116f8bd98e1556 = L.popup({maxWidth:340});
-var html_f939f973d766649e = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff9900">Perhentian Islands</h3>   <b>Malaysia</b> | 7/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 25m | 시야 10-20m<br>🌡️ 수온 29°C | 해류 약<br>💰 $25/day | ✈️ ~7h | 🔄경유<br>📅 3월, 4월, 5월, 6월 외 3개월<br>🏊 Turtle Bay Dive Centre, Pro Divers World 등 PADI/AIDA 스쿨. 거북이 보호 구역 내 지정 구역만 입수 허가<hr style="margin:3px 0">   <i>말레이시아의 숨겨진 에메랄드 섬으로 저렴한 물가와 따뜻한 물이 장점. 거북이와 쉽게 만날 수 있는 몇 안 되는 자연 환경. 쿠알라룸푸르 경유로 접근 가능하며 동남아 저예산 여행의 최고 선택지.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Bubu Long Beach Resort ($40-80/night)<br>🏨 Perhentian Island Resort ($60-120/night)<br>🏨 Panorama Chalet ($20-40/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Mama&#x27;s Chalet Restaurant (Google 4.4)<br>🍽️ Cafe at Black Rock (Google 4.3)<br>🍽️ Mohsin Restaurant (Google 4.2)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 6월~8월 말레이시아 몬순 이후 지뢰 해파리 주의. 11월~2월 섬 완전 폐쇄 (접근 불가). 보트 배정 시간 확인 필수</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 영어/말레이어 가이드. 한국인 방문객 소수</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Perhentian Islands Malaysia&tbm=isch" target="_blank"      style="color:#ff9900;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_2e116f8bd98e1556.setContent(html_f939f973d766649e);
-cm_877bbec8cb533409.bindPopup(pop_2e116f8bd98e1556);
-cm_877bbec8cb533409.bindTooltip(`<div>Perhentian Islands 7/10</div>`,{sticky:true});
+cm_d96938d42322eb90.setIcon(icon_cm_d96938d42322eb90);
+var pop_bced87e11888ab1a = L.popup({maxWidth:340});
+var html_bbbbe5ad08f91e2c = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff9900">Perhentian Islands</h3>   <b>Malaysia</b> | 7/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 25m | 시야 10-20m<br>🌡️ 수온 29°C | 해류 약<br>💰 $25/day | ✈️ ~7h | 🔄경유<br>📅 3월, 4월, 5월, 6월 외 3개월<br>🏊 Turtle Bay Dive Centre, Pro Divers World 등 PADI/AIDA 스쿨. 거북이 보호 구역 내 지정 구역만 입수 허가<hr style="margin:3px 0">   <i>말레이시아의 숨겨진 에메랄드 섬으로 저렴한 물가와 따뜻한 물이 장점. 거북이와 쉽게 만날 수 있는 몇 안 되는 자연 환경. 쿠알라룸푸르 경유로 접근 가능하며 동남아 저예산 여행의 최고 선택지.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Bubu Long Beach Resort ($40-80/night)<br>🏨 Perhentian Island Resort ($60-120/night)<br>🏨 Panorama Chalet ($20-40/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Mama&#x27;s Chalet Restaurant (Google 4.4)<br>🍽️ Cafe at Black Rock (Google 4.3)<br>🍽️ Mohsin Restaurant (Google 4.2)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 6월~8월 말레이시아 몬순 이후 지뢰 해파리 주의. 11월~2월 섬 완전 폐쇄 (접근 불가). 보트 배정 시간 확인 필수</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 영어/말레이어 가이드. 한국인 방문객 소수</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Perhentian Islands Malaysia&tbm=isch" target="_blank"      style="color:#ff9900;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_bced87e11888ab1a.setContent(html_bbbbe5ad08f91e2c);
+cm_d96938d42322eb90.bindPopup(pop_bced87e11888ab1a);
+cm_d96938d42322eb90.bindTooltip(`<div>Perhentian Islands 7/10</div>`,{sticky:true});
 
 
-var lbl_f1e5305721773d5a = L.marker([5.904,102.696]).addTo(map_e623b9134cb1aaf0);
-var icon_lbl_f1e5305721773d5a = L.divIcon({
+var lbl_4f0303c01eb720b2 = L.marker([5.904,102.696]).addTo(map_7efd1ca9371fe0ed);
+var icon_lbl_4f0303c01eb720b2 = L.divIcon({
     html:'<div style="font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Perhentian Islands</div>',
     className:'empty'
 });
-lbl_f1e5305721773d5a.setIcon(icon_lbl_f1e5305721773d5a);
+lbl_4f0303c01eb720b2.setIcon(icon_lbl_4f0303c01eb720b2);
 
 
-var cm_554464a5ea538a40 = L.circleMarker([6.49,99.305],{
+var cm_628bdfbbc2f68e03 = L.circleMarker([6.49,99.305],{
     color:"#ff9900",fill:true,fillColor:"#ff9900",fillOpacity:0.85,
     radius:12,weight:2
-}).addTo(map_e623b9134cb1aaf0);
-var pop_071bf33e00f905ae = L.popup({maxWidth:340});
-var html_c564ed498c305392 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff9900">Koh Lipe</h3>   <b>Thailand</b> | 7/10 | ✈️직항<hr style="margin:3px 0">   🌊 최대수심 25m | 시야 10-20m<br>🌡️ 수온 29°C | 해류 약<br>💰 $30/day | ✈️ ~7h | ✈️직항<br>📅 11월, 12월, 1월, 2월 외 2개월<br>🏊 Castaway Divers, Gecko Divers 등 PADI/AIDA 스쿨. 말레이시아 국경 근접 포인트 투어. 입문자 전용 얕은 산호초 구간<hr style="margin:3px 0">   <i>태국 최남단의 섬으로 말레이시아 국경에 인접한 비밀 스팟. 리페를 둘러싼 작은 무인도들 사이 산호초가 잘 보존되어 있다. 코타오·코사무이 대비 관광객이 적고 물이 맑아 여유로운 프리다이빙 가능.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Idyllic Concept Resort ($100-200/night)<br>🏨 Bundhaya Resort ($60-120/night)<br>🏨 Castaway Beach Resort ($40-80/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Pooh&#x27;s Bar &amp; Restaurant (Google 4.4)<br>🍽️ Nidnoi Restaurant (Google 4.5)<br>🍽️ Forra Diving Cafe (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 11월~4월만 접근 가능 (우기 이동 위험). 국경 지역 서류 확인 필수. 야간 조류 변화 주의</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 가이드 1명 상주 (시즌별). 태국 남부 한인 카페 연결 가능</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Koh Lipe Thailand&tbm=isch" target="_blank"      style="color:#ff9900;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_071bf33e00f905ae.setContent(html_c564ed498c305392);
-cm_554464a5ea538a40.bindPopup(pop_071bf33e00f905ae);
-cm_554464a5ea538a40.bindTooltip(`<div>Koh Lipe 7/10</div>`,{sticky:true});
+}).addTo(map_7efd1ca9371fe0ed);
+var pop_7bd8d97fa9009cd4 = L.popup({maxWidth:340});
+var html_92d42310be5f718d = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff9900">Koh Lipe</h3>   <b>Thailand</b> | 7/10 | ✈️직항<hr style="margin:3px 0">   🌊 최대수심 25m | 시야 10-20m<br>🌡️ 수온 29°C | 해류 약<br>💰 $30/day | ✈️ ~7h | ✈️직항<br>📅 11월, 12월, 1월, 2월 외 2개월<br>🏊 Castaway Divers, Gecko Divers 등 PADI/AIDA 스쿨. 말레이시아 국경 근접 포인트 투어. 입문자 전용 얕은 산호초 구간<hr style="margin:3px 0">   <i>태국 최남단의 섬으로 말레이시아 국경에 인접한 비밀 스팟. 리페를 둘러싼 작은 무인도들 사이 산호초가 잘 보존되어 있다. 코타오·코사무이 대비 관광객이 적고 물이 맑아 여유로운 프리다이빙 가능.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Idyllic Concept Resort ($100-200/night)<br>🏨 Bundhaya Resort ($60-120/night)<br>🏨 Castaway Beach Resort ($40-80/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Pooh&#x27;s Bar &amp; Restaurant (Google 4.4)<br>🍽️ Nidnoi Restaurant (Google 4.5)<br>🍽️ Forra Diving Cafe (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 11월~4월만 접근 가능 (우기 이동 위험). 국경 지역 서류 확인 필수. 야간 조류 변화 주의</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 가이드 1명 상주 (시즌별). 태국 남부 한인 카페 연결 가능</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Koh Lipe Thailand&tbm=isch" target="_blank"      style="color:#ff9900;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_7bd8d97fa9009cd4.setContent(html_92d42310be5f718d);
+cm_628bdfbbc2f68e03.bindPopup(pop_7bd8d97fa9009cd4);
+cm_628bdfbbc2f68e03.bindTooltip(`<div>Koh Lipe 7/10</div>`,{sticky:true});
 
 
-var lbl_206c76cb16c5c2fd = L.marker([6.49,99.305]).addTo(map_e623b9134cb1aaf0);
-var icon_lbl_206c76cb16c5c2fd = L.divIcon({
+var lbl_e179e2b6407411e9 = L.marker([6.49,99.305]).addTo(map_7efd1ca9371fe0ed);
+var icon_lbl_e179e2b6407411e9 = L.divIcon({
     html:'<div style="font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Koh Lipe</div>',
     className:'empty'
 });
-lbl_206c76cb16c5c2fd.setIcon(icon_lbl_206c76cb16c5c2fd);
+lbl_e179e2b6407411e9.setIcon(icon_lbl_e179e2b6407411e9);
 
 </script>
 </body>

@@ -49,18 +49,22 @@ iframe {
 </div>
 
 <iframe id="frame-surf" src="/surfing/surf.html"></iframe>
-<iframe id="frame-snow" src="/surfing/snow.html" class="hidden"></iframe>
-<iframe id="frame-scuba" src="/surfing/scuba.html" class="hidden"></iframe>
-<iframe id="frame-freedive" src="/surfing/freedive.html" class="hidden"></iframe>
-<iframe id="frame-trek" src="/surfing/trek.html" class="hidden"></iframe>
-<iframe id="frame-scenic" src="/surfing/scenic.html" class="hidden"></iframe>
+<iframe id="frame-snow" data-src="/surfing/snow.html" class="hidden"></iframe>
+<iframe id="frame-scuba" data-src="/surfing/scuba.html" class="hidden"></iframe>
+<iframe id="frame-freedive" data-src="/surfing/freedive.html" class="hidden"></iframe>
+<iframe id="frame-trek" data-src="/surfing/trek.html" class="hidden"></iframe>
+<iframe id="frame-scenic" data-src="/surfing/scenic.html" class="hidden"></iframe>
 
 <script>
 function switchTab(id) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelector(`[data-id="${id}"]`).classList.add('active');
   document.querySelectorAll('iframe').forEach(f => f.classList.add('hidden'));
-  document.getElementById('frame-' + id).classList.remove('hidden');
+  var frame = document.getElementById('frame-' + id);
+  if (!frame.src && frame.dataset.src) {
+    frame.src = frame.dataset.src;
+  }
+  frame.classList.remove('hidden');
 }
 </script>
 

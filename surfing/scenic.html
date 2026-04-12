@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <style>
-        #map_f76ae32c59e0570c { position:relative; width:100%; height:100%; left:0; top:0; }
+        #map_3d3642d6c6ba28b1 { position:absolute; top:0; bottom:0; left:0; right:0; }
         .leaflet-container { font-size:1rem; }
         html, body { width:100%; height:100%; margin:0; padding:0; }
     </style>
@@ -22,10 +22,10 @@
     <span style="color:#ff0055">● 10점(10)</span> <span style="color:#00ff88">● 9점(13)</span> <span style="color:#ffcc00">● 8점(13)</span> <span style="color:#ff9900">● 7점(4)</span><br>
     <small>●실선=직항 ○점선=경유 | 클릭→상세</small></div>
 
-    <div class="folium-map" id="map_f76ae32c59e0570c"></div>
+    <div class="folium-map" id="map_3d3642d6c6ba28b1"></div>
 
 <script>
-var map_f76ae32c59e0570c = L.map("map_f76ae32c59e0570c", {
+var map_3d3642d6c6ba28b1 = L.map("map_3d3642d6c6ba28b1", {
     center: [20.0,30.0],
     crs: L.CRS.EPSG3857,
     zoom: 2,
@@ -37,820 +37,820 @@ var map_f76ae32c59e0570c = L.map("map_f76ae32c59e0570c", {
     minZoom: 2
 });
 
-var tile_6f0eb996a2c87be5 = L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+var tile_94ba96acf4a51216 = L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
     minZoom:0, maxZoom:18, maxNativeZoom:18, noWrap:true,
     attribution:"CartoDB", subdomains:"abc", detectRetina:false, tms:false, opacity:1
-}).addTo(map_f76ae32c59e0570c);
+}).addTo(map_3d3642d6c6ba28b1);
 
 
-var cm_420226d34bc49e96 = L.marker([-20.133,-67.489]).addTo(map_f76ae32c59e0570c);
-var icon_cm_420226d34bc49e96 = L.divIcon({
+var cm_7e7025c9009a8d57 = L.marker([-20.133,-67.489]).addTo(map_3d3642d6c6ba28b1);
+var icon_cm_7e7025c9009a8d57 = L.divIcon({
     html:'<div style="width:40px;height:40px;border:2.5px dashed #ff0055;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-20px;margin-top:-20px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_420226d34bc49e96.setIcon(icon_cm_420226d34bc49e96);
-var pop_ccc38e51f3494745 = L.popup({maxWidth:340});
-var html_ea0d4c9e712e2abf = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff0055">Salar de Uyuni 👑</h3>   <b>Bolivia</b> | 10/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 소금사막/거울호수 | 우기(12-4월) 거울효과 / 건기(5-11월) 광활한 백색<br>💰 $60/day | ✈️ ~25h | 🔄경유<br>📅 12월, 1월, 2월, 3월 외 8개월<br>✨ 세계 최대 소금사막. 우기엔 하늘과 땅의 경계가 사라지는 거울 효과<hr style="margin:3px 0">   <i>10,582km² 끝없는 하얀 세계. 별이 발밑에서 빛나는 경험. 선인장 섬(Incahuasi) 필수 방문.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Palacio de Sal ($150-300/night)<br>🏨 Luna Salada Hotel ($120-200/night)<br>🏨 Hotel de Sal Cristal Samaña ($80-150/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Minuteman Pizza (Uyuni) (Google 4.3)<br>🍽️ Arco Iris Restaurant (Google 4.1)<br>🍽️ Kactus Restaurant (Google 4.0)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 고산병 주의(3,600m). 4WD 투어 필수. 현지 가이드 없이 진입 절대 금지. 충분한 수분 섭취 필수.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Salar de Uyuni Bolivia&tbm=isch" target="_blank"      style="color:#ff0055;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_ccc38e51f3494745.setContent(html_ea0d4c9e712e2abf);
-cm_420226d34bc49e96.bindPopup(pop_ccc38e51f3494745);
-cm_420226d34bc49e96.bindTooltip(`<div>Salar de Uyuni 10/10</div>`,{sticky:true});
+cm_7e7025c9009a8d57.setIcon(icon_cm_7e7025c9009a8d57);
+var pop_568123a533a28799 = L.popup({maxWidth:340});
+var html_398f21ce09d35299 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff0055">Salar de Uyuni 👑</h3>   <b>Bolivia</b> | 10/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 소금사막/거울호수 | 우기(12-4월) 거울효과 / 건기(5-11월) 광활한 백색<br>💰 $60/day | ✈️ ~25h | 🔄경유<br>📅 12월, 1월, 2월, 3월 외 8개월<br>✨ 세계 최대 소금사막. 우기엔 하늘과 땅의 경계가 사라지는 거울 효과<hr style="margin:3px 0">   <i>10,582km² 끝없는 하얀 세계. 별이 발밑에서 빛나는 경험. 선인장 섬(Incahuasi) 필수 방문.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Palacio de Sal ($150-300/night)<br>🏨 Luna Salada Hotel ($120-200/night)<br>🏨 Hotel de Sal Cristal Samaña ($80-150/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Minuteman Pizza (Uyuni) (Google 4.3)<br>🍽️ Arco Iris Restaurant (Google 4.1)<br>🍽️ Kactus Restaurant (Google 4.0)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 고산병 주의(3,600m). 4WD 투어 필수. 현지 가이드 없이 진입 절대 금지. 충분한 수분 섭취 필수.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Salar de Uyuni Bolivia&tbm=isch" target="_blank"      style="color:#ff0055;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_568123a533a28799.setContent(html_398f21ce09d35299);
+cm_7e7025c9009a8d57.bindPopup(pop_568123a533a28799);
+cm_7e7025c9009a8d57.bindTooltip(`<div>Salar de Uyuni 10/10</div>`,{sticky:true});
 
 
-var lbl_e3207bff908cdead = L.marker([-20.133,-67.489]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_e3207bff908cdead = L.divIcon({
+var lbl_722dc660c22342b7 = L.marker([-20.133,-67.489]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_722dc660c22342b7 = L.divIcon({
     html:'<div style="font-size:9px;color:#ff0055;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Salar de Uyuni</div>',
     className:'empty'
 });
-lbl_e3207bff908cdead.setIcon(icon_lbl_e3207bff908cdead);
+lbl_722dc660c22342b7.setIcon(icon_lbl_722dc660c22342b7);
 
 
-var cm_b77cd64b8f255e03 = L.marker([69.649,18.956]).addTo(map_f76ae32c59e0570c);
-var icon_cm_b77cd64b8f255e03 = L.divIcon({
+var cm_3e5b4f3013256ff6 = L.marker([69.649,18.956]).addTo(map_3d3642d6c6ba28b1);
+var icon_cm_3e5b4f3013256ff6 = L.divIcon({
     html:'<div style="width:40px;height:40px;border:2.5px dashed #ff0055;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-20px;margin-top:-20px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_b77cd64b8f255e03.setIcon(icon_cm_b77cd64b8f255e03);
-var pop_27055e4b6bd16248 = L.popup({maxWidth:340});
-var html_6ef2a6a0b151f06c = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff0055">Northern Lights (Tromsø) 👑</h3>   <b>Norway</b> | 10/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 오로라/북극 | 10월-3월 야간 (KP지수 2 이상, 맑은 날)<br>💰 $200/day | ✈️ ~14h | 🔄경유<br>📅 10월, 11월, 12월, 1월 외 2개월<br>✨ 지구에서 가장 안정적으로 오로라를 볼 수 있는 최적의 장소<hr style="margin:3px 0">   <i>북위 70도의 북극권 도시. 개썰매, 순록 체험도 가능. 12월-1월은 백야 반대인 극야로 24시간 밤. 오로라 투어 예약 필수.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Clarion Hotel The Edge ($180-350/night)<br>🏨 Scandic Ishavshotel ($150-280/night)<br>🏨 Tromsø Villmarkssenter (캐빈) ($200-400/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Emmas Drømmekjøkken (Michelin 추천)<br>🍽️ Mathallen Tromsø (Google 4.5)<br>🍽️ Bardus Bistro (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 영하 20도 이하 대비. 방한복 최상급 필수. 오로라 투어 시 현지 업체 이용 권장.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 Visit Norway 한국어 가이드 앱 제공</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Northern Lights (Tromsø) Norway&tbm=isch" target="_blank"      style="color:#ff0055;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_27055e4b6bd16248.setContent(html_6ef2a6a0b151f06c);
-cm_b77cd64b8f255e03.bindPopup(pop_27055e4b6bd16248);
-cm_b77cd64b8f255e03.bindTooltip(`<div>Northern Lights (Tromsø) 10/10</div>`,{sticky:true});
+cm_3e5b4f3013256ff6.setIcon(icon_cm_3e5b4f3013256ff6);
+var pop_3621fa932b6cc224 = L.popup({maxWidth:340});
+var html_9d1925975b6ab80a = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff0055">Northern Lights (Tromsø) 👑</h3>   <b>Norway</b> | 10/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 오로라/북극 | 10월-3월 야간 (KP지수 2 이상, 맑은 날)<br>💰 $200/day | ✈️ ~14h | 🔄경유<br>📅 10월, 11월, 12월, 1월 외 2개월<br>✨ 지구에서 가장 안정적으로 오로라를 볼 수 있는 최적의 장소<hr style="margin:3px 0">   <i>북위 70도의 북극권 도시. 개썰매, 순록 체험도 가능. 12월-1월은 백야 반대인 극야로 24시간 밤. 오로라 투어 예약 필수.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Clarion Hotel The Edge ($180-350/night)<br>🏨 Scandic Ishavshotel ($150-280/night)<br>🏨 Tromsø Villmarkssenter (캐빈) ($200-400/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Emmas Drømmekjøkken (Michelin 추천)<br>🍽️ Mathallen Tromsø (Google 4.5)<br>🍽️ Bardus Bistro (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 영하 20도 이하 대비. 방한복 최상급 필수. 오로라 투어 시 현지 업체 이용 권장.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 Visit Norway 한국어 가이드 앱 제공</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Northern Lights (Tromsø) Norway&tbm=isch" target="_blank"      style="color:#ff0055;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_3621fa932b6cc224.setContent(html_9d1925975b6ab80a);
+cm_3e5b4f3013256ff6.bindPopup(pop_3621fa932b6cc224);
+cm_3e5b4f3013256ff6.bindTooltip(`<div>Northern Lights (Tromsø) 10/10</div>`,{sticky:true});
 
 
-var lbl_b9db1a0b6456e365 = L.marker([69.649,18.956]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_b9db1a0b6456e365 = L.divIcon({
+var lbl_2abdf5f25ee25e20 = L.marker([69.649,18.956]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_2abdf5f25ee25e20 = L.divIcon({
     html:'<div style="font-size:9px;color:#ff0055;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Northern Lights (Tromsø)</div>',
     className:'empty'
 });
-lbl_b9db1a0b6456e365.setIcon(icon_lbl_b9db1a0b6456e365);
+lbl_2abdf5f25ee25e20.setIcon(icon_lbl_2abdf5f25ee25e20);
 
 
-var cm_a3bc40d827e2b704 = L.marker([36.057,-112.139]).addTo(map_f76ae32c59e0570c);
-var icon_cm_a3bc40d827e2b704 = L.divIcon({
+var cm_010c5762dfc827c6 = L.marker([36.057,-112.139]).addTo(map_3d3642d6c6ba28b1);
+var icon_cm_010c5762dfc827c6 = L.divIcon({
     html:'<div style="width:40px;height:40px;border:2.5px dashed #ff0055;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-20px;margin-top:-20px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_a3bc40d827e2b704.setIcon(icon_cm_a3bc40d827e2b704);
-var pop_35c0994274f3b29a = L.popup({maxWidth:340});
-var html_c8887634fb2fb71b = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff0055">Grand Canyon 👑</h3>   <b>USA</b> | 10/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 협곡/지질 | 3월-5월, 9월-11월 (여름은 폭염, 겨울은 설경)<br>💰 $150/day | ✈️ ~12h | 🔄경유<br>📅 3월, 4월, 5월, 9월 외 2개월<br>✨ 20억 년 지구 역사가 새겨진 세계 최대의 협곡. 446km 길이의 압도적 스케일<hr style="margin:3px 0">   <i>South Rim이 기본, North Rim은 더 원시적. 일출/일몰 때 협곡이 붉게 물드는 장면은 평생 잊을 수 없음. 헬리콥터 투어도 추천.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 El Tovar Hotel ($200-400/night)<br>🏨 Bright Angel Lodge ($100-200/night)<br>🏨 The Canyon Suites (Tusayan) ($150-300/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ El Tovar Dining Room (Google 4.3)<br>🍽️ Arizona Room (Google 4.2)<br>🍽️ Bright Angel Restaurant (Google 4.0)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 하이킹 시 충분한 물(4L/일) 필수. 여름 폭염 주의. 림 트레일 외 단독 하강 자제.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 라스베가스에서 한국어 투어 다수 운영</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Grand Canyon USA&tbm=isch" target="_blank"      style="color:#ff0055;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_35c0994274f3b29a.setContent(html_c8887634fb2fb71b);
-cm_a3bc40d827e2b704.bindPopup(pop_35c0994274f3b29a);
-cm_a3bc40d827e2b704.bindTooltip(`<div>Grand Canyon 10/10</div>`,{sticky:true});
+cm_010c5762dfc827c6.setIcon(icon_cm_010c5762dfc827c6);
+var pop_13ef1b55fff78dd6 = L.popup({maxWidth:340});
+var html_233cc66fdf010908 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff0055">Grand Canyon 👑</h3>   <b>USA</b> | 10/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 협곡/지질 | 3월-5월, 9월-11월 (여름은 폭염, 겨울은 설경)<br>💰 $150/day | ✈️ ~12h | 🔄경유<br>📅 3월, 4월, 5월, 9월 외 2개월<br>✨ 20억 년 지구 역사가 새겨진 세계 최대의 협곡. 446km 길이의 압도적 스케일<hr style="margin:3px 0">   <i>South Rim이 기본, North Rim은 더 원시적. 일출/일몰 때 협곡이 붉게 물드는 장면은 평생 잊을 수 없음. 헬리콥터 투어도 추천.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 El Tovar Hotel ($200-400/night)<br>🏨 Bright Angel Lodge ($100-200/night)<br>🏨 The Canyon Suites (Tusayan) ($150-300/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ El Tovar Dining Room (Google 4.3)<br>🍽️ Arizona Room (Google 4.2)<br>🍽️ Bright Angel Restaurant (Google 4.0)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 하이킹 시 충분한 물(4L/일) 필수. 여름 폭염 주의. 림 트레일 외 단독 하강 자제.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 라스베가스에서 한국어 투어 다수 운영</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Grand Canyon USA&tbm=isch" target="_blank"      style="color:#ff0055;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_13ef1b55fff78dd6.setContent(html_233cc66fdf010908);
+cm_010c5762dfc827c6.bindPopup(pop_13ef1b55fff78dd6);
+cm_010c5762dfc827c6.bindTooltip(`<div>Grand Canyon 10/10</div>`,{sticky:true});
 
 
-var lbl_55cf104cc6a2df7c = L.marker([36.057,-112.139]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_55cf104cc6a2df7c = L.divIcon({
+var lbl_b442542cdc72dc2b = L.marker([36.057,-112.139]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_b442542cdc72dc2b = L.divIcon({
     html:'<div style="font-size:9px;color:#ff0055;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Grand Canyon</div>',
     className:'empty'
 });
-lbl_55cf104cc6a2df7c.setIcon(icon_lbl_55cf104cc6a2df7c);
+lbl_b442542cdc72dc2b.setIcon(icon_lbl_b442542cdc72dc2b);
 
 
-var cm_4fe4b3148ac26ac6 = L.circleMarker([29.325,110.434],{
+var cm_b496a62fd684f456 = L.circleMarker([29.325,110.434],{
     color:"#ff0055",fill:true,fillColor:"#ff0055",fillOpacity:0.85,
     radius:18,weight:2
-}).addTo(map_f76ae32c59e0570c);
-var pop_f39decdadebbf925 = L.popup({maxWidth:340});
-var html_811afb8111d45720 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff0055">Zhangjiajie 👑</h3>   <b>China</b> | 10/10 | ✈️직항<hr style="margin:3px 0">   🏞️ 기암괴석/산악 | 4월-10월 (10월 단풍 최고), 운해가 끼는 새벽<br>💰 $80/day | ✈️ ~4h | ✈️직항<br>📅 4월, 5월, 6월, 9월 외 2개월<br>✨ 아바타 판도라 행성 모델이 된 3,000개의 수직 사암 기둥. 세계 최장 유리다리<hr style="margin:3px 0">   <i>해발 1,500m의 구름 위에 떠있는 석봉들. 천문산 케이블카는 세계 최장(7.5km). 장가계대협곡 유리다리는 430m 절벽 위. 장가계 공항 직항 운항.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Pullman Zhangjiajie ($100-200/night)<br>🏨 Wyndham Grand Zhangjiajie ($80-180/night)<br>🏨 Howard Johnson Zhangjiajie ($60-120/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Impression Zhangjiajie (공연+식사) (Google 4.5)<br>🍽️ Tujia Folk Custom Restaurant (Google 4.2)<br>🍽️ Xiang Xi Restaurant (Google 4.1)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 유리다리 고소공포증 주의. 운해로 인한 미끄러운 트레일 주의. 성수기 줄 1-2시간 대기.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국어 현지 가이드 다수 활동</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Zhangjiajie China&tbm=isch" target="_blank"      style="color:#ff0055;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_f39decdadebbf925.setContent(html_811afb8111d45720);
-cm_4fe4b3148ac26ac6.bindPopup(pop_f39decdadebbf925);
-cm_4fe4b3148ac26ac6.bindTooltip(`<div>Zhangjiajie 10/10</div>`,{sticky:true});
+}).addTo(map_3d3642d6c6ba28b1);
+var pop_eba5b927ab6e5837 = L.popup({maxWidth:340});
+var html_04d946cfc8fcef6a = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff0055">Zhangjiajie 👑</h3>   <b>China</b> | 10/10 | ✈️직항<hr style="margin:3px 0">   🏞️ 기암괴석/산악 | 4월-10월 (10월 단풍 최고), 운해가 끼는 새벽<br>💰 $80/day | ✈️ ~4h | ✈️직항<br>📅 4월, 5월, 6월, 9월 외 2개월<br>✨ 아바타 판도라 행성 모델이 된 3,000개의 수직 사암 기둥. 세계 최장 유리다리<hr style="margin:3px 0">   <i>해발 1,500m의 구름 위에 떠있는 석봉들. 천문산 케이블카는 세계 최장(7.5km). 장가계대협곡 유리다리는 430m 절벽 위. 장가계 공항 직항 운항.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Pullman Zhangjiajie ($100-200/night)<br>🏨 Wyndham Grand Zhangjiajie ($80-180/night)<br>🏨 Howard Johnson Zhangjiajie ($60-120/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Impression Zhangjiajie (공연+식사) (Google 4.5)<br>🍽️ Tujia Folk Custom Restaurant (Google 4.2)<br>🍽️ Xiang Xi Restaurant (Google 4.1)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 유리다리 고소공포증 주의. 운해로 인한 미끄러운 트레일 주의. 성수기 줄 1-2시간 대기.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국어 현지 가이드 다수 활동</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Zhangjiajie China&tbm=isch" target="_blank"      style="color:#ff0055;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_eba5b927ab6e5837.setContent(html_04d946cfc8fcef6a);
+cm_b496a62fd684f456.bindPopup(pop_eba5b927ab6e5837);
+cm_b496a62fd684f456.bindTooltip(`<div>Zhangjiajie 10/10</div>`,{sticky:true});
 
 
-var lbl_164f6f0090288072 = L.marker([29.325,110.434]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_164f6f0090288072 = L.divIcon({
+var lbl_2a1f9c1d8bec7893 = L.marker([29.325,110.434]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_2a1f9c1d8bec7893 = L.divIcon({
     html:'<div style="font-size:9px;color:#ff0055;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Zhangjiajie</div>',
     className:'empty'
 });
-lbl_164f6f0090288072.setIcon(icon_lbl_164f6f0090288072);
+lbl_2a1f9c1d8bec7893.setIcon(icon_lbl_2a1f9c1d8bec7893);
 
 
-var cm_972e8222fa13f59f = L.marker([-25.696,-54.442]).addTo(map_f76ae32c59e0570c);
-var icon_cm_972e8222fa13f59f = L.divIcon({
+var cm_f54819356b0d87af = L.marker([-25.696,-54.442]).addTo(map_3d3642d6c6ba28b1);
+var icon_cm_f54819356b0d87af = L.divIcon({
     html:'<div style="width:40px;height:40px;border:2.5px dashed #ff0055;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-20px;margin-top:-20px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_972e8222fa13f59f.setIcon(icon_cm_972e8222fa13f59f);
-var pop_88e112121adb243e = L.popup({maxWidth:340});
-var html_9b6e05e886c6c041 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff0055">Iguazu Falls 👑</h3>   <b>Argentina/Brazil</b> | 10/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 폭포 | 3월-6월 (우기 후 수량 최고) / 8월-11월 (접근성 좋음)<br>💰 $100/day | ✈️ ~24h | 🔄경유<br>📅 3월, 4월, 5월, 6월 외 4개월<br>✨ 악마의 목구멍(Garganta del Diablo). 루스벨트 대통령 부인이 &#x27;불쌍한 나이아가라&#x27;라고 했던 폭포<hr style="margin:3px 0">   <i>세계 최대 폭포군. 275개 개별 폭포가 2.7km에 걸쳐 장관. 아르헨티나 측은 가까이서, 브라질 측은 파노라마로 감상. 보트 투어로 물보라 정면 돌격 가능.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Gran Meliá Iguazú ($300-600/night)<br>🏨 Sheraton Iguazú Resort ($200-400/night)<br>🏨 Hotel das Cataratas (브라질) ($250-500/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Itaipú Restaurant (Gran Meliá) (Google 4.4)<br>🍽️ La Rueda Restaurant (Google 4.3)<br>🍽️ Porto Canoas (브라질측) (Google 4.2)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 보트 투어 시 방수 백 필수. 아르헨티나-브라질 국경 이동 시 여권 지참.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Iguazu Falls Argentina/Brazil&tbm=isch" target="_blank"      style="color:#ff0055;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_88e112121adb243e.setContent(html_9b6e05e886c6c041);
-cm_972e8222fa13f59f.bindPopup(pop_88e112121adb243e);
-cm_972e8222fa13f59f.bindTooltip(`<div>Iguazu Falls 10/10</div>`,{sticky:true});
+cm_f54819356b0d87af.setIcon(icon_cm_f54819356b0d87af);
+var pop_38e4ff07196aa252 = L.popup({maxWidth:340});
+var html_0ee9f0b03fbab9d8 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff0055">Iguazu Falls 👑</h3>   <b>Argentina/Brazil</b> | 10/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 폭포 | 3월-6월 (우기 후 수량 최고) / 8월-11월 (접근성 좋음)<br>💰 $100/day | ✈️ ~24h | 🔄경유<br>📅 3월, 4월, 5월, 6월 외 4개월<br>✨ 악마의 목구멍(Garganta del Diablo). 루스벨트 대통령 부인이 &#x27;불쌍한 나이아가라&#x27;라고 했던 폭포<hr style="margin:3px 0">   <i>세계 최대 폭포군. 275개 개별 폭포가 2.7km에 걸쳐 장관. 아르헨티나 측은 가까이서, 브라질 측은 파노라마로 감상. 보트 투어로 물보라 정면 돌격 가능.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Gran Meliá Iguazú ($300-600/night)<br>🏨 Sheraton Iguazú Resort ($200-400/night)<br>🏨 Hotel das Cataratas (브라질) ($250-500/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Itaipú Restaurant (Gran Meliá) (Google 4.4)<br>🍽️ La Rueda Restaurant (Google 4.3)<br>🍽️ Porto Canoas (브라질측) (Google 4.2)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 보트 투어 시 방수 백 필수. 아르헨티나-브라질 국경 이동 시 여권 지참.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Iguazu Falls Argentina/Brazil&tbm=isch" target="_blank"      style="color:#ff0055;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_38e4ff07196aa252.setContent(html_0ee9f0b03fbab9d8);
+cm_f54819356b0d87af.bindPopup(pop_38e4ff07196aa252);
+cm_f54819356b0d87af.bindTooltip(`<div>Iguazu Falls 10/10</div>`,{sticky:true});
 
 
-var lbl_aec19861ee856b6b = L.marker([-25.696,-54.442]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_aec19861ee856b6b = L.divIcon({
+var lbl_29760121a978dbc4 = L.marker([-25.696,-54.442]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_29760121a978dbc4 = L.divIcon({
     html:'<div style="font-size:9px;color:#ff0055;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Iguazu Falls</div>',
     className:'empty'
 });
-lbl_aec19861ee856b6b.setIcon(icon_lbl_aec19861ee856b6b);
+lbl_29760121a978dbc4.setIcon(icon_lbl_29760121a978dbc4);
 
 
-var cm_2eb61b1d97bc490d = L.circleMarker([-44.641,167.897],{
+var cm_e21fe69eeca67ca6 = L.circleMarker([-44.641,167.897],{
     color:"#ff0055",fill:true,fillColor:"#ff0055",fillOpacity:0.85,
     radius:18,weight:2
-}).addTo(map_f76ae32c59e0570c);
-var pop_9fceed2862b5c081 = L.popup({maxWidth:340});
-var html_2e42d183784cab43 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff0055">Milford Sound 👑</h3>   <b>New Zealand</b> | 10/10 | ✈️직항<hr style="margin:3px 0">   🏞️ 피오르드/해안 | 12월-2월 (여름) / 비 오는 날 수백개 폭포 더 장관<br>💰 $150/day | ✈️ ~11h | ✈️직항<br>📅 12월, 1월, 2월, 3월 외 2개월<br>✨ 세계 8번째 불가사의. 수직 절벽에서 쏟아지는 폭포와 빙하가 만든 피오르드<hr style="margin:3px 0">   <i>연 강수량 7,000mm의 비 많은 곳. 역설적으로 비 오는 날이 더 아름다움. 크루즈, 카약, 스쿠버 다이빙 가능. 퀸스타운에서 하루 투어 또는 숙박 권장.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Milford Sound Lodge ($200-350/night)<br>🏨 Queenstown에서 당일 투어 ($80-150/trip)<br>🏨 Fiordland Lodge ($300-500/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Milford Sound Lodge Restaurant (Google 4.2)<br>🍽️ Blue Duck Cafe (Te Anau) (Google 4.4)<br>🍽️ Sandfly Cafe (Te Anau) (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 샌드플라이(작은 흡혈 파리) 대비 방충제 필수. 날씨 급변 대비. 밀포드 로드 눈길 주의(겨울).</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 퀸스타운 한국어 투어 상품 다수</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Milford Sound New Zealand&tbm=isch" target="_blank"      style="color:#ff0055;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_9fceed2862b5c081.setContent(html_2e42d183784cab43);
-cm_2eb61b1d97bc490d.bindPopup(pop_9fceed2862b5c081);
-cm_2eb61b1d97bc490d.bindTooltip(`<div>Milford Sound 10/10</div>`,{sticky:true});
+}).addTo(map_3d3642d6c6ba28b1);
+var pop_fb5c5f5a02032e8a = L.popup({maxWidth:340});
+var html_4937fdad82ce85a8 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff0055">Milford Sound 👑</h3>   <b>New Zealand</b> | 10/10 | ✈️직항<hr style="margin:3px 0">   🏞️ 피오르드/해안 | 12월-2월 (여름) / 비 오는 날 수백개 폭포 더 장관<br>💰 $150/day | ✈️ ~11h | ✈️직항<br>📅 12월, 1월, 2월, 3월 외 2개월<br>✨ 세계 8번째 불가사의. 수직 절벽에서 쏟아지는 폭포와 빙하가 만든 피오르드<hr style="margin:3px 0">   <i>연 강수량 7,000mm의 비 많은 곳. 역설적으로 비 오는 날이 더 아름다움. 크루즈, 카약, 스쿠버 다이빙 가능. 퀸스타운에서 하루 투어 또는 숙박 권장.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Milford Sound Lodge ($200-350/night)<br>🏨 Queenstown에서 당일 투어 ($80-150/trip)<br>🏨 Fiordland Lodge ($300-500/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Milford Sound Lodge Restaurant (Google 4.2)<br>🍽️ Blue Duck Cafe (Te Anau) (Google 4.4)<br>🍽️ Sandfly Cafe (Te Anau) (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 샌드플라이(작은 흡혈 파리) 대비 방충제 필수. 날씨 급변 대비. 밀포드 로드 눈길 주의(겨울).</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 퀸스타운 한국어 투어 상품 다수</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Milford Sound New Zealand&tbm=isch" target="_blank"      style="color:#ff0055;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_fb5c5f5a02032e8a.setContent(html_4937fdad82ce85a8);
+cm_e21fe69eeca67ca6.bindPopup(pop_fb5c5f5a02032e8a);
+cm_e21fe69eeca67ca6.bindTooltip(`<div>Milford Sound 10/10</div>`,{sticky:true});
 
 
-var lbl_361641271bd5e93a = L.marker([-44.641,167.897]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_361641271bd5e93a = L.divIcon({
+var lbl_f6d6b809d13ccc9a = L.marker([-44.641,167.897]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_f6d6b809d13ccc9a = L.divIcon({
     html:'<div style="font-size:9px;color:#ff0055;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Milford Sound</div>',
     className:'empty'
 });
-lbl_361641271bd5e93a.setIcon(icon_lbl_361641271bd5e93a);
+lbl_f6d6b809d13ccc9a.setIcon(icon_lbl_f6d6b809d13ccc9a);
 
 
-var cm_c21ddbfa50525d79 = L.marker([21.172,94.856]).addTo(map_f76ae32c59e0570c);
-var icon_cm_c21ddbfa50525d79 = L.divIcon({
+var cm_7d4469259bd4ab0e = L.marker([21.172,94.856]).addTo(map_3d3642d6c6ba28b1);
+var icon_cm_7d4469259bd4ab0e = L.divIcon({
     html:'<div style="width:40px;height:40px;border:2.5px dashed #ff0055;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-20px;margin-top:-20px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_c21ddbfa50525d79.setIcon(icon_cm_c21ddbfa50525d79);
-var pop_a40cde958c77164a = L.popup({maxWidth:340});
-var html_b27c9084c8dec219 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff0055">Bagan Temples 👑</h3>   <b>Myanmar</b> | 10/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 유적/사원 | 11월-2월 (건기, 서늘) / 일출 열기구 투어<br>💰 $80/day | ✈️ ~8h | 🔄경유<br>📅 11월, 12월, 1월, 2월 외 1개월<br>✨ 2,000개 이상의 불탑이 평원을 가득 채운 세계 최대 불교 유적지. 열기구 일출은 평생 체험<hr style="margin:3px 0">   <i>9세기-13세기에 건설된 4,000여 개의 사원 중 2,000개 이상이 현존. 열기구(Balloon over Bagan)는 세계 최고의 일출 체험 중 하나. 전기 자전거 대여로 자유 탐방 권장.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Aureum Palace Hotel &amp; Resort ($150-300/night)<br>🏨 Bagan Lodge ($100-200/night)<br>🏨 Hotel @ Tharabar Gate ($80-150/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Black Bamboo Restaurant (Google 4.4)<br>🍽️ Moon Light Restaurant (Google 4.2)<br>🍽️ Sunset Garden Restaurant (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 정치적 불안정 상황 주의. 외교부 여행 경보 확인 필수. 일부 지역 방문 제한 가능.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Bagan Temples Myanmar&tbm=isch" target="_blank"      style="color:#ff0055;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_a40cde958c77164a.setContent(html_b27c9084c8dec219);
-cm_c21ddbfa50525d79.bindPopup(pop_a40cde958c77164a);
-cm_c21ddbfa50525d79.bindTooltip(`<div>Bagan Temples 10/10</div>`,{sticky:true});
+cm_7d4469259bd4ab0e.setIcon(icon_cm_7d4469259bd4ab0e);
+var pop_42ad4cb73024f781 = L.popup({maxWidth:340});
+var html_703804f4769067d3 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff0055">Bagan Temples 👑</h3>   <b>Myanmar</b> | 10/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 유적/사원 | 11월-2월 (건기, 서늘) / 일출 열기구 투어<br>💰 $80/day | ✈️ ~8h | 🔄경유<br>📅 11월, 12월, 1월, 2월 외 1개월<br>✨ 2,000개 이상의 불탑이 평원을 가득 채운 세계 최대 불교 유적지. 열기구 일출은 평생 체험<hr style="margin:3px 0">   <i>9세기-13세기에 건설된 4,000여 개의 사원 중 2,000개 이상이 현존. 열기구(Balloon over Bagan)는 세계 최고의 일출 체험 중 하나. 전기 자전거 대여로 자유 탐방 권장.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Aureum Palace Hotel &amp; Resort ($150-300/night)<br>🏨 Bagan Lodge ($100-200/night)<br>🏨 Hotel @ Tharabar Gate ($80-150/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Black Bamboo Restaurant (Google 4.4)<br>🍽️ Moon Light Restaurant (Google 4.2)<br>🍽️ Sunset Garden Restaurant (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 정치적 불안정 상황 주의. 외교부 여행 경보 확인 필수. 일부 지역 방문 제한 가능.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Bagan Temples Myanmar&tbm=isch" target="_blank"      style="color:#ff0055;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_42ad4cb73024f781.setContent(html_703804f4769067d3);
+cm_7d4469259bd4ab0e.bindPopup(pop_42ad4cb73024f781);
+cm_7d4469259bd4ab0e.bindTooltip(`<div>Bagan Temples 10/10</div>`,{sticky:true});
 
 
-var lbl_2a4b643a6e38a7d0 = L.marker([21.172,94.856]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_2a4b643a6e38a7d0 = L.divIcon({
+var lbl_cc8b9c45882be0c6 = L.marker([21.172,94.856]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_cc8b9c45882be0c6 = L.divIcon({
     html:'<div style="font-size:9px;color:#ff0055;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Bagan Temples</div>',
     className:'empty'
 });
-lbl_2a4b643a6e38a7d0.setIcon(icon_lbl_2a4b643a6e38a7d0);
+lbl_cc8b9c45882be0c6.setIcon(icon_lbl_cc8b9c45882be0c6);
 
 
-var cm_c728bd6d1b766676 = L.circleMarker([38.643,34.828],{
+var cm_cb70f055720cfb92 = L.circleMarker([38.643,34.828],{
     color:"#ff0055",fill:true,fillColor:"#ff0055",fillOpacity:0.85,
     radius:18,weight:2
-}).addTo(map_f76ae32c59e0570c);
-var pop_e91cdc5373c03ab0 = L.popup({maxWidth:340});
-var html_d4e4a0252ed0b6e7 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff0055">Cappadocia 👑</h3>   <b>Turkey</b> | 10/10 | ✈️직항<hr style="margin:3px 0">   🏞️ 화산/열기구 | 4월-6월, 9월-11월 / 일출 열기구 (풍속 낮은 날)<br>💰 $120/day | ✈️ ~11h | ✈️직항<br>📅 4월, 5월, 6월, 9월 외 2개월<br>✨ 버섯 모양 요정 굴뚝 위로 수백 개의 열기구가 뜨는 일출. 지구가 아닌 듯한 경관<hr style="margin:3px 0">   <i>수백만 년 화산 폭발로 형성된 응회암 지형. 동굴 호텔에서의 숙박 자체가 경험. Göreme, Uçhisar, 지하도시 Derinkuyu 필수 방문. 인천-이스탄불 직항 후 국내선.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Museum Hotel ($300-600/night)<br>🏨 Argos in Cappadocia ($200-400/night)<br>🏨 Yunak Evleri Cave Hotel ($150-300/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Seki Restaurant (Google 4.5)<br>🍽️ Topdeck Cave Restaurant (Google 4.4)<br>🍽️ Ziggy Cafe (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 열기구 취소율 30-40% (바람). 공인 업체만 이용. 동굴 호텔 예약은 3-6개월 전 필수.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 이스탄불 한국인 가이드 투어 다수</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Cappadocia Turkey&tbm=isch" target="_blank"      style="color:#ff0055;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_e91cdc5373c03ab0.setContent(html_d4e4a0252ed0b6e7);
-cm_c728bd6d1b766676.bindPopup(pop_e91cdc5373c03ab0);
-cm_c728bd6d1b766676.bindTooltip(`<div>Cappadocia 10/10</div>`,{sticky:true});
+}).addTo(map_3d3642d6c6ba28b1);
+var pop_7c1d89ecb42dce35 = L.popup({maxWidth:340});
+var html_4c9caa3d7017602b = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff0055">Cappadocia 👑</h3>   <b>Turkey</b> | 10/10 | ✈️직항<hr style="margin:3px 0">   🏞️ 화산/열기구 | 4월-6월, 9월-11월 / 일출 열기구 (풍속 낮은 날)<br>💰 $120/day | ✈️ ~11h | ✈️직항<br>📅 4월, 5월, 6월, 9월 외 2개월<br>✨ 버섯 모양 요정 굴뚝 위로 수백 개의 열기구가 뜨는 일출. 지구가 아닌 듯한 경관<hr style="margin:3px 0">   <i>수백만 년 화산 폭발로 형성된 응회암 지형. 동굴 호텔에서의 숙박 자체가 경험. Göreme, Uçhisar, 지하도시 Derinkuyu 필수 방문. 인천-이스탄불 직항 후 국내선.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Museum Hotel ($300-600/night)<br>🏨 Argos in Cappadocia ($200-400/night)<br>🏨 Yunak Evleri Cave Hotel ($150-300/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Seki Restaurant (Google 4.5)<br>🍽️ Topdeck Cave Restaurant (Google 4.4)<br>🍽️ Ziggy Cafe (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 열기구 취소율 30-40% (바람). 공인 업체만 이용. 동굴 호텔 예약은 3-6개월 전 필수.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 이스탄불 한국인 가이드 투어 다수</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Cappadocia Turkey&tbm=isch" target="_blank"      style="color:#ff0055;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_7c1d89ecb42dce35.setContent(html_4c9caa3d7017602b);
+cm_cb70f055720cfb92.bindPopup(pop_7c1d89ecb42dce35);
+cm_cb70f055720cfb92.bindTooltip(`<div>Cappadocia 10/10</div>`,{sticky:true});
 
 
-var lbl_bbac788085da88c7 = L.marker([38.643,34.828]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_bbac788085da88c7 = L.divIcon({
+var lbl_73cea72f6eb054b3 = L.marker([38.643,34.828]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_73cea72f6eb054b3 = L.divIcon({
     html:'<div style="font-size:9px;color:#ff0055;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Cappadocia</div>',
     className:'empty'
 });
-lbl_bbac788085da88c7.setIcon(icon_lbl_bbac788085da88c7);
+lbl_73cea72f6eb054b3.setIcon(icon_lbl_73cea72f6eb054b3);
 
 
-var cm_fa3b2e516bcfbb4c = L.marker([-50.497,-73.116]).addTo(map_f76ae32c59e0570c);
-var icon_cm_fa3b2e516bcfbb4c = L.divIcon({
+var cm_c6c9c951b1203b40 = L.marker([-50.497,-73.116]).addTo(map_3d3642d6c6ba28b1);
+var icon_cm_c6c9c951b1203b40 = L.divIcon({
     html:'<div style="width:40px;height:40px;border:2.5px dashed #ff0055;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-20px;margin-top:-20px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_fa3b2e516bcfbb4c.setIcon(icon_cm_fa3b2e516bcfbb4c);
-var pop_70adaf502fa7a834 = L.popup({maxWidth:340});
-var html_fb72e70b1fdccb79 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff0055">Patagonia - Perito Moreno 👑</h3>   <b>Argentina</b> | 10/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 빙하/호수 | 10월-4월 (남반구 여름) / 9월-3월 빙하 붕괴 자주 발생<br>💰 $200/day | ✈️ ~26h | 🔄경유<br>📅 10월, 11월, 12월, 1월 외 3개월<br>✨ 지금도 전진하는 살아있는 빙하. 수만 톤 빙벽이 굉음과 함께 무너지는 장면<hr style="margin:3px 0">   <i>5km 폭, 60m 높이의 빙벽이 아르헨티나 호수로 전진. 세계에서 가장 접근하기 쉬운 빙하. 트레킹(Bigfoot Patagonia), 빙하 위 워킹 투어 가능. 엘칼라파테에서 80km.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Eolo Patagonia&#x27;s Spirit ($500-1000/night)<br>🏨 Los Sauces Lake Hotel ($200-400/night)<br>🏨 Hotel Los Álamos ($150-300/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ La Tablita Restaurant (Google 4.5)<br>🍽️ Mi Viejo Restaurant (Google 4.3)<br>🍽️ Casimiro Bigua Restaurant (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 파타고니아 날씨는 하루 4계절. 방풍/방수 의류 필수. 빙하 투어는 반드시 가이드 동반.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Patagonia - Perito Moreno Argentina&tbm=isch" target="_blank"      style="color:#ff0055;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_70adaf502fa7a834.setContent(html_fb72e70b1fdccb79);
-cm_fa3b2e516bcfbb4c.bindPopup(pop_70adaf502fa7a834);
-cm_fa3b2e516bcfbb4c.bindTooltip(`<div>Patagonia - Perito Moreno 10/10</div>`,{sticky:true});
+cm_c6c9c951b1203b40.setIcon(icon_cm_c6c9c951b1203b40);
+var pop_81f207ec9ac111e0 = L.popup({maxWidth:340});
+var html_27cb15efe86b6e9f = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff0055">Patagonia - Perito Moreno 👑</h3>   <b>Argentina</b> | 10/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 빙하/호수 | 10월-4월 (남반구 여름) / 9월-3월 빙하 붕괴 자주 발생<br>💰 $200/day | ✈️ ~26h | 🔄경유<br>📅 10월, 11월, 12월, 1월 외 3개월<br>✨ 지금도 전진하는 살아있는 빙하. 수만 톤 빙벽이 굉음과 함께 무너지는 장면<hr style="margin:3px 0">   <i>5km 폭, 60m 높이의 빙벽이 아르헨티나 호수로 전진. 세계에서 가장 접근하기 쉬운 빙하. 트레킹(Bigfoot Patagonia), 빙하 위 워킹 투어 가능. 엘칼라파테에서 80km.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Eolo Patagonia&#x27;s Spirit ($500-1000/night)<br>🏨 Los Sauces Lake Hotel ($200-400/night)<br>🏨 Hotel Los Álamos ($150-300/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ La Tablita Restaurant (Google 4.5)<br>🍽️ Mi Viejo Restaurant (Google 4.3)<br>🍽️ Casimiro Bigua Restaurant (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 파타고니아 날씨는 하루 4계절. 방풍/방수 의류 필수. 빙하 투어는 반드시 가이드 동반.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Patagonia - Perito Moreno Argentina&tbm=isch" target="_blank"      style="color:#ff0055;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_81f207ec9ac111e0.setContent(html_27cb15efe86b6e9f);
+cm_c6c9c951b1203b40.bindPopup(pop_81f207ec9ac111e0);
+cm_c6c9c951b1203b40.bindTooltip(`<div>Patagonia - Perito Moreno 10/10</div>`,{sticky:true});
 
 
-var lbl_1298f24c5eaccb5c = L.marker([-50.497,-73.116]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_1298f24c5eaccb5c = L.divIcon({
+var lbl_a7f858011b31e929 = L.marker([-50.497,-73.116]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_a7f858011b31e929 = L.divIcon({
     html:'<div style="font-size:9px;color:#ff0055;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Patagonia - Perito Moreno</div>',
     className:'empty'
 });
-lbl_1298f24c5eaccb5c.setIcon(icon_lbl_1298f24c5eaccb5c);
+lbl_a7f858011b31e929.setIcon(icon_lbl_a7f858011b31e929);
 
 
-var cm_86d98f5b3211e603 = L.marker([36.393,25.461]).addTo(map_f76ae32c59e0570c);
-var icon_cm_86d98f5b3211e603 = L.divIcon({
+var cm_30cb51745af33cfc = L.marker([36.393,25.461]).addTo(map_3d3642d6c6ba28b1);
+var icon_cm_30cb51745af33cfc = L.divIcon({
     html:'<div style="width:40px;height:40px;border:2.5px dashed #ff0055;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-20px;margin-top:-20px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_86d98f5b3211e603.setIcon(icon_cm_86d98f5b3211e603);
-var pop_670c98182ee99536 = L.popup({maxWidth:340});
-var html_8894319ef18df4a7 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff0055">Santorini Caldera 👑</h3>   <b>Greece</b> | 10/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 화산/칼데라/해안 | 4월-6월, 9월-10월 (7-8월 성수기 혼잡)<br>💰 $250/day | ✈️ ~13h | 🔄경유<br>📅 4월, 5월, 6월, 9월 외 1개월<br>✨ 에게해 칼데라를 배경으로 하얀 건물과 파란 지붕. 오이아 마을의 세계 최고 일몰<hr style="margin:3px 0">   <i>3,600년 전 화산 폭발로 형성된 칼데라 위의 섬. 오이아(Oia) 일몰은 평생 버킷리스트. 붉은 해변, 검은 해변 등 화산 지형. 아테네에서 45분 비행 또는 페리.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Grace Hotel Santorini ($500-1500/night)<br>🏨 Canaves Oia Suites ($600-2000/night)<br>🏨 Katikies Hotel ($400-1200/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Kastro Oia Restaurant (Google 4.5)<br>🍽️ Ammoudi Fish Tavern (Google 4.4)<br>🍽️ Selene Restaurant (Michelin 추천)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 7-8월 성수기 인파 극심 (오이아 일몰 명당은 2-3시간 전 확보 필요). 수영 시 칼데라 조류 주의.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 아테네 한국어 투어 출발 다수</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Santorini Caldera Greece&tbm=isch" target="_blank"      style="color:#ff0055;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_670c98182ee99536.setContent(html_8894319ef18df4a7);
-cm_86d98f5b3211e603.bindPopup(pop_670c98182ee99536);
-cm_86d98f5b3211e603.bindTooltip(`<div>Santorini Caldera 10/10</div>`,{sticky:true});
+cm_30cb51745af33cfc.setIcon(icon_cm_30cb51745af33cfc);
+var pop_f273b2f94238700c = L.popup({maxWidth:340});
+var html_93d1454d31026cbf = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff0055">Santorini Caldera 👑</h3>   <b>Greece</b> | 10/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 화산/칼데라/해안 | 4월-6월, 9월-10월 (7-8월 성수기 혼잡)<br>💰 $250/day | ✈️ ~13h | 🔄경유<br>📅 4월, 5월, 6월, 9월 외 1개월<br>✨ 에게해 칼데라를 배경으로 하얀 건물과 파란 지붕. 오이아 마을의 세계 최고 일몰<hr style="margin:3px 0">   <i>3,600년 전 화산 폭발로 형성된 칼데라 위의 섬. 오이아(Oia) 일몰은 평생 버킷리스트. 붉은 해변, 검은 해변 등 화산 지형. 아테네에서 45분 비행 또는 페리.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Grace Hotel Santorini ($500-1500/night)<br>🏨 Canaves Oia Suites ($600-2000/night)<br>🏨 Katikies Hotel ($400-1200/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Kastro Oia Restaurant (Google 4.5)<br>🍽️ Ammoudi Fish Tavern (Google 4.4)<br>🍽️ Selene Restaurant (Michelin 추천)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 7-8월 성수기 인파 극심 (오이아 일몰 명당은 2-3시간 전 확보 필요). 수영 시 칼데라 조류 주의.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 아테네 한국어 투어 출발 다수</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Santorini Caldera Greece&tbm=isch" target="_blank"      style="color:#ff0055;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_f273b2f94238700c.setContent(html_93d1454d31026cbf);
+cm_30cb51745af33cfc.bindPopup(pop_f273b2f94238700c);
+cm_30cb51745af33cfc.bindTooltip(`<div>Santorini Caldera 10/10</div>`,{sticky:true});
 
 
-var lbl_5f30e13388dc2a14 = L.marker([36.393,25.461]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_5f30e13388dc2a14 = L.divIcon({
+var lbl_000737f8aa0a883b = L.marker([36.393,25.461]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_000737f8aa0a883b = L.divIcon({
     html:'<div style="font-size:9px;color:#ff0055;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Santorini Caldera</div>',
     className:'empty'
 });
-lbl_5f30e13388dc2a14.setIcon(icon_lbl_5f30e13388dc2a14);
+lbl_000737f8aa0a883b.setIcon(icon_lbl_000737f8aa0a883b);
 
 
-var cm_a99c20752b473b92 = L.marker([44.881,15.617]).addTo(map_f76ae32c59e0570c);
-var icon_cm_a99c20752b473b92 = L.divIcon({
+var cm_299ab92677bca5f9 = L.marker([44.881,15.617]).addTo(map_3d3642d6c6ba28b1);
+var icon_cm_299ab92677bca5f9 = L.divIcon({
     html:'<div style="width:36px;height:36px;border:2.5px dashed #00ff88;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-18px;margin-top:-18px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_a99c20752b473b92.setIcon(icon_cm_a99c20752b473b92);
-var pop_a8e375f1e7f07bd6 = L.popup({maxWidth:340});
-var html_9a333501f386a254 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Plitvice Lakes</h3>   <b>Croatia</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 호수/폭포/숲 | 4월-6월, 9월-10월 / 12월-2월 얼어붙은 폭포도 환상적<br>💰 $80/day | ✈️ ~14h | 🔄경유<br>📅 4월, 5월, 6월, 9월 외 4개월<br>✨ 에메랄드빛 16개의 계단식 호수와 폭포. 유네스코 세계자연유산<hr style="margin:3px 0">   <i>석회암이 녹아 형성된 천연 댐으로 연결된 호수군. 상부/하부 호수 코스로 나뉨. 보트와 목재 데크 트레일로 탐방. 자그레브에서 2시간. 6-8월 예약 필수.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Hotel Jezero (국립공원 내) ($150-250/night)<br>🏨 Hotel Plitvice ($120-200/night)<br>🏨 Etno kuće Plitvice Village ($80-150/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Restaurant Lika (공원 내) (Google 4.2)<br>🍽️ Etno restoran Degenija (Google 4.4)<br>🍽️ Gostilna Stari Raj (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 미끄러운 목재 데크 주의. 수영 금지. 성수기 입장권 사전 온라인 예매 필수.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Plitvice Lakes Croatia&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_a8e375f1e7f07bd6.setContent(html_9a333501f386a254);
-cm_a99c20752b473b92.bindPopup(pop_a8e375f1e7f07bd6);
-cm_a99c20752b473b92.bindTooltip(`<div>Plitvice Lakes 9/10</div>`,{sticky:true});
+cm_299ab92677bca5f9.setIcon(icon_cm_299ab92677bca5f9);
+var pop_ede200826f9c4388 = L.popup({maxWidth:340});
+var html_20b6a03f29d232a8 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Plitvice Lakes</h3>   <b>Croatia</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 호수/폭포/숲 | 4월-6월, 9월-10월 / 12월-2월 얼어붙은 폭포도 환상적<br>💰 $80/day | ✈️ ~14h | 🔄경유<br>📅 4월, 5월, 6월, 9월 외 4개월<br>✨ 에메랄드빛 16개의 계단식 호수와 폭포. 유네스코 세계자연유산<hr style="margin:3px 0">   <i>석회암이 녹아 형성된 천연 댐으로 연결된 호수군. 상부/하부 호수 코스로 나뉨. 보트와 목재 데크 트레일로 탐방. 자그레브에서 2시간. 6-8월 예약 필수.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Hotel Jezero (국립공원 내) ($150-250/night)<br>🏨 Hotel Plitvice ($120-200/night)<br>🏨 Etno kuće Plitvice Village ($80-150/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Restaurant Lika (공원 내) (Google 4.2)<br>🍽️ Etno restoran Degenija (Google 4.4)<br>🍽️ Gostilna Stari Raj (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 미끄러운 목재 데크 주의. 수영 금지. 성수기 입장권 사전 온라인 예매 필수.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Plitvice Lakes Croatia&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_ede200826f9c4388.setContent(html_20b6a03f29d232a8);
+cm_299ab92677bca5f9.bindPopup(pop_ede200826f9c4388);
+cm_299ab92677bca5f9.bindTooltip(`<div>Plitvice Lakes 9/10</div>`,{sticky:true});
 
 
-var lbl_201a659bd3cfd9e1 = L.marker([44.881,15.617]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_201a659bd3cfd9e1 = L.divIcon({
+var lbl_8fbba9554e81e64d = L.marker([44.881,15.617]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_8fbba9554e81e64d = L.divIcon({
     html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Plitvice Lakes</div>',
     className:'empty'
 });
-lbl_201a659bd3cfd9e1.setIcon(icon_lbl_201a659bd3cfd9e1);
+lbl_8fbba9554e81e64d.setIcon(icon_lbl_8fbba9554e81e64d);
 
 
-var cm_d76186564eec5abb = L.marker([36.862,-111.374]).addTo(map_f76ae32c59e0570c);
-var icon_cm_d76186564eec5abb = L.divIcon({
+var cm_e59d126aee807523 = L.marker([36.862,-111.374]).addTo(map_3d3642d6c6ba28b1);
+var icon_cm_e59d126aee807523 = L.divIcon({
     html:'<div style="width:36px;height:36px;border:2.5px dashed #00ff88;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-18px;margin-top:-18px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_d76186564eec5abb.setIcon(icon_cm_d76186564eec5abb);
-var pop_287eecbb829a1c84 = L.popup({maxWidth:340});
-var html_6115983bf540c6d5 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Antelope Canyon</h3>   <b>USA</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 협곡/빛기둥 | 3월-10월 / 정오 빛기둥은 3월20일-10월7일 11시-13시<br>💰 $120/day | ✈️ ~12h | 🔄경유<br>📅 3월, 4월, 5월, 6월 외 4개월<br>✨ 협곡 틈 사이로 쏟아지는 태양 빛기둥. 세계에서 가장 많이 촬영된 협곡<hr style="margin:3px 0">   <i>나바호 원주민 보호구역 내 협곡. Upper Canyon은 빛기둥, Lower Canyon은 S자 굴곡이 유명. 가이드 동반 필수. 페이지(Page, AZ)에서 출발. 봄-여름 빛기둥 완전체.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Courtyard by Marriott Page ($150-250/night)<br>🏨 Hyatt Place Page Lake Powell ($130-220/night)<br>🏨 Dreamkatchers Lake Powell B&amp;B ($100-180/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Fiesta Mexicana Restaurant (Google 4.3)<br>🍽️ Ranch House Grille (Google 4.2)<br>🍽️ Bonkers Restaurant (Google 4.1)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 섬광홍수(Flash flood) 위험. 날씨 확인 필수. 폐소공포증 주의. 가이드 없이 입장 불가.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 라스베가스 한국어 투어 출발</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Antelope Canyon USA&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_287eecbb829a1c84.setContent(html_6115983bf540c6d5);
-cm_d76186564eec5abb.bindPopup(pop_287eecbb829a1c84);
-cm_d76186564eec5abb.bindTooltip(`<div>Antelope Canyon 9/10</div>`,{sticky:true});
+cm_e59d126aee807523.setIcon(icon_cm_e59d126aee807523);
+var pop_9323a334b48daa7c = L.popup({maxWidth:340});
+var html_317f4d426572c6a8 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Antelope Canyon</h3>   <b>USA</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 협곡/빛기둥 | 3월-10월 / 정오 빛기둥은 3월20일-10월7일 11시-13시<br>💰 $120/day | ✈️ ~12h | 🔄경유<br>📅 3월, 4월, 5월, 6월 외 4개월<br>✨ 협곡 틈 사이로 쏟아지는 태양 빛기둥. 세계에서 가장 많이 촬영된 협곡<hr style="margin:3px 0">   <i>나바호 원주민 보호구역 내 협곡. Upper Canyon은 빛기둥, Lower Canyon은 S자 굴곡이 유명. 가이드 동반 필수. 페이지(Page, AZ)에서 출발. 봄-여름 빛기둥 완전체.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Courtyard by Marriott Page ($150-250/night)<br>🏨 Hyatt Place Page Lake Powell ($130-220/night)<br>🏨 Dreamkatchers Lake Powell B&amp;B ($100-180/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Fiesta Mexicana Restaurant (Google 4.3)<br>🍽️ Ranch House Grille (Google 4.2)<br>🍽️ Bonkers Restaurant (Google 4.1)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 섬광홍수(Flash flood) 위험. 날씨 확인 필수. 폐소공포증 주의. 가이드 없이 입장 불가.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 라스베가스 한국어 투어 출발</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Antelope Canyon USA&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_9323a334b48daa7c.setContent(html_317f4d426572c6a8);
+cm_e59d126aee807523.bindPopup(pop_9323a334b48daa7c);
+cm_e59d126aee807523.bindTooltip(`<div>Antelope Canyon 9/10</div>`,{sticky:true});
 
 
-var lbl_5848d6a2f912a2c3 = L.marker([36.862,-111.374]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_5848d6a2f912a2c3 = L.divIcon({
+var lbl_1e08b237b6fa1b88 = L.marker([36.862,-111.374]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_1e08b237b6fa1b88 = L.divIcon({
     html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Antelope Canyon</div>',
     className:'empty'
 });
-lbl_5848d6a2f912a2c3.setIcon(icon_lbl_5848d6a2f912a2c3);
+lbl_1e08b237b6fa1b88.setIcon(icon_lbl_1e08b237b6fa1b88);
 
 
-var cm_b3818804dbe6f4a2 = L.marker([51.417,-116.217]).addTo(map_f76ae32c59e0570c);
-var icon_cm_b3818804dbe6f4a2 = L.divIcon({
+var cm_3b5b5bfbe4795b0b = L.marker([51.417,-116.217]).addTo(map_3d3642d6c6ba28b1);
+var icon_cm_3b5b5bfbe4795b0b = L.divIcon({
     html:'<div style="width:36px;height:36px;border:2.5px dashed #00ff88;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-18px;margin-top:-18px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_b3818804dbe6f4a2.setIcon(icon_cm_b3818804dbe6f4a2);
-var pop_c22f420f8893732d = L.popup({maxWidth:340});
-var html_dad83ef4c5a66361 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Banff / Lake Louise</h3>   <b>Canada</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 빙하호수/산악 | 6월-10월 / 12월-3월 스키 시즌<br>💰 $200/day | ✈️ ~13h | 🔄경유<br>📅 6월, 7월, 8월, 9월 외 5개월<br>✨ 빙하가 녹은 에메랄드빛 루이스 호수. 캐나다 로키의 심장<hr style="margin:3px 0">   <i>캐나다 최초의 국립공원. 루이스 호수 뒤 빅토리아 빙하가 그림 같은 배경. 모레인 호수(Moraine Lake)는 동생 격이지만 더 진한 에메랄드. 밴프 타운에서 45분.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Fairmont Chateau Lake Louise ($500-1200/night)<br>🏨 Fairmont Banff Springs ($400-900/night)<br>🏨 Moose Hotel &amp; Suites Banff ($200-400/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Walliser Stube (Lake Louise) (Google 4.5)<br>🍽️ The Bison Restaurant (Banff) (Google 4.4)<br>🍽️ Saltlik Steakhouse (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 야생 곰 출몰 구역. 베어 스프레이 필수. 겨울 드라이브 시 4WD/체인 권장.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 밴쿠버/캘거리 한국어 투어 다수</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Banff / Lake Louise Canada&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_c22f420f8893732d.setContent(html_dad83ef4c5a66361);
-cm_b3818804dbe6f4a2.bindPopup(pop_c22f420f8893732d);
-cm_b3818804dbe6f4a2.bindTooltip(`<div>Banff / Lake Louise 9/10</div>`,{sticky:true});
+cm_3b5b5bfbe4795b0b.setIcon(icon_cm_3b5b5bfbe4795b0b);
+var pop_1a4e4e2019b0c272 = L.popup({maxWidth:340});
+var html_2c8cf3e451319f9b = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Banff / Lake Louise</h3>   <b>Canada</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 빙하호수/산악 | 6월-10월 / 12월-3월 스키 시즌<br>💰 $200/day | ✈️ ~13h | 🔄경유<br>📅 6월, 7월, 8월, 9월 외 5개월<br>✨ 빙하가 녹은 에메랄드빛 루이스 호수. 캐나다 로키의 심장<hr style="margin:3px 0">   <i>캐나다 최초의 국립공원. 루이스 호수 뒤 빅토리아 빙하가 그림 같은 배경. 모레인 호수(Moraine Lake)는 동생 격이지만 더 진한 에메랄드. 밴프 타운에서 45분.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Fairmont Chateau Lake Louise ($500-1200/night)<br>🏨 Fairmont Banff Springs ($400-900/night)<br>🏨 Moose Hotel &amp; Suites Banff ($200-400/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Walliser Stube (Lake Louise) (Google 4.5)<br>🍽️ The Bison Restaurant (Banff) (Google 4.4)<br>🍽️ Saltlik Steakhouse (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 야생 곰 출몰 구역. 베어 스프레이 필수. 겨울 드라이브 시 4WD/체인 권장.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 밴쿠버/캘거리 한국어 투어 다수</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Banff / Lake Louise Canada&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_1a4e4e2019b0c272.setContent(html_2c8cf3e451319f9b);
+cm_3b5b5bfbe4795b0b.bindPopup(pop_1a4e4e2019b0c272);
+cm_3b5b5bfbe4795b0b.bindTooltip(`<div>Banff / Lake Louise 9/10</div>`,{sticky:true});
 
 
-var lbl_44262d49ec1d96e9 = L.marker([51.417,-116.217]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_44262d49ec1d96e9 = L.divIcon({
+var lbl_0c15c0d6669fa864 = L.marker([51.417,-116.217]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_0c15c0d6669fa864 = L.divIcon({
     html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Banff / Lake Louise</div>',
     className:'empty'
 });
-lbl_44262d49ec1d96e9.setIcon(icon_lbl_44262d49ec1d96e9);
+lbl_0c15c0d6669fa864.setIcon(icon_lbl_0c15c0d6669fa864);
 
 
-var cm_6a39a1e3a4c5e7bd = L.circleMarker([20.91,107.184],{
+var cm_948d7a85bd8fedc2 = L.circleMarker([20.91,107.184],{
     color:"#00ff88",fill:true,fillColor:"#00ff88",fillOpacity:0.85,
     radius:16,weight:2
-}).addTo(map_f76ae32c59e0570c);
-var pop_3bcb4a1044449905 = L.popup({maxWidth:340});
-var html_5165a5560fcb2adf = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Ha Long Bay</h3>   <b>Vietnam</b> | 9/10 | ✈️직항<hr style="margin:3px 0">   🏞️ 해상기암/크루즈 | 3월-5월, 9월-11월 / 12월-2월 안개 낀 신비로운 분위기<br>💰 $100/day | ✈️ ~5h | ✈️직항<br>📅 3월, 4월, 5월, 9월 외 2개월<br>✨ 1,969개의 기암 섬이 에메랄드빛 바다 위에 솟아오른 세계자연유산<hr style="margin:3px 0">   <i>유네스코 세계자연유산. 2박 크루즈로 섬 사이를 누비는 것이 정석. 카약으로 동굴 탐험, 수영, 낚시 체험 가능. 하노이에서 버스 3시간 또는 수상비행기 45분.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Indochine Premium Cruise ($200-400/2박)<br>🏨 Paradise Elegance Cruise ($300-600/2박)<br>🏨 Emeraude Classic Cruise ($250-500/2박)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ 크루즈 선상 씨푸드 코스 (투어 포함)<br>🍽️ Viet Hai Village Restaurant (Google 4.3)<br>🍽️ Ha Long Dream Restaurant (Google 4.1)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 크루즈 선사 선택 신중히 (안전 인증 업체 권장). 카약 시 구명조끼 착용 필수.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국어 크루즈 투어 다수 운영</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Ha Long Bay Vietnam&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_3bcb4a1044449905.setContent(html_5165a5560fcb2adf);
-cm_6a39a1e3a4c5e7bd.bindPopup(pop_3bcb4a1044449905);
-cm_6a39a1e3a4c5e7bd.bindTooltip(`<div>Ha Long Bay 9/10</div>`,{sticky:true});
+}).addTo(map_3d3642d6c6ba28b1);
+var pop_b22cd63165cb359c = L.popup({maxWidth:340});
+var html_7c3ad3ff7eeccbf9 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Ha Long Bay</h3>   <b>Vietnam</b> | 9/10 | ✈️직항<hr style="margin:3px 0">   🏞️ 해상기암/크루즈 | 3월-5월, 9월-11월 / 12월-2월 안개 낀 신비로운 분위기<br>💰 $100/day | ✈️ ~5h | ✈️직항<br>📅 3월, 4월, 5월, 9월 외 2개월<br>✨ 1,969개의 기암 섬이 에메랄드빛 바다 위에 솟아오른 세계자연유산<hr style="margin:3px 0">   <i>유네스코 세계자연유산. 2박 크루즈로 섬 사이를 누비는 것이 정석. 카약으로 동굴 탐험, 수영, 낚시 체험 가능. 하노이에서 버스 3시간 또는 수상비행기 45분.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Indochine Premium Cruise ($200-400/2박)<br>🏨 Paradise Elegance Cruise ($300-600/2박)<br>🏨 Emeraude Classic Cruise ($250-500/2박)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ 크루즈 선상 씨푸드 코스 (투어 포함)<br>🍽️ Viet Hai Village Restaurant (Google 4.3)<br>🍽️ Ha Long Dream Restaurant (Google 4.1)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 크루즈 선사 선택 신중히 (안전 인증 업체 권장). 카약 시 구명조끼 착용 필수.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국어 크루즈 투어 다수 운영</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Ha Long Bay Vietnam&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_b22cd63165cb359c.setContent(html_7c3ad3ff7eeccbf9);
+cm_948d7a85bd8fedc2.bindPopup(pop_b22cd63165cb359c);
+cm_948d7a85bd8fedc2.bindTooltip(`<div>Ha Long Bay 9/10</div>`,{sticky:true});
 
 
-var lbl_636b23c08d7dd52b = L.marker([20.91,107.184]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_636b23c08d7dd52b = L.divIcon({
+var lbl_b783a8e795e11379 = L.marker([20.91,107.184]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_b783a8e795e11379 = L.divIcon({
     html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Ha Long Bay</div>',
     className:'empty'
 });
-lbl_636b23c08d7dd52b.setIcon(icon_lbl_636b23c08d7dd52b);
+lbl_b783a8e795e11379.setIcon(icon_lbl_b783a8e795e11379);
 
 
-var cm_993bf9f029d72e49 = L.circleMarker([22.336,103.843],{
+var cm_785992fdbb9f10d9 = L.circleMarker([22.336,103.843],{
     color:"#00ff88",fill:true,fillColor:"#00ff88",fillOpacity:0.85,
     radius:16,weight:2
-}).addTo(map_f76ae32c59e0570c);
-var pop_349c49635a6ed948 = L.popup({maxWidth:340});
-var html_40246d02b4f96e82 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Sapa Rice Terraces</h3>   <b>Vietnam</b> | 9/10 | ✈️직항<hr style="margin:3px 0">   🏞️ 계단식논/산악 | 9월-10월 황금 수확철 / 5월-6월 청록 모내기철<br>💰 $60/day | ✈️ ~5h | ✈️직항<br>📅 5월, 6월, 9월, 10월<br>✨ 소수민족이 2,000년간 가꿔온 황금빛 계단식 논. 해발 1,600m의 구름 속 마을<hr style="margin:3px 0">   <i>H&#x27;mong, Dao 등 소수민족 문화 체험. 판시판 봉(3,143m) 케이블카로 인도차이나 최고봉 정상 가능. 하노이에서 기차 8시간 또는 버스. 흐름 마을, 라오차이 계곡 트레킹 필수.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Topas Ecolodge ($150-300/night)<br>🏨 Victoria Sapa Resort &amp; Spa ($200-400/night)<br>🏨 Sapa Rooms by Hoang Lien ($80-150/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ H&#x27;mong Sisters Restaurant (Google 4.5)<br>🍽️ The Hill Station Signature Restaurant (Google 4.4)<br>🍽️ Baguette &amp; Chocolat (Google 4.2)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 산길 트레킹 시 가이드 동반 권장. 우기 시 미끄러운 논두렁 주의. 고산증 경미하게 나타날 수 있음.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 하노이 한국어 투어 출발</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Sapa Rice Terraces Vietnam&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_349c49635a6ed948.setContent(html_40246d02b4f96e82);
-cm_993bf9f029d72e49.bindPopup(pop_349c49635a6ed948);
-cm_993bf9f029d72e49.bindTooltip(`<div>Sapa Rice Terraces 9/10</div>`,{sticky:true});
+}).addTo(map_3d3642d6c6ba28b1);
+var pop_769a851b2839e5e6 = L.popup({maxWidth:340});
+var html_dc741d6684ef5dc6 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Sapa Rice Terraces</h3>   <b>Vietnam</b> | 9/10 | ✈️직항<hr style="margin:3px 0">   🏞️ 계단식논/산악 | 9월-10월 황금 수확철 / 5월-6월 청록 모내기철<br>💰 $60/day | ✈️ ~5h | ✈️직항<br>📅 5월, 6월, 9월, 10월<br>✨ 소수민족이 2,000년간 가꿔온 황금빛 계단식 논. 해발 1,600m의 구름 속 마을<hr style="margin:3px 0">   <i>H&#x27;mong, Dao 등 소수민족 문화 체험. 판시판 봉(3,143m) 케이블카로 인도차이나 최고봉 정상 가능. 하노이에서 기차 8시간 또는 버스. 흐름 마을, 라오차이 계곡 트레킹 필수.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Topas Ecolodge ($150-300/night)<br>🏨 Victoria Sapa Resort &amp; Spa ($200-400/night)<br>🏨 Sapa Rooms by Hoang Lien ($80-150/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ H&#x27;mong Sisters Restaurant (Google 4.5)<br>🍽️ The Hill Station Signature Restaurant (Google 4.4)<br>🍽️ Baguette &amp; Chocolat (Google 4.2)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 산길 트레킹 시 가이드 동반 권장. 우기 시 미끄러운 논두렁 주의. 고산증 경미하게 나타날 수 있음.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 하노이 한국어 투어 출발</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Sapa Rice Terraces Vietnam&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_769a851b2839e5e6.setContent(html_dc741d6684ef5dc6);
+cm_785992fdbb9f10d9.bindPopup(pop_769a851b2839e5e6);
+cm_785992fdbb9f10d9.bindTooltip(`<div>Sapa Rice Terraces 9/10</div>`,{sticky:true});
 
 
-var lbl_26769289dc87d556 = L.marker([22.336,103.843]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_26769289dc87d556 = L.divIcon({
+var lbl_778e13d5d31dbebe = L.marker([22.336,103.843]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_778e13d5d31dbebe = L.divIcon({
     html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Sapa Rice Terraces</div>',
     className:'empty'
 });
-lbl_26769289dc87d556.setIcon(icon_lbl_26769289dc87d556);
+lbl_778e13d5d31dbebe.setIcon(icon_lbl_778e13d5d31dbebe);
 
 
-var cm_724627689d780e89 = L.marker([29.575,35.419]).addTo(map_f76ae32c59e0570c);
-var icon_cm_724627689d780e89 = L.divIcon({
+var cm_1d2e1dc34c177acb = L.marker([29.575,35.419]).addTo(map_3d3642d6c6ba28b1);
+var icon_cm_1d2e1dc34c177acb = L.divIcon({
     html:'<div style="width:36px;height:36px;border:2.5px dashed #00ff88;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-18px;margin-top:-18px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_724627689d780e89.setIcon(icon_cm_724627689d780e89);
-var pop_e91b209488aafee9 = L.popup({maxWidth:340});
-var html_caadd9ce9f3334f4 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Wadi Rum</h3>   <b>Jordan</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 사막/화성지형 | 3월-5월, 9월-11월 / 여름은 40도 이상 폭염<br>💰 $150/day | ✈️ ~12h | 🔄경유<br>📅 3월, 4월, 5월, 9월 외 2개월<br>✨ 화성처럼 붉은 사막. 아라비아 로렌스의 배경, 마션·스타워즈 촬영지<hr style="margin:3px 0">   <i>붉은 사암과 화강암 절벽이 만든 화성 지형. 베두인 족 캠프에서 별 아래 하룻밤. 낙타 트레킹, 지프 투어, 암벽 등반 가능. 페트라에서 2시간. 아카바 항공편 이용.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Memories Aicha Luxury Camp ($200-400/night)<br>🏨 Wadi Rum Night Luxury Camp ($150-300/night)<br>🏨 Mohammed Mutlak Camp ($80-150/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ 베두인 전통 잡불리(Zarb) 요리 (캠프 포함)<br>🍽️ Rum Gate Restaurant (Google 4.2)<br>🍽️ Wadi Rum Visitor Centre Cafe (Google 4.0)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 여름 극한 폭염. 사막 투어 시 충분한 물 필수. 모래폭풍 가능성 있음.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Wadi Rum Jordan&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_e91b209488aafee9.setContent(html_caadd9ce9f3334f4);
-cm_724627689d780e89.bindPopup(pop_e91b209488aafee9);
-cm_724627689d780e89.bindTooltip(`<div>Wadi Rum 9/10</div>`,{sticky:true});
+cm_1d2e1dc34c177acb.setIcon(icon_cm_1d2e1dc34c177acb);
+var pop_0e98d1bf5f4e29a4 = L.popup({maxWidth:340});
+var html_27159433f51193ab = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Wadi Rum</h3>   <b>Jordan</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 사막/화성지형 | 3월-5월, 9월-11월 / 여름은 40도 이상 폭염<br>💰 $150/day | ✈️ ~12h | 🔄경유<br>📅 3월, 4월, 5월, 9월 외 2개월<br>✨ 화성처럼 붉은 사막. 아라비아 로렌스의 배경, 마션·스타워즈 촬영지<hr style="margin:3px 0">   <i>붉은 사암과 화강암 절벽이 만든 화성 지형. 베두인 족 캠프에서 별 아래 하룻밤. 낙타 트레킹, 지프 투어, 암벽 등반 가능. 페트라에서 2시간. 아카바 항공편 이용.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Memories Aicha Luxury Camp ($200-400/night)<br>🏨 Wadi Rum Night Luxury Camp ($150-300/night)<br>🏨 Mohammed Mutlak Camp ($80-150/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ 베두인 전통 잡불리(Zarb) 요리 (캠프 포함)<br>🍽️ Rum Gate Restaurant (Google 4.2)<br>🍽️ Wadi Rum Visitor Centre Cafe (Google 4.0)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 여름 극한 폭염. 사막 투어 시 충분한 물 필수. 모래폭풍 가능성 있음.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Wadi Rum Jordan&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_0e98d1bf5f4e29a4.setContent(html_27159433f51193ab);
+cm_1d2e1dc34c177acb.bindPopup(pop_0e98d1bf5f4e29a4);
+cm_1d2e1dc34c177acb.bindTooltip(`<div>Wadi Rum 9/10</div>`,{sticky:true});
 
 
-var lbl_286f6fdec05455d4 = L.marker([29.575,35.419]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_286f6fdec05455d4 = L.divIcon({
+var lbl_07cff57272a0d9f3 = L.marker([29.575,35.419]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_07cff57272a0d9f3 = L.divIcon({
     html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Wadi Rum</div>',
     className:'empty'
 });
-lbl_286f6fdec05455d4.setIcon(icon_lbl_286f6fdec05455d4);
+lbl_07cff57272a0d9f3.setIcon(icon_lbl_07cff57272a0d9f3);
 
 
-var cm_000f524538a126ff = L.marker([60.124,6.739]).addTo(map_f76ae32c59e0570c);
-var icon_cm_000f524538a126ff = L.divIcon({
+var cm_26c5c69d0276332b = L.marker([60.124,6.739]).addTo(map_3d3642d6c6ba28b1);
+var icon_cm_26c5c69d0276332b = L.divIcon({
     html:'<div style="width:36px;height:36px;border:2.5px dashed #00ff88;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-18px;margin-top:-18px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_000f524538a126ff.setIcon(icon_cm_000f524538a126ff);
-var pop_ff914458f5dbc156 = L.popup({maxWidth:340});
-var html_4e6190aa3b2c403e = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Trolltunga</h3>   <b>Norway</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 절벽/피오르드 | 6월-9월 (나머지 시즌은 산악 가이드 필수)<br>💰 $100/day | ✈️ ~13h | 🔄경유<br>📅 6월, 7월, 8월, 9월<br>✨ 700m 절벽 위로 수평으로 튀어나온 암석. 노르웨이 가장 아이코닉한 절벽 사진 명소<hr style="margin:3px 0">   <i>왕복 22km, 10-12시간 하이킹. 절벽 끝에 아무 안전장치 없이 서는 아찔한 경험. 오다(Odda) 마을에서 출발. 이른 아침 출발 필수. 해가 지지 않는 여름 백야.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Hotel Ullensvang ($150-280/night)<br>🏨 Trolltunga Camping ($30-60/night)<br>🏨 Odda Hostel ($50-80/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Odda Hotel Restaurant (Google 4.1)<br>🍽️ Hardanger Juice og Sider (Google 4.3)<br>🍽️ Cafe Sildajazz (Google 4.0)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 날씨 급변 대비 완전한 등산 장비 필수. 절벽 끝 접근 시 강풍 주의. 어두울 시 헤드랜턴 필수.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Trolltunga Norway&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_ff914458f5dbc156.setContent(html_4e6190aa3b2c403e);
-cm_000f524538a126ff.bindPopup(pop_ff914458f5dbc156);
-cm_000f524538a126ff.bindTooltip(`<div>Trolltunga 9/10</div>`,{sticky:true});
+cm_26c5c69d0276332b.setIcon(icon_cm_26c5c69d0276332b);
+var pop_4068ed210adc93ff = L.popup({maxWidth:340});
+var html_30b0b23dce701a27 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Trolltunga</h3>   <b>Norway</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 절벽/피오르드 | 6월-9월 (나머지 시즌은 산악 가이드 필수)<br>💰 $100/day | ✈️ ~13h | 🔄경유<br>📅 6월, 7월, 8월, 9월<br>✨ 700m 절벽 위로 수평으로 튀어나온 암석. 노르웨이 가장 아이코닉한 절벽 사진 명소<hr style="margin:3px 0">   <i>왕복 22km, 10-12시간 하이킹. 절벽 끝에 아무 안전장치 없이 서는 아찔한 경험. 오다(Odda) 마을에서 출발. 이른 아침 출발 필수. 해가 지지 않는 여름 백야.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Hotel Ullensvang ($150-280/night)<br>🏨 Trolltunga Camping ($30-60/night)<br>🏨 Odda Hostel ($50-80/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Odda Hotel Restaurant (Google 4.1)<br>🍽️ Hardanger Juice og Sider (Google 4.3)<br>🍽️ Cafe Sildajazz (Google 4.0)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 날씨 급변 대비 완전한 등산 장비 필수. 절벽 끝 접근 시 강풍 주의. 어두울 시 헤드랜턴 필수.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Trolltunga Norway&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_4068ed210adc93ff.setContent(html_30b0b23dce701a27);
+cm_26c5c69d0276332b.bindPopup(pop_4068ed210adc93ff);
+cm_26c5c69d0276332b.bindTooltip(`<div>Trolltunga 9/10</div>`,{sticky:true});
 
 
-var lbl_da6b3a223186d191 = L.marker([60.124,6.739]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_da6b3a223186d191 = L.divIcon({
+var lbl_c316ed8a65fa6109 = L.marker([60.124,6.739]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_c316ed8a65fa6109 = L.divIcon({
     html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Trolltunga</div>',
     className:'empty'
 });
-lbl_da6b3a223186d191.setIcon(icon_lbl_da6b3a223186d191);
+lbl_c316ed8a65fa6109.setIcon(icon_lbl_c316ed8a65fa6109);
 
 
-var cm_34d84b900142d1ba = L.marker([45.98,7.659]).addTo(map_f76ae32c59e0570c);
-var icon_cm_34d84b900142d1ba = L.divIcon({
+var cm_204c2a5116891067 = L.marker([45.98,7.659]).addTo(map_3d3642d6c6ba28b1);
+var icon_cm_204c2a5116891067 = L.divIcon({
     html:'<div style="width:36px;height:36px;border:2.5px dashed #00ff88;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-18px;margin-top:-18px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_34d84b900142d1ba.setIcon(icon_cm_34d84b900142d1ba);
-var pop_573ba8e17f29bfce = L.popup({maxWidth:340});
-var html_0e6b5fce0d88a026 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Matterhorn View (Zermatt)</h3>   <b>Switzerland</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 산악/빙하 | 7월-9월 (여름 하이킹) / 12월-3월 (스키)<br>💰 $300/day | ✈️ ~13h | 🔄경유<br>📅 7월, 8월, 9월, 12월 외 3개월<br>✨ 세계에서 가장 완벽한 피라미드 형태의 4,478m 마테호른. 스위스 상징<hr style="margin:3px 0">   <i>차량 없는 친환경 마을. 고르너그라트 열차로 해발 3,089m 전망대 이동. 리펠알프, 슈텔리제 호수 반사 사진은 전 세계인의 버킷리스트. 체르마트 도착 후 첫 아침 일출 필수.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 The Omnia ($500-1200/night)<br>🏨 Mont Cervin Palace ($400-900/night)<br>🏨 Hotel Julen ($200-400/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Chez Vrony (산장 레스토랑) (Google 4.7)<br>🍽️ Restaurant Findlerhof (Google 4.5)<br>🍽️ After Seven (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 고산 하이킹 시 적절한 장비 필수. 날씨 급변. 빙하 하이킹은 가이드 동반.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Matterhorn View (Zermatt) Switzerland&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_573ba8e17f29bfce.setContent(html_0e6b5fce0d88a026);
-cm_34d84b900142d1ba.bindPopup(pop_573ba8e17f29bfce);
-cm_34d84b900142d1ba.bindTooltip(`<div>Matterhorn View (Zermatt) 9/10</div>`,{sticky:true});
+cm_204c2a5116891067.setIcon(icon_cm_204c2a5116891067);
+var pop_7ab82cef95746372 = L.popup({maxWidth:340});
+var html_583aa621edeb925a = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Matterhorn View (Zermatt)</h3>   <b>Switzerland</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 산악/빙하 | 7월-9월 (여름 하이킹) / 12월-3월 (스키)<br>💰 $300/day | ✈️ ~13h | 🔄경유<br>📅 7월, 8월, 9월, 12월 외 3개월<br>✨ 세계에서 가장 완벽한 피라미드 형태의 4,478m 마테호른. 스위스 상징<hr style="margin:3px 0">   <i>차량 없는 친환경 마을. 고르너그라트 열차로 해발 3,089m 전망대 이동. 리펠알프, 슈텔리제 호수 반사 사진은 전 세계인의 버킷리스트. 체르마트 도착 후 첫 아침 일출 필수.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 The Omnia ($500-1200/night)<br>🏨 Mont Cervin Palace ($400-900/night)<br>🏨 Hotel Julen ($200-400/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Chez Vrony (산장 레스토랑) (Google 4.7)<br>🍽️ Restaurant Findlerhof (Google 4.5)<br>🍽️ After Seven (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 고산 하이킹 시 적절한 장비 필수. 날씨 급변. 빙하 하이킹은 가이드 동반.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Matterhorn View (Zermatt) Switzerland&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_7ab82cef95746372.setContent(html_583aa621edeb925a);
+cm_204c2a5116891067.bindPopup(pop_7ab82cef95746372);
+cm_204c2a5116891067.bindTooltip(`<div>Matterhorn View (Zermatt) 9/10</div>`,{sticky:true});
 
 
-var lbl_371d5900f4b7552b = L.marker([45.98,7.659]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_371d5900f4b7552b = L.divIcon({
+var lbl_0d6a61a1cbe312ec = L.marker([45.98,7.659]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_0d6a61a1cbe312ec = L.divIcon({
     html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Matterhorn View (Zermatt)</div>',
     className:'empty'
 });
-lbl_371d5900f4b7552b.setIcon(icon_lbl_371d5900f4b7552b);
+lbl_0d6a61a1cbe312ec.setIcon(icon_lbl_0d6a61a1cbe312ec);
 
 
-var cm_8c67cb5ca5ca28ea = L.marker([68.23,13.995]).addTo(map_f76ae32c59e0570c);
-var icon_cm_8c67cb5ca5ca28ea = L.divIcon({
+var cm_4a6cf9ab23790316 = L.marker([68.23,13.995]).addTo(map_3d3642d6c6ba28b1);
+var icon_cm_4a6cf9ab23790316 = L.divIcon({
     html:'<div style="width:36px;height:36px;border:2.5px dashed #00ff88;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-18px;margin-top:-18px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_8c67cb5ca5ca28ea.setIcon(icon_cm_8c67cb5ca5ca28ea);
-var pop_87ccf31002bdabde = L.popup({maxWidth:340});
-var html_2a40f4072c73b7d2 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Lofoten Islands</h3>   <b>Norway</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 섬/오로라/피오르드 | 2월-4월 (오로라+눈경치) / 6월-8월 (백야+하이킹)<br>💰 $200/day | ✈️ ~13h | 🔄경유<br>📅 2월, 3월, 4월, 6월 외 2개월<br>✨ 북극해의 톱니 같은 섬. 오로라와 눈 덮인 산이 바닷속에 반사되는 장관<hr style="margin:3px 0">   <i>레이네(Reine) 마을은 세계에서 가장 아름다운 어촌. 서핑, 카약, 낚시, 하이킹. 오슬로/트롬소에서 비행기. 렌터카 이동 필수. 전통 어부 오두막(Rorbu) 숙박 추천.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Svinøya Rorbuer (어부오두막) ($150-300/night)<br>🏨 Eliassen Rorbuer ($120-250/night)<br>🏨 Arctic Hideaway ($200-400/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Anita&#x27;s Sjømat (피쉬 버거) (Google 4.7)<br>🍽️ Børsen Spiseri (Google 4.5)<br>🍽️ Gammelbua Restaurant (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 겨울 도로 빙판 주의. 급격한 날씨 변화. 산행 시 방풍복 필수.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Lofoten Islands Norway&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_87ccf31002bdabde.setContent(html_2a40f4072c73b7d2);
-cm_8c67cb5ca5ca28ea.bindPopup(pop_87ccf31002bdabde);
-cm_8c67cb5ca5ca28ea.bindTooltip(`<div>Lofoten Islands 9/10</div>`,{sticky:true});
+cm_4a6cf9ab23790316.setIcon(icon_cm_4a6cf9ab23790316);
+var pop_d6b858677d893351 = L.popup({maxWidth:340});
+var html_9c76d6f4a7a9271b = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Lofoten Islands</h3>   <b>Norway</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 섬/오로라/피오르드 | 2월-4월 (오로라+눈경치) / 6월-8월 (백야+하이킹)<br>💰 $200/day | ✈️ ~13h | 🔄경유<br>📅 2월, 3월, 4월, 6월 외 2개월<br>✨ 북극해의 톱니 같은 섬. 오로라와 눈 덮인 산이 바닷속에 반사되는 장관<hr style="margin:3px 0">   <i>레이네(Reine) 마을은 세계에서 가장 아름다운 어촌. 서핑, 카약, 낚시, 하이킹. 오슬로/트롬소에서 비행기. 렌터카 이동 필수. 전통 어부 오두막(Rorbu) 숙박 추천.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Svinøya Rorbuer (어부오두막) ($150-300/night)<br>🏨 Eliassen Rorbuer ($120-250/night)<br>🏨 Arctic Hideaway ($200-400/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Anita&#x27;s Sjømat (피쉬 버거) (Google 4.7)<br>🍽️ Børsen Spiseri (Google 4.5)<br>🍽️ Gammelbua Restaurant (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 겨울 도로 빙판 주의. 급격한 날씨 변화. 산행 시 방풍복 필수.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Lofoten Islands Norway&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_d6b858677d893351.setContent(html_9c76d6f4a7a9271b);
+cm_4a6cf9ab23790316.bindPopup(pop_d6b858677d893351);
+cm_4a6cf9ab23790316.bindTooltip(`<div>Lofoten Islands 9/10</div>`,{sticky:true});
 
 
-var lbl_eccca07cacc55281 = L.marker([68.23,13.995]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_eccca07cacc55281 = L.divIcon({
+var lbl_dfff7b6f9c3b294d = L.marker([68.23,13.995]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_dfff7b6f9c3b294d = L.divIcon({
     html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Lofoten Islands</div>',
     className:'empty'
 });
-lbl_eccca07cacc55281.setIcon(icon_lbl_eccca07cacc55281);
+lbl_dfff7b6f9c3b294d.setIcon(icon_lbl_dfff7b6f9c3b294d);
 
 
-var cm_2f8b4b444c3d1b9c = L.marker([62.008,-6.791]).addTo(map_f76ae32c59e0570c);
-var icon_cm_2f8b4b444c3d1b9c = L.divIcon({
+var cm_a036a0c4962019a5 = L.marker([62.008,-6.791]).addTo(map_3d3642d6c6ba28b1);
+var icon_cm_a036a0c4962019a5 = L.divIcon({
     html:'<div style="width:36px;height:36px;border:2.5px dashed #00ff88;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-18px;margin-top:-18px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_2f8b4b444c3d1b9c.setIcon(icon_cm_2f8b4b444c3d1b9c);
-var pop_00bf085395d41db6 = L.popup({maxWidth:340});
-var html_0a15af282f155ab5 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Faroe Islands</h3>   <b>Denmark</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 절벽/폭포/섬 | 5월-9월 / 1월-3월 오로라 가능<br>💰 $200/day | ✈️ ~15h | 🔄경유<br>📅 5월, 6월, 7월, 8월 외 1개월<br>✨ 북대서양의 고립된 화산섬. 폭포가 바다로 직접 떨어지는 절벽. SNS 최강 명소<hr style="margin:3px 0">   <i>가스달루르 폭포(Gásadalur)는 절벽에서 바다로 떨어지는 세계 유일의 폭포. 물란보르가르(Múlafossur)도 필수. 소와 양이 더 많은 섬. 하이킹 천국. 코펜하겐 경유.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Hotel Hafnia (토르스하운) ($150-250/night)<br>🏨 Kvidir Farm Stays ($100-180/night)<br>🏨 101 Hotel Torshavn ($120-220/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Koks (미슐랭 2스타) (Michelin 2 Star)<br>🍽️ Restaurant Aarstova (Google 4.4)<br>🍽️ Etika Restaurant (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 강풍(최대 30m/s) 주의. 절벽 접근 시 극도 주의. 날씨 예보 필수 확인.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Faroe Islands Denmark&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_00bf085395d41db6.setContent(html_0a15af282f155ab5);
-cm_2f8b4b444c3d1b9c.bindPopup(pop_00bf085395d41db6);
-cm_2f8b4b444c3d1b9c.bindTooltip(`<div>Faroe Islands 9/10</div>`,{sticky:true});
+cm_a036a0c4962019a5.setIcon(icon_cm_a036a0c4962019a5);
+var pop_bc84084384ed53bc = L.popup({maxWidth:340});
+var html_24ca17f438b7176c = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Faroe Islands</h3>   <b>Denmark</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 절벽/폭포/섬 | 5월-9월 / 1월-3월 오로라 가능<br>💰 $200/day | ✈️ ~15h | 🔄경유<br>📅 5월, 6월, 7월, 8월 외 1개월<br>✨ 북대서양의 고립된 화산섬. 폭포가 바다로 직접 떨어지는 절벽. SNS 최강 명소<hr style="margin:3px 0">   <i>가스달루르 폭포(Gásadalur)는 절벽에서 바다로 떨어지는 세계 유일의 폭포. 물란보르가르(Múlafossur)도 필수. 소와 양이 더 많은 섬. 하이킹 천국. 코펜하겐 경유.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Hotel Hafnia (토르스하운) ($150-250/night)<br>🏨 Kvidir Farm Stays ($100-180/night)<br>🏨 101 Hotel Torshavn ($120-220/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Koks (미슐랭 2스타) (Michelin 2 Star)<br>🍽️ Restaurant Aarstova (Google 4.4)<br>🍽️ Etika Restaurant (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 강풍(최대 30m/s) 주의. 절벽 접근 시 극도 주의. 날씨 예보 필수 확인.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Faroe Islands Denmark&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_bc84084384ed53bc.setContent(html_24ca17f438b7176c);
+cm_a036a0c4962019a5.bindPopup(pop_bc84084384ed53bc);
+cm_a036a0c4962019a5.bindTooltip(`<div>Faroe Islands 9/10</div>`,{sticky:true});
 
 
-var lbl_fd13b606c7b3583a = L.marker([62.008,-6.791]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_fd13b606c7b3583a = L.divIcon({
+var lbl_70aca09ac7fba69a = L.marker([62.008,-6.791]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_70aca09ac7fba69a = L.divIcon({
     html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Faroe Islands</div>',
     className:'empty'
 });
-lbl_fd13b606c7b3583a.setIcon(icon_lbl_fd13b606c7b3583a);
+lbl_70aca09ac7fba69a.setIcon(icon_lbl_70aca09ac7fba69a);
 
 
-var cm_1ebcb8ccb5536b6a = L.marker([51.322,-116.189]).addTo(map_f76ae32c59e0570c);
-var icon_cm_1ebcb8ccb5536b6a = L.divIcon({
+var cm_36d868834c0c1618 = L.marker([51.322,-116.189]).addTo(map_3d3642d6c6ba28b1);
+var icon_cm_36d868834c0c1618 = L.divIcon({
     html:'<div style="width:36px;height:36px;border:2.5px dashed #00ff88;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-18px;margin-top:-18px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_1ebcb8ccb5536b6a.setIcon(icon_cm_1ebcb8ccb5536b6a);
-var pop_37e8d934ceaf6e57 = L.popup({maxWidth:340});
-var html_8e3c24469be44c31 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Moraine Lake</h3>   <b>Canada</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 빙하호수/산악 | 6월-9월 / 일출(5-7시) 바위더미(Rockpile) 전망대<br>💰 $180/day | ✈️ ~13h | 🔄경유<br>📅 6월, 7월, 8월, 9월<br>✨ 캐나다 20달러 지폐에 그려진 초현실적인 코발트빛 호수. 루이스 호수보다 더 진한 파랑<hr style="margin:3px 0">   <i>밸리 오브 텐 픽스(Valley of the Ten Peaks) 배경. 2022년부터 성수기 차량 통제로 셔틀버스만 운행. 일출 전 도착 필수. 캐나다 최고의 사진 명소 중 하나.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Moraine Lake Lodge ($600-1500/night)<br>🏨 Fairmont Chateau Lake Louise ($500-1200/night)<br>🏨 Baker Creek Mountain Resort ($200-400/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Moraine Lake Lodge Restaurant (숙박 고객 전용)<br>🍽️ Lake Louise Station Restaurant (Google 4.3)<br>🍽️ Deer Lodge Restaurant (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 성수기 셔틀버스 예약 필수 (당일 매진). 야생 곰 출몰 구역. 카약 대여 조기 마감.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 밴쿠버/캘거리 한국어 투어</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Moraine Lake Canada&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_37e8d934ceaf6e57.setContent(html_8e3c24469be44c31);
-cm_1ebcb8ccb5536b6a.bindPopup(pop_37e8d934ceaf6e57);
-cm_1ebcb8ccb5536b6a.bindTooltip(`<div>Moraine Lake 9/10</div>`,{sticky:true});
+cm_36d868834c0c1618.setIcon(icon_cm_36d868834c0c1618);
+var pop_e6b7010d4e4ef45b = L.popup({maxWidth:340});
+var html_90b341b5c6196fba = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Moraine Lake</h3>   <b>Canada</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 빙하호수/산악 | 6월-9월 / 일출(5-7시) 바위더미(Rockpile) 전망대<br>💰 $180/day | ✈️ ~13h | 🔄경유<br>📅 6월, 7월, 8월, 9월<br>✨ 캐나다 20달러 지폐에 그려진 초현실적인 코발트빛 호수. 루이스 호수보다 더 진한 파랑<hr style="margin:3px 0">   <i>밸리 오브 텐 픽스(Valley of the Ten Peaks) 배경. 2022년부터 성수기 차량 통제로 셔틀버스만 운행. 일출 전 도착 필수. 캐나다 최고의 사진 명소 중 하나.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Moraine Lake Lodge ($600-1500/night)<br>🏨 Fairmont Chateau Lake Louise ($500-1200/night)<br>🏨 Baker Creek Mountain Resort ($200-400/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Moraine Lake Lodge Restaurant (숙박 고객 전용)<br>🍽️ Lake Louise Station Restaurant (Google 4.3)<br>🍽️ Deer Lodge Restaurant (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 성수기 셔틀버스 예약 필수 (당일 매진). 야생 곰 출몰 구역. 카약 대여 조기 마감.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 밴쿠버/캘거리 한국어 투어</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Moraine Lake Canada&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_e6b7010d4e4ef45b.setContent(html_90b341b5c6196fba);
+cm_36d868834c0c1618.bindPopup(pop_e6b7010d4e4ef45b);
+cm_36d868834c0c1618.bindTooltip(`<div>Moraine Lake 9/10</div>`,{sticky:true});
 
 
-var lbl_3ffa513093a8d0ca = L.marker([51.322,-116.189]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_3ffa513093a8d0ca = L.divIcon({
+var lbl_23c0a7ade3ec8235 = L.marker([51.322,-116.189]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_23c0a7ade3ec8235 = L.divIcon({
     html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Moraine Lake</div>',
     className:'empty'
 });
-lbl_3ffa513093a8d0ca.setIcon(icon_lbl_3ffa513093a8d0ca);
+lbl_23c0a7ade3ec8235.setIcon(icon_lbl_23c0a7ade3ec8235);
 
 
-var cm_d3c2e7b3a3d777d8 = L.marker([-23.651,-68.314]).addTo(map_f76ae32c59e0570c);
-var icon_cm_d3c2e7b3a3d777d8 = L.divIcon({
+var cm_f45b5545f8d9ff28 = L.marker([-23.651,-68.314]).addTo(map_3d3642d6c6ba28b1);
+var icon_cm_f45b5545f8d9ff28 = L.divIcon({
     html:'<div style="width:36px;height:36px;border:2.5px dashed #00ff88;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-18px;margin-top:-18px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_d3c2e7b3a3d777d8.setIcon(icon_cm_d3c2e7b3a3d777d8);
-var pop_ec3828fc53067d3f = L.popup({maxWidth:340});
-var html_cca22e0390499691 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Atacama Desert</h3>   <b>Chile</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 사막/천문/화산 | 3월-5월, 9월-11월 / 야간 별 관측은 연중 최고<br>💰 $120/day | ✈️ ~23h | 🔄경유<br>📅 3월, 4월, 5월, 9월 외 2개월<br>✨ 세계에서 가장 건조한 사막. 세계 최고의 천문 관측지. 달의 계곡, 소금 사막, 화염 지옥<hr style="margin:3px 0">   <i>산페드로데아타카마(San Pedro de Atacama) 기점. 달의 계곡(Valle de la Luna) 일몰, 타티오 간헐천 새벽, 알티플라니코 소금호수의 홍학. 해발 2,400m에서 천문 관측 최적.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 explora Atacama ($600-1200/night)<br>🏨 Hotel Alto Atacama ($400-800/night)<br>🏨 Tierra Atacama ($500-1000/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Restaurant Adobe (Google 4.4)<br>🍽️ Café Export (Google 4.3)<br>🍽️ La Estaka Restaurant (Google 4.2)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 고산병(2,400m) 및 타티오(4,500m) 주의. 자외선 지수 극강. 낮밤 기온차 30도 이상.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Atacama Desert Chile&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_ec3828fc53067d3f.setContent(html_cca22e0390499691);
-cm_d3c2e7b3a3d777d8.bindPopup(pop_ec3828fc53067d3f);
-cm_d3c2e7b3a3d777d8.bindTooltip(`<div>Atacama Desert 9/10</div>`,{sticky:true});
+cm_f45b5545f8d9ff28.setIcon(icon_cm_f45b5545f8d9ff28);
+var pop_812217b50d7dfacd = L.popup({maxWidth:340});
+var html_d47a99e8386d8d90 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Atacama Desert</h3>   <b>Chile</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 사막/천문/화산 | 3월-5월, 9월-11월 / 야간 별 관측은 연중 최고<br>💰 $120/day | ✈️ ~23h | 🔄경유<br>📅 3월, 4월, 5월, 9월 외 2개월<br>✨ 세계에서 가장 건조한 사막. 세계 최고의 천문 관측지. 달의 계곡, 소금 사막, 화염 지옥<hr style="margin:3px 0">   <i>산페드로데아타카마(San Pedro de Atacama) 기점. 달의 계곡(Valle de la Luna) 일몰, 타티오 간헐천 새벽, 알티플라니코 소금호수의 홍학. 해발 2,400m에서 천문 관측 최적.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 explora Atacama ($600-1200/night)<br>🏨 Hotel Alto Atacama ($400-800/night)<br>🏨 Tierra Atacama ($500-1000/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Restaurant Adobe (Google 4.4)<br>🍽️ Café Export (Google 4.3)<br>🍽️ La Estaka Restaurant (Google 4.2)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 고산병(2,400m) 및 타티오(4,500m) 주의. 자외선 지수 극강. 낮밤 기온차 30도 이상.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Atacama Desert Chile&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_812217b50d7dfacd.setContent(html_d47a99e8386d8d90);
+cm_f45b5545f8d9ff28.bindPopup(pop_812217b50d7dfacd);
+cm_f45b5545f8d9ff28.bindTooltip(`<div>Atacama Desert 9/10</div>`,{sticky:true});
 
 
-var lbl_e34895e5c58534e9 = L.marker([-23.651,-68.314]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_e34895e5c58534e9 = L.divIcon({
+var lbl_558895ccb8baec31 = L.marker([-23.651,-68.314]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_558895ccb8baec31 = L.divIcon({
     html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Atacama Desert</div>',
     className:'empty'
 });
-lbl_e34895e5c58534e9.setIcon(icon_lbl_e34895e5c58534e9);
+lbl_558895ccb8baec31.setIcon(icon_lbl_558895ccb8baec31);
 
 
-var cm_56ce7781e230c62c = L.circleMarker([-7.942,112.953],{
+var cm_a16590052893c383 = L.circleMarker([-7.942,112.953],{
     color:"#00ff88",fill:true,fillColor:"#00ff88",fillOpacity:0.85,
     radius:16,weight:2
-}).addTo(map_f76ae32c59e0570c);
-var pop_a4fc8504456179cb = L.popup({maxWidth:340});
-var html_507b57dc28b52455 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Bromo-Tengger</h3>   <b>Indonesia</b> | 9/10 | ✈️직항<hr style="margin:3px 0">   🏞️ 화산/분화구 | 4월-11월 건기 / 새벽 4시 일출 투어<br>💰 $80/day | ✈️ ~7h | ✈️직항<br>📅 4월, 5월, 6월, 7월 외 4개월<br>✨ 연기 피어오르는 활화산 브로모와 텡거 칼데라의 새벽 일출. 자바의 상징<hr style="margin:3px 0">   <i>브로모 화산(2,329m)은 걸어 올라갈 수 있는 활화산. 스무에루 화산(3,676m) 배경의 일출은 인도네시아 최고 절경. 수라바야에서 버스+지프. 말 대여로 칼데라 이동 가능.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Java Banana Bromo ($100-200/night)<br>🏨 Jiwa Jawa Resort Bromo ($150-300/night)<br>🏨 Café Lava Hostel ($30-60/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Café Lava Restaurant (Google 4.1)<br>🍽️ Bromo Permai Restaurant (Google 4.0)<br>🍽️ Cemoro Lawang Village 로컬 식당들 (Google 3.9)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 화산 가스 흡입 주의 (마스크 권장). 새벽 영하 기온 방한 필수. 비포장 지프 도로 주의.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Bromo-Tengger Indonesia&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_a4fc8504456179cb.setContent(html_507b57dc28b52455);
-cm_56ce7781e230c62c.bindPopup(pop_a4fc8504456179cb);
-cm_56ce7781e230c62c.bindTooltip(`<div>Bromo-Tengger 9/10</div>`,{sticky:true});
+}).addTo(map_3d3642d6c6ba28b1);
+var pop_f73d8f04a9df5e7e = L.popup({maxWidth:340});
+var html_a531c290857e3548 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Bromo-Tengger</h3>   <b>Indonesia</b> | 9/10 | ✈️직항<hr style="margin:3px 0">   🏞️ 화산/분화구 | 4월-11월 건기 / 새벽 4시 일출 투어<br>💰 $80/day | ✈️ ~7h | ✈️직항<br>📅 4월, 5월, 6월, 7월 외 4개월<br>✨ 연기 피어오르는 활화산 브로모와 텡거 칼데라의 새벽 일출. 자바의 상징<hr style="margin:3px 0">   <i>브로모 화산(2,329m)은 걸어 올라갈 수 있는 활화산. 스무에루 화산(3,676m) 배경의 일출은 인도네시아 최고 절경. 수라바야에서 버스+지프. 말 대여로 칼데라 이동 가능.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Java Banana Bromo ($100-200/night)<br>🏨 Jiwa Jawa Resort Bromo ($150-300/night)<br>🏨 Café Lava Hostel ($30-60/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Café Lava Restaurant (Google 4.1)<br>🍽️ Bromo Permai Restaurant (Google 4.0)<br>🍽️ Cemoro Lawang Village 로컬 식당들 (Google 3.9)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 화산 가스 흡입 주의 (마스크 권장). 새벽 영하 기온 방한 필수. 비포장 지프 도로 주의.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Bromo-Tengger Indonesia&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_f73d8f04a9df5e7e.setContent(html_a531c290857e3548);
+cm_a16590052893c383.bindPopup(pop_f73d8f04a9df5e7e);
+cm_a16590052893c383.bindTooltip(`<div>Bromo-Tengger 9/10</div>`,{sticky:true});
 
 
-var lbl_caca76fa2bbca9ca = L.marker([-7.942,112.953]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_caca76fa2bbca9ca = L.divIcon({
+var lbl_1b240fea0ad8499c = L.marker([-7.942,112.953]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_1b240fea0ad8499c = L.divIcon({
     html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Bromo-Tengger</div>',
     className:'empty'
 });
-lbl_caca76fa2bbca9ca.setIcon(icon_lbl_caca76fa2bbca9ca);
+lbl_1b240fea0ad8499c.setIcon(icon_lbl_1b240fea0ad8499c);
 
 
-var cm_709318805c5f5a97 = L.marker([44.127,9.712]).addTo(map_f76ae32c59e0570c);
-var icon_cm_709318805c5f5a97 = L.divIcon({
+var cm_d672cb5e7af8dda3 = L.marker([44.127,9.712]).addTo(map_3d3642d6c6ba28b1);
+var icon_cm_d672cb5e7af8dda3 = L.divIcon({
     html:'<div style="width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_709318805c5f5a97.setIcon(icon_cm_709318805c5f5a97);
-var pop_49449a2ee3374428 = L.popup({maxWidth:340});
-var html_184c23d252b7eb5d = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Cinque Terre</h3>   <b>Italy</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 해안마을/절벽 | 4월-6월, 9월-10월 / 봄꽃 시즌 최고<br>💰 $150/day | ✈️ ~13h | 🔄경유<br>📅 4월, 5월, 6월, 9월 외 1개월<br>✨ 절벽 위 다섯 개의 파스텔빛 항구 마을. 유네스코 세계문화유산<hr style="margin:3px 0">   <i>몬테로소, 베르나차, 코르닐리아, 마나롤라, 리오마조레 5개 마을. 트레일 하이킹 또는 기차로 연결. 마나롤라 야경은 이탈리아 최고의 사진 명소. 제노바/라스페치아에서 접근.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Hotel Porto Roca (Monterosso) ($200-400/night)<br>🏨 Hotel Villa Steno ($150-280/night)<br>🏨 La Spezia 시내 호텔 이용 권장 ($80-150/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Ristorante Il Pirata delle Cinque Terre (Google 4.5)<br>🍽️ La Scogliera (Riomaggiore) (Google 4.4)<br>🍽️ Belforte Restaurant (Vernazza) (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 트레일 일부 낙석 위험 구간 폐쇄 가능. 여름 성수기 해변 혼잡. 소매치기 주의.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 로마/밀라노 출발 한국어 투어</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Cinque Terre Italy&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_49449a2ee3374428.setContent(html_184c23d252b7eb5d);
-cm_709318805c5f5a97.bindPopup(pop_49449a2ee3374428);
-cm_709318805c5f5a97.bindTooltip(`<div>Cinque Terre 8/10</div>`,{sticky:true});
+cm_d672cb5e7af8dda3.setIcon(icon_cm_d672cb5e7af8dda3);
+var pop_ef3788fa90eef45a = L.popup({maxWidth:340});
+var html_0b6c8e77c116201b = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Cinque Terre</h3>   <b>Italy</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 해안마을/절벽 | 4월-6월, 9월-10월 / 봄꽃 시즌 최고<br>💰 $150/day | ✈️ ~13h | 🔄경유<br>📅 4월, 5월, 6월, 9월 외 1개월<br>✨ 절벽 위 다섯 개의 파스텔빛 항구 마을. 유네스코 세계문화유산<hr style="margin:3px 0">   <i>몬테로소, 베르나차, 코르닐리아, 마나롤라, 리오마조레 5개 마을. 트레일 하이킹 또는 기차로 연결. 마나롤라 야경은 이탈리아 최고의 사진 명소. 제노바/라스페치아에서 접근.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Hotel Porto Roca (Monterosso) ($200-400/night)<br>🏨 Hotel Villa Steno ($150-280/night)<br>🏨 La Spezia 시내 호텔 이용 권장 ($80-150/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Ristorante Il Pirata delle Cinque Terre (Google 4.5)<br>🍽️ La Scogliera (Riomaggiore) (Google 4.4)<br>🍽️ Belforte Restaurant (Vernazza) (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 트레일 일부 낙석 위험 구간 폐쇄 가능. 여름 성수기 해변 혼잡. 소매치기 주의.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 로마/밀라노 출발 한국어 투어</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Cinque Terre Italy&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_ef3788fa90eef45a.setContent(html_0b6c8e77c116201b);
+cm_d672cb5e7af8dda3.bindPopup(pop_ef3788fa90eef45a);
+cm_d672cb5e7af8dda3.bindTooltip(`<div>Cinque Terre 8/10</div>`,{sticky:true});
 
 
-var lbl_9e2af43b7d7787b8 = L.marker([44.127,9.712]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_9e2af43b7d7787b8 = L.divIcon({
+var lbl_a39afecc2b00a56f = L.marker([44.127,9.712]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_a39afecc2b00a56f = L.divIcon({
     html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Cinque Terre</div>',
     className:'empty'
 });
-lbl_9e2af43b7d7787b8.setIcon(icon_lbl_9e2af43b7d7787b8);
+lbl_a39afecc2b00a56f.setIcon(icon_lbl_a39afecc2b00a56f);
 
 
-var cm_106c9a6a7d9583c4 = L.circleMarker([33.262,103.919],{
+var cm_ad57ff5213222902 = L.circleMarker([33.262,103.919],{
     color:"#ffcc00",fill:true,fillColor:"#ffcc00",fillOpacity:0.85,
     radius:14,weight:2
-}).addTo(map_f76ae32c59e0570c);
-var pop_8ad9e79016750bd9 = L.popup({maxWidth:340});
-var html_1b6df31eef9a0648 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Jiuzhaigou</h3>   <b>China</b> | 8/10 | ✈️직항<hr style="margin:3px 0">   🏞️ 호수/폭포/숲 | 9월-11월 단풍 절정 / 4월-6월 봄<br>💰 $80/day | ✈️ ~4h | ✈️직항<br>📅 4월, 5월, 6월, 9월 외 2개월<br>✨ 오색 호수와 눈 덮인 봉우리의 조화. 세계에서 가장 아름다운 호수계곡<hr style="margin:3px 0">   <i>유네스코 세계자연유산. 오색 호수, 진주 폭포, 경해 등 절경. 2017년 지진 후 복구 완료. 청두에서 비행기 1시간 또는 버스 9시간. 고도 2,000-4,800m. 산소 흡입기 대여 가능.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Sheraton Jiuzhaigou Resort ($200-400/night)<br>🏨 InterContinental Jiuzhai Paradise ($250-500/night)<br>🏨 Jiuzhai Paradise Hotel ($120-250/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ InterContinental 뷔페 레스토랑 (Google 4.4)<br>🍽️ Tibetan Hot Pot Restaurant (Google 4.2)<br>🍽️ Nuorilang Restaurant (공원 내) (Google 4.0)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 고산병 주의(최고 4,800m). 겨울 결빙 위험. 인파 많음(성수기 하루 1.2만 명 제한).</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 청두 한국어 투어 출발</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Jiuzhaigou China&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_8ad9e79016750bd9.setContent(html_1b6df31eef9a0648);
-cm_106c9a6a7d9583c4.bindPopup(pop_8ad9e79016750bd9);
-cm_106c9a6a7d9583c4.bindTooltip(`<div>Jiuzhaigou 8/10</div>`,{sticky:true});
+}).addTo(map_3d3642d6c6ba28b1);
+var pop_1cc3d3acf87c8531 = L.popup({maxWidth:340});
+var html_5b02d52f4b4f8743 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Jiuzhaigou</h3>   <b>China</b> | 8/10 | ✈️직항<hr style="margin:3px 0">   🏞️ 호수/폭포/숲 | 9월-11월 단풍 절정 / 4월-6월 봄<br>💰 $80/day | ✈️ ~4h | ✈️직항<br>📅 4월, 5월, 6월, 9월 외 2개월<br>✨ 오색 호수와 눈 덮인 봉우리의 조화. 세계에서 가장 아름다운 호수계곡<hr style="margin:3px 0">   <i>유네스코 세계자연유산. 오색 호수, 진주 폭포, 경해 등 절경. 2017년 지진 후 복구 완료. 청두에서 비행기 1시간 또는 버스 9시간. 고도 2,000-4,800m. 산소 흡입기 대여 가능.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Sheraton Jiuzhaigou Resort ($200-400/night)<br>🏨 InterContinental Jiuzhai Paradise ($250-500/night)<br>🏨 Jiuzhai Paradise Hotel ($120-250/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ InterContinental 뷔페 레스토랑 (Google 4.4)<br>🍽️ Tibetan Hot Pot Restaurant (Google 4.2)<br>🍽️ Nuorilang Restaurant (공원 내) (Google 4.0)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 고산병 주의(최고 4,800m). 겨울 결빙 위험. 인파 많음(성수기 하루 1.2만 명 제한).</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 청두 한국어 투어 출발</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Jiuzhaigou China&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_1cc3d3acf87c8531.setContent(html_5b02d52f4b4f8743);
+cm_ad57ff5213222902.bindPopup(pop_1cc3d3acf87c8531);
+cm_ad57ff5213222902.bindTooltip(`<div>Jiuzhaigou 8/10</div>`,{sticky:true});
 
 
-var lbl_be1b48a450da833b = L.marker([33.262,103.919]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_be1b48a450da833b = L.divIcon({
+var lbl_4fbef1d9b93f76f6 = L.marker([33.262,103.919]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_4fbef1d9b93f76f6 = L.divIcon({
     html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Jiuzhaigou</div>',
     className:'empty'
 });
-lbl_be1b48a450da833b.setIcon(icon_lbl_be1b48a450da833b);
+lbl_4fbef1d9b93f76f6.setIcon(icon_lbl_4fbef1d9b93f76f6);
 
 
-var cm_35bb7d4d6bd81dc7 = L.circleMarker([35.513,138.763],{
+var cm_57e59b4a7e54cc95 = L.circleMarker([35.513,138.763],{
     color:"#ffcc00",fill:true,fillColor:"#ffcc00",fillOpacity:0.85,
     radius:14,weight:2
-}).addTo(map_f76ae32c59e0570c);
-var pop_2f785878bbeda827 = L.popup({maxWidth:340});
-var html_738b8bc3ebf55ab9 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Mount Fuji (Lake Kawaguchi)</h3>   <b>Japan</b> | 8/10 | ✈️직항<hr style="margin:3px 0">   🏞️ 화산/호수/반사 | 12월-2월 설경 반사 / 10월-12월 단풍+후지산<br>💰 $150/day | ✈️ ~2h | ✈️직항<br>📅 10월, 11월, 12월, 1월 외 2개월<br>✨ 가와구치코에서 호수에 반사된 역상 후지산. 일본의 영혼<hr style="margin:3px 0">   <i>5개 후지 호수 중 가와구치코가 접근 최적. 새벽 4-6시 고요한 수면에 반사되는 후지산. 오이시 공원(Oishi Park) 라벤더 시즌(5-6월). 도쿄에서 특급버스 2시간.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Fujisan Hotel ($150-300/night)<br>🏨 Kozantei Ubuya (료칸) ($300-600/night)<br>🏨 Hotel Mifujien ($100-200/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Houtou Fudou (호우토우 향토요리) (Google 4.4)<br>🍽️ Restaurant Kubota (후지산 전망) (Google 4.3)<br>🍽️ Kawaguchiko Hanazono (딸기 농원) (Google 4.2)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 후지산 등반(7-9월)은 고산병 주의. 악천후 시 정상 등반 중지. 겨울 도로 결빙.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 도쿄 한국어 투어 다수 운영</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Mount Fuji (Lake Kawaguchi) Japan&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_2f785878bbeda827.setContent(html_738b8bc3ebf55ab9);
-cm_35bb7d4d6bd81dc7.bindPopup(pop_2f785878bbeda827);
-cm_35bb7d4d6bd81dc7.bindTooltip(`<div>Mount Fuji (Lake Kawaguchi) 8/10</div>`,{sticky:true});
+}).addTo(map_3d3642d6c6ba28b1);
+var pop_95af775abd58874e = L.popup({maxWidth:340});
+var html_fabdc72915b6b81b = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Mount Fuji (Lake Kawaguchi)</h3>   <b>Japan</b> | 8/10 | ✈️직항<hr style="margin:3px 0">   🏞️ 화산/호수/반사 | 12월-2월 설경 반사 / 10월-12월 단풍+후지산<br>💰 $150/day | ✈️ ~2h | ✈️직항<br>📅 10월, 11월, 12월, 1월 외 2개월<br>✨ 가와구치코에서 호수에 반사된 역상 후지산. 일본의 영혼<hr style="margin:3px 0">   <i>5개 후지 호수 중 가와구치코가 접근 최적. 새벽 4-6시 고요한 수면에 반사되는 후지산. 오이시 공원(Oishi Park) 라벤더 시즌(5-6월). 도쿄에서 특급버스 2시간.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Fujisan Hotel ($150-300/night)<br>🏨 Kozantei Ubuya (료칸) ($300-600/night)<br>🏨 Hotel Mifujien ($100-200/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Houtou Fudou (호우토우 향토요리) (Google 4.4)<br>🍽️ Restaurant Kubota (후지산 전망) (Google 4.3)<br>🍽️ Kawaguchiko Hanazono (딸기 농원) (Google 4.2)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 후지산 등반(7-9월)은 고산병 주의. 악천후 시 정상 등반 중지. 겨울 도로 결빙.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 도쿄 한국어 투어 다수 운영</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Mount Fuji (Lake Kawaguchi) Japan&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_95af775abd58874e.setContent(html_fabdc72915b6b81b);
+cm_57e59b4a7e54cc95.bindPopup(pop_95af775abd58874e);
+cm_57e59b4a7e54cc95.bindTooltip(`<div>Mount Fuji (Lake Kawaguchi) 8/10</div>`,{sticky:true});
 
 
-var lbl_695d8c06b0680ad8 = L.marker([35.513,138.763]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_695d8c06b0680ad8 = L.divIcon({
+var lbl_31e30af2c412885d = L.marker([35.513,138.763]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_31e30af2c412885d = L.divIcon({
     html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Mount Fuji (Lake Kawaguchi)</div>',
     className:'empty'
 });
-lbl_695d8c06b0680ad8.setIcon(icon_lbl_695d8c06b0680ad8);
+lbl_31e30af2c412885d.setIcon(icon_lbl_31e30af2c412885d);
 
 
-var cm_9a0fe5815f0fabc5 = L.circleMarker([7.74,98.775],{
+var cm_68e3bc83049cc0f0 = L.circleMarker([7.74,98.775],{
     color:"#ffcc00",fill:true,fillColor:"#ffcc00",fillOpacity:0.85,
     radius:14,weight:2
-}).addTo(map_f76ae32c59e0570c);
-var pop_9d690acf67cd8c9e = L.popup({maxWidth:340});
-var html_1d5e41beb2d562fb = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Phi Phi Islands</h3>   <b>Thailand</b> | 8/10 | ✈️직항<hr style="margin:3px 0">   🏞️ 섬/석회암/해변 | 11월-4월 건기 (특히 12월-3월 최적)<br>💰 $80/day | ✈️ ~6h | ✈️직항<br>📅 11월, 12월, 1월, 2월 외 2개월<br>✨ 영화 더 비치의 촬영지 마야 베이. 에메랄드 석회암 절벽 사이의 천국<hr style="margin:3px 0">   <i>피피 돈 섬(유인)과 피피 레 섬(무인)으로 구성. 마야 베이(The Beach 촬영지)는 2018-2022년 복원 후 재개방. 스노클링, 다이빙 최고. 크라비 또는 푸켓에서 페리.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Zeavola Resort ($200-400/night)<br>🏨 Holiday Inn Resort Phi Phi Island ($150-300/night)<br>🏨 Phi Phi Villa Resort ($80-150/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Ciao Bella Restaurant (Google 4.4)<br>🍽️ Papaya Restaurant (Google 4.3)<br>🍽️ Efe Mediterranean Restaurant (Google 4.2)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 해파리 시즌(5-10월) 주의. 음주 수영 절대 금지. 마야 베이 입장 시간 제한 있음.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 방콕/푸켓 한국어 투어 다수</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Phi Phi Islands Thailand&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_9d690acf67cd8c9e.setContent(html_1d5e41beb2d562fb);
-cm_9a0fe5815f0fabc5.bindPopup(pop_9d690acf67cd8c9e);
-cm_9a0fe5815f0fabc5.bindTooltip(`<div>Phi Phi Islands 8/10</div>`,{sticky:true});
+}).addTo(map_3d3642d6c6ba28b1);
+var pop_77318f759de4d248 = L.popup({maxWidth:340});
+var html_9dcf49ddda61ccb7 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Phi Phi Islands</h3>   <b>Thailand</b> | 8/10 | ✈️직항<hr style="margin:3px 0">   🏞️ 섬/석회암/해변 | 11월-4월 건기 (특히 12월-3월 최적)<br>💰 $80/day | ✈️ ~6h | ✈️직항<br>📅 11월, 12월, 1월, 2월 외 2개월<br>✨ 영화 더 비치의 촬영지 마야 베이. 에메랄드 석회암 절벽 사이의 천국<hr style="margin:3px 0">   <i>피피 돈 섬(유인)과 피피 레 섬(무인)으로 구성. 마야 베이(The Beach 촬영지)는 2018-2022년 복원 후 재개방. 스노클링, 다이빙 최고. 크라비 또는 푸켓에서 페리.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Zeavola Resort ($200-400/night)<br>🏨 Holiday Inn Resort Phi Phi Island ($150-300/night)<br>🏨 Phi Phi Villa Resort ($80-150/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Ciao Bella Restaurant (Google 4.4)<br>🍽️ Papaya Restaurant (Google 4.3)<br>🍽️ Efe Mediterranean Restaurant (Google 4.2)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 해파리 시즌(5-10월) 주의. 음주 수영 절대 금지. 마야 베이 입장 시간 제한 있음.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 방콕/푸켓 한국어 투어 다수</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Phi Phi Islands Thailand&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_77318f759de4d248.setContent(html_9dcf49ddda61ccb7);
+cm_68e3bc83049cc0f0.bindPopup(pop_77318f759de4d248);
+cm_68e3bc83049cc0f0.bindTooltip(`<div>Phi Phi Islands 8/10</div>`,{sticky:true});
 
 
-var lbl_f9411f61295f8500 = L.marker([7.74,98.775]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_f9411f61295f8500 = L.divIcon({
+var lbl_841abb372bd8999d = L.marker([7.74,98.775]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_841abb372bd8999d = L.divIcon({
     html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Phi Phi Islands</div>',
     className:'empty'
 });
-lbl_f9411f61295f8500.setIcon(icon_lbl_f9411f61295f8500);
+lbl_841abb372bd8999d.setIcon(icon_lbl_841abb372bd8999d);
 
 
-var cm_e3b5fdda2bc4498c = L.circleMarker([33.362,126.533],{
+var cm_a53ad9982aaa13ba = L.circleMarker([33.362,126.533],{
     color:"#ffcc00",fill:true,fillColor:"#ffcc00",fillOpacity:0.85,
     radius:14,weight:2
-}).addTo(map_f76ae32c59e0570c);
-var pop_756ec8d5662ad811 = L.popup({maxWidth:340});
-var html_f819c19b26f365bb = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Hallasan Crater Lake</h3>   <b>South Korea</b> | 8/10 | ✈️직항<hr style="margin:3px 0">   🏞️ 화산/분화구호수 | 10월-11월 단풍 / 12월-2월 설경 / 5월 철쭉<br>💰 $30/day | ✈️ ~1h | ✈️직항<br>📅 5월, 10월, 11월, 12월 외 2개월<br>✨ 한국 최고봉 정상의 화산 분화구 호수 백록담. 한반도 하이킹의 정점<hr style="margin:3px 0">   <i>해발 1,950m 정상 백록담 분화구. 성판악 코스(9.6km, 편도 4.5시간)가 정상 접근 가능. 관음사 코스도 인기. 철쭉(5월), 단풍(10-11월), 설경(12-2월) 시즌별 절경 다름.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 롯데호텔 제주 ($150-300/night)<br>🏨 제주 신라 호텔 ($200-400/night)<br>🏨 메종 글래드 제주 ($120-250/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ 도두해녀의집 (해산물) (Google 4.5)<br>🍽️ 삼대국수회관 (고기국수) (Google 4.6)<br>🍽️ 제주 흑돼지 거리 식당들 (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 정상 탐방로 입산 시간 제한(오전). 악천후 시 입산 통제. 겨울 결빙 아이젠 필수.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국어 안내 기본 제공</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Hallasan Crater Lake South Korea&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_756ec8d5662ad811.setContent(html_f819c19b26f365bb);
-cm_e3b5fdda2bc4498c.bindPopup(pop_756ec8d5662ad811);
-cm_e3b5fdda2bc4498c.bindTooltip(`<div>Hallasan Crater Lake 8/10</div>`,{sticky:true});
+}).addTo(map_3d3642d6c6ba28b1);
+var pop_349abc58ab189ed8 = L.popup({maxWidth:340});
+var html_bcfc97dd2b5ea762 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Hallasan Crater Lake</h3>   <b>South Korea</b> | 8/10 | ✈️직항<hr style="margin:3px 0">   🏞️ 화산/분화구호수 | 10월-11월 단풍 / 12월-2월 설경 / 5월 철쭉<br>💰 $30/day | ✈️ ~1h | ✈️직항<br>📅 5월, 10월, 11월, 12월 외 2개월<br>✨ 한국 최고봉 정상의 화산 분화구 호수 백록담. 한반도 하이킹의 정점<hr style="margin:3px 0">   <i>해발 1,950m 정상 백록담 분화구. 성판악 코스(9.6km, 편도 4.5시간)가 정상 접근 가능. 관음사 코스도 인기. 철쭉(5월), 단풍(10-11월), 설경(12-2월) 시즌별 절경 다름.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 롯데호텔 제주 ($150-300/night)<br>🏨 제주 신라 호텔 ($200-400/night)<br>🏨 메종 글래드 제주 ($120-250/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ 도두해녀의집 (해산물) (Google 4.5)<br>🍽️ 삼대국수회관 (고기국수) (Google 4.6)<br>🍽️ 제주 흑돼지 거리 식당들 (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 정상 탐방로 입산 시간 제한(오전). 악천후 시 입산 통제. 겨울 결빙 아이젠 필수.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국어 안내 기본 제공</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Hallasan Crater Lake South Korea&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_349abc58ab189ed8.setContent(html_bcfc97dd2b5ea762);
+cm_a53ad9982aaa13ba.bindPopup(pop_349abc58ab189ed8);
+cm_a53ad9982aaa13ba.bindTooltip(`<div>Hallasan Crater Lake 8/10</div>`,{sticky:true});
 
 
-var lbl_c0b92a38f9a623e1 = L.marker([33.362,126.533]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_c0b92a38f9a623e1 = L.divIcon({
+var lbl_15a8980336d71a61 = L.marker([33.362,126.533]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_15a8980336d71a61 = L.divIcon({
     html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Hallasan Crater Lake</div>',
     className:'empty'
 });
-lbl_c0b92a38f9a623e1.setIcon(icon_lbl_c0b92a38f9a623e1);
+lbl_15a8980336d71a61.setIcon(icon_lbl_15a8980336d71a61);
 
 
-var cm_3b8dfe7a06159677 = L.marker([78.224,15.64]).addTo(map_f76ae32c59e0570c);
-var icon_cm_3b8dfe7a06159677 = L.divIcon({
+var cm_79697164b600fa7d = L.marker([78.224,15.64]).addTo(map_3d3642d6c6ba28b1);
+var icon_cm_79697164b600fa7d = L.divIcon({
     html:'<div style="width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_3b8dfe7a06159677.setIcon(icon_cm_3b8dfe7a06159677);
-var pop_568ccc7a2d3167e5 = L.popup({maxWidth:340});
-var html_f430fd43dece37e7 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Svalbard</h3>   <b>Norway</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 북극/빙하/야생동물 | 2월-4월 오로라+극야 / 6월-8월 백야+빙하 탐험<br>💰 $400/day | ✈️ ~14h | 🔄경유<br>📅 2월, 3월, 4월, 6월 외 2개월<br>✨ 북극곰이 사람보다 많은 북위 78도의 북극. 빙하, 북극광, 순록의 나라<hr style="margin:3px 0">   <i>북극점까지 1,300km. 북극곰 3,500마리 vs 인간 2,700명. 롱이어비엔(Longyearbyen) 기지. 개썰매, 스노모빌, 빙하 하이킹. 4월은 오로라+눈+밝은 낮 동시에 가능.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Radisson Blu Polar Hotel ($300-600/night)<br>🏨 Svalbard Hotell | The Vault ($250-500/night)<br>🏨 Coal Miners&#x27; Cabins ($150-300/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Huset Restaurant (Google 4.5)<br>🍽️ Kroa Restaurant (Google 4.3)<br>🍽️ Gruvelageret Bar &amp; Spiseri (Google 4.2)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 북극곰 출몰 구역. 도시 외 이동 시 총기 휴대 의무. 영하 30도 대비 완전 방한.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Svalbard Norway&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_568ccc7a2d3167e5.setContent(html_f430fd43dece37e7);
-cm_3b8dfe7a06159677.bindPopup(pop_568ccc7a2d3167e5);
-cm_3b8dfe7a06159677.bindTooltip(`<div>Svalbard 8/10</div>`,{sticky:true});
+cm_79697164b600fa7d.setIcon(icon_cm_79697164b600fa7d);
+var pop_f7a46ced004e61e7 = L.popup({maxWidth:340});
+var html_4958f1b8fe3453a8 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Svalbard</h3>   <b>Norway</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 북극/빙하/야생동물 | 2월-4월 오로라+극야 / 6월-8월 백야+빙하 탐험<br>💰 $400/day | ✈️ ~14h | 🔄경유<br>📅 2월, 3월, 4월, 6월 외 2개월<br>✨ 북극곰이 사람보다 많은 북위 78도의 북극. 빙하, 북극광, 순록의 나라<hr style="margin:3px 0">   <i>북극점까지 1,300km. 북극곰 3,500마리 vs 인간 2,700명. 롱이어비엔(Longyearbyen) 기지. 개썰매, 스노모빌, 빙하 하이킹. 4월은 오로라+눈+밝은 낮 동시에 가능.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Radisson Blu Polar Hotel ($300-600/night)<br>🏨 Svalbard Hotell | The Vault ($250-500/night)<br>🏨 Coal Miners&#x27; Cabins ($150-300/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Huset Restaurant (Google 4.5)<br>🍽️ Kroa Restaurant (Google 4.3)<br>🍽️ Gruvelageret Bar &amp; Spiseri (Google 4.2)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 북극곰 출몰 구역. 도시 외 이동 시 총기 휴대 의무. 영하 30도 대비 완전 방한.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Svalbard Norway&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_f7a46ced004e61e7.setContent(html_4958f1b8fe3453a8);
+cm_79697164b600fa7d.bindPopup(pop_f7a46ced004e61e7);
+cm_79697164b600fa7d.bindTooltip(`<div>Svalbard 8/10</div>`,{sticky:true});
 
 
-var lbl_03d7dc29be4c4034 = L.marker([78.224,15.64]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_03d7dc29be4c4034 = L.divIcon({
+var lbl_a90612b782a7a232 = L.marker([78.224,15.64]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_a90612b782a7a232 = L.divIcon({
     html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Svalbard</div>',
     className:'empty'
 });
-lbl_03d7dc29be4c4034.setIcon(icon_lbl_03d7dc29be4c4034);
+lbl_a90612b782a7a232.setIcon(icon_lbl_a90612b782a7a232);
 
 
-var cm_6b1c11ca331910db = L.circleMarker([13.412,103.866],{
+var cm_819557bb2556ad27 = L.circleMarker([13.412,103.866],{
     color:"#ffcc00",fill:true,fillColor:"#ffcc00",fillOpacity:0.85,
     radius:14,weight:2
-}).addTo(map_f76ae32c59e0570c);
-var pop_527d8036dab1fa54 = L.popup({maxWidth:340});
-var html_756a786eb687614a = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Angkor Wat Sunrise</h3>   <b>Cambodia</b> | 8/10 | ✈️직항<hr style="margin:3px 0">   🏞️ 유적/힌두사원 | 11월-3월 건기 / 일출 시 사원이 연못에 반사<br>💰 $60/day | ✈️ ~6h | ✈️직항<br>📅 11월, 12월, 1월, 2월 외 1개월<br>✨ 세계 최대 종교 유적. 연못에 반사된 앙코르와트 일출은 지구에서 가장 신성한 순간<hr style="margin:3px 0">   <i>12세기 크메르 제국의 걸작. 앙코르와트 + 앙코르톰 + 타프롬(나무 뿌리 유적) 3대 필수 코스. 새벽 5시 일출 인파 분산 팁: 북쪽 연못이 덜 붐빔. 씨엠립 공항 직항.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Raffles Grand Hotel d&#x27;Angkor ($300-600/night)<br>🏨 Park Hyatt Siem Reap ($250-500/night)<br>🏨 Shinta Mani Angkor ($200-400/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Cuisine Wat Damnak (Michelin 추천)<br>🍽️ Haven Restaurant (Google 4.6)<br>🍽️ Malis Restaurant (Google 4.5)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 지뢰 제거 지역 표시 따르기. 땡볕 탈수 주의. 사원 내 복장 규정(어깨·무릎 노출 금지).</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 씨엠립 한국어 가이드 다수 활동</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Angkor Wat Sunrise Cambodia&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_527d8036dab1fa54.setContent(html_756a786eb687614a);
-cm_6b1c11ca331910db.bindPopup(pop_527d8036dab1fa54);
-cm_6b1c11ca331910db.bindTooltip(`<div>Angkor Wat Sunrise 8/10</div>`,{sticky:true});
+}).addTo(map_3d3642d6c6ba28b1);
+var pop_3a6485f19ff30b5d = L.popup({maxWidth:340});
+var html_90917e4b1e901bc6 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Angkor Wat Sunrise</h3>   <b>Cambodia</b> | 8/10 | ✈️직항<hr style="margin:3px 0">   🏞️ 유적/힌두사원 | 11월-3월 건기 / 일출 시 사원이 연못에 반사<br>💰 $60/day | ✈️ ~6h | ✈️직항<br>📅 11월, 12월, 1월, 2월 외 1개월<br>✨ 세계 최대 종교 유적. 연못에 반사된 앙코르와트 일출은 지구에서 가장 신성한 순간<hr style="margin:3px 0">   <i>12세기 크메르 제국의 걸작. 앙코르와트 + 앙코르톰 + 타프롬(나무 뿌리 유적) 3대 필수 코스. 새벽 5시 일출 인파 분산 팁: 북쪽 연못이 덜 붐빔. 씨엠립 공항 직항.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Raffles Grand Hotel d&#x27;Angkor ($300-600/night)<br>🏨 Park Hyatt Siem Reap ($250-500/night)<br>🏨 Shinta Mani Angkor ($200-400/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Cuisine Wat Damnak (Michelin 추천)<br>🍽️ Haven Restaurant (Google 4.6)<br>🍽️ Malis Restaurant (Google 4.5)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 지뢰 제거 지역 표시 따르기. 땡볕 탈수 주의. 사원 내 복장 규정(어깨·무릎 노출 금지).</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 씨엠립 한국어 가이드 다수 활동</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Angkor Wat Sunrise Cambodia&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_3a6485f19ff30b5d.setContent(html_90917e4b1e901bc6);
+cm_819557bb2556ad27.bindPopup(pop_3a6485f19ff30b5d);
+cm_819557bb2556ad27.bindTooltip(`<div>Angkor Wat Sunrise 8/10</div>`,{sticky:true});
 
 
-var lbl_5f56f87e9f9c30e5 = L.marker([13.412,103.866]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_5f56f87e9f9c30e5 = L.divIcon({
+var lbl_53dca708dddca9be = L.marker([13.412,103.866]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_53dca708dddca9be = L.divIcon({
     html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Angkor Wat Sunrise</div>',
     className:'empty'
 });
-lbl_5f56f87e9f9c30e5.setIcon(icon_lbl_5f56f87e9f9c30e5);
+lbl_53dca708dddca9be.setIcon(icon_lbl_53dca708dddca9be);
 
 
-var cm_09654cc2a25de987 = L.marker([30.329,35.442]).addTo(map_f76ae32c59e0570c);
-var icon_cm_09654cc2a25de987 = L.divIcon({
+var cm_4f16276090e690e2 = L.marker([30.329,35.442]).addTo(map_3d3642d6c6ba28b1);
+var icon_cm_4f16276090e690e2 = L.divIcon({
     html:'<div style="width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_09654cc2a25de987.setIcon(icon_cm_09654cc2a25de987);
-var pop_e7a419d960cf5411 = L.popup({maxWidth:340});
-var html_a71f6ed74057fb20 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Petra</h3>   <b>Jordan</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 유적/암굴도시 | 3월-5월, 9월-11월 / 야간 캔들 투어 추천<br>💰 $120/day | ✈️ ~12h | 🔄경유<br>📅 3월, 4월, 5월, 9월 외 2개월<br>✨ 장밋빛 암벽을 깎아 만든 나바테아 왕국의 수도. 인디아나 존스 촬영지<hr style="margin:3px 0">   <i>1.2km 협곡(시크, Siq) 끝에 갑자기 나타나는 알카즈네(The Treasury) 신전의 첫 충격. 야간 캔들 투어(월수금)는 꼭 참여. 수도원(Al-Deir)은 800계단 가치 충분.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Mövenpick Resort Petra ($200-400/night)<br>🏨 Petra Guest House ($100-200/night)<br>🏨 The Basin (페트라 내부) ($장기 패키지)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ The Basin Restaurant (유적 내) (Google 4.1)<br>🍽️ Cave Bar (Petra Guest House) (Google 4.3)<br>🍽️ Sandstone Restaurant (Google 4.2)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 여름 폭염(40도+). 협곡 섬광홍수 위험. 당나귀/말 타기 시 부상 주의.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Petra Jordan&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_e7a419d960cf5411.setContent(html_a71f6ed74057fb20);
-cm_09654cc2a25de987.bindPopup(pop_e7a419d960cf5411);
-cm_09654cc2a25de987.bindTooltip(`<div>Petra 8/10</div>`,{sticky:true});
+cm_4f16276090e690e2.setIcon(icon_cm_4f16276090e690e2);
+var pop_72c8d446816b4526 = L.popup({maxWidth:340});
+var html_f52587fbdeff1775 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Petra</h3>   <b>Jordan</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 유적/암굴도시 | 3월-5월, 9월-11월 / 야간 캔들 투어 추천<br>💰 $120/day | ✈️ ~12h | 🔄경유<br>📅 3월, 4월, 5월, 9월 외 2개월<br>✨ 장밋빛 암벽을 깎아 만든 나바테아 왕국의 수도. 인디아나 존스 촬영지<hr style="margin:3px 0">   <i>1.2km 협곡(시크, Siq) 끝에 갑자기 나타나는 알카즈네(The Treasury) 신전의 첫 충격. 야간 캔들 투어(월수금)는 꼭 참여. 수도원(Al-Deir)은 800계단 가치 충분.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Mövenpick Resort Petra ($200-400/night)<br>🏨 Petra Guest House ($100-200/night)<br>🏨 The Basin (페트라 내부) ($장기 패키지)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ The Basin Restaurant (유적 내) (Google 4.1)<br>🍽️ Cave Bar (Petra Guest House) (Google 4.3)<br>🍽️ Sandstone Restaurant (Google 4.2)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 여름 폭염(40도+). 협곡 섬광홍수 위험. 당나귀/말 타기 시 부상 주의.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Petra Jordan&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_72c8d446816b4526.setContent(html_f52587fbdeff1775);
+cm_4f16276090e690e2.bindPopup(pop_72c8d446816b4526);
+cm_4f16276090e690e2.bindTooltip(`<div>Petra 8/10</div>`,{sticky:true});
 
 
-var lbl_ad7befb599e00795 = L.marker([30.329,35.442]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_ad7befb599e00795 = L.divIcon({
+var lbl_9a7c0be9b12a061f = L.marker([30.329,35.442]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_9a7c0be9b12a061f = L.divIcon({
     html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Petra</div>',
     className:'empty'
 });
-lbl_ad7befb599e00795.setIcon(icon_lbl_ad7befb599e00795);
+lbl_9a7c0be9b12a061f.setIcon(icon_lbl_9a7c0be9b12a061f);
 
 
-var cm_9f50c9d22231e671 = L.marker([37.745,-119.532]).addTo(map_f76ae32c59e0570c);
-var icon_cm_9f50c9d22231e671 = L.divIcon({
+var cm_37c9f81fc53f19b7 = L.marker([37.745,-119.532]).addTo(map_3d3642d6c6ba28b1);
+var icon_cm_37c9f81fc53f19b7 = L.divIcon({
     html:'<div style="width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_9f50c9d22231e671.setIcon(icon_cm_9f50c9d22231e671);
-var pop_8a1744172bc78f24 = L.popup({maxWidth:340});
-var html_42188d6a56e84835 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Yosemite Valley</h3>   <b>USA</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 협곡/폭포/암벽 | 4월-6월 폭포 최고 / 1월 터널뷰 안개 역전층<br>💰 $150/day | ✈️ ~11h | 🔄경유<br>📅 4월, 5월, 6월, 1월 외 3개월<br>✨ 엘 카피탄, 하프돔, 요세미티 폭포. 미국 국립공원의 교과서<hr style="margin:3px 0">   <i>엘 카피탄(3,000피트 수직 암벽)은 프리솔로 클라이밍의 성지. 터널뷰(Tunnel View) 새벽 운해는 최고의 사진. 하프돔 하이킹은 허가제. 봄 눈 녹음물로 폭포 장관.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 The Ahwahnee Hotel ($400-800/night)<br>🏨 Yosemite Valley Lodge ($200-400/night)<br>🏨 Curry Village (캐빈) ($100-200/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ The Ahwahnee Dining Room (Google 4.3)<br>🍽️ Village Grill Deck (Google 4.0)<br>🍽️ Yosemite Valley Lodge Bar &amp; Restaurant (Google 4.1)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 야생 곰 음식 보관 규정 필수 준수. 하프돔 케이블 구간 미끄러움. 겨울 눈길 체인 의무.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 LA/SF 한국어 투어 다수</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Yosemite Valley USA&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_8a1744172bc78f24.setContent(html_42188d6a56e84835);
-cm_9f50c9d22231e671.bindPopup(pop_8a1744172bc78f24);
-cm_9f50c9d22231e671.bindTooltip(`<div>Yosemite Valley 8/10</div>`,{sticky:true});
+cm_37c9f81fc53f19b7.setIcon(icon_cm_37c9f81fc53f19b7);
+var pop_3ad3b1f81d70b58e = L.popup({maxWidth:340});
+var html_aae12724e83e7a3b = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Yosemite Valley</h3>   <b>USA</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 협곡/폭포/암벽 | 4월-6월 폭포 최고 / 1월 터널뷰 안개 역전층<br>💰 $150/day | ✈️ ~11h | 🔄경유<br>📅 4월, 5월, 6월, 1월 외 3개월<br>✨ 엘 카피탄, 하프돔, 요세미티 폭포. 미국 국립공원의 교과서<hr style="margin:3px 0">   <i>엘 카피탄(3,000피트 수직 암벽)은 프리솔로 클라이밍의 성지. 터널뷰(Tunnel View) 새벽 운해는 최고의 사진. 하프돔 하이킹은 허가제. 봄 눈 녹음물로 폭포 장관.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 The Ahwahnee Hotel ($400-800/night)<br>🏨 Yosemite Valley Lodge ($200-400/night)<br>🏨 Curry Village (캐빈) ($100-200/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ The Ahwahnee Dining Room (Google 4.3)<br>🍽️ Village Grill Deck (Google 4.0)<br>🍽️ Yosemite Valley Lodge Bar &amp; Restaurant (Google 4.1)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 야생 곰 음식 보관 규정 필수 준수. 하프돔 케이블 구간 미끄러움. 겨울 눈길 체인 의무.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 LA/SF 한국어 투어 다수</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Yosemite Valley USA&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_3ad3b1f81d70b58e.setContent(html_aae12724e83e7a3b);
+cm_37c9f81fc53f19b7.bindPopup(pop_3ad3b1f81d70b58e);
+cm_37c9f81fc53f19b7.bindTooltip(`<div>Yosemite Valley 8/10</div>`,{sticky:true});
 
 
-var lbl_842e6df49c8e602d = L.marker([37.745,-119.532]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_842e6df49c8e602d = L.divIcon({
+var lbl_5251cd7456606009 = L.marker([37.745,-119.532]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_5251cd7456606009 = L.divIcon({
     html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Yosemite Valley</div>',
     className:'empty'
 });
-lbl_842e6df49c8e602d.setIcon(icon_lbl_842e6df49c8e602d);
+lbl_5251cd7456606009.setIcon(icon_lbl_5251cd7456606009);
 
 
-var cm_ac8f41b20a6b1396 = L.marker([46.495,11.919]).addTo(map_f76ae32c59e0570c);
-var icon_cm_ac8f41b20a6b1396 = L.divIcon({
+var cm_77905e66733de745 = L.marker([46.495,11.919]).addTo(map_3d3642d6c6ba28b1);
+var icon_cm_77905e66733de745 = L.divIcon({
     html:'<div style="width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_ac8f41b20a6b1396.setIcon(icon_cm_ac8f41b20a6b1396);
-var pop_d4ec8524d1fd3999 = L.popup({maxWidth:340});
-var html_a6555e121e0c0f49 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Dolomites</h3>   <b>Italy</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 산악/석회암절벽 | 6월-9월 하이킹 / 12월-3월 스키<br>💰 $200/day | ✈️ ~13h | 🔄경유<br>📅 6월, 7월, 8월, 9월 외 4개월<br>✨ 수직 석회암 절벽과 알파인 초원의 조화. 세계에서 가장 아름다운 산악 풍경<hr style="margin:3px 0">   <i>유네스코 세계자연유산. 트레치메(Tre Cime di Lavaredo) 3개 봉우리는 상징. 카레짜 호수의 에메랄드 반사. 비볼타나(Rifugio) 산장 하이킹. 볼차노/코르티나에서 출발.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Hotel Rosa Alpina ($400-800/night)<br>🏨 Attic Suites Dolomites ($200-400/night)<br>🏨 Rifugio Auronzo (트레치메 인근) ($60-100/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Restaurant St. Hubertus (미슐랭 3스타) (Michelin 3 Star)<br>🍽️ Rifugio Lagazuoi (산장) (Google 4.4)<br>🍽️ Ristorante Al Lago di Carezza (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 고산 하이킹 시 갑작스러운 낙뢰 주의. 비아 페라타(Via Ferrata) 장비 필수.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Dolomites Italy&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_d4ec8524d1fd3999.setContent(html_a6555e121e0c0f49);
-cm_ac8f41b20a6b1396.bindPopup(pop_d4ec8524d1fd3999);
-cm_ac8f41b20a6b1396.bindTooltip(`<div>Dolomites 8/10</div>`,{sticky:true});
+cm_77905e66733de745.setIcon(icon_cm_77905e66733de745);
+var pop_1bd82cff721a91ac = L.popup({maxWidth:340});
+var html_600552c7fd9d273f = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Dolomites</h3>   <b>Italy</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 산악/석회암절벽 | 6월-9월 하이킹 / 12월-3월 스키<br>💰 $200/day | ✈️ ~13h | 🔄경유<br>📅 6월, 7월, 8월, 9월 외 4개월<br>✨ 수직 석회암 절벽과 알파인 초원의 조화. 세계에서 가장 아름다운 산악 풍경<hr style="margin:3px 0">   <i>유네스코 세계자연유산. 트레치메(Tre Cime di Lavaredo) 3개 봉우리는 상징. 카레짜 호수의 에메랄드 반사. 비볼타나(Rifugio) 산장 하이킹. 볼차노/코르티나에서 출발.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Hotel Rosa Alpina ($400-800/night)<br>🏨 Attic Suites Dolomites ($200-400/night)<br>🏨 Rifugio Auronzo (트레치메 인근) ($60-100/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Restaurant St. Hubertus (미슐랭 3스타) (Michelin 3 Star)<br>🍽️ Rifugio Lagazuoi (산장) (Google 4.4)<br>🍽️ Ristorante Al Lago di Carezza (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 고산 하이킹 시 갑작스러운 낙뢰 주의. 비아 페라타(Via Ferrata) 장비 필수.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Dolomites Italy&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_1bd82cff721a91ac.setContent(html_600552c7fd9d273f);
+cm_77905e66733de745.bindPopup(pop_1bd82cff721a91ac);
+cm_77905e66733de745.bindTooltip(`<div>Dolomites 8/10</div>`,{sticky:true});
 
 
-var lbl_9e89d1c0e8bf089d = L.marker([46.495,11.919]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_9e89d1c0e8bf089d = L.divIcon({
+var lbl_ecc0dc234786b610 = L.marker([46.495,11.919]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_ecc0dc234786b610 = L.divIcon({
     html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Dolomites</div>',
     className:'empty'
 });
-lbl_9e89d1c0e8bf089d.setIcon(icon_lbl_9e89d1c0e8bf089d);
+lbl_ecc0dc234786b610.setIcon(icon_lbl_ecc0dc234786b610);
 
 
-var cm_4d45517a6e867076 = L.marker([52.972,-9.424]).addTo(map_f76ae32c59e0570c);
-var icon_cm_4d45517a6e867076 = L.divIcon({
+var cm_9233f5fe928ecc6d = L.marker([52.972,-9.424]).addTo(map_3d3642d6c6ba28b1);
+var icon_cm_9233f5fe928ecc6d = L.divIcon({
     html:'<div style="width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_4d45517a6e867076.setIcon(icon_cm_4d45517a6e867076);
-var pop_c6f94133c46d8ab7 = L.popup({maxWidth:340});
-var html_88d4a067f11a5762 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Cliffs of Moher</h3>   <b>Ireland</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 해안절벽 | 4월-9월 / 구름 낀 날 더 극적인 분위기<br>💰 $100/day | ✈️ ~14h | 🔄경유<br>📅 4월, 5월, 6월, 7월 외 2개월<br>✨ 214m 높이, 8km 길이의 수직 대서양 절벽. 해리포터 촬영지<hr style="margin:3px 0">   <i>아일랜드 최대 관광지. 절벽 위 해안 트레일 따라 걸으며 하반부 조망 가능. 오브라이언 타워 전망대. 갈웨이에서 버스 1.5시간. 어웨이(Away)한 아일랜드 날씨 자체도 경험.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Cliffs of Moher Hotel ($150-280/night)<br>🏨 Doolin Inn ($80-150/night)<br>🏨 Ballinalacken Castle Hotel ($120-220/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Cliffs of Moher Hotel Restaurant (Google 4.2)<br>🍽️ Gus O&#x27;Connor&#x27;s Pub (Doolin) (Google 4.4)<br>🍽️ Doolin Café (Google 4.5)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 절벽 끝 펜스 밖 접근 금지(추락 사고 빈발). 강풍과 미끄러운 지면 주의.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 더블린 투어 버스</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Cliffs of Moher Ireland&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_c6f94133c46d8ab7.setContent(html_88d4a067f11a5762);
-cm_4d45517a6e867076.bindPopup(pop_c6f94133c46d8ab7);
-cm_4d45517a6e867076.bindTooltip(`<div>Cliffs of Moher 8/10</div>`,{sticky:true});
+cm_9233f5fe928ecc6d.setIcon(icon_cm_9233f5fe928ecc6d);
+var pop_079e1878e53ace69 = L.popup({maxWidth:340});
+var html_369cee82ab898e8f = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Cliffs of Moher</h3>   <b>Ireland</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 해안절벽 | 4월-9월 / 구름 낀 날 더 극적인 분위기<br>💰 $100/day | ✈️ ~14h | 🔄경유<br>📅 4월, 5월, 6월, 7월 외 2개월<br>✨ 214m 높이, 8km 길이의 수직 대서양 절벽. 해리포터 촬영지<hr style="margin:3px 0">   <i>아일랜드 최대 관광지. 절벽 위 해안 트레일 따라 걸으며 하반부 조망 가능. 오브라이언 타워 전망대. 갈웨이에서 버스 1.5시간. 어웨이(Away)한 아일랜드 날씨 자체도 경험.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Cliffs of Moher Hotel ($150-280/night)<br>🏨 Doolin Inn ($80-150/night)<br>🏨 Ballinalacken Castle Hotel ($120-220/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Cliffs of Moher Hotel Restaurant (Google 4.2)<br>🍽️ Gus O&#x27;Connor&#x27;s Pub (Doolin) (Google 4.4)<br>🍽️ Doolin Café (Google 4.5)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 절벽 끝 펜스 밖 접근 금지(추락 사고 빈발). 강풍과 미끄러운 지면 주의.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 더블린 투어 버스</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Cliffs of Moher Ireland&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_079e1878e53ace69.setContent(html_369cee82ab898e8f);
+cm_9233f5fe928ecc6d.bindPopup(pop_079e1878e53ace69);
+cm_9233f5fe928ecc6d.bindTooltip(`<div>Cliffs of Moher 8/10</div>`,{sticky:true});
 
 
-var lbl_259f1682315f9636 = L.marker([52.972,-9.424]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_259f1682315f9636 = L.divIcon({
+var lbl_2e876cc827bd824c = L.marker([52.972,-9.424]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_2e876cc827bd824c = L.divIcon({
     html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Cliffs of Moher</div>',
     className:'empty'
 });
-lbl_259f1682315f9636.setIcon(icon_lbl_259f1682315f9636);
+lbl_2e876cc827bd824c.setIcon(icon_lbl_2e876cc827bd824c);
 
 
-var cm_0ce4fe6d5079ffcc = L.marker([55.24,-6.511]).addTo(map_f76ae32c59e0570c);
-var icon_cm_0ce4fe6d5079ffcc = L.divIcon({
+var cm_753598dec584d17b = L.marker([55.24,-6.511]).addTo(map_3d3642d6c6ba28b1);
+var icon_cm_753598dec584d17b = L.divIcon({
     html:'<div style="width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_0ce4fe6d5079ffcc.setIcon(icon_cm_0ce4fe6d5079ffcc);
-var pop_8a729bfdccb03fb5 = L.popup({maxWidth:340});
-var html_0088c6bd7fb82574 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Giant&#x27;s Causeway</h3>   <b>Northern Ireland</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 현무암/해안 | 4월-9월 / 폭풍 시즌(겨울)도 장관<br>💰 $80/day | ✈️ ~14h | 🔄경유<br>📅 4월, 5월, 6월, 7월 외 2개월<br>✨ 4만 개의 육각형 현무암 기둥이 만든 거인의 계단. 지구 최고의 지질 경이<hr style="margin:3px 0">   <i>6천만 년 전 화산 활동으로 형성된 유네스코 세계유산. 벨파스트에서 1.5시간. 벨파스트에서 타이타닉 박물관과 함께 방문 권장. 코즈웨이 해안 드라이브도 세계 최고 수준.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Bushmills Inn ($150-300/night)<br>🏨 Causeway Hotel ($120-250/night)<br>🏨 Magherabuoy House Hotel ($100-200/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Bushmills Inn Restaurant (Google 4.4)<br>🍽️ Giant&#x27;s Causeway Visitor Centre Cafe (Google 4.0)<br>🍽️ The Nook (Bushmills) (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 파도 튀는 구역 미끄러움. 겨울 강풍. 바위 위 점프 금지.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Giant&#x27;s Causeway Northern Ireland&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_8a729bfdccb03fb5.setContent(html_0088c6bd7fb82574);
-cm_0ce4fe6d5079ffcc.bindPopup(pop_8a729bfdccb03fb5);
-cm_0ce4fe6d5079ffcc.bindTooltip(`<div>Giant's Causeway 8/10</div>`,{sticky:true});
+cm_753598dec584d17b.setIcon(icon_cm_753598dec584d17b);
+var pop_7d762ab9cb79c248 = L.popup({maxWidth:340});
+var html_e6d2aa7dc87c8a92 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Giant&#x27;s Causeway</h3>   <b>Northern Ireland</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 현무암/해안 | 4월-9월 / 폭풍 시즌(겨울)도 장관<br>💰 $80/day | ✈️ ~14h | 🔄경유<br>📅 4월, 5월, 6월, 7월 외 2개월<br>✨ 4만 개의 육각형 현무암 기둥이 만든 거인의 계단. 지구 최고의 지질 경이<hr style="margin:3px 0">   <i>6천만 년 전 화산 활동으로 형성된 유네스코 세계유산. 벨파스트에서 1.5시간. 벨파스트에서 타이타닉 박물관과 함께 방문 권장. 코즈웨이 해안 드라이브도 세계 최고 수준.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Bushmills Inn ($150-300/night)<br>🏨 Causeway Hotel ($120-250/night)<br>🏨 Magherabuoy House Hotel ($100-200/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Bushmills Inn Restaurant (Google 4.4)<br>🍽️ Giant&#x27;s Causeway Visitor Centre Cafe (Google 4.0)<br>🍽️ The Nook (Bushmills) (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 파도 튀는 구역 미끄러움. 겨울 강풍. 바위 위 점프 금지.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Giant&#x27;s Causeway Northern Ireland&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_7d762ab9cb79c248.setContent(html_e6d2aa7dc87c8a92);
+cm_753598dec584d17b.bindPopup(pop_7d762ab9cb79c248);
+cm_753598dec584d17b.bindTooltip(`<div>Giant's Causeway 8/10</div>`,{sticky:true});
 
 
-var lbl_d3032d9c0a9aeee1 = L.marker([55.24,-6.511]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_d3032d9c0a9aeee1 = L.divIcon({
+var lbl_146aa6a9f174c01c = L.marker([55.24,-6.511]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_146aa6a9f174c01c = L.divIcon({
     html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Giant's Causeway</div>',
     className:'empty'
 });
-lbl_d3032d9c0a9aeee1.setIcon(icon_lbl_d3032d9c0a9aeee1);
+lbl_146aa6a9f174c01c.setIcon(icon_lbl_146aa6a9f174c01c);
 
 
-var cm_1ea249a69e6fcf40 = L.marker([63.88,-22.445]).addTo(map_f76ae32c59e0570c);
-var icon_cm_1ea249a69e6fcf40 = L.divIcon({
+var cm_959e6d1f43792abf = L.marker([63.88,-22.445]).addTo(map_3d3642d6c6ba28b1);
+var icon_cm_959e6d1f43792abf = L.divIcon({
     html:'<div style="width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer"></div>',
     className:'empty'
 });
-cm_1ea249a69e6fcf40.setIcon(icon_cm_1ea249a69e6fcf40);
-var pop_5f718c74c31f3149 = L.popup({maxWidth:340});
-var html_4f044dec87239e28 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Blue Lagoon</h3>   <b>Iceland</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 온천/지열 | 9월-3월 오로라 보며 온천 / 여름 백야 온천도 특별<br>💰 $200/day | ✈️ ~11h | 🔄경유<br>📅 9월, 10월, 11월, 12월 외 6개월<br>✨ 하늘색 실리카 온천수에서 즐기는 아이슬란드 오로라. 지구상 가장 특별한 온천<hr style="margin:3px 0">   <i>지열 발전소 냉각수로 만들어진 37-42도 온천. 실리카 머드팩이 포함된 티켓. 케플라비크 공항에서 20분. 레이캬비크에서 40분. 골든 서클, 다이아몬드 서클과 조합 여행 권장.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Blue Lagoon Retreat Hotel ($800-2000/night)<br>🏨 Silica Hotel ($600-1200/night)<br>🏨 Northern Light Inn ($200-400/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Lava Restaurant (블루 라군 내) (Google 4.4)<br>🍽️ Moss Restaurant (Google 4.5)<br>🍽️ Gelmir Bar (온천 수중 바) (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 온천 장시간 입욕 탈수 주의. 머리카락 보호 컨디셔너 필수(실리카로 인한 손상). 방문 전 반드시 예약.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Blue Lagoon Iceland&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_5f718c74c31f3149.setContent(html_4f044dec87239e28);
-cm_1ea249a69e6fcf40.bindPopup(pop_5f718c74c31f3149);
-cm_1ea249a69e6fcf40.bindTooltip(`<div>Blue Lagoon 8/10</div>`,{sticky:true});
+cm_959e6d1f43792abf.setIcon(icon_cm_959e6d1f43792abf);
+var pop_afb11bdef3a7d819 = L.popup({maxWidth:340});
+var html_35b65fca7bfebfa8 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Blue Lagoon</h3>   <b>Iceland</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🏞️ 온천/지열 | 9월-3월 오로라 보며 온천 / 여름 백야 온천도 특별<br>💰 $200/day | ✈️ ~11h | 🔄경유<br>📅 9월, 10월, 11월, 12월 외 6개월<br>✨ 하늘색 실리카 온천수에서 즐기는 아이슬란드 오로라. 지구상 가장 특별한 온천<hr style="margin:3px 0">   <i>지열 발전소 냉각수로 만들어진 37-42도 온천. 실리카 머드팩이 포함된 티켓. 케플라비크 공항에서 20분. 레이캬비크에서 40분. 골든 서클, 다이아몬드 서클과 조합 여행 권장.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Blue Lagoon Retreat Hotel ($800-2000/night)<br>🏨 Silica Hotel ($600-1200/night)<br>🏨 Northern Light Inn ($200-400/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Lava Restaurant (블루 라군 내) (Google 4.4)<br>🍽️ Moss Restaurant (Google 4.5)<br>🍽️ Gelmir Bar (온천 수중 바) (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 온천 장시간 입욕 탈수 주의. 머리카락 보호 컨디셔너 필수(실리카로 인한 손상). 방문 전 반드시 예약.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Blue Lagoon Iceland&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_afb11bdef3a7d819.setContent(html_35b65fca7bfebfa8);
+cm_959e6d1f43792abf.bindPopup(pop_afb11bdef3a7d819);
+cm_959e6d1f43792abf.bindTooltip(`<div>Blue Lagoon 8/10</div>`,{sticky:true});
 
 
-var lbl_1ff51db5a5841a60 = L.marker([63.88,-22.445]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_1ff51db5a5841a60 = L.divIcon({
+var lbl_d2e586b5657bba29 = L.marker([63.88,-22.445]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_d2e586b5657bba29 = L.divIcon({
     html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Blue Lagoon</div>',
     className:'empty'
 });
-lbl_1ff51db5a5841a60.setIcon(icon_lbl_1ff51db5a5841a60);
+lbl_d2e586b5657bba29.setIcon(icon_lbl_d2e586b5657bba29);
 
 
-var cm_a7cdbe01a77ee9be = L.circleMarker([33.459,126.942],{
+var cm_05d659a63d2c509a = L.circleMarker([33.459,126.942],{
     color:"#ff9900",fill:true,fillColor:"#ff9900",fillOpacity:0.85,
     radius:12,weight:2
-}).addTo(map_f76ae32c59e0570c);
-var pop_e8b97cd7020b8947 = L.popup({maxWidth:340});
-var html_068593d04322be06 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff9900">Jeju Seongsan Ilchulbong</h3>   <b>South Korea</b> | 7/10 | ✈️직항<hr style="margin:3px 0">   🏞️ 화산/일출봉 | 1월-3월 설경 일출 / 9월-11월 맑은 가을<br>💰 $20/day | ✈️ ~1h | ✈️직항<br>📅 1월, 2월, 3월, 9월 외 2개월<br>✨ 바다 위에 솟은 99개 봉우리의 분화구. 유네스코 세계자연유산<hr style="margin:3px 0">   <i>수중 분화로 형성된 99개의 암석 봉우리. 해발 182m. 일출 시 분화구와 바다의 조화. 해녀 물질 체험. 성산읍 로컬 맛집과 함께 하루 코스.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 성산 일출봉 뷰 호텔 ($80-150/night)<br>🏨 파도 소리 리조트 ($100-200/night)<br>🏨 성산 게스트하우스 ($30-60/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ 성산포 해녀촌 (전복죽) (Google 4.5)<br>🍽️ 오조리 식당 (갈치조림) (Google 4.4)<br>🍽️ 성산항 횟집 (회) (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 분화구 내 입장 불가. 비 오는 날 등반로 미끄러움. 겨울 새벽 극한 추위</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국어 안내 기본</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Jeju Seongsan Ilchulbong South Korea&tbm=isch" target="_blank"      style="color:#ff9900;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_e8b97cd7020b8947.setContent(html_068593d04322be06);
-cm_a7cdbe01a77ee9be.bindPopup(pop_e8b97cd7020b8947);
-cm_a7cdbe01a77ee9be.bindTooltip(`<div>Jeju Seongsan Ilchulbong 7/10</div>`,{sticky:true});
+}).addTo(map_3d3642d6c6ba28b1);
+var pop_1df79fead34b0f2c = L.popup({maxWidth:340});
+var html_8442da9840f3f034 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff9900">Jeju Seongsan Ilchulbong</h3>   <b>South Korea</b> | 7/10 | ✈️직항<hr style="margin:3px 0">   🏞️ 화산/일출봉 | 1월-3월 설경 일출 / 9월-11월 맑은 가을<br>💰 $20/day | ✈️ ~1h | ✈️직항<br>📅 1월, 2월, 3월, 9월 외 2개월<br>✨ 바다 위에 솟은 99개 봉우리의 분화구. 유네스코 세계자연유산<hr style="margin:3px 0">   <i>수중 분화로 형성된 99개의 암석 봉우리. 해발 182m. 일출 시 분화구와 바다의 조화. 해녀 물질 체험. 성산읍 로컬 맛집과 함께 하루 코스.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 성산 일출봉 뷰 호텔 ($80-150/night)<br>🏨 파도 소리 리조트 ($100-200/night)<br>🏨 성산 게스트하우스 ($30-60/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ 성산포 해녀촌 (전복죽) (Google 4.5)<br>🍽️ 오조리 식당 (갈치조림) (Google 4.4)<br>🍽️ 성산항 횟집 (회) (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 분화구 내 입장 불가. 비 오는 날 등반로 미끄러움. 겨울 새벽 극한 추위</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국어 안내 기본</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Jeju Seongsan Ilchulbong South Korea&tbm=isch" target="_blank"      style="color:#ff9900;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_1df79fead34b0f2c.setContent(html_8442da9840f3f034);
+cm_05d659a63d2c509a.bindPopup(pop_1df79fead34b0f2c);
+cm_05d659a63d2c509a.bindTooltip(`<div>Jeju Seongsan Ilchulbong 7/10</div>`,{sticky:true});
 
 
-var lbl_3b551015327ce936 = L.marker([33.459,126.942]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_3b551015327ce936 = L.divIcon({
+var lbl_00a295050c71de81 = L.marker([33.459,126.942]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_00a295050c71de81 = L.divIcon({
     html:'<div style="font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Jeju Seongsan Ilchulbong</div>',
     className:'empty'
 });
-lbl_3b551015327ce936.setIcon(icon_lbl_3b551015327ce936);
+lbl_00a295050c71de81.setIcon(icon_lbl_00a295050c71de81);
 
 
-var cm_cb2adee6b4120d89 = L.circleMarker([22.271,114.15],{
+var cm_13e62a52b9881cfe = L.circleMarker([22.271,114.15],{
     color:"#ff9900",fill:true,fillColor:"#ff9900",fillOpacity:0.85,
     radius:12,weight:2
-}).addTo(map_f76ae32c59e0570c);
-var pop_d0b5e22209616bcc = L.popup({maxWidth:340});
-var html_dcc8dcd09943da69 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff9900">Victoria Peak</h3>   <b>Hong Kong</b> | 7/10 | ✈️직항<hr style="margin:3px 0">   🏞️ 야경/도시전망 | 10월-3월 맑은 날 / 야간 홍콩 야경<br>💰 $100/day | ✈️ ~3h | ✈️직항<br>📅 10월, 11월, 12월, 1월 외 2개월<br>✨ 세계 최고의 도시 야경. 홍콩 마천루 위로 빅토리아 항구가 빛나는 장관<hr style="margin:3px 0">   <i>해발 552m. 피크 트램으로 8분. 360도 조망. 홍콩 야경은 세계 3대 야경 중 하나. 침사추이 스타의 거리에서 야경 감상도 추천. 날씨 맑은 날은 선전(심천)까지 보임.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 The Peak Lookout (레스토랑만) ($)<br>🏨 The Ritz-Carlton Hong Kong ($400-800/night)<br>🏨 Peninsula Hong Kong ($500-1000/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ The Peak Lookout (Google 4.3)<br>🍽️ Café Deco Peak (Google 4.2)<br>🍽️ Yung Kee Restaurant (거위 요리) (Michelin 추천)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 성수기 피크 트램 줄 1-2시간. 안개 시 조망 불가. 여름 태풍 시즌 주의.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국어 관광 앱 완비</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Victoria Peak Hong Kong&tbm=isch" target="_blank"      style="color:#ff9900;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_d0b5e22209616bcc.setContent(html_dcc8dcd09943da69);
-cm_cb2adee6b4120d89.bindPopup(pop_d0b5e22209616bcc);
-cm_cb2adee6b4120d89.bindTooltip(`<div>Victoria Peak 7/10</div>`,{sticky:true});
+}).addTo(map_3d3642d6c6ba28b1);
+var pop_e328f47973df737a = L.popup({maxWidth:340});
+var html_d0f6ed9133433494 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff9900">Victoria Peak</h3>   <b>Hong Kong</b> | 7/10 | ✈️직항<hr style="margin:3px 0">   🏞️ 야경/도시전망 | 10월-3월 맑은 날 / 야간 홍콩 야경<br>💰 $100/day | ✈️ ~3h | ✈️직항<br>📅 10월, 11월, 12월, 1월 외 2개월<br>✨ 세계 최고의 도시 야경. 홍콩 마천루 위로 빅토리아 항구가 빛나는 장관<hr style="margin:3px 0">   <i>해발 552m. 피크 트램으로 8분. 360도 조망. 홍콩 야경은 세계 3대 야경 중 하나. 침사추이 스타의 거리에서 야경 감상도 추천. 날씨 맑은 날은 선전(심천)까지 보임.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 The Peak Lookout (레스토랑만) ($)<br>🏨 The Ritz-Carlton Hong Kong ($400-800/night)<br>🏨 Peninsula Hong Kong ($500-1000/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ The Peak Lookout (Google 4.3)<br>🍽️ Café Deco Peak (Google 4.2)<br>🍽️ Yung Kee Restaurant (거위 요리) (Michelin 추천)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 성수기 피크 트램 줄 1-2시간. 안개 시 조망 불가. 여름 태풍 시즌 주의.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국어 관광 앱 완비</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Victoria Peak Hong Kong&tbm=isch" target="_blank"      style="color:#ff9900;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_e328f47973df737a.setContent(html_d0f6ed9133433494);
+cm_13e62a52b9881cfe.bindPopup(pop_e328f47973df737a);
+cm_13e62a52b9881cfe.bindTooltip(`<div>Victoria Peak 7/10</div>`,{sticky:true});
 
 
-var lbl_4256e05cdd99e0bb = L.marker([22.271,114.15]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_4256e05cdd99e0bb = L.divIcon({
+var lbl_6dc304601954bcef = L.marker([22.271,114.15]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_6dc304601954bcef = L.divIcon({
     html:'<div style="font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Victoria Peak</div>',
     className:'empty'
 });
-lbl_4256e05cdd99e0bb.setIcon(icon_lbl_4256e05cdd99e0bb);
+lbl_6dc304601954bcef.setIcon(icon_lbl_6dc304601954bcef);
 
 
-var cm_0829c6048723c42b = L.circleMarker([27.175,78.042],{
+var cm_cbedaa848000e36c = L.circleMarker([27.175,78.042],{
     color:"#ff9900",fill:true,fillColor:"#ff9900",fillOpacity:0.85,
     radius:12,weight:2
-}).addTo(map_f76ae32c59e0570c);
-var pop_16b61ffff086b201 = L.popup({maxWidth:340});
-var html_6c28084937cff762 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff9900">Taj Mahal</h3>   <b>India</b> | 7/10 | ✈️직항<hr style="margin:3px 0">   🏞️ 유적/이슬람건축 | 10월-3월 선선한 날씨 / 일출 대리석 변화 관람<br>💰 $60/day | ✈️ ~8h | ✈️직항<br>📅 10월, 11월, 12월, 1월 외 2개월<br>✨ 무굴 황제가 아내를 위해 22년간 지은 사랑의 대리석 묘. 세계 7대 불가사의<hr style="margin:3px 0">   <i>새벽 일출부터 오후까지 조명에 따라 색이 변하는 대리석. 야무나 강 건너 메타브 바그(Mehtab Bagh)에서의 조망이 덜 붐빔. 아그라 포트와 함께 1일 투어 가능. 델리에서 기차 2시간.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Oberoi Amarvilas (타지마할 전망) ($500-1000/night)<br>🏨 ITC Mughal Agra ($200-400/night)<br>🏨 Trident Hotel Agra ($100-200/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Esphahan (Oberoi) (Google 4.6)<br>🍽️ Pind Balluchi Restaurant (Google 4.3)<br>🍽️ Pinch of Spice (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 금요일 타지마할 폐쇄. 내부 음식/담배 반입 금지. 여름 45도 폭염. 바가지 호객 주의.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 델리 한국어 여행사 다수</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Taj Mahal India&tbm=isch" target="_blank"      style="color:#ff9900;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_16b61ffff086b201.setContent(html_6c28084937cff762);
-cm_0829c6048723c42b.bindPopup(pop_16b61ffff086b201);
-cm_0829c6048723c42b.bindTooltip(`<div>Taj Mahal 7/10</div>`,{sticky:true});
+}).addTo(map_3d3642d6c6ba28b1);
+var pop_076721ed954fa3cf = L.popup({maxWidth:340});
+var html_80f752028c58ad56 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff9900">Taj Mahal</h3>   <b>India</b> | 7/10 | ✈️직항<hr style="margin:3px 0">   🏞️ 유적/이슬람건축 | 10월-3월 선선한 날씨 / 일출 대리석 변화 관람<br>💰 $60/day | ✈️ ~8h | ✈️직항<br>📅 10월, 11월, 12월, 1월 외 2개월<br>✨ 무굴 황제가 아내를 위해 22년간 지은 사랑의 대리석 묘. 세계 7대 불가사의<hr style="margin:3px 0">   <i>새벽 일출부터 오후까지 조명에 따라 색이 변하는 대리석. 야무나 강 건너 메타브 바그(Mehtab Bagh)에서의 조망이 덜 붐빔. 아그라 포트와 함께 1일 투어 가능. 델리에서 기차 2시간.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Oberoi Amarvilas (타지마할 전망) ($500-1000/night)<br>🏨 ITC Mughal Agra ($200-400/night)<br>🏨 Trident Hotel Agra ($100-200/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Esphahan (Oberoi) (Google 4.6)<br>🍽️ Pind Balluchi Restaurant (Google 4.3)<br>🍽️ Pinch of Spice (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 금요일 타지마할 폐쇄. 내부 음식/담배 반입 금지. 여름 45도 폭염. 바가지 호객 주의.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 델리 한국어 여행사 다수</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Taj Mahal India&tbm=isch" target="_blank"      style="color:#ff9900;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_076721ed954fa3cf.setContent(html_80f752028c58ad56);
+cm_cbedaa848000e36c.bindPopup(pop_076721ed954fa3cf);
+cm_cbedaa848000e36c.bindTooltip(`<div>Taj Mahal 7/10</div>`,{sticky:true});
 
 
-var lbl_522195f83b473b3a = L.marker([27.175,78.042]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_522195f83b473b3a = L.divIcon({
+var lbl_69ea913b3c856a60 = L.marker([27.175,78.042]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_69ea913b3c856a60 = L.divIcon({
     html:'<div style="font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Taj Mahal</div>',
     className:'empty'
 });
-lbl_522195f83b473b3a.setIcon(icon_lbl_522195f83b473b3a);
+lbl_69ea913b3c856a60.setIcon(icon_lbl_69ea913b3c856a60);
 
 
-var cm_aa99b48bab7859e1 = L.circleMarker([37.79,127.521],{
+var cm_be11de80ef023a15 = L.circleMarker([37.79,127.521],{
     color:"#ff9900",fill:true,fillColor:"#ff9900",fillOpacity:0.85,
     radius:12,weight:2
-}).addTo(map_f76ae32c59e0570c);
-var pop_f0c41444bb03ebf4 = L.popup({maxWidth:340});
-var html_0b77bae0aa84f0c9 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff9900">Nami Island</h3>   <b>South Korea</b> | 7/10 | ✈️직항<hr style="margin:3px 0">   🏞️ 섬/단풍/겨울풍경 | 10월-11월 단풍 / 12월-1월 설경<br>💰 $20/day | ✈️ ~0h | ✈️직항<br>📅 10월, 11월, 12월, 1월 외 1개월<br>✨ 겨울연가 촬영지. 은행나무 가로수길 단풍. 드라마 성지순례 성지<hr style="margin:3px 0">   <i>한강 위의 반달 모양 섬. 페리 5분으로 도달. 드라마 겨울연가 촬영지로 일본·중국 관광객 성지. 메타세쿼이아 길, 자작나무 숲, 잣나무 숲. 서울에서 1.5시간.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 나미나라 공화국 캐빈 ($80-150/night)<br>🏨 춘천 레이크사이드 호텔 ($100-200/night)<br>🏨 가평 펜션들 ($60-120/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ 나미나라 식당 (닭갈비) (Google 4.2)<br>🍽️ 춘천 명동 닭갈비 골목 (Google 4.5)<br>🍽️ 카페 갤러리아 (나미섬 내) (Google 4.1)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 성수기 주말 인파 극심. 페리 대기 1-2시간 가능. 섬 내 자전거 대여 추천.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국어 안내 기본</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Nami Island South Korea&tbm=isch" target="_blank"      style="color:#ff9900;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
-pop_f0c41444bb03ebf4.setContent(html_0b77bae0aa84f0c9);
-cm_aa99b48bab7859e1.bindPopup(pop_f0c41444bb03ebf4);
-cm_aa99b48bab7859e1.bindTooltip(`<div>Nami Island 7/10</div>`,{sticky:true});
+}).addTo(map_3d3642d6c6ba28b1);
+var pop_676c13e9ecf1c886 = L.popup({maxWidth:340});
+var html_1e6ca95aef46a3e2 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff9900">Nami Island</h3>   <b>South Korea</b> | 7/10 | ✈️직항<hr style="margin:3px 0">   🏞️ 섬/단풍/겨울풍경 | 10월-11월 단풍 / 12월-1월 설경<br>💰 $20/day | ✈️ ~0h | ✈️직항<br>📅 10월, 11월, 12월, 1월 외 1개월<br>✨ 겨울연가 촬영지. 은행나무 가로수길 단풍. 드라마 성지순례 성지<hr style="margin:3px 0">   <i>한강 위의 반달 모양 섬. 페리 5분으로 도달. 드라마 겨울연가 촬영지로 일본·중국 관광객 성지. 메타세쿼이아 길, 자작나무 숲, 잣나무 숲. 서울에서 1.5시간.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 나미나라 공화국 캐빈 ($80-150/night)<br>🏨 춘천 레이크사이드 호텔 ($100-200/night)<br>🏨 가평 펜션들 ($60-120/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ 나미나라 식당 (닭갈비) (Google 4.2)<br>🍽️ 춘천 명동 닭갈비 골목 (Google 4.5)<br>🍽️ 카페 갤러리아 (나미섬 내) (Google 4.1)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 성수기 주말 인파 극심. 페리 대기 1-2시간 가능. 섬 내 자전거 대여 추천.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국어 안내 기본</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Nami Island South Korea&tbm=isch" target="_blank"      style="color:#ff9900;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_676c13e9ecf1c886.setContent(html_1e6ca95aef46a3e2);
+cm_be11de80ef023a15.bindPopup(pop_676c13e9ecf1c886);
+cm_be11de80ef023a15.bindTooltip(`<div>Nami Island 7/10</div>`,{sticky:true});
 
 
-var lbl_44bb091f46f45a53 = L.marker([37.79,127.521]).addTo(map_f76ae32c59e0570c);
-var icon_lbl_44bb091f46f45a53 = L.divIcon({
+var lbl_50febc44f0ef8b1a = L.marker([37.79,127.521]).addTo(map_3d3642d6c6ba28b1);
+var icon_lbl_50febc44f0ef8b1a = L.divIcon({
     html:'<div style="font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Nami Island</div>',
     className:'empty'
 });
-lbl_44bb091f46f45a53.setIcon(icon_lbl_44bb091f46f45a53);
+lbl_50febc44f0ef8b1a.setIcon(icon_lbl_50febc44f0ef8b1a);
 
 </script>
 </body>

@@ -189,14 +189,26 @@
 
     /* ── Hero ── */
     .hero {
-      min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      text-align: center;
-      padding: 120px 24px 80px;
+      gap: 64px;
+      padding: 140px 48px 80px;
+      max-width: 1200px;
+      margin: 0 auto;
       position: relative;
       overflow: hidden;
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 120px 24px 60px;
+        gap: 40px;
+      }
+      .hero-content { text-align: center !important; max-width: 100% !important; }
+      .hero-actions { justify-content: center !important; }
     }
 
     .hero::before {
@@ -214,7 +226,15 @@
     .hero-content {
       position: relative;
       z-index: 1;
-      max-width: 720px;
+      flex: 1;
+      max-width: 520px;
+      text-align: left;
+    }
+
+    .hero-phone {
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
     }
 
     .hero-badge {
@@ -251,7 +271,7 @@
       font-size: 18px;
       color: var(--text2);
       max-width: 520px;
-      margin: 0 auto 40px;
+      margin: 0 0 40px;
       line-height: 1.8;
       animation: fadeInUp 0.6s ease-out 0.2s both;
     }
@@ -259,7 +279,7 @@
     .hero-actions {
       display: flex;
       gap: 16px;
-      justify-content: center;
+      justify-content: flex-start;
       flex-wrap: wrap;
       animation: fadeInUp 0.6s ease-out 0.3s both;
     }
@@ -302,11 +322,6 @@
     .btn-webapp:hover { background: rgba(78,205,106,0.1); transform: translateY(-2px); }
 
     /* ── Phone Mockup ── */
-    .phone-section {
-      padding: 0 24px 80px;
-      text-align: center;
-    }
-
     .phone-mockup {
       max-width: 320px;
       margin: 0 auto;
@@ -421,7 +436,7 @@
 
     /* ── Section Common ── */
     section {
-      padding: 100px 24px;
+      padding: 72px 24px;
       max-width: 1200px;
       margin: 0 auto;
     }
@@ -865,7 +880,7 @@
     /* ── Final CTA ── */
     .final-cta {
       text-align: center;
-      padding: 100px 24px;
+      padding: 72px 24px;
       position: relative;
     }
 
@@ -900,33 +915,6 @@
       margin-bottom: 36px;
     }
 
-    .waitlist-section {
-      padding: 20px 24px 100px;
-    }
-
-    .waitlist-card {
-      max-width: 720px;
-      margin: 0 auto;
-      background: linear-gradient(160deg, var(--surface) 0%, var(--surface2) 100%);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 28px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
-    }
-
-    .waitlist-title {
-      font-size: clamp(22px, 4vw, 32px);
-      font-weight: 800;
-      color: var(--text);
-      letter-spacing: -0.5px;
-      margin-bottom: 8px;
-    }
-
-    .waitlist-desc {
-      font-size: 14px;
-      color: var(--text2);
-      margin-bottom: 18px;
-    }
 
     .sr-only {
       position: absolute;
@@ -1061,7 +1049,6 @@
       .nav-dropdown-menu { position:static;transform:none;opacity:1;visibility:visible;background:var(--surface2);border:none;box-shadow:none;margin-top:4px;padding:4px 0; }
       .nav-dropdown-toggle::after { display:none; }
       .loop-section { padding: 40px 20px; }
-      .waitlist-card { padding: 20px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -1110,44 +1097,41 @@
         AI reads the context. You build your compass.
       </p>
       <div class="hero-actions">
-        <a href="https://app.baln.app" class="btn-webapp" target="_blank" rel="noopener">🌐 Launch Web App</a>
         <a href="https://apps.apple.com/app/id6758968658" class="btn-primary js-app-download-link" data-cta-location="hero-primary">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
           <span class="js-cta-text">Download on App Store</span>
         </a>
-        <a href="#features" class="btn-secondary">Explore Features</a>
+        <a href="https://app.baln.app" class="btn-webapp" target="_blank" rel="noopener">🌐 Launch Web App</a>
       </div>
     </div>
-  </section>
-
-  <!-- Phone Mockup -->
-  <div class="phone-section">
-    <div class="phone-mockup">
-      <div class="phone-screen">
-        <div class="mock-header">
-          <div id="mock-date" style="font-size:11px; color:var(--text3);"></div>
-          <div style="font-size:20px; font-weight:800; color:var(--text); margin-top:4px;">Today</div>
-        </div>
-        <div class="mock-pulse">
-          <div class="mock-pulse-title">Total Assets</div>
-          <div class="mock-pulse-value">$38,200</div>
-          <div class="mock-pulse-sub">Health A+ | +0.8% from yesterday</div>
-        </div>
-        <div class="mock-card">
-          <div class="mock-card-label">Today's Context Card</div>
-          <div class="mock-card-title">US CPI Released: Why Are Markets Shaking?</div>
-          <div class="mock-card-desc">A similar pattern occurred in 2008. Foreign investors are rebalancing, not panicking...</div>
-        </div>
-        <div class="mock-vote">
-          <div class="mock-vote-q">S&P 500 direction tomorrow?</div>
-          <div class="mock-vote-btn">
-            <span class="up">Up</span>
-            <span class="down">Down</span>
+    <div class="hero-phone">
+      <div class="phone-mockup">
+        <div class="phone-screen">
+          <div class="mock-header">
+            <div id="mock-date" style="font-size:11px; color:var(--text3);"></div>
+            <div style="font-size:20px; font-weight:800; color:var(--text); margin-top:4px;">Today</div>
+          </div>
+          <div class="mock-pulse">
+            <div class="mock-pulse-title">Total Assets</div>
+            <div class="mock-pulse-value">$38,200</div>
+            <div class="mock-pulse-sub">Health A+ | +0.8% from yesterday</div>
+          </div>
+          <div class="mock-card">
+            <div class="mock-card-label">Today's Context Card</div>
+            <div class="mock-card-title">US CPI Released: Why Are Markets Shaking?</div>
+            <div class="mock-card-desc">A similar pattern occurred in 2008. Foreign investors are rebalancing, not panicking...</div>
+          </div>
+          <div class="mock-vote">
+            <div class="mock-vote-q">S&P 500 direction tomorrow?</div>
+            <div class="mock-vote-btn">
+              <span class="up">Up</span>
+              <span class="down">Down</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
   <!-- Stats -->
   <div class="stats-bar reveal">
@@ -1168,8 +1152,8 @@
       <p>Core features free forever</p>
     </div>
     <div class="stat-item">
-      <span class="stat-number">4.8★</span>
-      <span class="stat-label">App Store Rating</span>
+      <h3>4.8★</h3>
+      <p>App Store Rating</p>
     </div>
   </div>
 
@@ -1406,20 +1390,9 @@
     <div class="final-cta-content reveal">
       <h2>Start Today</h2>
       <p>5 minutes a day. In 12 months, your investing will never be the same.</p>
-      <a href="#waitlist" class="btn-primary js-app-download-link" data-cta-location="final-primary" style="font-size:18px; padding:18px 48px;">
+      <a href="https://apps.apple.com/app/id6758968658" class="btn-primary js-app-download-link" data-cta-location="final-primary" style="font-size:18px; padding:18px 48px;">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
         <span class="js-cta-text">Download on App Store</span>
-      </a>
-    </div>
-  </section>
-
-  <section id="waitlist" class="waitlist-section reveal">
-    <div class="waitlist-card">
-      <h2 class="waitlist-title">Get Started Now</h2>
-      <p class="waitlist-desc">Download free on the App Store and build your daily 5-minute investing habit.</p>
-      <a href="https://apps.apple.com/app/id6758968658" class="btn-primary" style="display:inline-flex;align-items:center;gap:8px;font-size:18px;padding:16px 40px;margin-top:16px;text-decoration:none;">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-        Download on App Store
       </a>
     </div>
   </section>
@@ -1462,7 +1435,6 @@
       <p>&copy; 2026 baln Inc. All rights reserved.</p>
       <p style="font-size:11px; color:var(--text3);">All features are currently free (until 2026.05.31).</p>
       <p style="font-size:11px; color:var(--text3);">This app does not provide financial advice. All investment decisions are the user's responsibility.</p>
-      <p style="margin-top:12px;"><a href="/admin/" style="font-size:11px;color:var(--text3);text-decoration:none;opacity:0.4;">Admin</a></p>
     </div>
   </footer>
 

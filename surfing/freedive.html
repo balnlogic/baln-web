@@ -1,1355 +1,552 @@
 <!DOCTYPE html>
 <html>
 <head>
-    
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
-    
-            <meta name="viewport" content="width=device-width,
-                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-            <style>
-                #map_a9084ce8f8e1b8cbf13c756f06c343ff {
-                    position: relative;
-                    width: 100.0%;
-                    height: 100.0%;
-                    left: 0.0%;
-                    top: 0.0%;
-                }
-                .leaflet-container { font-size: 1rem; }
-            </style>
-
-            <style>html, body {
-                width: 100%;
-                height: 100%;
-                margin: 0;
-                padding: 0;
-            }
-            </style>
-
-            <style>#map {
-                position:absolute;
-                top:0;
-                bottom:0;
-                right:0;
-                left:0;
-                }
-            </style>
-
-            <script>
-                L_NO_TOUCH = false;
-                L_DISABLE_3D = false;
-            </script>
-
-        
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <style>
+        #map_e623b9134cb1aaf0 { position:relative; width:100%; height:100%; left:0; top:0; }
+        .leaflet-container { font-size:1rem; }
+        html, body { width:100%; height:100%; margin:0; padding:0; }
+    </style>
+    <script>L_NO_TOUCH=false; L_DISABLE_3D=false;</script>
 </head>
 <body>
-    
-    <div style="position:fixed;bottom:30px;left:30px;z-index:999;background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size:12px;line-height:2">
-    <b style="font-size:14px">🫧 전세계 프리다이빙</b><br><small>총 24곳</small><br><span style="color:#ff0055">● 10점(2)</span> <span style="color:#00ff88">● 9점(8)</span> <span style="color:#ffcc00">● 8점(13)</span> <span style="color:#ff9900">● 7점(1)</span> </div>
-    
-            <div class="folium-map" id="map_a9084ce8f8e1b8cbf13c756f06c343ff" ></div>
-        
-<script>
-(function(){
-  var maps = document.querySelectorAll(".folium-map");
-  if(!maps.length) return;
-  setTimeout(function(){
-    for(var key in window){
-      if(window[key] instanceof L.Map){
-        var m = window[key];
-        m.setMaxBounds([[-85,-180],[85,180]]);
-        m.options.maxBoundsViscosity = 1.0;
-        m.options.worldCopyJump = false;
-        m.setMinZoom(2);
-        m.eachLayer(function(l){ if(l.options && l.setUrl){ l.options.noWrap = true; }});
-        break;
-      }
-    }
-  }, 500);
-})();
-</script>
+    <div style="position:fixed;bottom:30px;left:30px;z-index:999;background:rgba(0,0,0,0.9);padding:12px;border-radius:10px;color:white;font-size:12px;line-height:1.8">
+    <b style="font-size:14px">🫧 Freediving</b> <small>(25곳)</small><br>
+    <span style="color:#ff0055">● 10점(2)</span> <span style="color:#00ff88">● 9점(8)</span> <span style="color:#ffcc00">● 8점(13)</span> <span style="color:#ff9900">● 7점(2)</span><br>
+    <small>●실선=직항 ○점선=경유 | 클릭→상세</small></div>
+
+    <div class="folium-map" id="map_e623b9134cb1aaf0"></div>
 
 <script>
-document.addEventListener('click', function(e) {
-  setTimeout(function() {
-    var popups = document.querySelectorAll('.leaflet-popup-content');
-    popups.forEach(function(p) {
-      if (p.querySelector('.photo-link')) return;
-      var h3 = p.querySelector('h3');
-      if (!h3) return;
-      var name = h3.textContent.replace(/[^a-zA-Z0-9 ]/g, '').trim();
-      var link = document.createElement('div');
-      link.className = 'photo-link';
-      link.style.cssText = 'margin-top:6px;text-align:center;';
-      link.innerHTML = '<a href="https://www.google.com/search?q=' + encodeURIComponent(name) + '&tbm=isch" target="_blank" style="color:#00ff88;font-size:11px;text-decoration:none;">📷 사진 보기 (Google Images)</a>';
-      p.appendChild(link);
-    });
-  }, 100);
+var map_e623b9134cb1aaf0 = L.map("map_e623b9134cb1aaf0", {
+    center: [5.0,90.0],
+    crs: L.CRS.EPSG3857,
+    zoom: 2,
+    zoomControl: true,
+    preferCanvas: false,
+    maxBounds: [[-85,-180],[85,180]],
+    maxBoundsViscosity: 1.0,
+    worldCopyJump: false,
+    minZoom: 2
 });
+
+var tile_55bc0f2485e3972c = L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+    minZoom:0, maxZoom:18, maxNativeZoom:18, noWrap:true,
+    attribution:"CartoDB", subdomains:"abc", detectRetina:false, tms:false, opacity:1
+}).addTo(map_e623b9134cb1aaf0);
+
+
+var cm_6d9dea1781a9f2e0 = L.marker([28.572,34.538]).addTo(map_e623b9134cb1aaf0);
+var icon_cm_6d9dea1781a9f2e0 = L.divIcon({
+    html:'<div style="width:40px;height:40px;border:2.5px dashed #ff0055;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-20px;margin-top:-20px;cursor:pointer"></div>',
+    className:'empty'
+});
+cm_6d9dea1781a9f2e0.setIcon(icon_cm_6d9dea1781a9f2e0);
+var pop_599d5401b8a0fe3b = L.popup({maxWidth:340});
+var html_b194f37b13964327 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff0055">Blue Hole Dahab 👑</h3>   <b>Egypt</b> | 10/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 130m | 시야 30-40m<br>🌡️ 수온 24°C | 해류 없음<br>💰 $50/day | ✈️ ~12h | 🔄경유<br>📅 3월, 4월, 5월, 6월 외 3개월<br>🏊 프리다이빙 스쿨 다수. AIDA/SSI 코스. 딥라인 상시 설치. 프리다이빙 전용 플랫폼<hr style="margin:3px 0">   <i>프리다이버의 성지로 전 세계에서 모여드는 메카. 수직 절벽 안쪽 깊이 130m+ 의 원형 구멍이 압도적인 뷰를 선사. 56m 아치 통과 도전으로 세계 기록이 다수 수립된 전설적인 곳.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Swiss Inn Resort Dahab ($80-150/night)<br>🏨 Carnelia Island Resort ($120-200/night)<br>🏨 Nesima Resort ($60-100/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Ralph&#x27;s German Bakery (Google 4.6)<br>🍽️ Lakhbati Restaurant (Google 4.5)<br>🍽️ The Lighthouse (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 아치(56m) 통과 시 질소마취 위험 극심. 매년 사망사고 발생. 절대 혼자 잠수 금지, 버디 시스템 필수. 경험자 동반 없이 30m 이상 금지</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 프리다이빙 강사 2-3명 상주 (시즌별). 카카오톡 오픈채팅 &#x27;다합 프리다이빙&#x27; 검색</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Blue Hole Dahab Egypt&tbm=isch" target="_blank"      style="color:#ff0055;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_599d5401b8a0fe3b.setContent(html_b194f37b13964327);
+cm_6d9dea1781a9f2e0.bindPopup(pop_599d5401b8a0fe3b);
+cm_6d9dea1781a9f2e0.bindTooltip(`<div>Blue Hole Dahab 10/10</div>`,{sticky:true});
+
+
+var lbl_2335786d8c2e3a5a = L.marker([28.572,34.538]).addTo(map_e623b9134cb1aaf0);
+var icon_lbl_2335786d8c2e3a5a = L.divIcon({
+    html:'<div style="font-size:9px;color:#ff0055;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Blue Hole Dahab</div>',
+    className:'empty'
+});
+lbl_2335786d8c2e3a5a.setIcon(icon_lbl_2335786d8c2e3a5a);
+
+
+var cm_149ca4e372417d9e = L.marker([23.073,-74.978]).addTo(map_e623b9134cb1aaf0);
+var icon_cm_149ca4e372417d9e = L.divIcon({
+    html:'<div style="width:40px;height:40px;border:2.5px dashed #ff0055;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-20px;margin-top:-20px;cursor:pointer"></div>',
+    className:'empty'
+});
+cm_149ca4e372417d9e.setIcon(icon_cm_149ca4e372417d9e);
+var pop_fc278bc10dcfd2f6 = L.popup({maxWidth:340});
+var html_f3709a6e4ac630ed = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff0055">Dean&#x27;s Blue Hole 👑</h3>   <b>Bahamas</b> | 10/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 202m | 시야 40-60m<br>🌡️ 수온 27°C | 해류 없음<br>💰 $80/day | ✈️ ~20h | 🔄경유<br>📅 4월, 5월, 6월, 7월 외 3개월<br>🏊 Vertical Blue 대회 전용 설비. 딥라인 상시 설치. Freediving Instructors International 코스<hr style="margin:3px 0">   <i>세계에서 가장 깊은 해수 블루홀(202m). Vertical Blue 세계선수권 개최지로 수많은 세계 기록이 이곳에서 탄생했다. 반원형 해변으로 둘러싸인 신비로운 자연 환경이 압권.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Stella Maris Resort Club ($150-280/night)<br>🏨 Cape Santa Maria Beach Resort ($200-400/night)<br>🏨 Chez Pierre ($80-120/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Stella Maris Restaurant (Google 4.3)<br>🍽️ Max&#x27;s Conch Bar &amp; Grill (Google 4.5)<br>🍽️ Thompson Bay Inn (Google 4.2)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 202m 초심층 구멍으로 역류 및 수직 하강 기류 주의. 고도 훈련된 전문가 외 50m 이상 잠수 금지. 현지 가이드 동반 필수</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 영어권 프리다이빙 스쿨 이용 필수</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Dean&#x27;s Blue Hole Bahamas&tbm=isch" target="_blank"      style="color:#ff0055;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_fc278bc10dcfd2f6.setContent(html_f3709a6e4ac630ed);
+cm_149ca4e372417d9e.bindPopup(pop_fc278bc10dcfd2f6);
+cm_149ca4e372417d9e.bindTooltip(`<div>Dean's Blue Hole 10/10</div>`,{sticky:true});
+
+
+var lbl_0615d9b7cf28d69c = L.marker([23.073,-74.978]).addTo(map_e623b9134cb1aaf0);
+var icon_lbl_0615d9b7cf28d69c = L.divIcon({
+    html:'<div style="font-size:9px;color:#ff0055;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Dean's Blue Hole</div>',
+    className:'empty'
+});
+lbl_0615d9b7cf28d69c.setIcon(icon_lbl_0615d9b7cf28d69c);
+
+
+var cm_4e91f2a8a9bc828a = L.circleMarker([9.512,123.704],{
+    color:"#00ff88",fill:true,fillColor:"#00ff88",fillOpacity:0.85,
+    radius:16,weight:2
+}).addTo(map_e623b9134cb1aaf0);
+var pop_d52182da3d8466e4 = L.popup({maxWidth:340});
+var html_805e328315719706 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Panglao (Balicasag Island)</h3>   <b>Philippines</b> | 9/10 | ✈️직항<hr style="margin:3px 0">   🌊 최대수심 50m | 시야 20-30m<br>🌡️ 수온 28°C | 해류 약-중<br>💰 $35/day | ✈️ ~4h | ✈️직항<br>📅 3월, 4월, 5월, 11월 외 3개월<br>🏊 AIDA/Molchanovs 코스 제공 스쿨 다수. 팡글라오 해변 딥라인 설치. 프리다이빙 전문 리조트 다수<hr style="margin:3px 0">   <i>발리카삭 섬의 드롭오프는 세계 최고 수준의 프리다이빙 환경. 5m 플랫폼에서 시작해 수직 절벽을 따라 50m+ 까지 내려가는 스릴. 세부에서 버스+배로 접근 가능한 코성비 최고 스팟.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Amarela Resort ($80-180/night)<br>🏨 Henann Resort Alona Beach ($60-120/night)<br>🏨 Aquatica Beach Resort ($40-80/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Hama Restaurant (Google 4.5)<br>🍽️ Bohol Bee Farm Restaurant (Google 4.6)<br>🍽️ Zara&#x27;s Restaurant Alona (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 발리카삭 드롭오프는 강한 조류가 갑자기 발생. 조류 방향 확인 후 입수. 만타레이와의 충돌 주의</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 프리다이빙 강사 다수 (팡글라오/알로나비치). 한국어 커뮤니티 활발</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Panglao (Balicasag Island) Philippines&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_d52182da3d8466e4.setContent(html_805e328315719706);
+cm_4e91f2a8a9bc828a.bindPopup(pop_d52182da3d8466e4);
+cm_4e91f2a8a9bc828a.bindTooltip(`<div>Panglao (Balicasag Island) 9/10</div>`,{sticky:true});
+
+
+var lbl_eb668acb3842f9ee = L.marker([9.512,123.704]).addTo(map_e623b9134cb1aaf0);
+var icon_lbl_eb668acb3842f9ee = L.divIcon({
+    html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Panglao (Balicasag Island)</div>',
+    className:'empty'
+});
+lbl_eb668acb3842f9ee.setIcon(icon_lbl_eb668acb3842f9ee);
+
+
+var cm_6d9f60d1045099d9 = L.circleMarker([-8.35,115.638],{
+    color:"#00ff88",fill:true,fillColor:"#00ff88",fillOpacity:0.85,
+    radius:16,weight:2
+}).addTo(map_e623b9134cb1aaf0);
+var pop_7c7f67650f66c7b4 = L.popup({maxWidth:340});
+var html_ae08e6820eb58d99 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Amed</h3>   <b>Indonesia</b> | 9/10 | ✈️직항<hr style="margin:3px 0">   🌊 최대수심 60m | 시야 15-30m<br>🌡️ 수온 27°C | 해류 약<br>💰 $30/day | ✈️ ~7h | ✈️직항<br>📅 4월, 5월, 6월, 7월 외 3개월<br>🏊 Apnea Total, Deep Emotions 등 프리다이빙 전문 스쿨. AIDA/SSI 코스. 아파르 마스크 배급 가능<hr style="margin:3px 0">   <i>발리 동쪽 끝의 조용한 어촌 마을로 프리다이빙 성지가 된 곳. USS 리버티 침선(최대 30m)은 프리다이빙으로 탐험 가능한 세계 최고 난파선 중 하나. 발리 특유의 문화와 자연이 공존하는 힐링 스팟.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Amed Café &amp; Bungalows ($25-60/night)<br>🏨 Blue Moon Villas ($50-120/night)<br>🏨 Solaluna Beach Retreat ($80-200/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Wawa Wewe II (Google 4.6)<br>🍽️ Restaurant Gede (Google 4.4)<br>🍽️ Topi Inn Restaurant (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 리버티 침선 내부 진입 금지 (엔탱글먼트 위험). 동쪽 조류 갑작스러운 변화 주의. 선박 항행 구역 주의</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 프리다이빙 강사 1-2명 상주. 카카오톡 &#x27;발리 아메드 프리다이빙&#x27; 검색</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Amed Indonesia&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_7c7f67650f66c7b4.setContent(html_ae08e6820eb58d99);
+cm_6d9f60d1045099d9.bindPopup(pop_7c7f67650f66c7b4);
+cm_6d9f60d1045099d9.bindTooltip(`<div>Amed 9/10</div>`,{sticky:true});
+
+
+var lbl_7e20737d76e471eb = L.marker([-8.35,115.638]).addTo(map_e623b9134cb1aaf0);
+var icon_lbl_7e20737d76e471eb = L.divIcon({
+    html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Amed</div>',
+    className:'empty'
+});
+lbl_7e20737d76e471eb.setIcon(icon_lbl_7e20737d76e471eb);
+
+
+var cm_c1ccce47ef25cf84 = L.marker([20.198,-87.458]).addTo(map_e623b9134cb1aaf0);
+var icon_cm_c1ccce47ef25cf84 = L.divIcon({
+    html:'<div style="width:36px;height:36px;border:2.5px dashed #00ff88;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-18px;margin-top:-18px;cursor:pointer"></div>',
+    className:'empty'
+});
+cm_c1ccce47ef25cf84.setIcon(icon_cm_c1ccce47ef25cf84);
+var pop_d9893ba95ce20d15 = L.popup({maxWidth:340});
+var html_276dc22d1fcc184b = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Cenote Angelita</h3>   <b>Mexico</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 60m | 시야 25-40m<br>🌡️ 수온 24°C | 해류 없음<br>💰 $45/day | ✈️ ~18h | 🔄경유<br>📅 2월, 3월, 4월, 5월 외 2개월<br>🏊 Tulum 내 AIDA/SSI 스쿨 다수. 세노테 투어 가이드 필수 동반. 딥라인 비상설 (예약 시 설치)<hr style="margin:3px 0">   <i>수심 30m에서 나타나는 황화수소층이 마치 지하 강처럼 보이는 마법같은 광경. 투명한 담수 위로 짙은 구름이 깔린 장면은 전 세계 언더워터 포토그래퍼들의 버킷리스트. 지구상 가장 신비로운 프리다이빙 환경.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Azulik Tulum ($300-600/night)<br>🏨 Be Tulum Boutique Hotel ($150-300/night)<br>🏨 Aldea Canzul ($80-160/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Hartwood (Google 4.7)<br>🍽️ El Camello Jr (Google 4.5)<br>🍽️ Gitano Tulum (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 황화수소층 통과 시 독성 가스 흡입 위험. 반드시 현지 공인 가이드 동반. 일 방문객 수 제한으로 사전 예약 필수</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 영어/스페인어 가이드 이용</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Cenote Angelita Mexico&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_d9893ba95ce20d15.setContent(html_276dc22d1fcc184b);
+cm_c1ccce47ef25cf84.bindPopup(pop_d9893ba95ce20d15);
+cm_c1ccce47ef25cf84.bindTooltip(`<div>Cenote Angelita 9/10</div>`,{sticky:true});
+
+
+var lbl_c856c41ceef7b2ae = L.marker([20.198,-87.458]).addTo(map_e623b9134cb1aaf0);
+var icon_lbl_c856c41ceef7b2ae = L.divIcon({
+    html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Cenote Angelita</div>',
+    className:'empty'
+});
+lbl_c856c41ceef7b2ae.setIcon(icon_lbl_c856c41ceef7b2ae);
+
+
+var cm_b2507361964967ec = L.marker([23.31,-75.12]).addTo(map_e623b9134cb1aaf0);
+var icon_cm_b2507361964967ec = L.divIcon({
+    html:'<div style="width:36px;height:36px;border:2.5px dashed #00ff88;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-18px;margin-top:-18px;cursor:pointer"></div>',
+    className:'empty'
+});
+cm_b2507361964967ec.setIcon(icon_cm_b2507361964967ec);
+var pop_0500eae0eef7155e = L.popup({maxWidth:340});
+var html_05f401f13490a1eb = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Vertical Blue (Long Island)</h3>   <b>Bahamas</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 100m | 시야 40-60m<br>🌡️ 수온 27°C | 해류 없음<br>💰 $100/day | ✈️ ~20h | 🔄경유<br>📅 4월, 5월, 6월, 7월 외 2개월<br>🏊 Vertical Blue 공식 대회 시설. 세계 최고 수준 딥라인/안전 시스템. 비시즌 캠프 운영<hr style="margin:3px 0">   <i>William Trubridge가 설립한 세계 최고 권위의 프리다이빙 대회 Vertical Blue의 홈. Dean&#x27;s Blue Hole(202m)에서 수백 개의 세계 기록이 탄생했다. 극도로 조용하고 맑은 환경에서 최고의 집중 훈련 가능.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Stella Maris Resort Club ($150-280/night)<br>🏨 Cape Santa Maria Beach Resort ($200-400/night)<br>🏨 Long Island Breeze Resort ($100-180/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Stella Maris Bar &amp; Restaurant (Google 4.3)<br>🍽️ Max&#x27;s Conch Bar (Google 4.5)<br>🍽️ Rowdy Boys Bar &amp; Grill (Google 4.2)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 딥다이빙 훈련 시 전문 안전 다이버 필수 배치. 고도 훈련 없이 60m+ 잠수 금지. 기압 변화 적응 기간 필요</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. William Trubridge 또는 공인 강사 코스 이용</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Vertical Blue (Long Island) Bahamas&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_0500eae0eef7155e.setContent(html_05f401f13490a1eb);
+cm_b2507361964967ec.bindPopup(pop_0500eae0eef7155e);
+cm_b2507361964967ec.bindTooltip(`<div>Vertical Blue (Long Island) 9/10</div>`,{sticky:true});
+
+
+var lbl_1f40ffd3487cbbd8 = L.marker([23.31,-75.12]).addTo(map_e623b9134cb1aaf0);
+var icon_lbl_1f40ffd3487cbbd8 = L.divIcon({
+    html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Vertical Blue (Long Island)</div>',
+    className:'empty'
+});
+lbl_1f40ffd3487cbbd8.setIcon(icon_lbl_1f40ffd3487cbbd8);
+
+
+var cm_bea2f05967386c44 = L.circleMarker([10.092,99.84],{
+    color:"#00ff88",fill:true,fillColor:"#00ff88",fillOpacity:0.85,
+    radius:16,weight:2
+}).addTo(map_e623b9134cb1aaf0);
+var pop_2415a2b90b41762b = L.popup({maxWidth:340});
+var html_81064abdb58b23bf = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Koh Tao</h3>   <b>Thailand</b> | 9/10 | ✈️직항<hr style="margin:3px 0">   🌊 최대수심 40m | 시야 15-25m<br>🌡️ 수온 29°C | 해류 약<br>💰 $25/day | ✈️ ~6h | ✈️직항<br>📅 3월, 4월, 5월, 6월 외 4개월<br>🏊 Apnea Total, Blue Immersion 등 AIDA 공인 스쿨. 입문자용 3일 코스부터 컴피티션 레벨 훈련까지. 딥라인 전용 포인트<hr style="margin:3px 0">   <i>동남아 최대의 다이빙/프리다이빙 허브로 전 세계 다이버가 집결하는 곳. 깨끗한 물과 다양한 포인트, 저렴한 물가가 장기 훈련에 최적. 고래상어 시즌(4-5월)에는 버킷리스트 경험 가능.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Sairee Cottage Resort ($30-80/night)<br>🏨 Koh Tao Coral Grand Resort ($60-150/night)<br>🏨 In Touch Resort ($20-50/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Zanzibar Restaurant Koh Tao (Google 4.6)<br>🍽️ Barracuda Restaurant &amp; Bar (Google 4.4)<br>🍽️ Coffee Corner (Google 4.5)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 고래상어 접촉 금지 (법적 제재). 야간 잠수 시 조명 필수. 보트 항로 주의. 조류 변화 빠름</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 프리다이빙 강사 3-5명 상주. 한국인 운영 게스트하우스 다수. 카카오톡 &#x27;코타오 프리다이빙&#x27; 검색</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Koh Tao Thailand&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_2415a2b90b41762b.setContent(html_81064abdb58b23bf);
+cm_bea2f05967386c44.bindPopup(pop_2415a2b90b41762b);
+cm_bea2f05967386c44.bindTooltip(`<div>Koh Tao 9/10</div>`,{sticky:true});
+
+
+var lbl_91845b3ba3486e55 = L.marker([10.092,99.84]).addTo(map_e623b9134cb1aaf0);
+var icon_lbl_91845b3ba3486e55 = L.divIcon({
+    html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Koh Tao</div>',
+    className:'empty'
+});
+lbl_91845b3ba3486e55.setIcon(icon_lbl_91845b3ba3486e55);
+
+
+var cm_ee38d41dad82b1d2 = L.marker([-6.165,39.19]).addTo(map_e623b9134cb1aaf0);
+var icon_cm_ee38d41dad82b1d2 = L.divIcon({
+    html:'<div style="width:36px;height:36px;border:2.5px dashed #00ff88;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-18px;margin-top:-18px;cursor:pointer"></div>',
+    className:'empty'
+});
+cm_ee38d41dad82b1d2.setIcon(icon_cm_ee38d41dad82b1d2);
+var pop_7bdbbea8d757569b = L.popup({maxWidth:340});
+var html_04083fe9c48d5e2a = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Zanzibar</h3>   <b>Tanzania</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 35m | 시야 15-25m<br>🌡️ 수온 27°C | 해류 약-중<br>💰 $40/day | ✈️ ~13h | 🔄경유<br>📅 6월, 7월, 8월, 9월 외 1개월<br>🏊 One Ocean 등 PADI/AIDA 스쿨. 프리다이빙 전용 투어 운영. 웽기 섬 전용 딥라인<hr style="margin:3px 0">   <i>인도양의 보석으로 불리는 잔지바르에서 만나는 야생 돌고래 경험은 세계 최고 수준. 웽기 만의 병코돌고래 무리와 자유롭게 수영하는 경험은 프리다이빙으로만 가능한 특별한 순간.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Baraza Resort &amp; Spa ($300-600/night)<br>🏨 Manta Resort ($200-400/night)<br>🏨 Essque Zalu Zanzibar ($250-500/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Emerson Spice Rooftop Restaurant (Google 4.7)<br>🍽️ The Rock Restaurant (Google 4.5)<br>🍽️ Forodhani Gardens Night Market (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 돌고래 자극 금지 (야생 보호 규정). 만조 시 강한 해류 주의. 조석 변화 크므로 현지 가이드 동반 필수</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 영어 가이드 이용. 현지 스쿨 한국어 지원 부재</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Zanzibar Tanzania&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_7bdbbea8d757569b.setContent(html_04083fe9c48d5e2a);
+cm_ee38d41dad82b1d2.bindPopup(pop_7bdbbea8d757569b);
+cm_ee38d41dad82b1d2.bindTooltip(`<div>Zanzibar 9/10</div>`,{sticky:true});
+
+
+var lbl_c49693e018775c54 = L.marker([-6.165,39.19]).addTo(map_e623b9134cb1aaf0);
+var icon_lbl_c49693e018775c54 = L.divIcon({
+    html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Zanzibar</div>',
+    className:'empty'
+});
+lbl_c49693e018775c54.setIcon(icon_lbl_c49693e018775c54);
+
+
+var cm_41f1770b10a68797 = L.marker([36.053,14.189]).addTo(map_e623b9134cb1aaf0);
+var icon_cm_41f1770b10a68797 = L.divIcon({
+    html:'<div style="width:36px;height:36px;border:2.5px dashed #00ff88;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-18px;margin-top:-18px;cursor:pointer"></div>',
+    className:'empty'
+});
+cm_41f1770b10a68797.setIcon(icon_cm_41f1770b10a68797);
+var pop_3b7f687426920e5c = L.popup({maxWidth:340});
+var html_f0c07c647e7ac448 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Blue Hole Gozo</h3>   <b>Malta</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 60m | 시야 25-40m<br>🌡️ 수온 21°C | 해류 약<br>💰 $60/day | ✈️ ~14h | 🔄경유<br>📅 5월, 6월, 7월, 8월 외 2개월<br>🏊 Gozo Aqua Sports, Atlantis Gozo 등 AIDA 스쿨. 블루홀 전용 딥라인. Azure Window 붕괴 이후 새로운 포인트 개척<hr style="margin:3px 0">   <i>지중해 최고의 프리다이빙 포인트로 수직 60m 절벽 아래 동굴로 이어지는 장관. 붕괴한 Azure Window의 잔해와 새로운 조형물이 독특한 수중 환경을 만들어냄. 유럽 내 프리다이빙 커뮤니티의 핵심 허브.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Kempinski Hotel San Lawrenz ($150-300/night)<br>🏨 Ta&#x27; Cenc &amp; Spa ($120-250/night)<br>🏨 San Andrea Hotel Xlendi ($60-120/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Il-Kartell Restaurant (Google 4.6)<br>🍽️ Ta&#x27; Rikardu (Google 4.5)<br>🍽️ Boat House Xlendi (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 블루홀 내부 오버행 구조로 비상 탈출 복잡. 조류가 갑자기 강해질 수 있음. 단독 잠수 금지</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 영어 가이드 풍부. 유럽 프리다이버들의 집결지</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Blue Hole Gozo Malta&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_3b7f687426920e5c.setContent(html_f0c07c647e7ac448);
+cm_41f1770b10a68797.bindPopup(pop_3b7f687426920e5c);
+cm_41f1770b10a68797.bindTooltip(`<div>Blue Hole Gozo 9/10</div>`,{sticky:true});
+
+
+var lbl_a0999bf07c08643b = L.marker([36.053,14.189]).addTo(map_e623b9134cb1aaf0);
+var icon_lbl_a0999bf07c08643b = L.divIcon({
+    html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Blue Hole Gozo</div>',
+    className:'empty'
+});
+lbl_a0999bf07c08643b.setIcon(icon_lbl_a0999bf07c08643b);
+
+
+var cm_21c077b510d7c829 = L.marker([28.291,-16.629]).addTo(map_e623b9134cb1aaf0);
+var icon_cm_21c077b510d7c829 = L.divIcon({
+    html:'<div style="width:36px;height:36px;border:2.5px dashed #00ff88;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-18px;margin-top:-18px;cursor:pointer"></div>',
+    className:'empty'
+});
+cm_21c077b510d7c829.setIcon(icon_cm_21c077b510d7c829);
+var pop_e971e5e616a98ba6 = L.popup({maxWidth:340});
+var html_6e4ca78b6a6ab47b = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Tenerife</h3>   <b>Spain</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 50m | 시야 20-35m<br>🌡️ 수온 22°C | 해류 약<br>💰 $55/day | ✈️ ~15h | 🔄경유<br>📅 3월, 4월, 5월, 6월 외 4개월<br>🏊 Freediving Canarias, Apnea Spain 등 AIDA 공인 스쿨. 유럽 랭킹 대회 개최지. 연중 온화한 기후<hr style="margin:3px 0">   <i>유럽에서 연중 프리다이빙이 가능한 최고의 스팟. 파일럿 고래와 돌고래를 물 밖에서가 아닌 바다에서 함께 수영하는 경험은 테네리페만의 특권. 테이데 화산섬의 신비로운 지형이 수중에도 이어짐.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Gran Hotel Bahia del Duque ($200-400/night)<br>🏨 Vincci La Plantacion del Sur ($150-300/night)<br>🏨 Hotel Botanico &amp; The Oriental Spa Garden ($180-350/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ El Molino Blanco (Google 4.5)<br>🍽️ Restaurante Sol y Sombra (Google 4.4)<br>🍽️ La Vieja Restaurant (Google 4.6)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 고래·돌고래 접근 규정 준수 필수 (5m 이내 금지). 조류 예측 어려움. 선박 왕래 많은 구역 주의</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 영어/스페인어 가이드. 유럽 거주 한국인 커뮤니티</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Tenerife Spain&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_e971e5e616a98ba6.setContent(html_6e4ca78b6a6ab47b);
+cm_21c077b510d7c829.bindPopup(pop_e971e5e616a98ba6);
+cm_21c077b510d7c829.bindTooltip(`<div>Tenerife 9/10</div>`,{sticky:true});
+
+
+var lbl_8b5a5625fd986053 = L.marker([28.291,-16.629]).addTo(map_e623b9134cb1aaf0);
+var icon_lbl_8b5a5625fd986053 = L.divIcon({
+    html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Tenerife</div>',
+    className:'empty'
+});
+lbl_8b5a5625fd986053.setIcon(icon_lbl_8b5a5625fd986053);
+
+
+var cm_5edb8b6d80dbe046 = L.circleMarker([-8.726,115.544],{
+    color:"#ffcc00",fill:true,fillColor:"#ffcc00",fillOpacity:0.85,
+    radius:14,weight:2
+}).addTo(map_e623b9134cb1aaf0);
+var pop_80271d379a569d81 = L.popup({maxWidth:340});
+var html_c400281a79a5a4ee = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Nusa Penida</h3>   <b>Indonesia</b> | 8/10 | ✈️직항<hr style="margin:3px 0">   🌊 최대수심 30m | 시야 10-25m<br>🌡️ 수온 22°C | 해류 중-강<br>💰 $35/day | ✈️ ~7h | ✈️직항<br>📅 4월, 5월, 6월, 7월 외 3개월<br>🏊 Amed/Sanur 기반 스쿨에서 당일치기 투어. 만타포인트 투어 운영. 현지 가이드 의무<hr style="margin:3px 0">   <i>몰라몰라(개복치)와 만타레이를 동시에 볼 수 있는 세계 유일에 가까운 포인트. 강한 조류가 만들어내는 차가운 용승이 대형 해양생물을 끌어들이는 원리. 프리다이빙 실력이 있어야 조류를 활용한 드리프트가 가능.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Semabu Hills Nusa Penida ($50-120/night)<br>🏨 Adiwana Warnakali ($100-220/night)<br>🏨 Queen Garden Resort ($30-60/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Warung Sunset Nusa Penida (Google 4.4)<br>🍽️ Penida Colada (Google 4.5)<br>🍽️ Ped Beach Restaurant (Google 4.2)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 강한 조류로 순식간에 먼 바다로 이탈 가능. 입문자 단독 잠수 절대 금지. 몰라몰라 시즌 수온 17-20도로 풀수트 필수</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 1-2명 (발리/눔 기반). 한국어 다이빙 투어 예약 가능</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Nusa Penida Indonesia&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_80271d379a569d81.setContent(html_c400281a79a5a4ee);
+cm_5edb8b6d80dbe046.bindPopup(pop_80271d379a569d81);
+cm_5edb8b6d80dbe046.bindTooltip(`<div>Nusa Penida 8/10</div>`,{sticky:true});
+
+
+var lbl_4c8d5434db5eec65 = L.marker([-8.726,115.544]).addTo(map_e623b9134cb1aaf0);
+var icon_lbl_4c8d5434db5eec65 = L.divIcon({
+    html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Nusa Penida</div>',
+    className:'empty'
+});
+lbl_4c8d5434db5eec65.setIcon(icon_lbl_4c8d5434db5eec65);
+
+
+var cm_6df33e742d6f0774 = L.circleMarker([9.938,123.398],{
+    color:"#ffcc00",fill:true,fillColor:"#ffcc00",fillOpacity:0.85,
+    radius:14,weight:2
+}).addTo(map_e623b9134cb1aaf0);
+var pop_8ded26b1aa722183 = L.popup({maxWidth:340});
+var html_54d016ded5293cbc = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Moalboal</h3>   <b>Philippines</b> | 8/10 | ✈️직항<hr style="margin:3px 0">   🌊 최대수심 40m | 시야 15-25m<br>🌡️ 수온 28°C | 해류 약-중<br>💰 $30/day | ✈️ ~4h | ✈️직항<br>📅 11월, 12월, 1월, 2월 외 3개월<br>🏊 Ocean Safari, Savedra Dive Center 등 AIDA 스쿨. 세부에서 2시간 거리. 정어리 토네이도 전용 투어<hr style="margin:3px 0">   <i>수백만 마리의 정어리가 만들어내는 토네이도 현상은 프리다이빙으로만 완벽히 경험 가능. 그 속에서 바다거북이 유유히 헤엄치는 장면은 일생에 한 번의 경험. 세부에서 당일치기로 접근 가능한 효율적인 위치.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Magic Island Resort ($40-80/night)<br>🏨 Club Serena Resort ($60-130/night)<br>🏨 Savedra Beach Resort ($30-60/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ The Hut Restaurant (Google 4.4)<br>🍽️ Chili Bar (Google 4.3)<br>🍽️ Lantaw Native Restaurant (Google 4.5)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 정어리 무리 밀도로 방향 감각 상실 주의. 조류 방향 확인 필수. 드롭오프 진입 시 강한 하강류 주의</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 프리다이빙 강사 2-3명 (세부/모알보알). 한국어 투어 예약 가능</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Moalboal Philippines&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_8ded26b1aa722183.setContent(html_54d016ded5293cbc);
+cm_6df33e742d6f0774.bindPopup(pop_8ded26b1aa722183);
+cm_6df33e742d6f0774.bindTooltip(`<div>Moalboal 8/10</div>`,{sticky:true});
+
+
+var lbl_110ad97ac7ea0817 = L.marker([9.938,123.398]).addTo(map_e623b9134cb1aaf0);
+var icon_lbl_110ad97ac7ea0817 = L.divIcon({
+    html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Moalboal</div>',
+    className:'empty'
+});
+lbl_110ad97ac7ea0817.setIcon(icon_lbl_110ad97ac7ea0817);
+
+
+var cm_85854fd92daaa7f8 = L.circleMarker([33.501,126.952],{
+    color:"#ffcc00",fill:true,fillColor:"#ffcc00",fillOpacity:0.85,
+    radius:14,weight:2
+}).addTo(map_e623b9134cb1aaf0);
+var pop_ac9716d5e70a6116 = L.popup({maxWidth:340});
+var html_80beed04a6195767 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Jeju Udo</h3>   <b>South Korea</b> | 8/10 | ✈️직항<hr style="margin:3px 0">   🌊 최대수심 20m | 시야 5-15m<br>🌡️ 수온 18°C | 해류 약<br>💰 $20/day | ✈️ ~1h | ✈️직항<br>📅 6월, 7월, 8월, 9월<br>🏊 해녀 체험 프로그램. 제주 프리다이빙 스쿨 다수. SSI/AIDA 코스. 한국 프리다이빙 협회 공인 강습<hr style="margin:3px 0">   <i>유네스코 인류무형문화유산 제주 해녀 문화를 직접 체험할 수 있는 유일한 곳. 우도의 에메랄드빛 산호 모래 해변(홍조단괴)과 맑은 물이 국내 최고 수준. 한국인에게 가장 접근성 좋은 프리다이빙 성지.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 우도 해녀의집 게스트하우스 (5-8만원/night)<br>🏨 우도 파라다이스 호텔 (8-15만원/night)<br>🏨 삼달리 해변 민박 (4-7만원/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ 우도 해녀 식당 (해산물) (Google 4.5)<br>🍽️ 천진항 횟집 (Google 4.4)<br>🍽️ 우도 땅콩 아이스크림 가게 (Google 4.6)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 여름 해파리 쏘임 주의. 수온 급강하 구간 존재. 해녀 작업 구역 진입 금지. 조류 변화 주의</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국어 완전 지원. 해녀 문화 체험 프로그램. 전국 프리다이빙 동호회 정기 모임</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Jeju Udo South Korea&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_ac9716d5e70a6116.setContent(html_80beed04a6195767);
+cm_85854fd92daaa7f8.bindPopup(pop_ac9716d5e70a6116);
+cm_85854fd92daaa7f8.bindTooltip(`<div>Jeju Udo 8/10</div>`,{sticky:true});
+
+
+var lbl_5b484b4ec017bea7 = L.marker([33.501,126.952]).addTo(map_e623b9134cb1aaf0);
+var icon_lbl_5b484b4ec017bea7 = L.divIcon({
+    html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Jeju Udo</div>',
+    className:'empty'
+});
+lbl_5b484b4ec017bea7.setIcon(icon_lbl_5b484b4ec017bea7);
+
+
+var cm_8f15f0864021e67d = L.marker([37.038,22.115]).addTo(map_e623b9134cb1aaf0);
+var icon_cm_8f15f0864021e67d = L.divIcon({
+    html:'<div style="width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer"></div>',
+    className:'empty'
+});
+cm_8f15f0864021e67d.setIcon(icon_cm_8f15f0864021e67d);
+var pop_fdbecfbc7d06abe0 = L.popup({maxWidth:340});
+var html_c06a2e0aa52b4e82 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Kalamata</h3>   <b>Greece</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 50m | 시야 20-35m<br>🌡️ 수온 23°C | 해류 없음-약<br>💰 $50/day | ✈️ ~13h | 🔄경유<br>📅 5월, 6월, 7월, 8월 외 2개월<br>🏊 Performance Freediving International 코스. 유럽 챔피언십 개최지. 전용 딥라인 시설. Halykon Days 등 집중 캠프<hr style="margin:3px 0">   <i>Herbert Nitsch 등 세계 최고 프리다이버들이 훈련하는 곳. 지중해의 맑고 잔잔한 물과 그리스 특유의 고대 문명이 어우러지는 특별한 환경. 한국에서 멀지만 유럽 훈련 캠프로 인기.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Filoxenia Hotel Kalamata ($80-150/night)<br>🏨 Ibis Styles Kalamata ($60-100/night)<br>🏨 Oceanis Hotel ($50-80/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Spialia Restaurant (Google 4.6)<br>🍽️ Ta Rolla (Google 4.5)<br>🍽️ To Dichtari (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 딥라인 훈련 시 수면 대기 다이버 필수. 지중해 물리기 해파리 주의. 선박 왕래 구역 표식 확인</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 영어 완전 지원. 국제 캠프 한국인 참가자 다수</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Kalamata Greece&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_fdbecfbc7d06abe0.setContent(html_c06a2e0aa52b4e82);
+cm_8f15f0864021e67d.bindPopup(pop_fdbecfbc7d06abe0);
+cm_8f15f0864021e67d.bindTooltip(`<div>Kalamata 8/10</div>`,{sticky:true});
+
+
+var lbl_21454f2be11003ce = L.marker([37.038,22.115]).addTo(map_e623b9134cb1aaf0);
+var icon_lbl_21454f2be11003ce = L.divIcon({
+    html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Kalamata</div>',
+    className:'empty'
+});
+lbl_21454f2be11003ce.setIcon(icon_lbl_21454f2be11003ce);
+
+
+var cm_f6bd29cf16acd167 = L.marker([36.201,29.638]).addTo(map_e623b9134cb1aaf0);
+var icon_cm_f6bd29cf16acd167 = L.divIcon({
+    html:'<div style="width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer"></div>',
+    className:'empty'
+});
+cm_f6bd29cf16acd167.setIcon(icon_cm_f6bd29cf16acd167);
+var pop_461eb2fb3fb07802 = L.popup({maxWidth:340});
+var html_829e878fa316ba00 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Kas</h3>   <b>Turkey</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 45m | 시야 20-35m<br>🌡️ 수온 24°C | 해류 없음-약<br>💰 $45/day | ✈️ ~12h | 🔄경유<br>📅 5월, 6월, 7월, 8월 외 2개월<br>🏊 Bougainville Dive Center, SubMarina 등 AIDA 스쿨. 지중해 프리다이빙 대회 정기 개최. 침선 투어 병행 가능<hr style="margin:3px 0">   <i>터키의 지중해 최고 보석 카쉬에서 즐기는 프리다이빙. 앞바다에 수몰된 리키아 고대 도시 유적을 프리다이빙으로 탐험하는 독특한 경험이 가능. 그리스 카스텔로리조 섬이 지척으로 보이는 국경 위 투명한 바다.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Aquapark Hotel Kas ($80-160/night)<br>🏨 Mimosa Hotel ($60-100/night)<br>🏨 Hideaway Hotel ($100-200/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Bi Lokma (Google 4.7)<br>🍽️ Blu Bar Restaurant (Google 4.5)<br>🍽️ Chez Evy (Google 4.6)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 유적 접촉 금지 (문화재 보호). 수중 동굴 진입 전문가 외 금지. 여름 성수기 선박 왕래 주의</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 영어 가이드 풍부. 터키 여행 한국인 커뮤니티</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Kas Turkey&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_461eb2fb3fb07802.setContent(html_829e878fa316ba00);
+cm_f6bd29cf16acd167.bindPopup(pop_461eb2fb3fb07802);
+cm_f6bd29cf16acd167.bindTooltip(`<div>Kas 8/10</div>`,{sticky:true});
+
+
+var lbl_338bacd1cfce01d8 = L.marker([36.201,29.638]).addTo(map_e623b9134cb1aaf0);
+var icon_lbl_338bacd1cfce01d8 = L.divIcon({
+    html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Kas</div>',
+    className:'empty'
+});
+lbl_338bacd1cfce01d8.setIcon(icon_lbl_338bacd1cfce01d8);
+
+
+var cm_25b082c7cd94b11e = L.marker([27.912,34.33]).addTo(map_e623b9134cb1aaf0);
+var icon_cm_25b082c7cd94b11e = L.divIcon({
+    html:'<div style="width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer"></div>',
+    className:'empty'
+});
+cm_25b082c7cd94b11e.setIcon(icon_cm_25b082c7cd94b11e);
+var pop_e3bc265bb1bc845f = L.popup({maxWidth:340});
+var html_33a787857b55fe20 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Sharm el-Sheikh</h3>   <b>Egypt</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 60m | 시야 25-40m<br>🌡️ 수온 24°C | 해류 약-중<br>💰 $55/day | ✈️ ~12h | 🔄경유<br>📅 3월, 4월, 5월, 9월 외 2개월<br>🏊 Ras Mohamed 국립공원 인근. AIDA/SSI 스쿨 다수. 리조트 전용 딥라인 시설<hr style="margin:3px 0">   <i>다합과 더불어 이집트 홍해 최고의 프리다이빙 포인트. 라스 모하메드 국립공원의 드롭오프는 수직 60m 절벽 아래로 펼쳐지는 산호 정원이 일품. 세계적인 리조트 인프라로 고급 여행과의 조합 최적.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Four Seasons Resort Sharm el Sheikh ($200-450/night)<br>🏨 Hilton Sharks Bay Resort ($100-200/night)<br>🏨 Baron Resort Sharm el-Sheikh ($80-160/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Alfredo&#x27;s Restaurant (Google 4.5)<br>🍽️ Farsha Cafe (Google 4.6)<br>🍽️ La Luna Restaurant (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 상어 구역 표식 준수. 조류 강도 일일 변화 큼. 리조트 구역 외 단독 잠수 금지</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 1-2명 (시즌별). 이집트 다합/샤름 한국인 커뮤니티</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Sharm el-Sheikh Egypt&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_e3bc265bb1bc845f.setContent(html_33a787857b55fe20);
+cm_25b082c7cd94b11e.bindPopup(pop_e3bc265bb1bc845f);
+cm_25b082c7cd94b11e.bindTooltip(`<div>Sharm el-Sheikh 8/10</div>`,{sticky:true});
+
+
+var lbl_535d9c4011e9ea96 = L.marker([27.912,34.33]).addTo(map_e623b9134cb1aaf0);
+var icon_lbl_535d9c4011e9ea96 = L.divIcon({
+    html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Sharm el-Sheikh</div>',
+    className:'empty'
+});
+lbl_535d9c4011e9ea96.setIcon(icon_lbl_535d9c4011e9ea96);
+
+
+var cm_68ed94837c112f91 = L.marker([15.415,-61.371]).addTo(map_e623b9134cb1aaf0);
+var icon_cm_68ed94837c112f91 = L.divIcon({
+    html:'<div style="width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer"></div>',
+    className:'empty'
+});
+cm_68ed94837c112f91.setIcon(icon_cm_68ed94837c112f91);
+var pop_dbbeb8e26c9aa3fd = L.popup({maxWidth:340});
+var html_5be9ffc8b450c14f = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Dominica</h3>   <b>Dominica</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 40m | 시야 20-30m<br>🌡️ 수온 27°C | 해류 약<br>💰 $70/day | ✈️ ~22h | 🔄경유<br>📅 2월, 3월, 4월, 5월 외 3개월<br>🏊 Dive Dominica, Anchorage Dive Center 등 AIDA 스쿨. 고래 관찰 전용 투어. 산호초 회복 지역 보호<hr style="margin:3px 0">   <i>세계 유일 향유고래 연중 서식지로 프리다이빙으로 고래를 만날 수 있는 지구상 유일한 곳. 거대한 고래와 물속에서 눈을 마주치는 경험은 언어로 표현할 수 없다. 카리브해의 숨겨진 보석.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Secret Bay ($400-800/night)<br>🏨 Anchorage Hotel &amp; Dive Center ($100-200/night)<br>🏨 Fort Young Hotel ($120-220/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Pearl&#x27;s Cuisine (Google 4.6)<br>🍽️ Cocorico Cafe &amp; Patisserie (Google 4.5)<br>🍽️ Rhymer&#x27;s Beach Bar &amp; Restaurant (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 향유고래 접근 거리 규정 준수 필수 (소리 자극 금지). 이코클리 지정 가이드 동반 의무. 강한 이안류 구간 존재</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 영어 가이드. 한국인 방문객 극소수</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Dominica Dominica&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_dbbeb8e26c9aa3fd.setContent(html_5be9ffc8b450c14f);
+cm_68ed94837c112f91.bindPopup(pop_dbbeb8e26c9aa3fd);
+cm_68ed94837c112f91.bindTooltip(`<div>Dominica 8/10</div>`,{sticky:true});
+
+
+var lbl_de691a63258d083a = L.marker([15.415,-61.371]).addTo(map_e623b9134cb1aaf0);
+var icon_lbl_de691a63258d083a = L.divIcon({
+    html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Dominica</div>',
+    className:'empty'
+});
+lbl_de691a63258d083a.setIcon(icon_lbl_de691a63258d083a);
+
+
+var cm_0b99b6ce90286cae = L.marker([16.32,-86.53]).addTo(map_e623b9134cb1aaf0);
+var icon_cm_0b99b6ce90286cae = L.divIcon({
+    html:'<div style="width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer"></div>',
+    className:'empty'
+});
+cm_0b99b6ce90286cae.setIcon(icon_cm_0b99b6ce90286cae);
+var pop_2112c2ceffd3c34b = L.popup({maxWidth:340});
+var html_a35553b4afcb421c = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Roatan</h3>   <b>Honduras</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 50m | 시야 20-35m<br>🌡️ 수온 28°C | 해류 약<br>💰 $60/day | ✈️ ~22h | 🔄경유<br>📅 2월, 3월, 4월, 5월 외 4개월<br>🏊 Freedive Roatan, Coconut Tree Divers 등 AIDA 스쿨. 메소아메리카 산호초 직접 접근. 선박 투어 필수<hr style="margin:3px 0">   <i>세계 2위 규모 메소아메리카 산호초(Great Maya Reef) 바로 앞에 위치한 섬. 카리브해 스타일의 느긋한 분위기와 미국 직항로로 중미 여행자에게 인기. 형형색색 산호 정원 위를 프리다이빙으로 날아다니는 경험.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Anthony&#x27;s Key Resort ($150-300/night)<br>🏨 Turquoise Bay Dive &amp; Beach Resort ($100-200/night)<br>🏨 West Bay Lodge ($60-120/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ The Lighthouse Restaurant (Google 4.5)<br>🍽️ Sundowners Bar &amp; Grill (Google 4.4)<br>🍽️ Bite on the Beach (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 산호 접촉 엄금 (법적 제재). 선크림 사용 금지 구역 존재. 고래상어 시즌 선박 왕래 급증</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 영어 완전 지원</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Roatan Honduras&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_2112c2ceffd3c34b.setContent(html_a35553b4afcb421c);
+cm_0b99b6ce90286cae.bindPopup(pop_2112c2ceffd3c34b);
+cm_0b99b6ce90286cae.bindTooltip(`<div>Roatan 8/10</div>`,{sticky:true});
+
+
+var lbl_1396a609b9b4ea64 = L.marker([16.32,-86.53]).addTo(map_e623b9134cb1aaf0);
+var icon_lbl_1396a609b9b4ea64 = L.divIcon({
+    html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Roatan</div>',
+    className:'empty'
+});
+lbl_1396a609b9b4ea64.setIcon(icon_lbl_1396a609b9b4ea64);
+
+
+var cm_1b7b6651a55ad055 = L.circleMarker([9.525,123.395],{
+    color:"#ffcc00",fill:true,fillColor:"#ffcc00",fillOpacity:0.85,
+    radius:14,weight:2
+}).addTo(map_e623b9134cb1aaf0);
+var pop_79ee52eb6854ae9f = L.popup({maxWidth:340});
+var html_e20610ac7736e599 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Oslob</h3>   <b>Philippines</b> | 8/10 | ✈️직항<hr style="margin:3px 0">   🌊 최대수심 35m | 시야 10-20m<br>🌡️ 수온 28°C | 해류 약<br>💰 $35/day | ✈️ ~4h | ✈️직항<br>📅 11월, 12월, 1월, 2월 외 3개월<br>🏊 Sumilon Bluewater Island 리조트 다이브 센터. 고래상어 투어 전문 운영. 세부 기반 스쿨 당일치기 가능<hr style="margin:3px 0">   <i>세계에서 고래상어를 가장 확실하게 볼 수 있는 곳. 현지 어부들의 먹이 제공으로 연중 고래상어 30+ 마리 상주. 프리다이빙으로 옆에서 수영하는 경험은 스쿠버 다이빙과 차원이 다른 자유로움.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Sumilon Bluewater Island Resort ($120-250/night)<br>🏨 Cebu White Sands Resort ($60-120/night)<br>🏨 Ocean Breeze Oslob ($30-60/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Bela&#x27;s Garden &amp; Seafood (Google 4.5)<br>🍽️ Ocean Breeze Restaurant (Google 4.3)<br>🍽️ Balai Oslob Restaurant (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 먹이 제공 행위 동참 금지 (윤리적 관광). 고래상어 지느러미·꼬리 접촉 금지. 안내 선박 프로펠러 위험</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 가이드 다수. 세부 기반 한국어 투어 예약 매우 활발</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Oslob Philippines&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_79ee52eb6854ae9f.setContent(html_e20610ac7736e599);
+cm_1b7b6651a55ad055.bindPopup(pop_79ee52eb6854ae9f);
+cm_1b7b6651a55ad055.bindTooltip(`<div>Oslob 8/10</div>`,{sticky:true});
+
+
+var lbl_ec166b52a6e96412 = L.marker([9.525,123.395]).addTo(map_e623b9134cb1aaf0);
+var icon_lbl_ec166b52a6e96412 = L.divIcon({
+    html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Oslob</div>',
+    className:'empty'
+});
+lbl_ec166b52a6e96412.setIcon(icon_lbl_ec166b52a6e96412);
+
+
+var cm_5faa2742afb85558 = L.marker([25.128,56.327]).addTo(map_e623b9134cb1aaf0);
+var icon_cm_5faa2742afb85558 = L.divIcon({
+    html:'<div style="width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer"></div>',
+    className:'empty'
+});
+cm_5faa2742afb85558.setIcon(icon_cm_5faa2742afb85558);
+var pop_cdea29823a77e94d = L.popup({maxWidth:340});
+var html_c9cb6f7c8ae8677f = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Fujairah</h3>   <b>UAE</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 30m | 시야 10-20m<br>🌡️ 수온 27°C | 해류 약<br>💰 $65/day | ✈️ ~10h | 🔄경유<br>📅 10월, 11월, 12월, 1월 외 3개월<br>🏊 7Seas Divers, Freestyle Divers 등 AIDA 스쿨. Snoopy Island 전용 포인트. UAE 프리다이빙 협회 공인<hr style="margin:3px 0">   <i>두바이/아부다비 경유 중동 여행 시 추가할 수 있는 숨겨진 프리다이빙 스팟. 스누피 섬 주변의 완만한 산호초는 입문자에게도 안전하고 재미있는 환경. 오만만의 맑은 물이 페르시아만보다 훨씬 투명.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Fujairah Rotana Resort &amp; Spa ($120-250/night)<br>🏨 Ibis Styles Fujairah ($60-100/night)<br>🏨 Al Bahar Hotel &amp; Resort ($80-160/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ La Mer Restaurant (Google 4.5)<br>🍽️ The Square Restaurant &amp; Terrace (Google 4.4)<br>🍽️ Seaview Restaurant (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 보트 교통량 증가 시기 조심. 산호 접촉 금지 (UAE 환경부 규정). 여름 수온 33°C 이상 탈수 위험</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 영어/아랍어 가이드. UAE 거주 한국인 경유 연결 가능</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Fujairah UAE&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_cdea29823a77e94d.setContent(html_c9cb6f7c8ae8677f);
+cm_5faa2742afb85558.bindPopup(pop_cdea29823a77e94d);
+cm_5faa2742afb85558.bindTooltip(`<div>Fujairah 8/10</div>`,{sticky:true});
+
+
+var lbl_02bdadad7128e96d = L.marker([25.128,56.327]).addTo(map_e623b9134cb1aaf0);
+var icon_lbl_02bdadad7128e96d = L.divIcon({
+    html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Fujairah</div>',
+    className:'empty'
+});
+lbl_02bdadad7128e96d.setIcon(icon_lbl_02bdadad7128e96d);
+
+
+var cm_5358dc8fc93d385c = L.marker([43.703,7.319]).addTo(map_e623b9134cb1aaf0);
+var icon_cm_5358dc8fc93d385c = L.divIcon({
+    html:'<div style="width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer"></div>',
+    className:'empty'
+});
+cm_5358dc8fc93d385c.setIcon(icon_cm_5358dc8fc93d385c);
+var pop_eab71a5842cc4321 = L.popup({maxWidth:340});
+var html_9f169b151281cd8e = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Villefranche-sur-Mer</h3>   <b>France</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 35m | 시야 15-30m<br>🌡️ 수온 20°C | 해류 없음-약<br>💰 $70/day | ✈️ ~14h | 🔄경유<br>📅 5월, 6월, 7월, 8월 외 2개월<br>🏊 Club de Plongée de Villefranche, Centre International de Plongée 등 코스 제공. CMAS/AIDA 인증. 니스 공항 15분<hr style="margin:3px 0">   <i>니스 옆의 아름다운 만에서 즐기는 코트다쥐르 프리다이빙. 유럽 최고 부촌에 위치한 이국적인 환경이 독특한 경험을 선사. 모나코까지 이어지는 프리다이빙 투어로 지중해 럭셔리 여행과 완벽한 조합.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Hotel Welcome ($150-300/night)<br>🏨 La Flore Hotel ($100-200/night)<br>🏨 Hotel Provencal ($80-160/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ La Mère Germaine (Google 4.5)<br>🍽️ Le Cosmo Restaurant (Google 4.4)<br>🍽️ Le Serre Restaurant (Google 4.6)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 여름 요트 왕래 극도로 많음. 부이 및 안전 깃발 필수. 해파리 대량 발생 시기(8-9월) 주의</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 프랑스어/영어 가이드</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Villefranche-sur-Mer France&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_eab71a5842cc4321.setContent(html_9f169b151281cd8e);
+cm_5358dc8fc93d385c.bindPopup(pop_eab71a5842cc4321);
+cm_5358dc8fc93d385c.bindTooltip(`<div>Villefranche-sur-Mer 8/10</div>`,{sticky:true});
+
+
+var lbl_f61eacaf304f94f3 = L.marker([43.703,7.319]).addTo(map_e623b9134cb1aaf0);
+var icon_lbl_f61eacaf304f94f3 = L.divIcon({
+    html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Villefranche-sur-Mer</div>',
+    className:'empty'
+});
+lbl_f61eacaf304f94f3.setIcon(icon_lbl_f61eacaf304f94f3);
+
+
+var cm_165ce80e3e268e07 = L.circleMarker([26.336,127.8],{
+    color:"#ffcc00",fill:true,fillColor:"#ffcc00",fillOpacity:0.85,
+    radius:14,weight:2
+}).addTo(map_e623b9134cb1aaf0);
+var pop_83bdb46d9aedd78b = L.popup({maxWidth:340});
+var html_2a1c90fc9fdbba37 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Okinawa</h3>   <b>Japan</b> | 8/10 | ✈️직항<hr style="margin:3px 0">   🌊 최대수심 35m | 시야 15-30m<br>🌡️ 수온 24°C | 해류 약<br>💰 $55/day | ✈️ ~2h | ✈️직항<br>📅 4월, 5월, 6월, 7월 외 3개월<br>🏊 Palau Nakagusuku 등 AIDA/SSI 스쿨. 오키나와 프리다이빙 협회 공인. 케라마 제도 전용 투어<hr style="margin:3px 0">   <i>한국에서 가장 가까운 고품질 프리다이빙 스팟. 케라마 제도의 에메랄드빛 바다는 가시거리 30m+에 도달하는 날이 많다. 오키나와 고유의 류큐 문화와 미군기지가 공존하는 독특한 분위기.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Halekulani Okinawa ($300-600/night)<br>🏨 Hyatt Regency Naha ($150-300/night)<br>🏨 Manza Beach Hotel ($100-200/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Zakuro (Naha Steakhouse) (Google 4.5)<br>🍽️ Yunangi (Google 4.6)<br>🍽️ Pocchi (오키나와 소바) (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 하부 섬 진입 규정 확인 필수. 산호 접촉 엄금. 태풍 시즌(8-9월) 기상 변화 빠름</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국어 다이빙 투어 다수 운영. 한국인 거주자 커뮤니티 활발. 오키나와 한인회</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Okinawa Japan&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_83bdb46d9aedd78b.setContent(html_2a1c90fc9fdbba37);
+cm_165ce80e3e268e07.bindPopup(pop_83bdb46d9aedd78b);
+cm_165ce80e3e268e07.bindTooltip(`<div>Okinawa 8/10</div>`,{sticky:true});
+
+
+var lbl_d4ef43d757f7d94f = L.marker([26.336,127.8]).addTo(map_e623b9134cb1aaf0);
+var icon_lbl_d4ef43d757f7d94f = L.divIcon({
+    html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Okinawa</div>',
+    className:'empty'
+});
+lbl_d4ef43d757f7d94f.setIcon(icon_lbl_d4ef43d757f7d94f);
+
+
+var cm_89f09736749b29a8 = L.circleMarker([8.65,97.64],{
+    color:"#ffcc00",fill:true,fillColor:"#ffcc00",fillOpacity:0.85,
+    radius:14,weight:2
+}).addTo(map_e623b9134cb1aaf0);
+var pop_918d9488b95c3469 = L.popup({maxWidth:340});
+var html_71c31df9cda60aef = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Similan Islands</h3>   <b>Thailand</b> | 8/10 | ✈️직항<hr style="margin:3px 0">   🌊 최대수심 40m | 시야 20-35m<br>🌡️ 수온 29°C | 해류 중<br>💰 $40/day | ✈️ ~7h | ✈️직항<br>📅 11월, 12월, 1월, 2월 외 2개월<br>🏊 Khao Lak 기반 리브어보드 투어. 국립공원 입장 허가 필요. PADI/AIDA 스쿨 카오락 다수<hr style="margin:3px 0">   <i>태국 국립해양공원 시밀란 제도는 세계 10대 다이빙 포인트 단골 등장지. 화강암 바위와 산호 정원이 만들어내는 독특한 수중 지형. 11-4월만 개방되는 한정된 접근이 원시 자연을 보존.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Sarojin Resort Khao Lak ($200-400/night)<br>🏨 Khaolak Emerald Beach Resort ($80-160/night)<br>🏨 Poseidon Bungalows ($30-60/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Boat &amp; Bell Restaurant (Google 4.5)<br>🍽️ Phulay Bay Resort Restaurant (Google 4.6)<br>🍽️ Khao Lak Night Market (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 국립공원 구역 내 산호 절대 접촉 금지. 리브어보드 탑승 전 건강 체크 필수. 오픈 바다 중간 조류 위험</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국어 리브어보드 투어 운영 (카오락). 카카오톡 &#x27;시밀란 프리다이빙&#x27; 검색</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Similan Islands Thailand&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_918d9488b95c3469.setContent(html_71c31df9cda60aef);
+cm_89f09736749b29a8.bindPopup(pop_918d9488b95c3469);
+cm_89f09736749b29a8.bindTooltip(`<div>Similan Islands 8/10</div>`,{sticky:true});
+
+
+var lbl_933716c4ee6e2abd = L.marker([8.65,97.64]).addTo(map_e623b9134cb1aaf0);
+var icon_lbl_933716c4ee6e2abd = L.divIcon({
+    html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Similan Islands</div>',
+    className:'empty'
+});
+lbl_933716c4ee6e2abd.setIcon(icon_lbl_933716c4ee6e2abd);
+
+
+var cm_877bbec8cb533409 = L.marker([5.904,102.696]).addTo(map_e623b9134cb1aaf0);
+var icon_cm_877bbec8cb533409 = L.divIcon({
+    html:'<div style="width:28px;height:28px;border:2.5px dashed #ff9900;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-14px;margin-top:-14px;cursor:pointer"></div>',
+    className:'empty'
+});
+cm_877bbec8cb533409.setIcon(icon_cm_877bbec8cb533409);
+var pop_2e116f8bd98e1556 = L.popup({maxWidth:340});
+var html_f939f973d766649e = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff9900">Perhentian Islands</h3>   <b>Malaysia</b> | 7/10 | 🔄경유<hr style="margin:3px 0">   🌊 최대수심 25m | 시야 10-20m<br>🌡️ 수온 29°C | 해류 약<br>💰 $25/day | ✈️ ~7h | 🔄경유<br>📅 3월, 4월, 5월, 6월 외 3개월<br>🏊 Turtle Bay Dive Centre, Pro Divers World 등 PADI/AIDA 스쿨. 거북이 보호 구역 내 지정 구역만 입수 허가<hr style="margin:3px 0">   <i>말레이시아의 숨겨진 에메랄드 섬으로 저렴한 물가와 따뜻한 물이 장점. 거북이와 쉽게 만날 수 있는 몇 안 되는 자연 환경. 쿠알라룸푸르 경유로 접근 가능하며 동남아 저예산 여행의 최고 선택지.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Bubu Long Beach Resort ($40-80/night)<br>🏨 Perhentian Island Resort ($60-120/night)<br>🏨 Panorama Chalet ($20-40/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Mama&#x27;s Chalet Restaurant (Google 4.4)<br>🍽️ Cafe at Black Rock (Google 4.3)<br>🍽️ Mohsin Restaurant (Google 4.2)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 6월~8월 말레이시아 몬순 이후 지뢰 해파리 주의. 11월~2월 섬 완전 폐쇄 (접근 불가). 보트 배정 시간 확인 필수</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 강사 없음. 영어/말레이어 가이드. 한국인 방문객 소수</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Perhentian Islands Malaysia&tbm=isch" target="_blank"      style="color:#ff9900;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_2e116f8bd98e1556.setContent(html_f939f973d766649e);
+cm_877bbec8cb533409.bindPopup(pop_2e116f8bd98e1556);
+cm_877bbec8cb533409.bindTooltip(`<div>Perhentian Islands 7/10</div>`,{sticky:true});
+
+
+var lbl_f1e5305721773d5a = L.marker([5.904,102.696]).addTo(map_e623b9134cb1aaf0);
+var icon_lbl_f1e5305721773d5a = L.divIcon({
+    html:'<div style="font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Perhentian Islands</div>',
+    className:'empty'
+});
+lbl_f1e5305721773d5a.setIcon(icon_lbl_f1e5305721773d5a);
+
+
+var cm_554464a5ea538a40 = L.circleMarker([6.49,99.305],{
+    color:"#ff9900",fill:true,fillColor:"#ff9900",fillOpacity:0.85,
+    radius:12,weight:2
+}).addTo(map_e623b9134cb1aaf0);
+var pop_071bf33e00f905ae = L.popup({maxWidth:340});
+var html_c564ed498c305392 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff9900">Koh Lipe</h3>   <b>Thailand</b> | 7/10 | ✈️직항<hr style="margin:3px 0">   🌊 최대수심 25m | 시야 10-20m<br>🌡️ 수온 29°C | 해류 약<br>💰 $30/day | ✈️ ~7h | ✈️직항<br>📅 11월, 12월, 1월, 2월 외 2개월<br>🏊 Castaway Divers, Gecko Divers 등 PADI/AIDA 스쿨. 말레이시아 국경 근접 포인트 투어. 입문자 전용 얕은 산호초 구간<hr style="margin:3px 0">   <i>태국 최남단의 섬으로 말레이시아 국경에 인접한 비밀 스팟. 리페를 둘러싼 작은 무인도들 사이 산호초가 잘 보존되어 있다. 코타오·코사무이 대비 관광객이 적고 물이 맑아 여유로운 프리다이빙 가능.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Idyllic Concept Resort ($100-200/night)<br>🏨 Bundhaya Resort ($60-120/night)<br>🏨 Castaway Beach Resort ($40-80/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Pooh&#x27;s Bar &amp; Restaurant (Google 4.4)<br>🍽️ Nidnoi Restaurant (Google 4.5)<br>🍽️ Forra Diving Cafe (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 11월~4월만 접근 가능 (우기 이동 위험). 국경 지역 서류 확인 필수. 야간 조류 변화 주의</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 가이드 1명 상주 (시즌별). 태국 남부 한인 카페 연결 가능</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Koh Lipe Thailand&tbm=isch" target="_blank"      style="color:#ff9900;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_071bf33e00f905ae.setContent(html_c564ed498c305392);
+cm_554464a5ea538a40.bindPopup(pop_071bf33e00f905ae);
+cm_554464a5ea538a40.bindTooltip(`<div>Koh Lipe 7/10</div>`,{sticky:true});
+
+
+var lbl_206c76cb16c5c2fd = L.marker([6.49,99.305]).addTo(map_e623b9134cb1aaf0);
+var icon_lbl_206c76cb16c5c2fd = L.divIcon({
+    html:'<div style="font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Koh Lipe</div>',
+    className:'empty'
+});
+lbl_206c76cb16c5c2fd.setIcon(icon_lbl_206c76cb16c5c2fd);
+
 </script>
 </body>
-<script>
-    
-    
-            var map_a9084ce8f8e1b8cbf13c756f06c343ff = L.map(
-                "map_a9084ce8f8e1b8cbf13c756f06c343ff",
-                {
-                    center: [20.0, 30.0],
-                    crs: L.CRS.EPSG3857,
-                    ...{
-  "zoom": 2,
-  "zoomControl": true,
-  "preferCanvas": false,
-}
-
-                }
-            );
-
-            
-
-        
-    
-            var tile_layer_8a3cc9c6dbb0b852d45ad62eef68187d = L.tileLayer(
-                "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
-                {
-  "minZoom": 0,
-  "maxZoom": 20,
-  "maxNativeZoom": 20,
-  "noWrap": false,
-  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
-  "subdomains": "abcd",
-  "detectRetina": false,
-  "tms": false,
-  "opacity": 1,
-}
-
-            );
-        
-    
-            tile_layer_8a3cc9c6dbb0b852d45ad62eef68187d.addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-            var circle_marker_571c05a27225ed850057c0955538078b = L.circleMarker(
-                [28.57, 34.54],
-                {"bubblingMouseEvents": true, "color": "#ff0055", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff0055", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 18.0, "stroke": true, "weight": 2}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-        var popup_524ffc1b32e34b1a958cf4ee597994c3 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_9b379abec208bfed115b4ccb40dba25b = $(`<div id="html_9b379abec208bfed115b4ccb40dba25b" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🫧 Dahab Blue Hole</h3><b>Egypt</b> | 10/10     <hr style="margin:3px 0"><i>프리다이빙 메카. 130m 블루홀</i></div></div>`)[0];
-                popup_524ffc1b32e34b1a958cf4ee597994c3.setContent(html_9b379abec208bfed115b4ccb40dba25b);
-            
-        
-
-        circle_marker_571c05a27225ed850057c0955538078b.bindPopup(popup_524ffc1b32e34b1a958cf4ee597994c3)
-        ;
-
-        
-    
-    
-            circle_marker_571c05a27225ed850057c0955538078b.bindTooltip(
-                `<div>
-                     🫧 Dahab Blue Hole 10/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_283fc99792b2c9540fbb8e2dd487ab2c = L.marker(
-                [28.57, 34.54],
-                {
-}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-            var div_icon_510cd301ddb5df40d18e64d162026146 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ff0055;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eDahab Blue Hole\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_283fc99792b2c9540fbb8e2dd487ab2c.setIcon(div_icon_510cd301ddb5df40d18e64d162026146);
-            
-    
-            var circle_marker_36f5f70082e866e0e50496de55ea1006 = L.circleMarker(
-                [23.11, -75.11],
-                {"bubblingMouseEvents": true, "color": "#ff0055", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff0055", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 18.0, "stroke": true, "weight": 2}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-        var popup_93b2e141b33998d76b6458d7d8b6e62f = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_25d7b66d9c4997ddf7696c92b797f257 = $(`<div id="html_25d7b66d9c4997ddf7696c92b797f257" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🫧 Dean's Blue Hole</h3><b>Bahamas</b> | 10/10     <hr style="margin:3px 0"><i>세계 최심 202m. Vertical Blue 대회</i></div></div>`)[0];
-                popup_93b2e141b33998d76b6458d7d8b6e62f.setContent(html_25d7b66d9c4997ddf7696c92b797f257);
-            
-        
-
-        circle_marker_36f5f70082e866e0e50496de55ea1006.bindPopup(popup_93b2e141b33998d76b6458d7d8b6e62f)
-        ;
-
-        
-    
-    
-            circle_marker_36f5f70082e866e0e50496de55ea1006.bindTooltip(
-                `<div>
-                     🫧 Dean's Blue Hole 10/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_dcac09cac3bd600319b6d5846c011c38 = L.marker(
-                [23.11, -75.11],
-                {
-}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-            var div_icon_f0d8d007b44c474180fade295f874821 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ff0055;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eDean\u0027s Blue Hole\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_dcac09cac3bd600319b6d5846c011c38.setIcon(div_icon_f0d8d007b44c474180fade295f874821);
-            
-    
-            var circle_marker_d0a04acf21a6c66bbf8524bc89777f85 = L.circleMarker(
-                [9.56, 123.77],
-                {"bubblingMouseEvents": true, "color": "#00ff88", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#00ff88", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.2, "stroke": true, "weight": 2}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-        var popup_76a2cd844440692a8192a8b9855b6bee = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_5b4f0180a54cce3fde0a0abd0766cba7 = $(`<div id="html_5b4f0180a54cce3fde0a0abd0766cba7" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🫧 Panglao</h3><b>Philippines</b> | 9/10     <hr style="margin:3px 0"><i>한국인 훈련 1순위. 따뜻+저렴</i></div></div>`)[0];
-                popup_76a2cd844440692a8192a8b9855b6bee.setContent(html_5b4f0180a54cce3fde0a0abd0766cba7);
-            
-        
-
-        circle_marker_d0a04acf21a6c66bbf8524bc89777f85.bindPopup(popup_76a2cd844440692a8192a8b9855b6bee)
-        ;
-
-        
-    
-    
-            circle_marker_d0a04acf21a6c66bbf8524bc89777f85.bindTooltip(
-                `<div>
-                     🫧 Panglao 9/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_911450dd42cfb534d889d2d8a6ae9188 = L.marker(
-                [9.56, 123.77],
-                {
-}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-            var div_icon_13bd18c415cc58218772b3f52e13b678 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003ePanglao\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_911450dd42cfb534d889d2d8a6ae9188.setIcon(div_icon_13bd18c415cc58218772b3f52e13b678);
-            
-    
-            var circle_marker_4507c69fd4c2ea0d569c4ca19d5ac3b8 = L.circleMarker(
-                [20.21, -87.43],
-                {"bubblingMouseEvents": true, "color": "#00ff88", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#00ff88", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.2, "stroke": true, "weight": 2}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-        var popup_0735d12930fb075a50c4f58ad7f62477 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_a5c8fe1adcf638d930efca3f7a9dfd36 = $(`<div id="html_a5c8fe1adcf638d930efca3f7a9dfd36" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🫧 Cenotes Mexico</h3><b>Mexico</b> | 9/10     <hr style="margin:3px 0"><i>시야 50m 석회암 동굴</i></div></div>`)[0];
-                popup_0735d12930fb075a50c4f58ad7f62477.setContent(html_a5c8fe1adcf638d930efca3f7a9dfd36);
-            
-        
-
-        circle_marker_4507c69fd4c2ea0d569c4ca19d5ac3b8.bindPopup(popup_0735d12930fb075a50c4f58ad7f62477)
-        ;
-
-        
-    
-    
-            circle_marker_4507c69fd4c2ea0d569c4ca19d5ac3b8.bindTooltip(
-                `<div>
-                     🫧 Cenotes Mexico 9/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_eb49b796e5f5cf007d161e5a6157f757 = L.marker(
-                [20.21, -87.43],
-                {
-}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-            var div_icon_8a028f66fef17bb35c7bf073df4abd27 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eCenotes Mexico\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_eb49b796e5f5cf007d161e5a6157f757.setIcon(div_icon_8a028f66fef17bb35c7bf073df4abd27);
-            
-    
-            var circle_marker_c8e0774b778d28c94e6489169c272ff0 = L.circleMarker(
-                [-8.35, 115.64],
-                {"bubblingMouseEvents": true, "color": "#00ff88", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#00ff88", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.2, "stroke": true, "weight": 2}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-        var popup_9cd00417c56f712a4fcee53394621bfc = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_b7d3e9ade436aafeb7b8be677c040a52 = $(`<div id="html_b7d3e9ade436aafeb7b8be677c040a52" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🫧 Amed Bali</h3><b>Indonesia</b> | 9/10     <hr style="margin:3px 0"><i>해변→60m 절벽. 난파선</i></div></div>`)[0];
-                popup_9cd00417c56f712a4fcee53394621bfc.setContent(html_b7d3e9ade436aafeb7b8be677c040a52);
-            
-        
-
-        circle_marker_c8e0774b778d28c94e6489169c272ff0.bindPopup(popup_9cd00417c56f712a4fcee53394621bfc)
-        ;
-
-        
-    
-    
-            circle_marker_c8e0774b778d28c94e6489169c272ff0.bindTooltip(
-                `<div>
-                     🫧 Amed Bali 9/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_7f3c6c6a065709e2dc74bdd7d74035f9 = L.marker(
-                [-8.35, 115.64],
-                {
-}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-            var div_icon_2830276171775e152faa01806c709c00 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eAmed Bali\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_7f3c6c6a065709e2dc74bdd7d74035f9.setIcon(div_icon_2830276171775e152faa01806c709c00);
-            
-    
-            var circle_marker_6caff11cabb4fb597d62d5a13af4e0b1 = L.circleMarker(
-                [37.04, 22.11],
-                {"bubblingMouseEvents": true, "color": "#00ff88", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#00ff88", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.2, "stroke": true, "weight": 2}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-        var popup_c0a809a4c44cb7b256825bc7e208d05c = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_f0eaf0d54d14a87dfdd5fa62a1e5fe1d = $(`<div id="html_f0eaf0d54d14a87dfdd5fa62a1e5fe1d" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🫧 Kalamata</h3><b>Greece</b> | 9/10     <hr style="margin:3px 0"><i>AIDA 세계선수권 개최지</i></div></div>`)[0];
-                popup_c0a809a4c44cb7b256825bc7e208d05c.setContent(html_f0eaf0d54d14a87dfdd5fa62a1e5fe1d);
-            
-        
-
-        circle_marker_6caff11cabb4fb597d62d5a13af4e0b1.bindPopup(popup_c0a809a4c44cb7b256825bc7e208d05c)
-        ;
-
-        
-    
-    
-            circle_marker_6caff11cabb4fb597d62d5a13af4e0b1.bindTooltip(
-                `<div>
-                     🫧 Kalamata 9/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_bd3a21687525b43496583158740641ce = L.marker(
-                [37.04, 22.11],
-                {
-}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-            var div_icon_294b7d71e6742ae55b64d14458f99b2e = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eKalamata\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_bd3a21687525b43496583158740641ce.setIcon(div_icon_294b7d71e6742ae55b64d14458f99b2e);
-            
-    
-            var circle_marker_f735ce5c0457b2072927f2426ae147fc = L.circleMarker(
-                [9.95, 123.4],
-                {"bubblingMouseEvents": true, "color": "#00ff88", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#00ff88", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.2, "stroke": true, "weight": 2}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-        var popup_3581c26fca7041afa5986b565749a54d = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_d801d104dd684abc5f0258f20b1ad815 = $(`<div id="html_d801d104dd684abc5f0258f20b1ad815" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🫧 Moalboal</h3><b>Philippines</b> | 9/10     <hr style="margin:3px 0"><i>정어리 토네이도+거북이</i></div></div>`)[0];
-                popup_3581c26fca7041afa5986b565749a54d.setContent(html_d801d104dd684abc5f0258f20b1ad815);
-            
-        
-
-        circle_marker_f735ce5c0457b2072927f2426ae147fc.bindPopup(popup_3581c26fca7041afa5986b565749a54d)
-        ;
-
-        
-    
-    
-            circle_marker_f735ce5c0457b2072927f2426ae147fc.bindTooltip(
-                `<div>
-                     🫧 Moalboal 9/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_9aa6dbe21326e50aba71e5db6ad18af5 = L.marker(
-                [9.95, 123.4],
-                {
-}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-            var div_icon_47978f451562446123a7882dd50efc98 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eMoalboal\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_9aa6dbe21326e50aba71e5db6ad18af5.setIcon(div_icon_47978f451562446123a7882dd50efc98);
-            
-    
-            var circle_marker_a826693fc2175188451bebd70b08d771 = L.circleMarker(
-                [15.3, -61.39],
-                {"bubblingMouseEvents": true, "color": "#00ff88", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#00ff88", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.2, "stroke": true, "weight": 2}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-        var popup_b9abb37bbd2f38aea3696daafd4669c3 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_62d82e5657e61a95fc8bfb1fa167fc23 = $(`<div id="html_62d82e5657e61a95fc8bfb1fa167fc23" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🫧 Dominica</h3><b>Dominica</b> | 9/10     <hr style="margin:3px 0"><i>향유고래와 눈 맞춤</i></div></div>`)[0];
-                popup_b9abb37bbd2f38aea3696daafd4669c3.setContent(html_62d82e5657e61a95fc8bfb1fa167fc23);
-            
-        
-
-        circle_marker_a826693fc2175188451bebd70b08d771.bindPopup(popup_b9abb37bbd2f38aea3696daafd4669c3)
-        ;
-
-        
-    
-    
-            circle_marker_a826693fc2175188451bebd70b08d771.bindTooltip(
-                `<div>
-                     🫧 Dominica 9/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_78a8dfd1a390bb3c834e661550a1c9c5 = L.marker(
-                [15.3, -61.39],
-                {
-}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-            var div_icon_9e9f7514124e21a7aba5fce6e24c3113 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eDominica\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_78a8dfd1a390bb3c834e661550a1c9c5.setIcon(div_icon_9e9f7514124e21a7aba5fce6e24c3113);
-            
-    
-            var circle_marker_54ca5d22e489e91313c11dfcfb4fa24e = L.circleMarker(
-                [-8.73, 115.54],
-                {"bubblingMouseEvents": true, "color": "#00ff88", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#00ff88", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.2, "stroke": true, "weight": 2}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-        var popup_b5a6554d8b3d575cda02cf7c9159f8e2 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_7c775387d8376c32aa73bc548018aaf6 = $(`<div id="html_7c775387d8376c32aa73bc548018aaf6" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🫧 Nusa Penida</h3><b>Indonesia</b> | 9/10     <hr style="margin:3px 0"><i>만타+개복치</i></div></div>`)[0];
-                popup_b5a6554d8b3d575cda02cf7c9159f8e2.setContent(html_7c775387d8376c32aa73bc548018aaf6);
-            
-        
-
-        circle_marker_54ca5d22e489e91313c11dfcfb4fa24e.bindPopup(popup_b5a6554d8b3d575cda02cf7c9159f8e2)
-        ;
-
-        
-    
-    
-            circle_marker_54ca5d22e489e91313c11dfcfb4fa24e.bindTooltip(
-                `<div>
-                     🫧 Nusa Penida 9/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_8e966ada77793bedc1b3a17f3d3dffda = L.marker(
-                [-8.73, 115.54],
-                {
-}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-            var div_icon_d3af1e1c5a3fc439516e197623411d16 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eNusa Penida\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_8e966ada77793bedc1b3a17f3d3dffda.setIcon(div_icon_d3af1e1c5a3fc439516e197623411d16);
-            
-    
-            var circle_marker_1aa4d924aa3cec99a3f7dc0a62e0466f = L.circleMarker(
-                [-31.63, 29.54],
-                {"bubblingMouseEvents": true, "color": "#00ff88", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#00ff88", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.2, "stroke": true, "weight": 2}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-        var popup_3b15a5fa24cb6aaf4349d8d3100b664f = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_8c467ff8c923c1e2bdbca1611823a6e0 = $(`<div id="html_8c467ff8c923c1e2bdbca1611823a6e0" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🫧 Sardine Run</h3><b>South Africa</b> | 9/10     <hr style="margin:3px 0"><i>지구 최대 해양 대이동</i></div></div>`)[0];
-                popup_3b15a5fa24cb6aaf4349d8d3100b664f.setContent(html_8c467ff8c923c1e2bdbca1611823a6e0);
-            
-        
-
-        circle_marker_1aa4d924aa3cec99a3f7dc0a62e0466f.bindPopup(popup_3b15a5fa24cb6aaf4349d8d3100b664f)
-        ;
-
-        
-    
-    
-            circle_marker_1aa4d924aa3cec99a3f7dc0a62e0466f.bindTooltip(
-                `<div>
-                     🫧 Sardine Run 9/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_22aafa1b57408faccfed267b5a5e503f = L.marker(
-                [-31.63, 29.54],
-                {
-}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-            var div_icon_5c661788148127d3a31866af5d93d10a = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eSardine Run\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_22aafa1b57408faccfed267b5a5e503f.setIcon(div_icon_5c661788148127d3a31866af5d93d10a);
-            
-    
-            var circle_marker_8be1b993ef6b18b9062ed654a3176c02 = L.circleMarker(
-                [36.05, 14.19],
-                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-        var popup_5d14dd0a8d1bdbc8b4c35da60fd6eac8 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_5ec45e9945c7ab055d087566850a98e1 = $(`<div id="html_5ec45e9945c7ab055d087566850a98e1" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🫧 Blue Hole Gozo</h3><b>Malta</b> | 8/10     <hr style="margin:3px 0"><i>지중해 석회암 아치</i></div></div>`)[0];
-                popup_5d14dd0a8d1bdbc8b4c35da60fd6eac8.setContent(html_5ec45e9945c7ab055d087566850a98e1);
-            
-        
-
-        circle_marker_8be1b993ef6b18b9062ed654a3176c02.bindPopup(popup_5d14dd0a8d1bdbc8b4c35da60fd6eac8)
-        ;
-
-        
-    
-    
-            circle_marker_8be1b993ef6b18b9062ed654a3176c02.bindTooltip(
-                `<div>
-                     🫧 Blue Hole Gozo 8/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_275f11c587ce37d086018cd2efd89af6 = L.marker(
-                [36.05, 14.19],
-                {
-}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-            var div_icon_b4a4cff6e7f4b4a3d2e24a0368e1061a = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eBlue Hole Gozo\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_275f11c587ce37d086018cd2efd89af6.setIcon(div_icon_b4a4cff6e7f4b4a3d2e24a0368e1061a);
-            
-    
-            var circle_marker_6d5e1badc01c30cb2a7fab08047da29e = L.circleMarker(
-                [16.32, -86.53],
-                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-        var popup_32d5efc373350d4780b39f47062f80f8 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_71c36424c57ee4b62fd1d5ab04ab48c1 = $(`<div id="html_71c36424c57ee4b62fd1d5ab04ab48c1" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🫧 Roatan</h3><b>Honduras</b> | 8/10     <hr style="margin:3px 0"><i>돌고래+산호 절벽</i></div></div>`)[0];
-                popup_32d5efc373350d4780b39f47062f80f8.setContent(html_71c36424c57ee4b62fd1d5ab04ab48c1);
-            
-        
-
-        circle_marker_6d5e1badc01c30cb2a7fab08047da29e.bindPopup(popup_32d5efc373350d4780b39f47062f80f8)
-        ;
-
-        
-    
-    
-            circle_marker_6d5e1badc01c30cb2a7fab08047da29e.bindTooltip(
-                `<div>
-                     🫧 Roatan 8/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_635f1e1bb3f4b64bec456f70d528d5d3 = L.marker(
-                [16.32, -86.53],
-                {
-}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-            var div_icon_24069c623a8f9baa5df614acdde31ddd = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eRoatan\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_635f1e1bb3f4b64bec456f70d528d5d3.setIcon(div_icon_24069c623a8f9baa5df614acdde31ddd);
-            
-    
-            var circle_marker_92447d57daeccaee0d9372fa74cb88d1 = L.circleMarker(
-                [28.29, -16.63],
-                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-        var popup_e583d9c7348c3f0351e17cd0dd5cbcf7 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_8ce49b200fac54b2acd604bd92455c86 = $(`<div id="html_8ce49b200fac54b2acd604bd92455c86" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🫧 Tenerife</h3><b>Spain</b> | 8/10     <hr style="margin:3px 0"><i>파일럿 고래 상주</i></div></div>`)[0];
-                popup_e583d9c7348c3f0351e17cd0dd5cbcf7.setContent(html_8ce49b200fac54b2acd604bd92455c86);
-            
-        
-
-        circle_marker_92447d57daeccaee0d9372fa74cb88d1.bindPopup(popup_e583d9c7348c3f0351e17cd0dd5cbcf7)
-        ;
-
-        
-    
-    
-            circle_marker_92447d57daeccaee0d9372fa74cb88d1.bindTooltip(
-                `<div>
-                     🫧 Tenerife 8/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_9f1d0bf978f53a0cfd0f417cb0ae53a5 = L.marker(
-                [28.29, -16.63],
-                {
-}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-            var div_icon_1c3d13bbf6c6d917014c2d186367c92c = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eTenerife\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_9f1d0bf978f53a0cfd0f417cb0ae53a5.setIcon(div_icon_1c3d13bbf6c6d917014c2d186367c92c);
-            
-    
-            var circle_marker_89d7fa1816bc0e3c0b5aef91db1bda05 = L.circleMarker(
-                [10.1, 99.84],
-                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-        var popup_4aef86dec9811faaa888f59cc737f094 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_42298dd8c491f36c246621b85dbb9bb7 = $(`<div id="html_42298dd8c491f36c246621b85dbb9bb7" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🫧 Koh Tao</h3><b>Thailand</b> | 8/10     <hr style="margin:3px 0"><i>세계 다이빙 교육 수도</i></div></div>`)[0];
-                popup_4aef86dec9811faaa888f59cc737f094.setContent(html_42298dd8c491f36c246621b85dbb9bb7);
-            
-        
-
-        circle_marker_89d7fa1816bc0e3c0b5aef91db1bda05.bindPopup(popup_4aef86dec9811faaa888f59cc737f094)
-        ;
-
-        
-    
-    
-            circle_marker_89d7fa1816bc0e3c0b5aef91db1bda05.bindTooltip(
-                `<div>
-                     🫧 Koh Tao 8/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_552d263c81ff1f04debb7843567269b7 = L.marker(
-                [10.1, 99.84],
-                {
-}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-            var div_icon_aea70727c9fc32bfe25f3dc363bd1542 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eKoh Tao\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_552d263c81ff1f04debb7843567269b7.setIcon(div_icon_aea70727c9fc32bfe25f3dc363bd1542);
-            
-    
-            var circle_marker_d1cde6fa9a6c46e492fad8d8b16a31e7 = L.circleMarker(
-                [19.64, -156.0],
-                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-        var popup_8840fe6f436dab622e29fd71e20abfe0 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_a528549b02ded0470966ed86b3c681fa = $(`<div id="html_a528549b02ded0470966ed86b3c681fa" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🫧 Kona Hawaii</h3><b>USA</b> | 8/10     <hr style="margin:3px 0"><i>야간 만타레이</i></div></div>`)[0];
-                popup_8840fe6f436dab622e29fd71e20abfe0.setContent(html_a528549b02ded0470966ed86b3c681fa);
-            
-        
-
-        circle_marker_d1cde6fa9a6c46e492fad8d8b16a31e7.bindPopup(popup_8840fe6f436dab622e29fd71e20abfe0)
-        ;
-
-        
-    
-    
-            circle_marker_d1cde6fa9a6c46e492fad8d8b16a31e7.bindTooltip(
-                `<div>
-                     🫧 Kona Hawaii 8/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_f0623d7e26b7cf2c6f3348c09ab5894e = L.marker(
-                [19.64, -156.0],
-                {
-}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-            var div_icon_fa6e3b82b92b0527bfc9b676feed0479 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eKona Hawaii\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_f0623d7e26b7cf2c6f3348c09ab5894e.setIcon(div_icon_fa6e3b82b92b0527bfc9b676feed0479);
-            
-    
-            var circle_marker_7f0dc8ccaf04adffa4d7ec096083a46a = L.circleMarker(
-                [27.92, 34.33],
-                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-        var popup_ce43e1e2a1370d5d5166ca99ada2f8f8 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_7ec26943996630cd3a75b35990ce53cc = $(`<div id="html_7ec26943996630cd3a75b35990ce53cc" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🫧 Sharm el-Sheikh</h3><b>Egypt</b> | 8/10     <hr style="margin:3px 0"><i>홍해 산호+난파선</i></div></div>`)[0];
-                popup_ce43e1e2a1370d5d5166ca99ada2f8f8.setContent(html_7ec26943996630cd3a75b35990ce53cc);
-            
-        
-
-        circle_marker_7f0dc8ccaf04adffa4d7ec096083a46a.bindPopup(popup_ce43e1e2a1370d5d5166ca99ada2f8f8)
-        ;
-
-        
-    
-    
-            circle_marker_7f0dc8ccaf04adffa4d7ec096083a46a.bindTooltip(
-                `<div>
-                     🫧 Sharm el-Sheikh 8/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_a2bda07a420b5668bfc4b0b2acb47ec3 = L.marker(
-                [27.92, 34.33],
-                {
-}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-            var div_icon_6283484c02790273f2d34a9cf07d23b8 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eSharm el-Sheikh\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_a2bda07a420b5668bfc4b0b2acb47ec3.setIcon(div_icon_6283484c02790273f2d34a9cf07d23b8);
-            
-    
-            var circle_marker_121d0cff6706a7850475f172e74bd0e6 = L.circleMarker(
-                [12.14, -68.27],
-                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-        var popup_716ef9208f91ec386a4d826ec62c4d11 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_12a1300c86c6769c0be657ac80da000e = $(`<div id="html_12a1300c86c6769c0be657ac80da000e" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🫧 Bonaire</h3><b>Netherlands</b> | 8/10     <hr style="margin:3px 0"><i>섬 전체 해양공원</i></div></div>`)[0];
-                popup_716ef9208f91ec386a4d826ec62c4d11.setContent(html_12a1300c86c6769c0be657ac80da000e);
-            
-        
-
-        circle_marker_121d0cff6706a7850475f172e74bd0e6.bindPopup(popup_716ef9208f91ec386a4d826ec62c4d11)
-        ;
-
-        
-    
-    
-            circle_marker_121d0cff6706a7850475f172e74bd0e6.bindTooltip(
-                `<div>
-                     🫧 Bonaire 8/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_1bdd9bce24c656936a6ec8413be975af = L.marker(
-                [12.14, -68.27],
-                {
-}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-            var div_icon_fda2f9dd3acdfe5d0be4823505712bb5 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eBonaire\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_1bdd9bce24c656936a6ec8413be975af.setIcon(div_icon_fda2f9dd3acdfe5d0be4823505712bb5);
-            
-    
-            var circle_marker_e5dfb5296ae2b9415bddffa331431844 = L.circleMarker(
-                [9.07, 123.27],
-                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-        var popup_5ea54df44a4bd25ec467f4d418d784fe = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_c2b7c6efd14ac5518767ec812f723d6f = $(`<div id="html_c2b7c6efd14ac5518767ec812f723d6f" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🫧 Apo Island</h3><b>Philippines</b> | 8/10     <hr style="margin:3px 0"><i>거북이 수십 마리</i></div></div>`)[0];
-                popup_5ea54df44a4bd25ec467f4d418d784fe.setContent(html_c2b7c6efd14ac5518767ec812f723d6f);
-            
-        
-
-        circle_marker_e5dfb5296ae2b9415bddffa331431844.bindPopup(popup_5ea54df44a4bd25ec467f4d418d784fe)
-        ;
-
-        
-    
-    
-            circle_marker_e5dfb5296ae2b9415bddffa331431844.bindTooltip(
-                `<div>
-                     🫧 Apo Island 8/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_254f7e773b49746557156f2e5c8d3a76 = L.marker(
-                [9.07, 123.27],
-                {
-}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-            var div_icon_5aafcde12bf1578433994adb5f9b6bfb = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eApo Island\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_254f7e773b49746557156f2e5c8d3a76.setIcon(div_icon_5aafcde12bf1578433994adb5f9b6bfb);
-            
-    
-            var circle_marker_6955bf9889750ad50c5e214c2c7d3774 = L.circleMarker(
-                [17.32, -87.53],
-                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-        var popup_2c336a6a1dcce18d2e9f684829bd0e62 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_470240863660135c52d5f843162190fe = $(`<div id="html_470240863660135c52d5f843162190fe" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🫧 Blue Hole Belize</h3><b>Belize</b> | 8/10     <hr style="margin:3px 0"><i>직경 300m. 종유석</i></div></div>`)[0];
-                popup_2c336a6a1dcce18d2e9f684829bd0e62.setContent(html_470240863660135c52d5f843162190fe);
-            
-        
-
-        circle_marker_6955bf9889750ad50c5e214c2c7d3774.bindPopup(popup_2c336a6a1dcce18d2e9f684829bd0e62)
-        ;
-
-        
-    
-    
-            circle_marker_6955bf9889750ad50c5e214c2c7d3774.bindTooltip(
-                `<div>
-                     🫧 Blue Hole Belize 8/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_ae297d118a4ae25d096675ea7f35791c = L.marker(
-                [17.32, -87.53],
-                {
-}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-            var div_icon_bf950ca6568584bced47c8202fb74fec = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eBlue Hole Belize\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_ae297d118a4ae25d096675ea7f35791c.setIcon(div_icon_bf950ca6568584bced47c8202fb74fec);
-            
-    
-            var circle_marker_3ed3bd816ca4e1ec5928e7040cd95c15 = L.circleMarker(
-                [25.07, 34.9],
-                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-        var popup_33f070499986532e1c980d68b06cc9b5 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_88308c191d718dd53ea4a2358fc0b0e4 = $(`<div id="html_88308c191d718dd53ea4a2358fc0b0e4" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🫧 Marsa Alam</h3><b>Egypt</b> | 8/10     <hr style="margin:3px 0"><i>듀공+돌고래</i></div></div>`)[0];
-                popup_33f070499986532e1c980d68b06cc9b5.setContent(html_88308c191d718dd53ea4a2358fc0b0e4);
-            
-        
-
-        circle_marker_3ed3bd816ca4e1ec5928e7040cd95c15.bindPopup(popup_33f070499986532e1c980d68b06cc9b5)
-        ;
-
-        
-    
-    
-            circle_marker_3ed3bd816ca4e1ec5928e7040cd95c15.bindTooltip(
-                `<div>
-                     🫧 Marsa Alam 8/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_c101523e4400f4719cadb24923015782 = L.marker(
-                [25.07, 34.9],
-                {
-}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-            var div_icon_769943b752b2fd6668610599f3f4a5cc = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eMarsa Alam\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_c101523e4400f4719cadb24923015782.setIcon(div_icon_769943b752b2fd6668610599f3f4a5cc);
-            
-    
-            var circle_marker_5c3bb212fe48534ee4d934987a3de50a = L.circleMarker(
-                [43.71, 7.31],
-                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-        var popup_8979e535421de08197db9852630135e3 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_67ae67f9132baa720e487b81bbb36ddf = $(`<div id="html_67ae67f9132baa720e487b81bbb36ddf" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🫧 Villefranche</h3><b>France</b> | 8/10     <hr style="margin:3px 0"><i>코트다쥐르 AIDA 대회장</i></div></div>`)[0];
-                popup_8979e535421de08197db9852630135e3.setContent(html_67ae67f9132baa720e487b81bbb36ddf);
-            
-        
-
-        circle_marker_5c3bb212fe48534ee4d934987a3de50a.bindPopup(popup_8979e535421de08197db9852630135e3)
-        ;
-
-        
-    
-    
-            circle_marker_5c3bb212fe48534ee4d934987a3de50a.bindTooltip(
-                `<div>
-                     🫧 Villefranche 8/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_50cd90fd4c62ed7e3b316c42807a94b8 = L.marker(
-                [43.71, 7.31],
-                {
-}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-            var div_icon_f7febddb0e668dfc7b53476dc0145c2d = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eVillefranche\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_50cd90fd4c62ed7e3b316c42807a94b8.setIcon(div_icon_f7febddb0e668dfc7b53476dc0145c2d);
-            
-    
-            var circle_marker_daa6266cd126f0bd5c3d8b5f96f8be0e = L.circleMarker(
-                [34.9, 33.63],
-                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-        var popup_5eee98ed4eac98cf690cf9080250de98 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_dc7cf6d1e2353113a241dbfc0d9cc619 = $(`<div id="html_dc7cf6d1e2353113a241dbfc0d9cc619" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🫧 Larnaca Zenobia</h3><b>Cyprus</b> | 8/10     <hr style="margin:3px 0"><i>172m 난파선 프리다이빙</i></div></div>`)[0];
-                popup_5eee98ed4eac98cf690cf9080250de98.setContent(html_dc7cf6d1e2353113a241dbfc0d9cc619);
-            
-        
-
-        circle_marker_daa6266cd126f0bd5c3d8b5f96f8be0e.bindPopup(popup_5eee98ed4eac98cf690cf9080250de98)
-        ;
-
-        
-    
-    
-            circle_marker_daa6266cd126f0bd5c3d8b5f96f8be0e.bindTooltip(
-                `<div>
-                     🫧 Larnaca Zenobia 8/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_27859f01a046820afc8a0401ca6d2087 = L.marker(
-                [34.9, 33.63],
-                {
-}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-            var div_icon_98130caeb5422e55c36b7dc5b16e21a0 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eLarnaca Zenobia\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_27859f01a046820afc8a0401ca6d2087.setIcon(div_icon_98130caeb5422e55c36b7dc5b16e21a0);
-            
-    
-            var circle_marker_5c3cb625f1797c67be619bc6faf67dda = L.circleMarker(
-                [9.23, 123.39],
-                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-        var popup_5dae944aef57b4b3c8de8c8498324765 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_6be625f0a7bc13bb7915efbec6ca7824 = $(`<div id="html_6be625f0a7bc13bb7915efbec6ca7824" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🫧 Sumilon</h3><b>Philippines</b> | 8/10     <hr style="margin:3px 0"><i>고래상어+크리스탈 라군</i></div></div>`)[0];
-                popup_5dae944aef57b4b3c8de8c8498324765.setContent(html_6be625f0a7bc13bb7915efbec6ca7824);
-            
-        
-
-        circle_marker_5c3cb625f1797c67be619bc6faf67dda.bindPopup(popup_5dae944aef57b4b3c8de8c8498324765)
-        ;
-
-        
-    
-    
-            circle_marker_5c3cb625f1797c67be619bc6faf67dda.bindTooltip(
-                `<div>
-                     🫧 Sumilon 8/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_c860cb2902d098e8b8558f6686a5f3d9 = L.marker(
-                [9.23, 123.39],
-                {
-}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-            var div_icon_5e827ab9cb5331df71c689dffbdde575 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eSumilon\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_c860cb2902d098e8b8558f6686a5f3d9.setIcon(div_icon_5e827ab9cb5331df71c689dffbdde575);
-            
-    
-            var circle_marker_398c93882ce0ac736d0aa498d322c9b8 = L.circleMarker(
-                [33.5, 126.53],
-                {"bubblingMouseEvents": true, "color": "#ff9900", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff9900", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 12.6, "stroke": true, "weight": 2}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-        var popup_29f5f1afa6ff89619bb66d5b388b24e6 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_52bca1bf7d4321deeeba303c637c30a9 = $(`<div id="html_52bca1bf7d4321deeeba303c637c30a9" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🫧 Jeju</h3><b>South Korea</b> | 7/10     <hr style="margin:3px 0"><i>해녀 문화. 국내 접근 최고</i></div></div>`)[0];
-                popup_29f5f1afa6ff89619bb66d5b388b24e6.setContent(html_52bca1bf7d4321deeeba303c637c30a9);
-            
-        
-
-        circle_marker_398c93882ce0ac736d0aa498d322c9b8.bindPopup(popup_29f5f1afa6ff89619bb66d5b388b24e6)
-        ;
-
-        
-    
-    
-            circle_marker_398c93882ce0ac736d0aa498d322c9b8.bindTooltip(
-                `<div>
-                     🫧 Jeju 7/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_50f9965032e31481d310b735b6693cfe = L.marker(
-                [33.5, 126.53],
-                {
-}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-            var div_icon_642cb074e08221ded34e170f86c3f2fa = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eJeju\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_50f9965032e31481d310b735b6693cfe.setIcon(div_icon_642cb074e08221ded34e170f86c3f2fa);
-            
-    
-            var marker_3779f2b8afccadf0fd0367ab5f84b014 = L.marker(
-                [37.5, 126.9],
-                {
-}
-            ).addTo(map_a9084ce8f8e1b8cbf13c756f06c343ff);
-        
-    
-            var icon_25e2de7d044e14072cd543619855a4ac = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "plane",
-  "prefix": "fa",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_3d250d7f354ce1eaeb75aefdf0ba2af1 = L.popup({
-  "maxWidth": "100%",
-});
-
-        
-            
-                var html_8632040f141b96cc284f5df574520a00 = $(`<div id="html_8632040f141b96cc284f5df574520a00" style="width: 100.0%; height: 100.0%;">인천공항</div>`)[0];
-                popup_3d250d7f354ce1eaeb75aefdf0ba2af1.setContent(html_8632040f141b96cc284f5df574520a00);
-            
-        
-
-        marker_3779f2b8afccadf0fd0367ab5f84b014.bindPopup(popup_3d250d7f354ce1eaeb75aefdf0ba2af1)
-        ;
-
-        
-    
-    
-                marker_3779f2b8afccadf0fd0367ab5f84b014.setIcon(icon_25e2de7d044e14072cd543619855a4ac);
-            
-</script>
 </html>

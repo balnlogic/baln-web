@@ -1,1649 +1,653 @@
 <!DOCTYPE html>
 <html>
 <head>
-    
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
-    
-            <meta name="viewport" content="width=device-width,
-                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-            <style>
-                #map_1597af69a22b5b06b8e187d01f0a165c {
-                    position: relative;
-                    width: 100.0%;
-                    height: 100.0%;
-                    left: 0.0%;
-                    top: 0.0%;
-                }
-                .leaflet-container { font-size: 1rem; }
-            </style>
-
-            <style>html, body {
-                width: 100%;
-                height: 100%;
-                margin: 0;
-                padding: 0;
-            }
-            </style>
-
-            <style>#map {
-                position:absolute;
-                top:0;
-                bottom:0;
-                right:0;
-                left:0;
-                }
-            </style>
-
-            <script>
-                L_NO_TOUCH = false;
-                L_DISABLE_3D = false;
-            </script>
-
-        
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <style>
+        #map_9ec8981406cc166e { position:relative; width:100%; height:100%; left:0; top:0; }
+        .leaflet-container { font-size:1rem; }
+        html, body { width:100%; height:100%; margin:0; padding:0; }
+    </style>
+    <script>L_NO_TOUCH=false; L_DISABLE_3D=false;</script>
 </head>
 <body>
-    
-    <div style="position:fixed;bottom:30px;left:30px;z-index:999;background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size:12px;line-height:2">
-    <b style="font-size:14px">🥾 전세계 트레킹</b><br><small>총 30곳</small><br><span style="color:#ff0055">● 10점(7)</span> <span style="color:#00ff88">● 9점(10)</span> <span style="color:#ffcc00">● 8점(10)</span> <span style="color:#ffdd66">● 7점(3)</span> </div>
-    
-            <div class="folium-map" id="map_1597af69a22b5b06b8e187d01f0a165c" ></div>
-        
-<script>
-(function(){
-  var maps = document.querySelectorAll(".folium-map");
-  if(!maps.length) return;
-  setTimeout(function(){
-    for(var key in window){
-      if(window[key] instanceof L.Map){
-        var m = window[key];
-        m.setMaxBounds([[-85,-180],[85,180]]);
-        m.options.maxBoundsViscosity = 1.0;
-        m.options.worldCopyJump = false;
-        m.setMinZoom(2);
-        m.eachLayer(function(l){ if(l.options && l.setUrl){ l.options.noWrap = true; }});
-        break;
-      }
-    }
-  }, 500);
-})();
-</script>
+    <div style="position:fixed;bottom:30px;left:30px;z-index:999;background:rgba(0,0,0,0.9);padding:12px;border-radius:10px;color:white;font-size:12px;line-height:1.8">
+    <b style="font-size:14px">🥾 Trekking</b> <small>(30곳)</small><br>
+    <span style="color:#ff0055">● 10점(7)</span> <span style="color:#00ff88">● 9점(10)</span> <span style="color:#ffcc00">● 8점(10)</span> <span style="color:#ff9900">● 7점(3)</span><br>
+    <small>●실선=직항 ○점선=경유 | 클릭→상세</small></div>
+
+    <div class="folium-map" id="map_9ec8981406cc166e"></div>
 
 <script>
-document.addEventListener('click', function(e) {
-  setTimeout(function() {
-    var popups = document.querySelectorAll('.leaflet-popup-content');
-    popups.forEach(function(p) {
-      if (p.querySelector('.photo-link')) return;
-      var h3 = p.querySelector('h3');
-      if (!h3) return;
-      var name = h3.textContent.replace(/[^a-zA-Z0-9 ]/g, '').trim();
-      var link = document.createElement('div');
-      link.className = 'photo-link';
-      link.style.cssText = 'margin-top:6px;text-align:center;';
-      link.innerHTML = '<a href="https://www.google.com/search?q=' + encodeURIComponent(name) + '&tbm=isch" target="_blank" style="color:#00ff88;font-size:11px;text-decoration:none;">📷 사진 보기 (Google Images)</a>';
-      p.appendChild(link);
-    });
-  }, 100);
+var map_9ec8981406cc166e = L.map("map_9ec8981406cc166e", {
+    center: [30.0,60.0],
+    crs: L.CRS.EPSG3857,
+    zoom: 2,
+    zoomControl: true,
+    preferCanvas: false,
+    maxBounds: [[-85,-180],[85,180]],
+    maxBoundsViscosity: 1.0,
+    worldCopyJump: false,
+    minZoom: 2
 });
+
+var tile_11282fe15265815a = L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+    minZoom:0, maxZoom:18, maxNativeZoom:18, noWrap:true,
+    attribution:"CartoDB", subdomains:"abc", detectRetina:false, tms:false, opacity:1
+}).addTo(map_9ec8981406cc166e);
+
+
+var cm_2ef1abe9b6e6c1cf = L.circleMarker([28.596,83.82],{
+    color:"#ff0055",fill:true,fillColor:"#ff0055",fillOpacity:0.85,
+    radius:18,weight:2
+}).addTo(map_9ec8981406cc166e);
+var pop_242971a9a086b1ab = L.popup({maxWidth:340});
+var html_043243fc1bdb7d15 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff0055">Annapurna Circuit 👑</h3>   <b>Nepal</b> | 10/10 | ✈️직항<hr style="margin:3px 0">   🥾 160-230km | 12-21일 | 난이도 중상<br>⛰️ 최고고도 5416m | 누적상승 11000m<br>💰 $40/day | ✈️ ~8h | ✈️직항<br>📅 3월, 4월, 5월, 10월 외 1개월<br>🏔️ 아열대 정글→고산 사막→만년설. 토롱라패스 5,416m 최고점<hr style="margin:3px 0">   <i>세계에서 가장 다양한 풍경의 트레킹. 아열대부터 빙하까지 하나의 루트에서 경험 가능. 티하우스 문화와 친절한 네팔 사람들이 매력.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Hotel Manang (Manang) ($20-50/night)<br>🏨 Thorong Peak Guest House ($15-30/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Bob Marley Restaurant (Manang) (Google 4.5)<br>🍽️ Yak Restaurant (Muktinath) (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 고산병 주의 (3,500m+). 매년 조난사고 발생. 보험+TIMS 카드 필수. 우기(6-9월) 산사태 위험. 토롱라패스 눈보라 위험.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 가이드 다수. 카트만두 한인 여행사 운영. 한국인 트레커 매우 많음.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Annapurna Circuit Nepal&tbm=isch" target="_blank"      style="color:#ff0055;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_242971a9a086b1ab.setContent(html_043243fc1bdb7d15);
+cm_2ef1abe9b6e6c1cf.bindPopup(pop_242971a9a086b1ab);
+cm_2ef1abe9b6e6c1cf.bindTooltip(`<div>Annapurna Circuit 10/10</div>`,{sticky:true});
+
+
+var lbl_e36e8ea7367ba19c = L.marker([28.596,83.82]).addTo(map_9ec8981406cc166e);
+var icon_lbl_e36e8ea7367ba19c = L.divIcon({
+    html:'<div style="font-size:9px;color:#ff0055;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Annapurna Circuit</div>',
+    className:'empty'
+});
+lbl_e36e8ea7367ba19c.setIcon(icon_lbl_e36e8ea7367ba19c);
+
+
+var cm_68d00a02e6acaab2 = L.marker([45.832,6.865]).addTo(map_9ec8981406cc166e);
+var icon_cm_68d00a02e6acaab2 = L.divIcon({
+    html:'<div style="width:40px;height:40px;border:2.5px dashed #ff0055;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-20px;margin-top:-20px;cursor:pointer"></div>',
+    className:'empty'
+});
+cm_68d00a02e6acaab2.setIcon(icon_cm_68d00a02e6acaab2);
+var pop_b12a91d375e07efb = L.popup({maxWidth:340});
+var html_243a74d1c56d5e82 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff0055">Tour du Mont Blanc 👑</h3>   <b>France/Italy/Switzerland</b> | 10/10 | 🔄경유<hr style="margin:3px 0">   🥾 170km | 10-12일 | 난이도 중상<br>⛰️ 최고고도 2665m | 누적상승 10000m<br>💰 $120/day | ✈️ ~13h | 🔄경유<br>📅 6월, 7월, 8월, 9월<br>🏔️ 알프스 3개국 순환. 빙하, 꽃밭, 샬레 마을. 몽블랑(4,808m) 조망.<hr style="margin:3px 0">   <i>유럽 최고의 트레킹 루트. 프랑스-이탈리아-스위스 3개국을 걸으며 알프스의 정수를 경험. 산장(refuge) 문화가 풍성하고 야경이 환상적.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Refuge du Gouter (CAS) ($80-120/night)<br>🏨 Hotel du Glacier (Chamonix) ($150-300/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ La Bergerie de Planpraz (Chamonix) (Google 4.6)<br>🍽️ Ristorante Maison Vieille (Courmayeur) (Google 4.7)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 고소 증상 경미. 눈 덮인 고개 미끄럼 주의 (7월도 눈 가능). 낙뢰 위험. 산장 예약 필수 (성수기 1년 전).</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 가이드 일부 운영. 한국 여행사 패키지 다수. 독립 트레킹도 영어 안내판 충분.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Tour du Mont Blanc France/Italy/Switzerland&tbm=isch" target="_blank"      style="color:#ff0055;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_b12a91d375e07efb.setContent(html_243a74d1c56d5e82);
+cm_68d00a02e6acaab2.bindPopup(pop_b12a91d375e07efb);
+cm_68d00a02e6acaab2.bindTooltip(`<div>Tour du Mont Blanc 10/10</div>`,{sticky:true});
+
+
+var lbl_17946d85339f6815 = L.marker([45.832,6.865]).addTo(map_9ec8981406cc166e);
+var icon_lbl_17946d85339f6815 = L.divIcon({
+    html:'<div style="font-size:9px;color:#ff0055;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Tour du Mont Blanc</div>',
+    className:'empty'
+});
+lbl_17946d85339f6815.setIcon(icon_lbl_17946d85339f6815);
+
+
+var cm_4df90b57c73de091 = L.marker([-50.942,-72.955]).addTo(map_9ec8981406cc166e);
+var icon_cm_4df90b57c73de091 = L.divIcon({
+    html:'<div style="width:40px;height:40px;border:2.5px dashed #ff0055;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-20px;margin-top:-20px;cursor:pointer"></div>',
+    className:'empty'
+});
+cm_4df90b57c73de091.setIcon(icon_cm_4df90b57c73de091);
+var pop_ac170caed7982ada = L.popup({maxWidth:340});
+var html_229a5081df85b952 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff0055">Torres del Paine W Trek 👑</h3>   <b>Chile</b> | 10/10 | 🔄경유<hr style="margin:3px 0">   🥾 80km | 4-5일 | 난이도 중상<br>⛰️ 최고고도 1150m | 누적상승 3500m<br>💰 $100/day | ✈️ ~20h | 🔄경유<br>📅 11월, 12월, 1월, 2월 외 1개월<br>🏔️ 파타고니아 화강암 탑. 빙하, 에메랄드 호수, 강풍. 토레스 탑 일출이 하이라이트.<hr style="margin:3px 0">   <i>지구상 가장 극적인 풍경 중 하나. 파타고니아 특유의 강풍과 변화무쌍한 날씨가 도전이자 매력. 토레스 탑에 걸리는 일출 빛은 일생 잊지 못할 경험.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 EcoCamp Patagonia ($200-400/night)<br>🏨 Refugio Grey ($50-80/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Restaurant EcoCamp (Google 4.8)<br>🍽️ Refugio Chileno Cafe (Google 4.2)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 파타고니아 강풍 (100km/h+). 날씨 급변. 예약 필수 (산장, 캠프). 입장료 $21. 여름(남반구 12-2월) 방문 권장.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 가이드 소수. 서울 출발 패키지 일부. 영어-스페인어 가이드 주류.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Torres del Paine W Trek Chile&tbm=isch" target="_blank"      style="color:#ff0055;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_ac170caed7982ada.setContent(html_229a5081df85b952);
+cm_4df90b57c73de091.bindPopup(pop_ac170caed7982ada);
+cm_4df90b57c73de091.bindTooltip(`<div>Torres del Paine W Trek 10/10</div>`,{sticky:true});
+
+
+var lbl_75dd1079af850d37 = L.marker([-50.942,-72.955]).addTo(map_9ec8981406cc166e);
+var icon_lbl_75dd1079af850d37 = L.divIcon({
+    html:'<div style="font-size:9px;color:#ff0055;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Torres del Paine W Trek</div>',
+    className:'empty'
+});
+lbl_75dd1079af850d37.setIcon(icon_lbl_75dd1079af850d37);
+
+
+var cm_18d1fc3d326516ec = L.marker([-13.163,-72.545]).addTo(map_9ec8981406cc166e);
+var icon_cm_18d1fc3d326516ec = L.divIcon({
+    html:'<div style="width:40px;height:40px;border:2.5px dashed #ff0055;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-20px;margin-top:-20px;cursor:pointer"></div>',
+    className:'empty'
+});
+cm_18d1fc3d326516ec.setIcon(icon_cm_18d1fc3d326516ec);
+var pop_4efefd5e28c36b24 = L.popup({maxWidth:340});
+var html_d8beab997b1b04f3 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff0055">Inca Trail to Machu Picchu 👑</h3>   <b>Peru</b> | 10/10 | 🔄경유<hr style="margin:3px 0">   🥾 43km | 4일 | 난이도 중상<br>⛰️ 최고고도 4215m | 누적상승 2400m<br>💰 $650/day | ✈️ ~18h | 🔄경유<br>📅 5월, 6월, 7월, 8월 외 1개월<br>🏔️ 안데스 운무림→잉카 유적지 연속. 데드 우먼스 패스 4,215m. 마추픽추 선게이트 도착.<hr style="margin:3px 0">   <i>세계 7대 불가사의 마추픽추를 도보로 정복하는 클래식 루트. 잉카 유적을 하나씩 거치며 문명의 흔적을 체험. 허가제라 조용하고 신성한 분위기.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Machu Picchu Pueblo Hotel ($300-500/night)<br>🏨 Inkaterra Hacienda Urubamba ($200-350/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Indio Feliz (Aguas Calientes) (Google 4.7)<br>🍽️ Cafe Inkaterra (Google 4.5)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 고산병 주의. 하루 500명 입장 제한 (수개월 전 예약 필수). 우기(11-3월) 미끄러움. 포터/가이드 동반 필수.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 가이드 일부 (쿠스코 기반). 한국어 패키지 여행사 다수.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Inca Trail to Machu Picchu Peru&tbm=isch" target="_blank"      style="color:#ff0055;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_4efefd5e28c36b24.setContent(html_d8beab997b1b04f3);
+cm_18d1fc3d326516ec.bindPopup(pop_4efefd5e28c36b24);
+cm_18d1fc3d326516ec.bindTooltip(`<div>Inca Trail to Machu Picchu 10/10</div>`,{sticky:true});
+
+
+var lbl_73c3a1ae9c53214a = L.marker([-13.163,-72.545]).addTo(map_9ec8981406cc166e);
+var icon_lbl_73c3a1ae9c53214a = L.divIcon({
+    html:'<div style="font-size:9px;color:#ff0055;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Inca Trail to Machu Picchu</div>',
+    className:'empty'
+});
+lbl_73c3a1ae9c53214a.setIcon(icon_lbl_73c3a1ae9c53214a);
+
+
+var cm_1d48518a4ceff99b = L.circleMarker([27.988,86.925],{
+    color:"#ff0055",fill:true,fillColor:"#ff0055",fillOpacity:0.85,
+    radius:18,weight:2
+}).addTo(map_9ec8981406cc166e);
+var pop_f06434979734d230 = L.popup({maxWidth:340});
+var html_273746ea744dc823 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff0055">Everest Base Camp 👑</h3>   <b>Nepal</b> | 10/10 | ✈️직항<hr style="margin:3px 0">   🥾 130km | 12-16일 | 난이도 상급<br>⛰️ 최고고도 5364m | 누적상승 4000m<br>💰 $50/day | ✈️ ~8h | ✈️직항<br>📅 3월, 4월, 5월, 10월 외 1개월<br>🏔️ 쿰부 빙하, 티하우스 트레일. 칼라파타르 5,645m에서 에베레스트 정면 조망.<hr style="margin:3px 0">   <i>세계 최고봉을 가장 가까이서 볼 수 있는 트레킹. 남체바자르 셰르파 문화와 불교 사원이 풍성. 칼라파타르에서 바라보는 에베레스트는 평생 기억.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Yeti Mountain Home (Namche) ($60-120/night)<br>🏨 Everest View Hotel (Syangboche) ($100-200/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Bakery Cafe (Namche Bazaar) (Google 4.4)<br>🍽️ Summit Lodge Restaurant (Dingboche) (Google 4.2)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 심각한 고산병 위험 (5,000m+). 급성 고산병-뇌부종 주의. HACE/HAPE 긴급 대피 체계 필수. 헬기 구조 보험 필수. 루클라 경비행기 안전 주의.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 카트만두 한인 여행사 다수. 한국인 셰르파/포터 연결 가능.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Everest Base Camp Nepal&tbm=isch" target="_blank"      style="color:#ff0055;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_f06434979734d230.setContent(html_273746ea744dc823);
+cm_1d48518a4ceff99b.bindPopup(pop_f06434979734d230);
+cm_1d48518a4ceff99b.bindTooltip(`<div>Everest Base Camp 10/10</div>`,{sticky:true});
+
+
+var lbl_86fac5ba5f38e238 = L.marker([27.988,86.925]).addTo(map_9ec8981406cc166e);
+var icon_lbl_86fac5ba5f38e238 = L.divIcon({
+    html:'<div style="font-size:9px;color:#ff0055;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Everest Base Camp</div>',
+    className:'empty'
+});
+lbl_86fac5ba5f38e238.setIcon(icon_lbl_86fac5ba5f38e238);
+
+
+var cm_09b1639df9eb8a84 = L.circleMarker([-44.668,168.115],{
+    color:"#ff0055",fill:true,fillColor:"#ff0055",fillOpacity:0.85,
+    radius:18,weight:2
+}).addTo(map_9ec8981406cc166e);
+var pop_d133892e3719fc6a = L.popup({maxWidth:340});
+var html_257d99b227af0e71 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff0055">Milford Track 👑</h3>   <b>New Zealand</b> | 10/10 | ✈️직항<hr style="margin:3px 0">   🥾 54km | 4일 | 난이도 중급<br>⛰️ 최고고도 1154m | 누적상승 1500m<br>💰 $180/day | ✈️ ~11h | ✈️직항<br>📅 11월, 12월, 1월, 2월 외 2개월<br>🏔️ 피오르드 협곡, 빙하 계곡, 서덜랜드 폭포(580m). 뉴질랜드 남섬 피오르드랜드.<hr style="margin:3px 0">   <i>세계에서 가장 아름다운 트레킹 루트 중 하나. 완벽하게 관리된 시설과 제한된 입장(40명/일)으로 호젓함이 보장. 서덜랜드 폭포는 세계 5위 높이.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Milford Sound Lodge ($80-150/night)<br>🏨 DOC Huts (on-trail) ($65/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Pio Pio Cafe (Te Anau) (Google 4.3)<br>🍽️ Miles Better Pies (Te Anau) (Google 4.6)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 뉴질랜드 모래파리(샌드플라이) 극심. 강우량 연 7m (세계 최다). 허가 필수 (DOC, 수개월 전 예약). 11월-4월만 운영.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국어 투어 일부. 뉴질랜드 현지 한국인 가이드 연결 가능.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Milford Track New Zealand&tbm=isch" target="_blank"      style="color:#ff0055;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_d133892e3719fc6a.setContent(html_257d99b227af0e71);
+cm_09b1639df9eb8a84.bindPopup(pop_d133892e3719fc6a);
+cm_09b1639df9eb8a84.bindTooltip(`<div>Milford Track 10/10</div>`,{sticky:true});
+
+
+var lbl_455727ae3e25e549 = L.marker([-44.668,168.115]).addTo(map_9ec8981406cc166e);
+var icon_lbl_455727ae3e25e549 = L.divIcon({
+    html:'<div style="font-size:9px;color:#ff0055;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Milford Track</div>',
+    className:'empty'
+});
+lbl_455727ae3e25e549.setIcon(icon_lbl_455727ae3e25e549);
+
+
+var cm_21925cd87846d5a0 = L.marker([-3.065,37.358]).addTo(map_9ec8981406cc166e);
+var icon_cm_21925cd87846d5a0 = L.divIcon({
+    html:'<div style="width:40px;height:40px;border:2.5px dashed #ff0055;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-20px;margin-top:-20px;cursor:pointer"></div>',
+    className:'empty'
+});
+cm_21925cd87846d5a0.setIcon(icon_cm_21925cd87846d5a0);
+var pop_8a759401b8582539 = L.popup({maxWidth:340});
+var html_eb3ebc7940b0c1ca = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff0055">Kilimanjaro 👑</h3>   <b>Tanzania</b> | 10/10 | 🔄경유<hr style="margin:3px 0">   🥾 65km | 6-8일 | 난이도 상급<br>⛰️ 최고고도 5895m | 누적상승 4700m<br>💰 $200/day | ✈️ ~14h | 🔄경유<br>📅 1월, 2월, 6월, 7월 외 3개월<br>🏔️ 열대 밀림→황야→화산암→빙하. 아프리카 최고봉 우후루피크 5,895m.<hr style="margin:3px 0">   <i>아프리카 최고봉이자 세계 7대 정상 중 가장 많은 사람이 도전하는 봉우리. 기술적 등반 없이 도달 가능하지만 고산병이 최대 관문. 정상의 빙하는 2030년 소멸 예정.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Kibo Palace Hotel (Arusha) ($100-200/night)<br>🏨 Keys Hotel (Moshi) ($60-120/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Indoitaliano Restaurant (Arusha) (Google 4.5)<br>🍽️ Via Via (Arusha) (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 심각한 고산병 위험. 정상 성공률 약 65% (마랑구), 85% (렘쇼). 가이드+포터 동반 법적 의무. 입장료 $700+ (공원비+가이드비 합산).</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 가이드 소수. 아루샤 기반 한국어 서비스 일부.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Kilimanjaro Tanzania&tbm=isch" target="_blank"      style="color:#ff0055;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_8a759401b8582539.setContent(html_eb3ebc7940b0c1ca);
+cm_21925cd87846d5a0.bindPopup(pop_8a759401b8582539);
+cm_21925cd87846d5a0.bindTooltip(`<div>Kilimanjaro 10/10</div>`,{sticky:true});
+
+
+var lbl_27f8691c92a96893 = L.marker([-3.065,37.358]).addTo(map_9ec8981406cc166e);
+var icon_lbl_27f8691c92a96893 = L.divIcon({
+    html:'<div style="font-size:9px;color:#ff0055;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Kilimanjaro</div>',
+    className:'empty'
+});
+lbl_27f8691c92a96893.setIcon(icon_lbl_27f8691c92a96893);
+
+
+var cm_f9d3329f9af9c60a = L.marker([42.127,9.055]).addTo(map_9ec8981406cc166e);
+var icon_cm_f9d3329f9af9c60a = L.divIcon({
+    html:'<div style="width:36px;height:36px;border:2.5px dashed #00ff88;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-18px;margin-top:-18px;cursor:pointer"></div>',
+    className:'empty'
+});
+cm_f9d3329f9af9c60a.setIcon(icon_cm_f9d3329f9af9c60a);
+var pop_26e581469831790d = L.popup({maxWidth:340});
+var html_9d639952803ee39c = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">GR20</h3>   <b>Corsica, France</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🥾 180km | 15-16일 | 난이도 최상급<br>⛰️ 최고고도 2706m | 누적상승 13000m<br>💰 $80/day | ✈️ ~14h | 🔄경유<br>📅 6월, 7월, 8월, 9월<br>🏔️ 코르시카 화강암 능선 종주. 스크램블링 구간 다수. 지중해 조망. 야생화 천국.<hr style="margin:3px 0">   <i>유럽에서 가장 어려운 장거리 트레일. 하루 8-10시간 바위 오르내리기가 일상. 하지만 보상은 확실 — 지중해 위 화강암 능선의 비경은 유일무이.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Refuge de Petra Piana ($30-50/night)<br>🏨 Refuge de Ciottulu di i Mori ($25-45/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ A Scalella (Corte) (Google 4.4)<br>🍽️ Restaurant Le 2081 (Vizzavona) (Google 4.1)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 낙석, 스크램블링 낙상 위험. 여름 40°C 열기. 물 부족 구간. 번개 위험. 단독 트레킹 권장하지 않음.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 가이드 없음. 프랑스어 가이드북 필요. 독립 트레킹 가능.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=GR20 Corsica, France&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_26e581469831790d.setContent(html_9d639952803ee39c);
+cm_f9d3329f9af9c60a.bindPopup(pop_26e581469831790d);
+cm_f9d3329f9af9c60a.bindTooltip(`<div>GR20 9/10</div>`,{sticky:true});
+
+
+var lbl_80b5dd84f71b4a4c = L.marker([42.127,9.055]).addTo(map_9ec8981406cc166e);
+var icon_lbl_80b5dd84f71b4a4c = L.divIcon({
+    html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">GR20</div>',
+    className:'empty'
+});
+lbl_80b5dd84f71b4a4c.setIcon(icon_lbl_80b5dd84f71b4a4c);
+
+
+var cm_6cf0e87c9cf1047d = L.marker([46.035,7.62]).addTo(map_9ec8981406cc166e);
+var icon_cm_6cf0e87c9cf1047d = L.divIcon({
+    html:'<div style="width:36px;height:36px;border:2.5px dashed #00ff88;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-18px;margin-top:-18px;cursor:pointer"></div>',
+    className:'empty'
+});
+cm_6cf0e87c9cf1047d.setIcon(icon_cm_6cf0e87c9cf1047d);
+var pop_09db330dcd45c43d = L.popup({maxWidth:340});
+var html_6287cecf4641d346 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Haute Route (Chamonix-Zermatt)</h3>   <b>Switzerland</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🥾 200km | 14-16일 | 난이도 상급<br>⛰️ 최고고도 3550m | 누적상승 12000m<br>💰 $150/day | ✈️ ~13h | 🔄경유<br>📅 7월, 8월, 9월<br>🏔️ 알프스 하이 루트. 몽블랑에서 마터호른까지. 빙하 횡단, 만년설 고개.<hr style="margin:3px 0">   <i>알피니스트의 클래식 루트. 샤모니에서 체르마트까지 알프스 최고의 경관을 이어가는 루트. 여름에도 크램폰 필요한 구간 존재.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Refuge du Col de Balme ($80-120/night)<br>🏨 Hotel Weisshorn (Zermatt) ($200-400/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Restaurant du Barrage de Mauvoisin (Google 4.3)<br>🍽️ Chez Vrony (Zermatt) (Google 4.7)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 빙하 크레바스 위험. 여름 낙석. 크램폰+피켈 필요 구간. 스위스 물가 매우 비쌈. 날씨 급변.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국어 가이드 소수. 스위스 현지 영어 가이드 풍부.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Haute Route (Chamonix-Zermatt) Switzerland&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_09db330dcd45c43d.setContent(html_6287cecf4641d346);
+cm_6cf0e87c9cf1047d.bindPopup(pop_09db330dcd45c43d);
+cm_6cf0e87c9cf1047d.bindTooltip(`<div>Haute Route (Chamonix-Zermatt) 9/10</div>`,{sticky:true});
+
+
+var lbl_7b856df9e6c698c1 = L.marker([46.035,7.62]).addTo(map_9ec8981406cc166e);
+var icon_lbl_7b856df9e6c698c1 = L.divIcon({
+    html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Haute Route (Chamonix-Zermatt)</div>',
+    className:'empty'
+});
+lbl_7b856df9e6c698c1.setIcon(icon_lbl_7b856df9e6c698c1);
+
+
+var cm_cf03f38edfe8b4c7 = L.marker([63.98,-19.05]).addTo(map_9ec8981406cc166e);
+var icon_cm_cf03f38edfe8b4c7 = L.divIcon({
+    html:'<div style="width:36px;height:36px;border:2.5px dashed #00ff88;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-18px;margin-top:-18px;cursor:pointer"></div>',
+    className:'empty'
+});
+cm_cf03f38edfe8b4c7.setIcon(icon_cm_cf03f38edfe8b4c7);
+var pop_00a9dd15f53d494f = L.popup({maxWidth:340});
+var html_e54f4a59bd31bd3e = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Laugavegur</h3>   <b>Iceland</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🥾 55km | 4-5일 | 난이도 중급<br>⛰️ 최고고도 1100m | 누적상승 2000m<br>💰 $100/day | ✈️ ~12h | 🔄경유<br>📅 7월, 8월, 9월<br>🏔️ 활화산 지형. 컬러풀한 유황 산, 빙하 강, 용암지대, 검은 모래 사막.<hr style="margin:3px 0">   <i>화성 같은 지구. 아이슬란드 하이랜드의 초현실적 풍경. 컬러풀한 산(랜드만날로이가르)에서 스코가르 폭포까지 이어지는 루트. 백야 속 하이킹.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Landmannalaugar Hut (FÍ) ($60-90/night)<br>🏨 Hotel Rangá ($250-500/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Skógar Museum Cafe (Google 4.2)<br>🍽️ Sumac Grill (Reykjavik) (Google 4.5)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 기상 급변 (아이슬란드 특유). 강 도하 위험 (빙하 녹은 물). 가이드북 필수. 7-8월에만 안전.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 가이드 소수. 영어 가이드 풍부. 아이슬란드 한인 커뮤니티 소규모.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Laugavegur Iceland&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_00a9dd15f53d494f.setContent(html_e54f4a59bd31bd3e);
+cm_cf03f38edfe8b4c7.bindPopup(pop_00a9dd15f53d494f);
+cm_cf03f38edfe8b4c7.bindTooltip(`<div>Laugavegur 9/10</div>`,{sticky:true});
+
+
+var lbl_03ac68fa41d3cbb1 = L.marker([63.98,-19.05]).addTo(map_9ec8981406cc166e);
+var icon_lbl_03ac68fa41d3cbb1 = L.divIcon({
+    html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Laugavegur</div>',
+    className:'empty'
+});
+lbl_03ac68fa41d3cbb1.setIcon(icon_lbl_03ac68fa41d3cbb1);
+
+
+var cm_ae0c238176ed1ec4 = L.marker([-41.65,146.05]).addTo(map_9ec8981406cc166e);
+var icon_cm_ae0c238176ed1ec4 = L.divIcon({
+    html:'<div style="width:36px;height:36px;border:2.5px dashed #00ff88;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-18px;margin-top:-18px;cursor:pointer"></div>',
+    className:'empty'
+});
+cm_ae0c238176ed1ec4.setIcon(icon_cm_ae0c238176ed1ec4);
+var pop_005d5396c0e40649 = L.popup({maxWidth:340});
+var html_69df3809ab202594 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Overland Track</h3>   <b>Australia (Tasmania)</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🥾 65km | 6-7일 | 난이도 중급<br>⛰️ 최고고도 1617m | 누적상승 4500m<br>💰 $70/day | ✈️ ~11h | 🔄경유<br>📅 11월, 12월, 1월, 2월 외 2개월<br>🏔️ 태즈메이니아 황야. 빙하 호수, 너도밤나무 숲, 도릿산 암석 고원.<hr style="margin:3px 0">   <i>호주 최고의 황야 트레킹. 크래들 마운틴에서 레이크 세인트 클레어까지. 세계자연유산 지역 내 야생동물과의 조우가 특별.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Cradle Mountain Lodge ($200-400/night)<br>🏨 Peppers Cradle Mountain Lodge ($250-450/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Highland Restaurant (Cradle Mtn) (Google 4.5)<br>🍽️ Tavern Bar &amp; Bistro (Cradle Mtn) (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 태즈메이니아 기상 극변. 하루에 4계절. 방수 장비 필수. 여름(11-4월)만 허가 발급. 예약 필수.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 가이드 없음. 영어 가이드/패키지 충분.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Overland Track Australia (Tasmania)&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_005d5396c0e40649.setContent(html_69df3809ab202594);
+cm_ae0c238176ed1ec4.bindPopup(pop_005d5396c0e40649);
+cm_ae0c238176ed1ec4.bindTooltip(`<div>Overland Track 9/10</div>`,{sticky:true});
+
+
+var lbl_efc83ffa4152c05e = L.marker([-41.65,146.05]).addTo(map_9ec8981406cc166e);
+var icon_lbl_efc83ffa4152c05e = L.divIcon({
+    html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Overland Track</div>',
+    className:'empty'
+});
+lbl_efc83ffa4152c05e.setIcon(icon_lbl_efc83ffa4152c05e);
+
+
+var cm_4d8942594e067d1d = L.marker([42.88,-8.545]).addTo(map_9ec8981406cc166e);
+var icon_cm_4d8942594e067d1d = L.divIcon({
+    html:'<div style="width:36px;height:36px;border:2.5px dashed #00ff88;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-18px;margin-top:-18px;cursor:pointer"></div>',
+    className:'empty'
+});
+cm_4d8942594e067d1d.setIcon(icon_cm_4d8942594e067d1d);
+var pop_2f6c3982da45fd2e = L.popup({maxWidth:340});
+var html_1665f948cb1e3507 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Camino de Santiago</h3>   <b>Spain</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🥾 800km | 30-35일 | 난이도 중급<br>⛰️ 최고고도 1430m | 누적상승 16000m<br>💰 $40/day | ✈️ ~13h | 🔄경유<br>📅 4월, 5월, 6월, 9월 외 1개월<br>🏔️ 프랑스 길(카미노 프란세스). 피레네→메세타 고원→갈리시아 녹색 언덕.<hr style="margin:3px 0">   <i>800년 전통의 순례길. 전세계에서 연 30만 명이 걷는 인생길. 트레킹보다는 인생 여정에 가깝다. 알베르게 문화와 순례자 커뮤니티가 최대 매력.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Albergue Orisson (Saint-Jean) ($35-50/night)<br>🏨 Parador de Santiago de Compostela ($200-400/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Casa Marcelo (Santiago) (Google 4.5)<br>🍽️ O Gato Negro (Santiago) (Google 4.6)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 발 물집 관리 최중요. 여름 폭염 (메세타 40°C). 피크 시즌 알베르게 만원. 크레덴시알(순례자 여권) 발급 필수.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 순례자 세계 4위 규모. 한국어 카미노 가이드북 풍부. 한인 알베르게 일부.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Camino de Santiago Spain&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_2f6c3982da45fd2e.setContent(html_1665f948cb1e3507);
+cm_4d8942594e067d1d.bindPopup(pop_2f6c3982da45fd2e);
+cm_4d8942594e067d1d.bindTooltip(`<div>Camino de Santiago 9/10</div>`,{sticky:true});
+
+
+var lbl_cb95ece2261ffdd7 = L.marker([42.88,-8.545]).addTo(map_9ec8981406cc166e);
+var icon_lbl_cb95ece2261ffdd7 = L.divIcon({
+    html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Camino de Santiago</div>',
+    className:'empty'
+});
+lbl_cb95ece2261ffdd7.setIcon(icon_lbl_cb95ece2261ffdd7);
+
+
+var cm_6708c70e24bfeed5 = L.circleMarker([-39.197,175.572],{
+    color:"#00ff88",fill:true,fillColor:"#00ff88",fillOpacity:0.85,
+    radius:16,weight:2
+}).addTo(map_9ec8981406cc166e);
+var pop_6f509000003262c8 = L.popup({maxWidth:340});
+var html_d408ec0cffba0aec = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Tongariro Alpine Crossing</h3>   <b>New Zealand</b> | 9/10 | ✈️직항<hr style="margin:3px 0">   🥾 19.4km | 1일 | 난이도 중급<br>⛰️ 최고고도 1967m | 누적상승 765m<br>💰 $30/day | ✈️ ~11h | ✈️직항<br>📅 11월, 12월, 1월, 2월 외 2개월<br>🏔️ 활화산 지형. 에메랄드 호수, 붉은 화산토, 증기 분출구. 반지의 제왕 모르도르 촬영지.<hr style="margin:3px 0">   <i>뉴질랜드 최고의 원데이 하이킹. 활화산 지형 위를 걷는 초현실적 경험. 에메랄드빛 화산 호수와 붉은 화산재 지형의 조합. 반지의 제왕 팬에겐 성지.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Chateau Tongariro Hotel ($150-300/night)<br>🏨 Discovery Lodge (National Park) ($80-150/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Skotel Alpine Resort Restaurant (Google 4.2)<br>🍽️ Station Cafe (National Park) (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 기상 급변 (하루 4계절). 활화산 분화 위험 (경보 시스템). 황사 가스 흡입 주의. 방수/방풍 장비 필수. 단독 입산 자제.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국어 셔틀버스 예약 가능. 뉴질랜드 현지 한인 투어 운영.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Tongariro Alpine Crossing New Zealand&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_6f509000003262c8.setContent(html_d408ec0cffba0aec);
+cm_6708c70e24bfeed5.bindPopup(pop_6f509000003262c8);
+cm_6708c70e24bfeed5.bindTooltip(`<div>Tongariro Alpine Crossing 9/10</div>`,{sticky:true});
+
+
+var lbl_02bdf5e43cf6787f = L.marker([-39.197,175.572]).addTo(map_9ec8981406cc166e);
+var icon_lbl_02bdf5e43cf6787f = L.divIcon({
+    html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Tongariro Alpine Crossing</div>',
+    className:'empty'
+});
+lbl_02bdf5e43cf6787f.setIcon(icon_lbl_02bdf5e43cf6787f);
+
+
+var cm_02f611ddf26f1956 = L.circleMarker([-8.412,116.467],{
+    color:"#00ff88",fill:true,fillColor:"#00ff88",fillOpacity:0.85,
+    radius:16,weight:2
+}).addTo(map_9ec8981406cc166e);
+var pop_e77b620f76c6119c = L.popup({maxWidth:340});
+var html_1f55e11d6ff360c1 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Mount Rinjani</h3>   <b>Indonesia</b> | 9/10 | ✈️직항<hr style="margin:3px 0">   🥾 35km | 3-4일 | 난이도 상급<br>⛰️ 최고고도 3726m | 누적상승 3500m<br>💰 $35/day | ✈️ ~6h | ✈️직항<br>📅 5월, 6월, 7월, 8월 외 2개월<br>🏔️ 인도네시아 제2최고봉 활화산. 세가라낙 분화구 호수. 정상 조망 발리-롬복 해협.<hr style="margin:3px 0">   <i>아시아 트레커들의 버킷리스트. 칼데라 호수(600m 깊이)와 활화산 지형의 드라마틱한 조합. 발리에서 당일 이동 가능. 현지 포터 문화가 인상적.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Rinjani Trek Eco Lodge (Senaru) ($30-60/night)<br>🏨 Green Rinjani (Sembalun) ($20-40/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Warung Bu Lina (Senaru) (Google 4.3)<br>🍽️ Café Senaru (Google 4.1)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 활화산 분화 위험. 가이드+포터 동반 필수(법적 의무). 우기(11-4월) 입산 금지. 미끄러운 화산재 경사. 고산병 주의.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 가이드 일부. 발리-롬복 한인 여행사 연결 가능.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Mount Rinjani Indonesia&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_e77b620f76c6119c.setContent(html_1f55e11d6ff360c1);
+cm_02f611ddf26f1956.bindPopup(pop_e77b620f76c6119c);
+cm_02f611ddf26f1956.bindTooltip(`<div>Mount Rinjani 9/10</div>`,{sticky:true});
+
+
+var lbl_955234e3a6d67eca = L.marker([-8.412,116.467]).addTo(map_9ec8981406cc166e);
+var icon_lbl_955234e3a6d67eca = L.divIcon({
+    html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Mount Rinjani</div>',
+    className:'empty'
+});
+lbl_955234e3a6d67eca.setIcon(icon_lbl_955234e3a6d67eca);
+
+
+var cm_074b6e30177e1e34 = L.marker([-49.331,-72.901]).addTo(map_9ec8981406cc166e);
+var icon_cm_074b6e30177e1e34 = L.divIcon({
+    html:'<div style="width:36px;height:36px;border:2.5px dashed #00ff88;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-18px;margin-top:-18px;cursor:pointer"></div>',
+    className:'empty'
+});
+cm_074b6e30177e1e34.setIcon(icon_cm_074b6e30177e1e34);
+var pop_ac99e0a96d8e797b = L.popup({maxWidth:340});
+var html_db89bd3d3a79b438 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Fitz Roy Trek (El Chalten)</h3>   <b>Argentina</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🥾 30km | 2-3일 | 난이도 중상<br>⛰️ 최고고도 1170m | 누적상승 1800m<br>💰 $30/day | ✈️ ~20h | 🔄경유<br>📅 11월, 12월, 1월, 2월 외 1개월<br>🏔️ 파타고니아 화강암 피너클. 피츠로이(3,405m), 세로토레. 빙하 호수 라군 데 로스 트레스.<hr style="margin:3px 0">   <i>세계에서 가장 아름다운 산 중 하나인 피츠로이를 가장 가까이서 감상. 엘찰텐 마을 자체가 트레킹 베이스로 최적. 날씨만 맞으면 일생 최고의 풍경.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Hosteria El Puma (El Chalten) ($80-150/night)<br>🏨 Refugio Fitz Roy ($20-40/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Patagonicus (El Chalten) (Google 4.6)<br>🍽️ La Tapera (El Chalten) (Google 4.5)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 파타고니아 강풍 (순간 150km/h). 날씨 예측 불가. 피츠로이 정상부 극한 기상. 방풍 장비 필수.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 가이드 없음. 영어-스페인어 가이드.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Fitz Roy Trek (El Chalten) Argentina&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_ac99e0a96d8e797b.setContent(html_db89bd3d3a79b438);
+cm_074b6e30177e1e34.bindPopup(pop_ac99e0a96d8e797b);
+cm_074b6e30177e1e34.bindTooltip(`<div>Fitz Roy Trek (El Chalten) 9/10</div>`,{sticky:true});
+
+
+var lbl_6948b993e264aa0c = L.marker([-49.331,-72.901]).addTo(map_9ec8981406cc166e);
+var icon_lbl_6948b993e264aa0c = L.divIcon({
+    html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Fitz Roy Trek (El Chalten)</div>',
+    className:'empty'
+});
+lbl_6948b993e264aa0c.setIcon(icon_lbl_6948b993e264aa0c);
+
+
+var cm_c45b3a02f9e8098c = L.marker([46.5,12.05]).addTo(map_9ec8981406cc166e);
+var icon_cm_c45b3a02f9e8098c = L.divIcon({
+    html:'<div style="width:36px;height:36px;border:2.5px dashed #00ff88;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-18px;margin-top:-18px;cursor:pointer"></div>',
+    className:'empty'
+});
+cm_c45b3a02f9e8098c.setIcon(icon_cm_c45b3a02f9e8098c);
+var pop_93db1f92d1ab1586 = L.popup({maxWidth:340});
+var html_328b4f853e763ad7 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Dolomites Alta Via 1</h3>   <b>Italy</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🥾 120km | 8-10일 | 난이도 중상<br>⛰️ 최고고도 2752m | 누적상승 6500m<br>💰 $100/day | ✈️ ~13h | 🔄경유<br>📅 7월, 8월, 9월<br>🏔️ 돌로미티 석회암 첨탑. 이탈리아 알프스. 치비에타, 라발레 등 절경 능선.<hr style="margin:3px 0">   <i>세계자연유산 돌로미티를 종주하는 하이라이트 루트. 독특한 붉은빛 석회암 봉우리는 알프스 어느 곳과도 다른 풍경. 이탈리아 리푸지오(산장) 음식이 훌륭.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Rifugio Lagazuoi ($80-130/night)<br>🏨 Rifugio Nuvolau ($70-120/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Rifugio Citta di Fiume Restaurant (Google 4.4)<br>🍽️ Ristorante El Brite de Larieto (Cortina) (Google 4.6)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 낙석 위험. 여름 낙뢰 오후 주의. 페라타 구간 일부 (확보 장비 권장). 리푸지오 예약 필수.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 가이드 소수. 이탈리아어-영어 가이드 주류.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Dolomites Alta Via 1 Italy&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_93db1f92d1ab1586.setContent(html_328b4f853e763ad7);
+cm_c45b3a02f9e8098c.bindPopup(pop_93db1f92d1ab1586);
+cm_c45b3a02f9e8098c.bindTooltip(`<div>Dolomites Alta Via 1 9/10</div>`,{sticky:true});
+
+
+var lbl_a26757ba67be4c60 = L.marker([46.5,12.05]).addTo(map_9ec8981406cc166e);
+var icon_lbl_a26757ba67be4c60 = L.divIcon({
+    html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Dolomites Alta Via 1</div>',
+    className:'empty'
+});
+lbl_a26757ba67be4c60.setIcon(icon_lbl_a26757ba67be4c60);
+
+
+var cm_e7db105a3e1ac161 = L.marker([68.354,18.782]).addTo(map_9ec8981406cc166e);
+var icon_cm_e7db105a3e1ac161 = L.divIcon({
+    html:'<div style="width:36px;height:36px;border:2.5px dashed #00ff88;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-18px;margin-top:-18px;cursor:pointer"></div>',
+    className:'empty'
+});
+cm_e7db105a3e1ac161.setIcon(icon_cm_e7db105a3e1ac161);
+var pop_b70147f6752e1302 = L.popup({maxWidth:340});
+var html_044c0802f187b01d = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#00ff88">Kungsleden (King&#x27;s Trail)</h3>   <b>Sweden</b> | 9/10 | 🔄경유<hr style="margin:3px 0">   🥾 440km | 21-30일 | 난이도 중급<br>⛰️ 최고고도 1420m | 누적상승 8000m<br>💰 $80/day | ✈️ ~11h | 🔄경유<br>📅 7월, 8월, 9월<br>🏔️ 스웨덴 북극권 황야. 툰드라, 자작나무 숲, 빙하 계곡. 북극광 조망 가능.<hr style="margin:3px 0">   <i>스웨덴 왕의 길. 극지 특유의 고요함과 광활함. 여름 백야 아래 걷는 독특한 경험. 겨울에는 오로라 트레킹으로 변신. 스웨덴식 피카(커피 브레이크) 문화.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 STF Kebnekaise Mountain Station ($70-120/night)<br>🏨 STF Abisko Mountain Station ($60-100/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ STF Kebnekaise Restaurant (Google 4.3)<br>🍽️ Abisko Turiststation Restaurant (Google 4.2)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 북극 기상 급변. 강 도하 위험. 모기 극심 (7-8월). 곰 서식. 사미인 토지 존중. 지도+나침반 필수.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 가이드 없음. 스웨덴어-영어 STF 스탭.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Kungsleden (King&#x27;s Trail) Sweden&tbm=isch" target="_blank"      style="color:#00ff88;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_b70147f6752e1302.setContent(html_044c0802f187b01d);
+cm_e7db105a3e1ac161.bindPopup(pop_b70147f6752e1302);
+cm_e7db105a3e1ac161.bindTooltip(`<div>Kungsleden (King's Trail) 9/10</div>`,{sticky:true});
+
+
+var lbl_2d31bc618d00e90f = L.marker([68.354,18.782]).addTo(map_9ec8981406cc166e);
+var icon_lbl_2d31bc618d00e90f = L.divIcon({
+    html:'<div style="font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Kungsleden (King's Trail)</div>',
+    className:'empty'
+});
+lbl_2d31bc618d00e90f.setIcon(icon_lbl_2d31bc618d00e90f);
+
+
+var cm_402124b23b7de752 = L.marker([-13.341,-72.541]).addTo(map_9ec8981406cc166e);
+var icon_cm_402124b23b7de752 = L.divIcon({
+    html:'<div style="width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer"></div>',
+    className:'empty'
+});
+cm_402124b23b7de752.setIcon(icon_cm_402124b23b7de752);
+var pop_84cfe5e52d8efcaa = L.popup({maxWidth:340});
+var html_9a68ea6c84286fc0 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Salkantay Trek</h3>   <b>Peru</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🥾 74km | 5일 | 난이도 상급<br>⛰️ 최고고도 4630m | 누적상승 5000m<br>💰 $300/day | ✈️ ~18h | 🔄경유<br>📅 4월, 5월, 6월, 7월 외 2개월<br>🏔️ 살칸타이 설산(6,271m) 베이스. 마추픽추로 가는 대안 루트. 열대우림 하강.<hr style="margin:3px 0">   <i>잉카 트레일 대기자를 위한 최고의 대안. 오히려 살칸타이 설산 경관이 더 웅장하다는 평가도. 고도 차이가 극적이고 자연 생태계 다양.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Sky Lodge Adventure Suites (Cuzco) ($200-400/night)<br>🏨 Eco Camp Soraypampa ($50-100/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Cicciolina (Cuzco) (Google 4.7)<br>🍽️ Morena Peruvian Kitchen (Google 4.5)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 고산병 주의 (4,600m 패스). 우기 미끄러움. 가이드 동반 권장. 갑작스러운 눈보라 가능.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 쿠스코 기반 한국인 가이드 일부.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Salkantay Trek Peru&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_84cfe5e52d8efcaa.setContent(html_9a68ea6c84286fc0);
+cm_402124b23b7de752.bindPopup(pop_84cfe5e52d8efcaa);
+cm_402124b23b7de752.bindTooltip(`<div>Salkantay Trek 8/10</div>`,{sticky:true});
+
+
+var lbl_d429ccec5c8086cc = L.marker([-13.341,-72.541]).addTo(map_9ec8981406cc166e);
+var icon_lbl_d429ccec5c8086cc = L.divIcon({
+    html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Salkantay Trek</div>',
+    className:'empty'
+});
+lbl_d429ccec5c8086cc.setIcon(icon_lbl_d429ccec5c8086cc);
+
+
+var cm_936be08a097d7f92 = L.circleMarker([33.848,135.757],{
+    color:"#ffcc00",fill:true,fillColor:"#ffcc00",fillOpacity:0.85,
+    radius:14,weight:2
+}).addTo(map_9ec8981406cc166e);
+var pop_a264aef65238a56c = L.popup({maxWidth:340});
+var html_f60d97f321c67286 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Kumano Kodo</h3>   <b>Japan</b> | 8/10 | ✈️직항<hr style="margin:3px 0">   🥾 70km | 4-5일 | 난이도 중급<br>⛰️ 최고고도 1050m | 누적상승 3500m<br>💰 $80/day | ✈️ ~2h | ✈️직항<br>📅 4월, 5월, 10월, 11월<br>🏔️ 기이반도 삼나무 숲. 세계유산 순례길. 구마노 3대 대사(혼구, 나치, 하야타마).<hr style="margin:3px 0">   <i>카미노 데 산티아고와 함께 세계에서 두 개뿐인 세계유산 순례길. 1,000년 수령 삼나무 사이를 걷는 신령스러운 분위기. 산사의 숙박(슈쿠보) 문화 체험.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Nachi Katsuura Onsen Ryokan (¥15,000-30,000/night)<br>🏨 Kumano Hongu Heritage Center Guesthouse (¥8,000-15,000/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Cafe Shizen (Tanabe) (Google 4.4)<br>🍽️ Meshiya Daikoku (Shingu) (Google 4.5)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 멧돼지 출몰. 여름 폭염+습도. 태풍 시즌(8-9월) 주의. 일부 구간 급경사.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국어 안내 자료 풍부. 한국인 가이드 일부 활동.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Kumano Kodo Japan&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_a264aef65238a56c.setContent(html_f60d97f321c67286);
+cm_936be08a097d7f92.bindPopup(pop_a264aef65238a56c);
+cm_936be08a097d7f92.bindTooltip(`<div>Kumano Kodo 8/10</div>`,{sticky:true});
+
+
+var lbl_3c848e67d38d8bca = L.marker([33.848,135.757]).addTo(map_9ec8981406cc166e);
+var icon_lbl_3c848e67d38d8bca = L.divIcon({
+    html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Kumano Kodo</div>',
+    className:'empty'
+});
+lbl_3c848e67d38d8bca.setIcon(icon_lbl_3c848e67d38d8bca);
+
+
+var cm_d9f66d8292a16769 = L.marker([36.549,30.541]).addTo(map_9ec8981406cc166e);
+var icon_cm_d9f66d8292a16769 = L.divIcon({
+    html:'<div style="width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer"></div>',
+    className:'empty'
+});
+cm_d9f66d8292a16769.setIcon(icon_cm_d9f66d8292a16769);
+var pop_e8d915e4856cd323 = L.popup({maxWidth:340});
+var html_ed1a66b5000b378b = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Lycian Way</h3>   <b>Turkey</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🥾 540km | 25-30일 | 난이도 중상<br>⛰️ 최고고도 1811m | 누적상승 22000m<br>💰 $25/day | ✈️ ~11h | 🔄경유<br>📅 3월, 4월, 5월, 10월 외 1개월<br>🏔️ 터키 리키아 해안 절벽길. 지중해 조망. 고대 리키아 유적지 연속. 터키-파란 바다.<hr style="margin:3px 0">   <i>지중해 절벽 위를 걷는 역사 여행. 파묵칼레, 크산토스 등 고대 리키아 문명 유적이 트레일 곳곳에. 물가 저렴하고 터키 사람들의 환대가 인상적.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Guesthouses along trail ($15-30/night)<br>🏨 Hotel Su (Antalya) ($50-100/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Noel Baba Restaurant (Ölüdeniz) (Google 4.3)<br>🍽️ Baba Restaurant (Kas) (Google 4.5)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 여름 극심한 폭염 (40°C+). 물 부족 구간. 독사 서식. 길 표시 불규칙. GPS 지도 필수.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 가이드 없음. 영어 가이드 일부.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Lycian Way Turkey&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_e8d915e4856cd323.setContent(html_ed1a66b5000b378b);
+cm_d9f66d8292a16769.bindPopup(pop_e8d915e4856cd323);
+cm_d9f66d8292a16769.bindTooltip(`<div>Lycian Way 8/10</div>`,{sticky:true});
+
+
+var lbl_f9a1efde72ca92d5 = L.marker([36.549,30.541]).addTo(map_9ec8981406cc166e);
+var icon_lbl_f9a1efde72ca92d5 = L.divIcon({
+    html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Lycian Way</div>',
+    className:'empty'
+});
+lbl_f9a1efde72ca92d5.setIcon(icon_lbl_f9a1efde72ca92d5);
+
+
+var cm_001b6272f34fcf64 = L.circleMarker([35.337,127.731],{
+    color:"#ffcc00",fill:true,fillColor:"#ffcc00",fillOpacity:0.85,
+    radius:14,weight:2
+}).addTo(map_9ec8981406cc166e);
+var pop_e92f7f3add3594cb = L.popup({maxWidth:340});
+var html_57e6e2fff48b786a = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Jirisan Traverse</h3>   <b>South Korea</b> | 8/10 | ✈️직항<hr style="margin:3px 0">   🥾 90km | 4-5일 | 난이도 상급<br>⛰️ 최고고도 1915m | 누적상승 7000m<br>💰 $10/day | ✈️ ~0h | ✈️직항<br>📅 4월, 5월, 10월, 11월<br>🏔️ 남한 최고봉 천왕봉(1,915m). 천 리 능선 종주. 가을 단풍+운해가 최고.<hr style="margin:3px 0">   <i>한국에서 가장 긴 능선 종주 트레킹. 성삼재에서 천왕봉까지 35km 능선. 봄 철쭉과 가을 단풍 시즌엔 환상적인 경관. 산장(대피소) 문화.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 지리산 노고단 대피소 (12,000-18,000원/night)<br>🏨 중산리 민박촌 (50,000-80,000원/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ 함양 대황식당 (산채비빔밥) (Google 4.4)<br>🍽️ 구례 화엄사 앞 식당가 (Google 4.2)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 능선 대피소 예약 필수 (성수기 3개월 전). 갑작스러운 기상 변화. 겨울 동계 장비 필수. 야생동물 주의.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국어 안내 완비. 지역 산악회 가이드 투어 다수.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Jirisan Traverse South Korea&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_e92f7f3add3594cb.setContent(html_57e6e2fff48b786a);
+cm_001b6272f34fcf64.bindPopup(pop_e92f7f3add3594cb);
+cm_001b6272f34fcf64.bindTooltip(`<div>Jirisan Traverse 8/10</div>`,{sticky:true});
+
+
+var lbl_166b91e7d3967a98 = L.marker([35.337,127.731]).addTo(map_9ec8981406cc166e);
+var icon_lbl_166b91e7d3967a98 = L.divIcon({
+    html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Jirisan Traverse</div>',
+    className:'empty'
+});
+lbl_166b91e7d3967a98.setIcon(icon_lbl_166b91e7d3967a98);
+
+
+var cm_bbf5bb1304cc7dd7 = L.circleMarker([27.229,100.161],{
+    color:"#ffcc00",fill:true,fillColor:"#ffcc00",fillOpacity:0.85,
+    radius:14,weight:2
+}).addTo(map_9ec8981406cc166e);
+var pop_db74a46f06a81d6b = L.popup({maxWidth:340});
+var html_7a235daab4435bba = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Tiger Leaping Gorge</h3>   <b>China</b> | 8/10 | ✈️직항<hr style="margin:3px 0">   🥾 30km | 2일 | 난이도 중상<br>⛰️ 최고고도 2670m | 누적상승 2000m<br>💰 $20/day | ✈️ ~4h | ✈️직항<br>📅 3월, 4월, 5월, 9월 외 2개월<br>🏔️ 세계 최대 협곡 중 하나. 금사강 3,000m 협곡. 설산 하바쉐(5,396m) 조망.<hr style="margin:3px 0">   <i>세계에서 가장 깊은 협곡 중 하나를 트레킹. 옥룡설산과 하바설산 사이의 압도적 스케일. 중국 운남성 소수민족 나시족 마을. 물가 저렴.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Halfway Guesthouse (Tiger Leaping) (CNY 60-150/night)<br>🏨 Sean&#x27;s Spring Guesthouse (CNY 80-200/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Mama&#x27;s Kitchen (Qiaotou) (Google 4.4)<br>🍽️ Halfway Guesthouse Restaurant (Google 4.3)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 낙석 위험 (협곡). 여름 우기 산사태. 일부 구간 철제 체인 잡고 이동. 고도 적응 필요.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 가이드 소수. 중국어 가이드 주류. 한국어 여행기 풍부.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Tiger Leaping Gorge China&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_db74a46f06a81d6b.setContent(html_7a235daab4435bba);
+cm_bbf5bb1304cc7dd7.bindPopup(pop_db74a46f06a81d6b);
+cm_bbf5bb1304cc7dd7.bindTooltip(`<div>Tiger Leaping Gorge 8/10</div>`,{sticky:true});
+
+
+var lbl_4a298bf4a3fcf363 = L.marker([27.229,100.161]).addTo(map_9ec8981406cc166e);
+var icon_lbl_4a298bf4a3fcf363 = L.divIcon({
+    html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Tiger Leaping Gorge</div>',
+    className:'empty'
+});
+lbl_4a298bf4a3fcf363.setIcon(icon_lbl_4a298bf4a3fcf363);
+
+
+var cm_a47dc0049eb83a4e = L.marker([29.579,35.416]).addTo(map_9ec8981406cc166e);
+var icon_cm_a47dc0049eb83a4e = L.divIcon({
+    html:'<div style="width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer"></div>',
+    className:'empty'
+});
+cm_a47dc0049eb83a4e.setIcon(icon_cm_a47dc0049eb83a4e);
+var pop_c5e75596b516a90f = L.popup({maxWidth:340});
+var html_8ce5ba19762abaac = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Wadi Rum</h3>   <b>Jordan</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🥾 30km | 2-3일 | 난이도 중급<br>⛰️ 최고고도 1754m | 누적상승 1500m<br>💰 $60/day | ✈️ ~11h | 🔄경유<br>📅 3월, 4월, 10월, 11월 외 1개월<br>🏔️ 붉은 사막 협곡. 화성 같은 사암 지형. 베두인 캠프. 별이 쏟아지는 밤하늘.<hr style="margin:3px 0">   <i>마션, 아라비아의 로렌스 촬영지. 화성과 가장 유사한 지구의 풍경. 베두인족과 함께하는 캠핑이 핵심 경험. 페트라와 연계 여행 필수.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Sun City Camp (Wadi Rum) ($80-150/night)<br>🏨 Memories Aicha Luxury Camp ($100-200/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Wadi Rum Night Luxury Camp Restaurant (Google 4.6)<br>🍽️ Captain&#x27;s Desert Camp (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 여름 극심한 폭염 (45°C+). 사막 길 분실 위험. 베두인 가이드 동반 권장. 물 충분히 휴대.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 가이드 없음. 영어-아랍어 베두인 가이드.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Wadi Rum Jordan&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_c5e75596b516a90f.setContent(html_8ce5ba19762abaac);
+cm_a47dc0049eb83a4e.bindPopup(pop_c5e75596b516a90f);
+cm_a47dc0049eb83a4e.bindTooltip(`<div>Wadi Rum 8/10</div>`,{sticky:true});
+
+
+var lbl_1cbd4353eb9b2ef9 = L.marker([29.579,35.416]).addTo(map_9ec8981406cc166e);
+var icon_lbl_1cbd4353eb9b2ef9 = L.divIcon({
+    html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Wadi Rum</div>',
+    className:'empty'
+});
+lbl_1cbd4353eb9b2ef9.setIcon(icon_lbl_1cbd4353eb9b2ef9);
+
+
+var cm_d1e47dd18aaead0f = L.marker([-29.468,29.395]).addTo(map_9ec8981406cc166e);
+var icon_cm_d1e47dd18aaead0f = L.divIcon({
+    html:'<div style="width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer"></div>',
+    className:'empty'
+});
+cm_d1e47dd18aaead0f.setIcon(icon_cm_d1e47dd18aaead0f);
+var pop_77399581f20ca0e7 = L.popup({maxWidth:340});
+var html_937af792954e0f5a = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Drakensberg Grand Traverse</h3>   <b>South Africa</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🥾 220km | 14-16일 | 난이도 상급<br>⛰️ 최고고도 3482m | 누적상승 12000m<br>💰 $30/day | ✈️ ~15h | 🔄경유<br>📅 5월, 6월, 7월, 8월 외 1개월<br>🏔️ 남아프리카 드라켄스버그 용의 산맥. 바소토 암각화. 타발레카냐봉(3,482m).<hr style="margin:3px 0">   <i>아프리카의 숨겨진 트레킹 보석. 세계에서 가장 많은 부시먼 암각화 지역. 렌터카 접근이 어려워 미개발 야생 상태 유지. 하이킹 마니아만 아는 루트.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Cathedral Peak Hotel ($120-200/night)<br>🏨 Drakensberg Gardens Resort ($80-150/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Cathedral Peak Hotel Restaurant (Google 4.3)<br>🍽️ Amphitheatre Backpackers (Google 4.2)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 번개 위험 (오후 폭풍). 갑자기 내리는 우박. 길 표시 불명확. 독사 주의. 보안 문제 (남아공 일반).</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 가이드 없음. 영어 가이드 일부.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Drakensberg Grand Traverse South Africa&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_77399581f20ca0e7.setContent(html_937af792954e0f5a);
+cm_d1e47dd18aaead0f.bindPopup(pop_77399581f20ca0e7);
+cm_d1e47dd18aaead0f.bindTooltip(`<div>Drakensberg Grand Traverse 8/10</div>`,{sticky:true});
+
+
+var lbl_2ff0807f3bee249b = L.marker([-29.468,29.395]).addTo(map_9ec8981406cc166e);
+var icon_lbl_2ff0807f3bee249b = L.divIcon({
+    html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Drakensberg Grand Traverse</div>',
+    className:'empty'
+});
+lbl_2ff0807f3bee249b.setIcon(icon_lbl_2ff0807f3bee249b);
+
+
+var cm_ba9117ac4a4ae651 = L.marker([53.068,-4.076]).addTo(map_9ec8981406cc166e);
+var icon_cm_ba9117ac4a4ae651 = L.divIcon({
+    html:'<div style="width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer"></div>',
+    className:'empty'
+});
+cm_ba9117ac4a4ae651.setIcon(icon_cm_ba9117ac4a4ae651);
+var pop_c0695daf50ef06e2 = L.popup({maxWidth:340});
+var html_3d8f8790004328b8 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Snowdon Horseshoe</h3>   <b>Wales, UK</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🥾 12km | 1일 | 난이도 중상<br>⛰️ 최고고도 1085m | 누적상승 900m<br>💰 $20/day | ✈️ ~12h | 🔄경유<br>📅 5월, 6월, 7월, 8월 외 2개월<br>🏔️ 웨일스 최고봉 스노든(1,085m). 능선 말굽형 루트. 빙하 형성 호수 리인 라스.<hr style="margin:3px 0">   <i>영국 본토에서 가장 아름다운 산행. 해양성 기후의 변화무쌍한 날씨가 매력이자 도전. 정상에 기차역과 카페가 있는 독특한 곳. 웨일스 문화 체험.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Pen-y-Pass YHA (base) (£30-60/night)<br>🏨 Snowdonia Park (Betws-y-Coed) (£80-150/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Ty Hwnt Ir Bont (Betws-y-Coed) (Google 4.7)<br>🍽️ Hafod Eryri Summit Cafe (Google 4.2)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 기상 급변 (영국 특유). 안개 속 길 분실. 겨울 결빙 위험. 방수-방풍 장비 필수.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 가이드 없음. 영어 가이드 풍부.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Snowdon Horseshoe Wales, UK&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_c0695daf50ef06e2.setContent(html_3d8f8790004328b8);
+cm_ba9117ac4a4ae651.bindPopup(pop_c0695daf50ef06e2);
+cm_ba9117ac4a4ae651.bindTooltip(`<div>Snowdon Horseshoe 8/10</div>`,{sticky:true});
+
+
+var lbl_6ecc23ae8b29c7f5 = L.marker([53.068,-4.076]).addTo(map_9ec8981406cc166e);
+var icon_lbl_6ecc23ae8b29c7f5 = L.divIcon({
+    html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Snowdon Horseshoe</div>',
+    className:'empty'
+});
+lbl_6ecc23ae8b29c7f5.setIcon(icon_lbl_6ecc23ae8b29c7f5);
+
+
+var cm_a542eec5ea774e54 = L.circleMarker([33.362,126.534],{
+    color:"#ffcc00",fill:true,fillColor:"#ffcc00",fillOpacity:0.85,
+    radius:14,weight:2
+}).addTo(map_9ec8981406cc166e);
+var pop_ce269495ec8455eb = L.popup({maxWidth:340});
+var html_eaa2b8ac80208b33 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Hallasan</h3>   <b>South Korea</b> | 8/10 | ✈️직항<hr style="margin:3px 0">   🥾 15km | 1일 | 난이도 중급<br>⛰️ 최고고도 1950m | 누적상승 1000m<br>💰 $5/day | ✈️ ~1h | ✈️직항<br>📅 4월, 5월, 10월, 11월<br>🏔️ 제주 한라산(1,950m). 백록담 화구호. 관음사-성판악 코스. 제주 고유 식생.<hr style="margin:3px 0">   <i>제주의 상징이자 남한 최고봉. 백록담 분화구 호수가 한국 자연 경관의 정점. 4월 철쭉, 10월 단풍, 겨울 설화가 각각 압도적. 제주 흑돼지 식사와 연계 필수.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 제주 신라 호텔 (200,000-500,000원/night)<br>🏨 한라산 관음사 대피소 (10,000원/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ 돔베고기 본점 (제주시) (Google 4.6)<br>🍽️ 제주 올레 시장 흑돼지 골목 (Google 4.5)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 기상 악화 시 통제. 겨울 결빙 아이젠 필수. 마지막 구간 입산 통제 시간 엄격. 물-간식 충분히 준비.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 완전 한국어 환경. 제주도 관광안내 완비.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Hallasan South Korea&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_ce269495ec8455eb.setContent(html_eaa2b8ac80208b33);
+cm_a542eec5ea774e54.bindPopup(pop_ce269495ec8455eb);
+cm_a542eec5ea774e54.bindTooltip(`<div>Hallasan 8/10</div>`,{sticky:true});
+
+
+var lbl_47d3afdc3df3cbc4 = L.marker([33.362,126.534]).addTo(map_9ec8981406cc166e);
+var icon_lbl_47d3afdc3df3cbc4 = L.divIcon({
+    html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Hallasan</div>',
+    className:'empty'
+});
+lbl_47d3afdc3df3cbc4.setIcon(icon_lbl_47d3afdc3df3cbc4);
+
+
+var cm_2502b8a1ab25974a = L.marker([60.124,6.74]).addTo(map_9ec8981406cc166e);
+var icon_cm_2502b8a1ab25974a = L.divIcon({
+    html:'<div style="width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer"></div>',
+    className:'empty'
+});
+cm_2502b8a1ab25974a.setIcon(icon_cm_2502b8a1ab25974a);
+var pop_9a6d203658f97c7f = L.popup({maxWidth:340});
+var html_2c81d528ba2497a6 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ffcc00">Trolltunga</h3>   <b>Norway</b> | 8/10 | 🔄경유<hr style="margin:3px 0">   🥾 28km | 1일 | 난이도 상급<br>⛰️ 최고고도 1180m | 누적상승 1000m<br>💰 $50/day | ✈️ ~12h | 🔄경유<br>📅 6월, 7월, 8월, 9월<br>🏔️ 노르웨이 피오르드 절벽. 트롤 혀 바위. 해발 700m 절벽 위 외팔 바위. 린에피오르드 조망.<hr style="margin:3px 0">   <i>노르웨이 SNS 명소 3대장 중 하나. 절벽 위 내밀어진 바위 사진 한 장을 위해 10시간을 걷는다. 피오르드 배경의 절경은 어떤 사진보다 실물이 훨씬 장엄.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 Trolltunga Hotel (Odda) ($100-200/night)<br>🏨 Hardanger Hotel (Ullensvang) ($150-300/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ Smeltehuset Restaurant (Odda) (Google 4.5)<br>🍽️ Eplet Bar &amp; Kjokken (Odda) (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 왕복 10-12시간 강행군. 악천후 시 탈진 위험. 초겨울~봄 결빙 위험. 가이드 동반 권장 (비가이드 사고 다수). 헤드램프 필수.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국인 가이드 없음. 노르웨이어-영어 가이드.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Trolltunga Norway&tbm=isch" target="_blank"      style="color:#ffcc00;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_9a6d203658f97c7f.setContent(html_2c81d528ba2497a6);
+cm_2502b8a1ab25974a.bindPopup(pop_9a6d203658f97c7f);
+cm_2502b8a1ab25974a.bindTooltip(`<div>Trolltunga 8/10</div>`,{sticky:true});
+
+
+var lbl_9234c23494c32162 = L.marker([60.124,6.74]).addTo(map_9ec8981406cc166e);
+var icon_lbl_9234c23494c32162 = L.divIcon({
+    html:'<div style="font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Trolltunga</div>',
+    className:'empty'
+});
+lbl_9234c23494c32162.setIcon(icon_lbl_9234c23494c32162);
+
+
+var cm_e48fe6c6a7ab55fb = L.circleMarker([37.66,126.981],{
+    color:"#ff9900",fill:true,fillColor:"#ff9900",fillOpacity:0.85,
+    radius:12,weight:2
+}).addTo(map_9ec8981406cc166e);
+var pop_7804b505fdc9f4d6 = L.popup({maxWidth:340});
+var html_8f023c4025fe2dc2 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff9900">Bukhansan</h3>   <b>South Korea</b> | 7/10 | ✈️직항<hr style="margin:3px 0">   🥾 10km | 1일 | 난이도 중급<br>⛰️ 최고고도 836m | 누적상승 700m<br>💰 $3/day | ✈️ ~0h | ✈️직항<br>📅 4월, 5월, 9월, 10월 외 1개월<br>🏔️ 서울 북한산(836m). 도심 속 화강암 암릉. 인수봉 클라이밍 메카. 도봉산 연계.<hr style="margin:3px 0">   <i>세계에서 단위면적당 탐방객이 가장 많은 국립공원. 서울 도심에서 1시간 내에 즐길 수 있는 수준급 산행. 백운대 정상에서 서울 전경 조망이 압권.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 그라비티 서울 판교 (인근) (150,000-300,000원/night)<br>🏨 은평한옥마을 게스트하우스 (50,000-100,000원/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ 북한산 입구 도토리 묵밥 골목 (Google 4.3)<br>🍽️ 삼각산식당 (수유역) (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 암릉 구간 미끄럼. 겨울 결빙. 주말 극심한 인파. 매점 없음 (물-간식 필수).</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 완전 한국어 환경. 산악 동호회 다수.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Bukhansan South Korea&tbm=isch" target="_blank"      style="color:#ff9900;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_7804b505fdc9f4d6.setContent(html_8f023c4025fe2dc2);
+cm_e48fe6c6a7ab55fb.bindPopup(pop_7804b505fdc9f4d6);
+cm_e48fe6c6a7ab55fb.bindTooltip(`<div>Bukhansan 7/10</div>`,{sticky:true});
+
+
+var lbl_d5a212aed1916ea8 = L.marker([37.66,126.981]).addTo(map_9ec8981406cc166e);
+var icon_lbl_d5a212aed1916ea8 = L.divIcon({
+    html:'<div style="font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Bukhansan</div>',
+    className:'empty'
+});
+lbl_d5a212aed1916ea8.setIcon(icon_lbl_d5a212aed1916ea8);
+
+
+var cm_db42de1987f96ef1 = L.circleMarker([38.12,128.465],{
+    color:"#ff9900",fill:true,fillColor:"#ff9900",fillOpacity:0.85,
+    radius:12,weight:2
+}).addTo(map_9ec8981406cc166e);
+var pop_f2b60735c98a0d10 = L.popup({maxWidth:340});
+var html_cdef68bc0495d92d = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff9900">Seoraksan</h3>   <b>South Korea</b> | 7/10 | ✈️직항<hr style="margin:3px 0">   🥾 25km | 2일 | 난이도 중상<br>⛰️ 최고고도 1708m | 누적상승 2200m<br>💰 $8/day | ✈️ ~0h | ✈️직항<br>📅 5월, 9월, 10월<br>🏔️ 남한 3대 명산. 공룡능선, 울산바위. 설악산 대청봉(1,708m). 단풍 전국 1위.<hr style="margin:3px 0">   <i>한국 가을 단풍의 성지. 공룡능선의 아찔한 암릉이 설악산의 하이라이트. 10월 초 단풍 절정기에는 한국 최고의 산악 경관을 보여줌. 속초 해산물과 연계 필수.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 설악 대피소 (대청봉) (10,000-15,000원/night)<br>🏨 속초 한화리조트 (100,000-200,000원/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ 속초 중앙시장 닭강정 (Google 4.6)<br>🍽️ 영금정 물회 (속초) (Google 4.5)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 공룡능선 암릉 위험. 가을 성수기 극심한 탐방 집중. 케이블카 이용 시 대기 2시간. 하산 통제 시간 엄수.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 완전 한국어 환경.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Seoraksan South Korea&tbm=isch" target="_blank"      style="color:#ff9900;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_f2b60735c98a0d10.setContent(html_cdef68bc0495d92d);
+cm_db42de1987f96ef1.bindPopup(pop_f2b60735c98a0d10);
+cm_db42de1987f96ef1.bindTooltip(`<div>Seoraksan 7/10</div>`,{sticky:true});
+
+
+var lbl_18e2215556ab38d9 = L.marker([38.12,128.465]).addTo(map_9ec8981406cc166e);
+var icon_lbl_18e2215556ab38d9 = L.divIcon({
+    html:'<div style="font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Seoraksan</div>',
+    className:'empty'
+});
+lbl_18e2215556ab38d9.setIcon(icon_lbl_18e2215556ab38d9);
+
+
+var cm_4be2cfecc082290d = L.circleMarker([35.361,138.731],{
+    color:"#ff9900",fill:true,fillColor:"#ff9900",fillOpacity:0.85,
+    radius:12,weight:2
+}).addTo(map_9ec8981406cc166e);
+var pop_9873f196f53c43f6 = L.popup({maxWidth:340});
+var html_8d75646534a82ad4 = $(`<div style="width:100%;height:100%"><div style="width:320px;font-family:sans-serif;font-size:11px;max-height:450px;overflow-y:auto">   <h3 style="margin:0;color:#ff9900">Mount Fuji</h3>   <b>Japan</b> | 7/10 | ✈️직항<hr style="margin:3px 0">   🥾 14km | 1-2일 | 난이도 중급<br>⛰️ 최고고도 3776m | 누적상승 1450m<br>💰 $25/day | ✈️ ~2h | ✈️직항<br>📅 7월, 8월<br>🏔️ 일본 최고봉 후지산(3,776m). 완벽한 원뿔형 성층화산. 고사합 등산로.<hr style="margin:3px 0">   <i>일본의 상징. 대부분의 사람이 한 번은 올라야 하는 버킷리스트. 정상 크레이터 순례(오하치메구리)와 일출 감상이 하이라이트. 하지만 성수기엔 인산인해.</i>   <div style='margin-top:4px;color:#aaa;font-size:10px'>🏨 후지산 8합목 산장 (야마구치야) (¥10,000-15,000/night)<br>🏨 후지야마 호텔 (후지요시다) (¥8,000-20,000/night)</div><div style='margin-top:4px;color:#aaa;font-size:10px'>🍽️ 五合目 레스토랑 (후지스바루라인) (Google 4.1)<br>🍽️ Fujiyama Cookee (후지요시다) (Google 4.4)</div><div style='margin-top:4px;color:#ffcc00;font-size:10px'>⚠️ 고산병 주의 (3,776m). 7-8월만 공식 개방. 성수기 입산료 ¥2,000. 탄환등산 금지 (야간 등반 규제). 낙석 주의. 갑작스러운 기상 변화.</div><div style='margin-top:4px;color:#00ff88;font-size:10px'>🇰🇷 한국어 가이드북 풍부. 일본 현지 한인 투어 다수.</div><div style="margin-top:5px;text-align:center">     <a href="https://www.google.com/search?q=Mount Fuji Japan&tbm=isch" target="_blank"      style="color:#ff9900;font-size:11px">📷 사진 보기 (Google Images)</a></div></div></div>`)[0];
+pop_9873f196f53c43f6.setContent(html_8d75646534a82ad4);
+cm_4be2cfecc082290d.bindPopup(pop_9873f196f53c43f6);
+cm_4be2cfecc082290d.bindTooltip(`<div>Mount Fuji 7/10</div>`,{sticky:true});
+
+
+var lbl_089eaa3dbe3a2177 = L.marker([35.361,138.731]).addTo(map_9ec8981406cc166e);
+var icon_lbl_089eaa3dbe3a2177 = L.divIcon({
+    html:'<div style="font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px">Mount Fuji</div>',
+    className:'empty'
+});
+lbl_089eaa3dbe3a2177.setIcon(icon_lbl_089eaa3dbe3a2177);
+
 </script>
 </body>
-<script>
-    
-    
-            var map_1597af69a22b5b06b8e187d01f0a165c = L.map(
-                "map_1597af69a22b5b06b8e187d01f0a165c",
-                {
-                    center: [20.0, 30.0],
-                    crs: L.CRS.EPSG3857,
-                    ...{
-  "zoom": 2,
-  "zoomControl": true,
-  "preferCanvas": false,
-}
-
-                }
-            );
-
-            
-
-        
-    
-            var tile_layer_d88720fd4f60264b6268f69cdd13d0f0 = L.tileLayer(
-                "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
-                {
-  "minZoom": 0,
-  "maxZoom": 20,
-  "maxNativeZoom": 20,
-  "noWrap": false,
-  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
-  "subdomains": "abcd",
-  "detectRetina": false,
-  "tms": false,
-  "opacity": 1,
-}
-
-            );
-        
-    
-            tile_layer_d88720fd4f60264b6268f69cdd13d0f0.addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-            var circle_marker_17e6c4404dc8b65495e3633951224107 = L.circleMarker(
-                [28.6, 83.82],
-                {"bubblingMouseEvents": true, "color": "#ff0055", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff0055", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 18.0, "stroke": true, "weight": 2}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-        var popup_ece3ff1b880a335e3d0ae9dd1c553bce = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_0f201d13554377fa6e7c92070820651f = $(`<div id="html_0f201d13554377fa6e7c92070820651f" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🥾 Annapurna Circuit</h3><b>Nepal</b> | 10/10     <hr style="margin:3px 0"><i>5,416m 토릉라 패스. 360도 히말라야</i></div></div>`)[0];
-                popup_ece3ff1b880a335e3d0ae9dd1c553bce.setContent(html_0f201d13554377fa6e7c92070820651f);
-            
-        
-
-        circle_marker_17e6c4404dc8b65495e3633951224107.bindPopup(popup_ece3ff1b880a335e3d0ae9dd1c553bce)
-        ;
-
-        
-    
-    
-            circle_marker_17e6c4404dc8b65495e3633951224107.bindTooltip(
-                `<div>
-                     🥾 Annapurna Circuit 10/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_2c64a0954d7c22d308e4bcf362ba90ad = L.marker(
-                [28.6, 83.82],
-                {
-}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-            var div_icon_0e54b3b3c6f5a2a3d2eab0f32742168c = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ff0055;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eAnnapurna Circuit\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_2c64a0954d7c22d308e4bcf362ba90ad.setIcon(div_icon_0e54b3b3c6f5a2a3d2eab0f32742168c);
-            
-    
-            var circle_marker_44d1eb39ac42904bc108b39c80a23410 = L.circleMarker(
-                [28.0, 86.85],
-                {"bubblingMouseEvents": true, "color": "#ff0055", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff0055", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 18.0, "stroke": true, "weight": 2}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-        var popup_1f6d6f21ef10093e717368a6ab8b2323 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_f81428b16e5f7b8dca8dcb8de7556db2 = $(`<div id="html_f81428b16e5f7b8dca8dcb8de7556db2" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🥾 Everest Base Camp</h3><b>Nepal</b> | 10/10     <hr style="margin:3px 0"><i>세계 최고봉을 눈앞에서</i></div></div>`)[0];
-                popup_1f6d6f21ef10093e717368a6ab8b2323.setContent(html_f81428b16e5f7b8dca8dcb8de7556db2);
-            
-        
-
-        circle_marker_44d1eb39ac42904bc108b39c80a23410.bindPopup(popup_1f6d6f21ef10093e717368a6ab8b2323)
-        ;
-
-        
-    
-    
-            circle_marker_44d1eb39ac42904bc108b39c80a23410.bindTooltip(
-                `<div>
-                     🥾 Everest Base Camp 10/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_ced83b404792f5ab95f4481fcdb90a00 = L.marker(
-                [28.0, 86.85],
-                {
-}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-            var div_icon_fbeff580d84bad680e7af379779fc2cf = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ff0055;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eEverest Base Camp\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_ced83b404792f5ab95f4481fcdb90a00.setIcon(div_icon_fbeff580d84bad680e7af379779fc2cf);
-            
-    
-            var circle_marker_d90e265484567a8ca9d028a77d26f6b7 = L.circleMarker(
-                [35.88, 76.51],
-                {"bubblingMouseEvents": true, "color": "#ff0055", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff0055", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 18.0, "stroke": true, "weight": 2}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-        var popup_5b23bc5a85dbdf32c18afe5811cfe2ab = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_7659942c50fa764458d25d414d64d391 = $(`<div id="html_7659942c50fa764458d25d414d64d391" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🥾 K2 Base Camp</h3><b>Pakistan</b> | 10/10     <hr style="margin:3px 0"><i>발토로 빙하. K2 병풍</i></div></div>`)[0];
-                popup_5b23bc5a85dbdf32c18afe5811cfe2ab.setContent(html_7659942c50fa764458d25d414d64d391);
-            
-        
-
-        circle_marker_d90e265484567a8ca9d028a77d26f6b7.bindPopup(popup_5b23bc5a85dbdf32c18afe5811cfe2ab)
-        ;
-
-        
-    
-    
-            circle_marker_d90e265484567a8ca9d028a77d26f6b7.bindTooltip(
-                `<div>
-                     🥾 K2 Base Camp 10/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_2f7493f2d76a35b2719216d8b1280263 = L.marker(
-                [35.88, 76.51],
-                {
-}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-            var div_icon_18dafd03f5e836ca0bbf456839f1f601 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ff0055;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eK2 Base Camp\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_2f7493f2d76a35b2719216d8b1280263.setIcon(div_icon_18dafd03f5e836ca0bbf456839f1f601);
-            
-    
-            var circle_marker_bf16e2cbcc1876b00f5209178cb7a86f = L.circleMarker(
-                [-50.94, -73.41],
-                {"bubblingMouseEvents": true, "color": "#ff0055", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff0055", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 18.0, "stroke": true, "weight": 2}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-        var popup_dbfaae994de452bc1d5a45b34acbeba9 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_224edddf6da2f54d0c9e36955571014c = $(`<div id="html_224edddf6da2f54d0c9e36955571014c" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🥾 Torres del Paine W</h3><b>Chile</b> | 10/10     <hr style="margin:3px 0"><i>파타고니아 삼탑+빙하+호수</i></div></div>`)[0];
-                popup_dbfaae994de452bc1d5a45b34acbeba9.setContent(html_224edddf6da2f54d0c9e36955571014c);
-            
-        
-
-        circle_marker_bf16e2cbcc1876b00f5209178cb7a86f.bindPopup(popup_dbfaae994de452bc1d5a45b34acbeba9)
-        ;
-
-        
-    
-    
-            circle_marker_bf16e2cbcc1876b00f5209178cb7a86f.bindTooltip(
-                `<div>
-                     🥾 Torres del Paine W 10/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_4ac5cbdeda31c8637b74cb258279c119 = L.marker(
-                [-50.94, -73.41],
-                {
-}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-            var div_icon_0deb31e5952f19fcece81bd7bfaf0db7 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ff0055;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eTorres del Paine W\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_4ac5cbdeda31c8637b74cb258279c119.setIcon(div_icon_0deb31e5952f19fcece81bd7bfaf0db7);
-            
-    
-            var circle_marker_4efbdfebb15d8c802b29a8907d8aa75b = L.circleMarker(
-                [-13.16, -72.55],
-                {"bubblingMouseEvents": true, "color": "#ff0055", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff0055", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 18.0, "stroke": true, "weight": 2}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-        var popup_ff870cca9cba08adb4a3a6dee6f6060c = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_7215ac39a8daa8113bc123d669f7b44f = $(`<div id="html_7215ac39a8daa8113bc123d669f7b44f" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🥾 Inca Trail</h3><b>Peru</b> | 10/10     <hr style="margin:3px 0"><i>태양의 문에서 마추픽추 등장</i></div></div>`)[0];
-                popup_ff870cca9cba08adb4a3a6dee6f6060c.setContent(html_7215ac39a8daa8113bc123d669f7b44f);
-            
-        
-
-        circle_marker_4efbdfebb15d8c802b29a8907d8aa75b.bindPopup(popup_ff870cca9cba08adb4a3a6dee6f6060c)
-        ;
-
-        
-    
-    
-            circle_marker_4efbdfebb15d8c802b29a8907d8aa75b.bindTooltip(
-                `<div>
-                     🥾 Inca Trail 10/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_b6fd74925372f913385614d9fb1ebf1b = L.marker(
-                [-13.16, -72.55],
-                {
-}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-            var div_icon_ea74a9ba21138b745d10abebbd304512 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ff0055;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eInca Trail\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_b6fd74925372f913385614d9fb1ebf1b.setIcon(div_icon_ea74a9ba21138b745d10abebbd304512);
-            
-    
-            var circle_marker_5e4d8a651edbf901eb395ed07702ddc8 = L.circleMarker(
-                [-10.26, -76.9],
-                {"bubblingMouseEvents": true, "color": "#ff0055", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff0055", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 18.0, "stroke": true, "weight": 2}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-        var popup_c2c2cd763657691696e6bb13a8bad49e = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_e183449d7b9b0c38f7c5f3254f74c9e6 = $(`<div id="html_e183449d7b9b0c38f7c5f3254f74c9e6" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🥾 Huayhuash Circuit</h3><b>Peru</b> | 10/10     <hr style="margin:3px 0"><i>안데스 터키색 빙하호</i></div></div>`)[0];
-                popup_c2c2cd763657691696e6bb13a8bad49e.setContent(html_e183449d7b9b0c38f7c5f3254f74c9e6);
-            
-        
-
-        circle_marker_5e4d8a651edbf901eb395ed07702ddc8.bindPopup(popup_c2c2cd763657691696e6bb13a8bad49e)
-        ;
-
-        
-    
-    
-            circle_marker_5e4d8a651edbf901eb395ed07702ddc8.bindTooltip(
-                `<div>
-                     🥾 Huayhuash Circuit 10/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_a1227f667408fbaff25c9f5f9281fb90 = L.marker(
-                [-10.26, -76.9],
-                {
-}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-            var div_icon_d2572dbab29ed4c10472e43cff29c556 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ff0055;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eHuayhuash Circuit\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_a1227f667408fbaff25c9f5f9281fb90.setIcon(div_icon_d2572dbab29ed4c10472e43cff29c556);
-            
-    
-            var circle_marker_f9f6e31c2b728838c6874d049b3c657a = L.circleMarker(
-                [45.83, 6.87],
-                {"bubblingMouseEvents": true, "color": "#ff0055", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff0055", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 18.0, "stroke": true, "weight": 2}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-        var popup_1762c5133a476f881871b5cff296f884 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_c68af4880d98d64c8f711f7785935ee4 = $(`<div id="html_c68af4880d98d64c8f711f7785935ee4" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🥾 Tour du Mont Blanc</h3><b>France/Italy/CH</b> | 10/10     <hr style="margin:3px 0"><i>3개국 종주. 알프스 목가</i></div></div>`)[0];
-                popup_1762c5133a476f881871b5cff296f884.setContent(html_c68af4880d98d64c8f711f7785935ee4);
-            
-        
-
-        circle_marker_f9f6e31c2b728838c6874d049b3c657a.bindPopup(popup_1762c5133a476f881871b5cff296f884)
-        ;
-
-        
-    
-    
-            circle_marker_f9f6e31c2b728838c6874d049b3c657a.bindTooltip(
-                `<div>
-                     🥾 Tour du Mont Blanc 10/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_d547066f3d02d5ca1208c5f1eb46bb47 = L.marker(
-                [45.83, 6.87],
-                {
-}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-            var div_icon_1c2669f1485108718b03252a47b9ee0e = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ff0055;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eTour du Mont Blanc\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_d547066f3d02d5ca1208c5f1eb46bb47.setIcon(div_icon_1c2669f1485108718b03252a47b9ee0e);
-            
-    
-            var circle_marker_f7ce544a27adf7dcd7c6efbd6dc37e90 = L.circleMarker(
-                [-49.27, -73.04],
-                {"bubblingMouseEvents": true, "color": "#00ff88", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#00ff88", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.2, "stroke": true, "weight": 2}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-        var popup_15343bcbfe7b7843c74adab64b5bf715 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_c6171772c48a859a3ba666770436721d = $(`<div id="html_c6171772c48a859a3ba666770436721d" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🥾 Fitz Roy</h3><b>Argentina</b> | 9/10     <hr style="margin:3px 0"><i>일출에 붉게 물드는 화강암 첨봉</i></div></div>`)[0];
-                popup_15343bcbfe7b7843c74adab64b5bf715.setContent(html_c6171772c48a859a3ba666770436721d);
-            
-        
-
-        circle_marker_f7ce544a27adf7dcd7c6efbd6dc37e90.bindPopup(popup_15343bcbfe7b7843c74adab64b5bf715)
-        ;
-
-        
-    
-    
-            circle_marker_f7ce544a27adf7dcd7c6efbd6dc37e90.bindTooltip(
-                `<div>
-                     🥾 Fitz Roy 9/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_e0f9d2be1a0011940824c10bc717f735 = L.marker(
-                [-49.27, -73.04],
-                {
-}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-            var div_icon_d41fdde60f44f55f93205db1dded9469 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eFitz Roy\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_e0f9d2be1a0011940824c10bc717f735.setIcon(div_icon_d41fdde60f44f55f93205db1dded9469);
-            
-    
-            var circle_marker_f8235a75a5dea5e32d333f130f03e4e6 = L.circleMarker(
-                [-3.08, 37.35],
-                {"bubblingMouseEvents": true, "color": "#00ff88", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#00ff88", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.2, "stroke": true, "weight": 2}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-        var popup_5b5b8ae527718b673adb83739fddf13a = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_49114e142b5fdf7542e30a9a3453dd96 = $(`<div id="html_49114e142b5fdf7542e30a9a3453dd96" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🥾 Kilimanjaro</h3><b>Tanzania</b> | 9/10     <hr style="margin:3px 0"><i>아프리카 최고봉 5,895m 도보 등정</i></div></div>`)[0];
-                popup_5b5b8ae527718b673adb83739fddf13a.setContent(html_49114e142b5fdf7542e30a9a3453dd96);
-            
-        
-
-        circle_marker_f8235a75a5dea5e32d333f130f03e4e6.bindPopup(popup_5b5b8ae527718b673adb83739fddf13a)
-        ;
-
-        
-    
-    
-            circle_marker_f8235a75a5dea5e32d333f130f03e4e6.bindTooltip(
-                `<div>
-                     🥾 Kilimanjaro 9/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_5be9d1f7de784dcc2f60a80ffa66c59c = L.marker(
-                [-3.08, 37.35],
-                {
-}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-            var div_icon_af0c8ca85dbc03e3301e3556872cbae2 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eKilimanjaro\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_5be9d1f7de784dcc2f60a80ffa66c59c.setIcon(div_icon_af0c8ca85dbc03e3301e3556872cbae2);
-            
-    
-            var circle_marker_8cccac7b60cc509c8198e3e296169224 = L.circleMarker(
-                [42.15, 9.1],
-                {"bubblingMouseEvents": true, "color": "#00ff88", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#00ff88", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.2, "stroke": true, "weight": 2}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-        var popup_975ac294efa44c18f90742c49b50106b = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_3a9ff9a56fc09350d96d22f637e1b97a = $(`<div id="html_3a9ff9a56fc09350d96d22f637e1b97a" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🥾 GR20 Corsica</h3><b>France</b> | 9/10     <hr style="margin:3px 0"><i>유럽 가장 험난한 장거리 트레일</i></div></div>`)[0];
-                popup_975ac294efa44c18f90742c49b50106b.setContent(html_3a9ff9a56fc09350d96d22f637e1b97a);
-            
-        
-
-        circle_marker_8cccac7b60cc509c8198e3e296169224.bindPopup(popup_975ac294efa44c18f90742c49b50106b)
-        ;
-
-        
-    
-    
-            circle_marker_8cccac7b60cc509c8198e3e296169224.bindTooltip(
-                `<div>
-                     🥾 GR20 Corsica 9/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_e101c7704a1f72d4f9e012e46fcd9f95 = L.marker(
-                [42.15, 9.1],
-                {
-}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-            var div_icon_20abcc423543e36d1da7c3126d2d5066 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eGR20 Corsica\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_e101c7704a1f72d4f9e012e46fcd9f95.setIcon(div_icon_20abcc423543e36d1da7c3126d2d5066);
-            
-    
-            var circle_marker_83ac81d09b39a307ddc970f34d56d4d4 = L.circleMarker(
-                [46.54, 12.14],
-                {"bubblingMouseEvents": true, "color": "#00ff88", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#00ff88", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.2, "stroke": true, "weight": 2}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-        var popup_6e495ac24599579eb7e31b60ef36703f = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_cdfabb7fde7ad116032a6701e51ac971 = $(`<div id="html_cdfabb7fde7ad116032a6701e51ac971" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🥾 Dolomites Alta Via</h3><b>Italy</b> | 9/10     <hr style="margin:3px 0"><i>톱니 석회암+산장(리푸지오)</i></div></div>`)[0];
-                popup_6e495ac24599579eb7e31b60ef36703f.setContent(html_cdfabb7fde7ad116032a6701e51ac971);
-            
-        
-
-        circle_marker_83ac81d09b39a307ddc970f34d56d4d4.bindPopup(popup_6e495ac24599579eb7e31b60ef36703f)
-        ;
-
-        
-    
-    
-            circle_marker_83ac81d09b39a307ddc970f34d56d4d4.bindTooltip(
-                `<div>
-                     🥾 Dolomites Alta Via 9/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_ca176d603ed92f3bcc98b9b61c710607 = L.marker(
-                [46.54, 12.14],
-                {
-}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-            var div_icon_cd4e7c62a1548f4ae8b14d4154fb146e = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eDolomites Alta Via\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_ca176d603ed92f3bcc98b9b61c710607.setIcon(div_icon_cd4e7c62a1548f4ae8b14d4154fb146e);
-            
-    
-            var circle_marker_3a65d9c8272196c32c46471ae15da850 = L.circleMarker(
-                [-44.87, 167.92],
-                {"bubblingMouseEvents": true, "color": "#00ff88", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#00ff88", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.2, "stroke": true, "weight": 2}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-        var popup_ec94a14e7b4b1bf31241a83f4e03e5a5 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_358c6b38fd0c076fb0d8002bb25f34f5 = $(`<div id="html_358c6b38fd0c076fb0d8002bb25f34f5" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🥾 Milford Track</h3><b>New Zealand</b> | 9/10     <hr style="margin:3px 0"><i>세상에서 가장 아름다운 산책로</i></div></div>`)[0];
-                popup_ec94a14e7b4b1bf31241a83f4e03e5a5.setContent(html_358c6b38fd0c076fb0d8002bb25f34f5);
-            
-        
-
-        circle_marker_3a65d9c8272196c32c46471ae15da850.bindPopup(popup_ec94a14e7b4b1bf31241a83f4e03e5a5)
-        ;
-
-        
-    
-    
-            circle_marker_3a65d9c8272196c32c46471ae15da850.bindTooltip(
-                `<div>
-                     🥾 Milford Track 9/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_c25cb63f35b31a88358390de0fcceef4 = L.marker(
-                [-44.87, 167.92],
-                {
-}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-            var div_icon_47eb6666cd820056143a50bf13f832fb = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eMilford Track\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_c25cb63f35b31a88358390de0fcceef4.setIcon(div_icon_47eb6666cd820056143a50bf13f832fb);
-            
-    
-            var circle_marker_1d6bf12131a38bb4dc84b64d6476ec25 = L.circleMarker(
-                [63.93, -19.15],
-                {"bubblingMouseEvents": true, "color": "#00ff88", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#00ff88", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.2, "stroke": true, "weight": 2}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-        var popup_8b667762b65e45e51019f7235a66a147 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_5a8471cedc99c05d0caf7991f75b861e = $(`<div id="html_5a8471cedc99c05d0caf7991f75b861e" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🥾 Laugavegur</h3><b>Iceland</b> | 9/10     <hr style="margin:3px 0"><i>외계 행성급 유문암+빙하+온천</i></div></div>`)[0];
-                popup_8b667762b65e45e51019f7235a66a147.setContent(html_5a8471cedc99c05d0caf7991f75b861e);
-            
-        
-
-        circle_marker_1d6bf12131a38bb4dc84b64d6476ec25.bindPopup(popup_8b667762b65e45e51019f7235a66a147)
-        ;
-
-        
-    
-    
-            circle_marker_1d6bf12131a38bb4dc84b64d6476ec25.bindTooltip(
-                `<div>
-                     🥾 Laugavegur 9/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_53fdc44b84e20a3c25cfe8f1fe589f7b = L.marker(
-                [63.93, -19.15],
-                {
-}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-            var div_icon_21f5e56d3d4f7848823c0a2b9752dcd3 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eLaugavegur\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_53fdc44b84e20a3c25cfe8f1fe589f7b.setIcon(div_icon_21f5e56d3d4f7848823c0a2b9752dcd3);
-            
-    
-            var circle_marker_1464a03893a92506def7af539d6720e9 = L.circleMarker(
-                [28.55, 84.56],
-                {"bubblingMouseEvents": true, "color": "#00ff88", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#00ff88", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.2, "stroke": true, "weight": 2}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-        var popup_6007fbc6643259f7f3cb4dba39069740 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_c3f11c06132f366676884b495e9ce40c = $(`<div id="html_c3f11c06132f366676884b495e9ce40c" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🥾 Manaslu Circuit</h3><b>Nepal</b> | 9/10     <hr style="margin:3px 0"><i>안나푸르나 한적한 쌍둥이</i></div></div>`)[0];
-                popup_6007fbc6643259f7f3cb4dba39069740.setContent(html_c3f11c06132f366676884b495e9ce40c);
-            
-        
-
-        circle_marker_1464a03893a92506def7af539d6720e9.bindPopup(popup_6007fbc6643259f7f3cb4dba39069740)
-        ;
-
-        
-    
-    
-            circle_marker_1464a03893a92506def7af539d6720e9.bindTooltip(
-                `<div>
-                     🥾 Manaslu Circuit 9/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_504bcae74203ef262c50dda246f540af = L.marker(
-                [28.55, 84.56],
-                {
-}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-            var div_icon_ce92ddb199733ca3b8b462c7c3b0272b = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eManaslu Circuit\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_504bcae74203ef262c50dda246f540af.setIcon(div_icon_ce92ddb199733ca3b8b462c7c3b0272b);
-            
-    
-            var circle_marker_8752fd157364dc25e0f16ff7ffb01467 = L.circleMarker(
-                [37.74, -119.57],
-                {"bubblingMouseEvents": true, "color": "#00ff88", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#00ff88", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.2, "stroke": true, "weight": 2}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-        var popup_b3434f6fadbd6a8d31bf40d3eaa52012 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_9fe789046ada777db61150f956186d2a = $(`<div id="html_9fe789046ada777db61150f956186d2a" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🥾 John Muir Trail</h3><b>USA</b> | 9/10     <hr style="margin:3px 0"><i>시에라네바다 340km 종주</i></div></div>`)[0];
-                popup_b3434f6fadbd6a8d31bf40d3eaa52012.setContent(html_9fe789046ada777db61150f956186d2a);
-            
-        
-
-        circle_marker_8752fd157364dc25e0f16ff7ffb01467.bindPopup(popup_b3434f6fadbd6a8d31bf40d3eaa52012)
-        ;
-
-        
-    
-    
-            circle_marker_8752fd157364dc25e0f16ff7ffb01467.bindTooltip(
-                `<div>
-                     🥾 John Muir Trail 9/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_81e94d7da794b8e85db5ebe89d89a9bf = L.marker(
-                [37.74, -119.57],
-                {
-}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-            var div_icon_2bcb3a813e79a76b36a85398e3ff1a64 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eJohn Muir Trail\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_81e94d7da794b8e85db5ebe89d89a9bf.setIcon(div_icon_2bcb3a813e79a76b36a85398e3ff1a64);
-            
-    
-            var circle_marker_c2b4bd9ddaca1b562d2f315f43c97caf = L.circleMarker(
-                [27.49, 89.36],
-                {"bubblingMouseEvents": true, "color": "#00ff88", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#00ff88", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.2, "stroke": true, "weight": 2}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-        var popup_fb351e1b838f9669d89aeff7f87d11e0 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_779487da6d8c15b461630c04f988beb6 = $(`<div id="html_779487da6d8c15b461630c04f988beb6" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🥾 Tiger's Nest</h3><b>Bhutan</b> | 9/10     <hr style="margin:3px 0"><i>절벽 위 사원. 히말라야 왕국</i></div></div>`)[0];
-                popup_fb351e1b838f9669d89aeff7f87d11e0.setContent(html_779487da6d8c15b461630c04f988beb6);
-            
-        
-
-        circle_marker_c2b4bd9ddaca1b562d2f315f43c97caf.bindPopup(popup_fb351e1b838f9669d89aeff7f87d11e0)
-        ;
-
-        
-    
-    
-            circle_marker_c2b4bd9ddaca1b562d2f315f43c97caf.bindTooltip(
-                `<div>
-                     🥾 Tiger's Nest 9/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_3c803e8139957916eeaa80381b03ee24 = L.marker(
-                [27.49, 89.36],
-                {
-}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-            var div_icon_79233a049681313ff6fdb46d010cc7fa = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eTiger\u0027s Nest\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_3c803e8139957916eeaa80381b03ee24.setIcon(div_icon_79233a049681313ff6fdb46d010cc7fa);
-            
-    
-            var circle_marker_1200c6c5de50881e6633c56515ad6836 = L.circleMarker(
-                [22.17, -159.67],
-                {"bubblingMouseEvents": true, "color": "#00ff88", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#00ff88", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.2, "stroke": true, "weight": 2}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-        var popup_9e93140b878daa81ac06dd73b8c93fb7 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_965b99626e9c1addc39f24228555f1b0 = $(`<div id="html_965b99626e9c1addc39f24228555f1b0" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🥾 Na Pali Kalalau</h3><b>USA (Hawaii)</b> | 9/10     <hr style="margin:3px 0"><i>카우아이 절벽 야생 해안</i></div></div>`)[0];
-                popup_9e93140b878daa81ac06dd73b8c93fb7.setContent(html_965b99626e9c1addc39f24228555f1b0);
-            
-        
-
-        circle_marker_1200c6c5de50881e6633c56515ad6836.bindPopup(popup_9e93140b878daa81ac06dd73b8c93fb7)
-        ;
-
-        
-    
-    
-            circle_marker_1200c6c5de50881e6633c56515ad6836.bindTooltip(
-                `<div>
-                     🥾 Na Pali Kalalau 9/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_0ff9785ac9d7ef1977d81cc5fc57a7a4 = L.marker(
-                [22.17, -159.67],
-                {
-}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-            var div_icon_b45c030bc11d22337a4c8b7e4c2bcc97 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eNa Pali Kalalau\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_0ff9785ac9d7ef1977d81cc5fc57a7a4.setIcon(div_icon_b45c030bc11d22337a4c8b7e4c2bcc97);
-            
-    
-            var circle_marker_7bf66c7548216fc185bf5e87b9af0d2f = L.circleMarker(
-                [33.84, 135.77],
-                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-        var popup_594633c1e65262d762aa1588519ee3c2 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_298c927f1b28f78d5a642f863dbd3c21 = $(`<div id="html_298c927f1b28f78d5a642f863dbd3c21" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🥾 Kumano Kodo</h3><b>Japan</b> | 8/10     <hr style="margin:3px 0"><i>유네스코 고대 순례길. 온천 료칸</i></div></div>`)[0];
-                popup_594633c1e65262d762aa1588519ee3c2.setContent(html_298c927f1b28f78d5a642f863dbd3c21);
-            
-        
-
-        circle_marker_7bf66c7548216fc185bf5e87b9af0d2f.bindPopup(popup_594633c1e65262d762aa1588519ee3c2)
-        ;
-
-        
-    
-    
-            circle_marker_7bf66c7548216fc185bf5e87b9af0d2f.bindTooltip(
-                `<div>
-                     🥾 Kumano Kodo 8/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_9561c2cdf073fa8cd0579011ec1c2330 = L.marker(
-                [33.84, 135.77],
-                {
-}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-            var div_icon_f2c341e3f4c5818246e0bbb568d6ad88 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eKumano Kodo\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_9561c2cdf073fa8cd0579011ec1c2330.setIcon(div_icon_f2c341e3f4c5818246e0bbb568d6ad88);
-            
-    
-            var circle_marker_65919d8befcb397a24f6bb1536a61542 = L.circleMarker(
-                [35.36, 138.73],
-                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-        var popup_f2821528450f1ee83da86cae69ae2b06 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_1918b1c163b55b74dcc3725a766880eb = $(`<div id="html_1918b1c163b55b74dcc3725a766880eb" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🥾 Mt Fuji</h3><b>Japan</b> | 8/10     <hr style="margin:3px 0"><i>정상 일출 고라이코</i></div></div>`)[0];
-                popup_f2821528450f1ee83da86cae69ae2b06.setContent(html_1918b1c163b55b74dcc3725a766880eb);
-            
-        
-
-        circle_marker_65919d8befcb397a24f6bb1536a61542.bindPopup(popup_f2821528450f1ee83da86cae69ae2b06)
-        ;
-
-        
-    
-    
-            circle_marker_65919d8befcb397a24f6bb1536a61542.bindTooltip(
-                `<div>
-                     🥾 Mt Fuji 8/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_fb4966439b0101644b58165db21ccd33 = L.marker(
-                [35.36, 138.73],
-                {
-}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-            var div_icon_9a42b402aae6977185f9ba8cb7307b79 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eMt Fuji\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_fb4966439b0101644b58165db21ccd33.setIcon(div_icon_9a42b402aae6977185f9ba8cb7307b79);
-            
-    
-            var circle_marker_aa87cb5e83d8feac3ff2eeb2bd79e896 = L.circleMarker(
-                [-8.41, 116.46],
-                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-        var popup_5b9c90ea7790ab3249d3714f3a4c2d5c = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_16be282a624ef9ec8a6edf3fe618fb24 = $(`<div id="html_16be282a624ef9ec8a6edf3fe618fb24" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🥾 Mt Rinjani</h3><b>Indonesia</b> | 8/10     <hr style="margin:3px 0"><i>칼데라 호수 활화산</i></div></div>`)[0];
-                popup_5b9c90ea7790ab3249d3714f3a4c2d5c.setContent(html_16be282a624ef9ec8a6edf3fe618fb24);
-            
-        
-
-        circle_marker_aa87cb5e83d8feac3ff2eeb2bd79e896.bindPopup(popup_5b9c90ea7790ab3249d3714f3a4c2d5c)
-        ;
-
-        
-    
-    
-            circle_marker_aa87cb5e83d8feac3ff2eeb2bd79e896.bindTooltip(
-                `<div>
-                     🥾 Mt Rinjani 8/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_d8b3c681f33f26222324b1324a92bc66 = L.marker(
-                [-8.41, 116.46],
-                {
-}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-            var div_icon_a154788eacdc698dcd8b97163799d612 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eMt Rinjani\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_d8b3c681f33f26222324b1324a92bc66.setIcon(div_icon_a154788eacdc698dcd8b97163799d612);
-            
-    
-            var circle_marker_c1cad0ba9651d62f29ad66140896dbe8 = L.circleMarker(
-                [6.08, 116.56],
-                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-        var popup_f79757896af132ee4ddacaff698c609d = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_cb7166fb11c26b3a062131511f2ffd30 = $(`<div id="html_cb7166fb11c26b3a062131511f2ffd30" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🥾 Mt Kinabalu</h3><b>Malaysia</b> | 8/10     <hr style="margin:3px 0"><i>동남아 최고봉 새벽 일출</i></div></div>`)[0];
-                popup_f79757896af132ee4ddacaff698c609d.setContent(html_cb7166fb11c26b3a062131511f2ffd30);
-            
-        
-
-        circle_marker_c1cad0ba9651d62f29ad66140896dbe8.bindPopup(popup_f79757896af132ee4ddacaff698c609d)
-        ;
-
-        
-    
-    
-            circle_marker_c1cad0ba9651d62f29ad66140896dbe8.bindTooltip(
-                `<div>
-                     🥾 Mt Kinabalu 8/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_880ee7a4247352eca7ca3b6ec1490d84 = L.marker(
-                [6.08, 116.56],
-                {
-}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-            var div_icon_617df98241ad4f97ab866bc4b5bfaa25 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eMt Kinabalu\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_880ee7a4247352eca7ca3b6ec1490d84.setIcon(div_icon_617df98241ad4f97ab866bc4b5bfaa25);
-            
-    
-            var circle_marker_14e403543033b0191206a24cff2b4992 = L.circleMarker(
-                [42.88, -8.55],
-                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-        var popup_0bcb6c34c7823ccf0314f88e29dc87bd = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_391551e785bdb85006519385122592ed = $(`<div id="html_391551e785bdb85006519385122592ed" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🥾 Camino de Santiago</h3><b>Spain</b> | 8/10     <hr style="margin:3px 0"><i>1,000년 순례길 790km</i></div></div>`)[0];
-                popup_0bcb6c34c7823ccf0314f88e29dc87bd.setContent(html_391551e785bdb85006519385122592ed);
-            
-        
-
-        circle_marker_14e403543033b0191206a24cff2b4992.bindPopup(popup_0bcb6c34c7823ccf0314f88e29dc87bd)
-        ;
-
-        
-    
-    
-            circle_marker_14e403543033b0191206a24cff2b4992.bindTooltip(
-                `<div>
-                     🥾 Camino de Santiago 8/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_b9370ef408a31741d6171e43fe33082e = L.marker(
-                [42.88, -8.55],
-                {
-}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-            var div_icon_47c7528f655f7737af83928af745868f = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eCamino de Santiago\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_b9370ef408a31741d6171e43fe33082e.setIcon(div_icon_47c7528f655f7737af83928af745868f);
-            
-    
-            var circle_marker_911f2e1028264aad8d5c7513b9dd66ce = L.circleMarker(
-                [-41.65, 145.95],
-                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-        var popup_ed5403b8610406344be3a7208f08511c = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_6a286e9afe4a800e835ac52ba8bbdd33 = $(`<div id="html_6a286e9afe4a800e835ac52ba8bbdd33" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🥾 Overland Track</h3><b>Australia</b> | 8/10     <hr style="margin:3px 0"><i>태즈메이니아 원시림</i></div></div>`)[0];
-                popup_ed5403b8610406344be3a7208f08511c.setContent(html_6a286e9afe4a800e835ac52ba8bbdd33);
-            
-        
-
-        circle_marker_911f2e1028264aad8d5c7513b9dd66ce.bindPopup(popup_ed5403b8610406344be3a7208f08511c)
-        ;
-
-        
-    
-    
-            circle_marker_911f2e1028264aad8d5c7513b9dd66ce.bindTooltip(
-                `<div>
-                     🥾 Overland Track 8/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_06bd95f83ecb9727c473d38a034c39cf = L.marker(
-                [-41.65, 145.95],
-                {
-}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-            var div_icon_a12b82dfe6bd1d7a5a2487d51187b881 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eOverland Track\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_06bd95f83ecb9727c473d38a034c39cf.setIcon(div_icon_a12b82dfe6bd1d7a5a2487d51187b881);
-            
-    
-            var circle_marker_13de7d57643b4094485d2058e8ae5ffd = L.circleMarker(
-                [-29.37, 29.43],
-                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-        var popup_72ec0852bcdf14778046251f29726c09 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_b132ab7669a82bf6607eb746b79988ec = $(`<div id="html_b132ab7669a82bf6607eb746b79988ec" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🥾 Drakensberg</h3><b>South Africa</b> | 8/10     <hr style="margin:3px 0"><i>아프리카 용의 산맥</i></div></div>`)[0];
-                popup_72ec0852bcdf14778046251f29726c09.setContent(html_b132ab7669a82bf6607eb746b79988ec);
-            
-        
-
-        circle_marker_13de7d57643b4094485d2058e8ae5ffd.bindPopup(popup_72ec0852bcdf14778046251f29726c09)
-        ;
-
-        
-    
-    
-            circle_marker_13de7d57643b4094485d2058e8ae5ffd.bindTooltip(
-                `<div>
-                     🥾 Drakensberg 8/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_82c5d78966c6d5e095f1393c0841de4d = L.marker(
-                [-29.37, 29.43],
-                {
-}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-            var div_icon_3e35e9517d04f48e42110b6a61cb7b87 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eDrakensberg\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_82c5d78966c6d5e095f1393c0841de4d.setIcon(div_icon_3e35e9517d04f48e42110b6a61cb7b87);
-            
-    
-            var circle_marker_65d3619c30ef0d2b431867cdf55469cc = L.circleMarker(
-                [44.13, 9.71],
-                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-        var popup_046ca5e8e4b91311b7e3cf366c3a4b88 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_c8fc21d76447206743b1c742c3498ad5 = $(`<div id="html_c8fc21d76447206743b1c742c3498ad5" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🥾 Cinque Terre</h3><b>Italy</b> | 8/10     <hr style="margin:3px 0"><i>알록달록 5개 마을 해안</i></div></div>`)[0];
-                popup_046ca5e8e4b91311b7e3cf366c3a4b88.setContent(html_c8fc21d76447206743b1c742c3498ad5);
-            
-        
-
-        circle_marker_65d3619c30ef0d2b431867cdf55469cc.bindPopup(popup_046ca5e8e4b91311b7e3cf366c3a4b88)
-        ;
-
-        
-    
-    
-            circle_marker_65d3619c30ef0d2b431867cdf55469cc.bindTooltip(
-                `<div>
-                     🥾 Cinque Terre 8/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_aae30b007b569cc0311c2badbcabc3aa = L.marker(
-                [44.13, 9.71],
-                {
-}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-            var div_icon_11597cea97d5d6cca8ce5bfd0bb9882e = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eCinque Terre\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_aae30b007b569cc0311c2badbcabc3aa.setIcon(div_icon_11597cea97d5d6cca8ce5bfd0bb9882e);
-            
-    
-            var circle_marker_fa417de35b69e70d6468c9051232783a = L.circleMarker(
-                [28.21, 85.52],
-                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-        var popup_4c693fe75dc84edcf90680f34f264822 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_44e4f974e2aebe96c35e4238f8b9a2e1 = $(`<div id="html_44e4f974e2aebe96c35e4238f8b9a2e1" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🥾 Langtang Valley</h3><b>Nepal</b> | 8/10     <hr style="margin:3px 0"><i>카트만두 근접 히말라야</i></div></div>`)[0];
-                popup_4c693fe75dc84edcf90680f34f264822.setContent(html_44e4f974e2aebe96c35e4238f8b9a2e1);
-            
-        
-
-        circle_marker_fa417de35b69e70d6468c9051232783a.bindPopup(popup_4c693fe75dc84edcf90680f34f264822)
-        ;
-
-        
-    
-    
-            circle_marker_fa417de35b69e70d6468c9051232783a.bindTooltip(
-                `<div>
-                     🥾 Langtang Valley 8/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_8e56075755863845ce197cf19756322f = L.marker(
-                [28.21, 85.52],
-                {
-}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-            var div_icon_e4ed6ebbdf054c96bea17acd8937c35e = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eLangtang Valley\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_8e56075755863845ce197cf19756322f.setIcon(div_icon_e4ed6ebbdf054c96bea17acd8937c35e);
-            
-    
-            var circle_marker_91dfea40fc7dcb3f159d12dff65d496f = L.circleMarker(
-                [-55.1, -67.63],
-                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-        var popup_e8d43d9d2311f90dc15baf66647d1800 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_85acdd2f2fd5239b76dca1cadf92061d = $(`<div id="html_85acdd2f2fd5239b76dca1cadf92061d" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🥾 Dientes Navarino</h3><b>Chile</b> | 8/10     <hr style="margin:3px 0"><i>세계 최남단 트레킹</i></div></div>`)[0];
-                popup_e8d43d9d2311f90dc15baf66647d1800.setContent(html_85acdd2f2fd5239b76dca1cadf92061d);
-            
-        
-
-        circle_marker_91dfea40fc7dcb3f159d12dff65d496f.bindPopup(popup_e8d43d9d2311f90dc15baf66647d1800)
-        ;
-
-        
-    
-    
-            circle_marker_91dfea40fc7dcb3f159d12dff65d496f.bindTooltip(
-                `<div>
-                     🥾 Dientes Navarino 8/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_20aa322d098d38e77cd7b420d602a08a = L.marker(
-                [-55.1, -67.63],
-                {
-}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-            var div_icon_3d49329a92e1cf34b1c0ecc9c2272f7d = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eDientes Navarino\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_20aa322d098d38e77cd7b420d602a08a.setIcon(div_icon_3d49329a92e1cf34b1c0ecc9c2272f7d);
-            
-    
-            var circle_marker_4163271b8db7888cea4f2cfa60167e4e = L.circleMarker(
-                [31.06, -7.92],
-                {"bubblingMouseEvents": true, "color": "#ffdd66", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffdd66", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 12.6, "stroke": true, "weight": 2}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-        var popup_dc25f306df0f8c3fbab653b5ed42bb7b = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_a1b4d10a616ba81d1620809cb4f3f711 = $(`<div id="html_a1b4d10a616ba81d1620809cb4f3f711" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🥾 Toubkal</h3><b>Morocco</b> | 7/10     <hr style="margin:3px 0"><i>북아프리카 최고봉. 사하라 조망</i></div></div>`)[0];
-                popup_dc25f306df0f8c3fbab653b5ed42bb7b.setContent(html_a1b4d10a616ba81d1620809cb4f3f711);
-            
-        
-
-        circle_marker_4163271b8db7888cea4f2cfa60167e4e.bindPopup(popup_dc25f306df0f8c3fbab653b5ed42bb7b)
-        ;
-
-        
-    
-    
-            circle_marker_4163271b8db7888cea4f2cfa60167e4e.bindTooltip(
-                `<div>
-                     🥾 Toubkal 7/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_9707216d4f7a0ac023d0e29da70a0b8e = L.marker(
-                [31.06, -7.92],
-                {
-}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-            var div_icon_bd13226d10aef4c2926f8b0191bd6a4e = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffdd66;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eToubkal\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_9707216d4f7a0ac023d0e29da70a0b8e.setIcon(div_icon_bd13226d10aef4c2926f8b0191bd6a4e);
-            
-    
-            var circle_marker_83c5916bdfd112ee710b24a74237c236 = L.circleMarker(
-                [22.3, 103.78],
-                {"bubblingMouseEvents": true, "color": "#ffdd66", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffdd66", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 12.6, "stroke": true, "weight": 2}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-        var popup_1b7bfaa715f977a7f8972972b2baeb4b = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_bd73808e16b0878ab89f4a2467e57b1c = $(`<div id="html_bd73808e16b0878ab89f4a2467e57b1c" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🥾 Sapa Fansipan</h3><b>Vietnam</b> | 7/10     <hr style="margin:3px 0"><i>인도차이나 최고봉. 계단식 논</i></div></div>`)[0];
-                popup_1b7bfaa715f977a7f8972972b2baeb4b.setContent(html_bd73808e16b0878ab89f4a2467e57b1c);
-            
-        
-
-        circle_marker_83c5916bdfd112ee710b24a74237c236.bindPopup(popup_1b7bfaa715f977a7f8972972b2baeb4b)
-        ;
-
-        
-    
-    
-            circle_marker_83c5916bdfd112ee710b24a74237c236.bindTooltip(
-                `<div>
-                     🥾 Sapa Fansipan 7/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_80f3e445fd26f39fe1206ccf0f81d675 = L.marker(
-                [22.3, 103.78],
-                {
-}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-            var div_icon_517b003780cb8dbbd0869f4630d85eac = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffdd66;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eSapa Fansipan\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_80f3e445fd26f39fe1206ccf0f81d675.setIcon(div_icon_517b003780cb8dbbd0869f4630d85eac);
-            
-    
-            var circle_marker_765c5c011db16ef4eab9803b0f89bcbf = L.circleMarker(
-                [18.59, 98.49],
-                {"bubblingMouseEvents": true, "color": "#ffdd66", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffdd66", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 12.6, "stroke": true, "weight": 2}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-        var popup_8d8058c447e9cdbc75944510bf071d29 = L.popup({
-  "maxWidth": 340,
-});
-
-        
-            
-                var html_1f960a36e3b1dac1c04c4a6f89440b6a = $(`<div id="html_1f960a36e3b1dac1c04c4a6f89440b6a" style="width: 100.0%; height: 100.0%;"><div style="width:280px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">🥾 Doi Inthanon</h3><b>Thailand</b> | 7/10     <hr style="margin:3px 0"><i>태국 최고봉. 열대 운무림</i></div></div>`)[0];
-                popup_8d8058c447e9cdbc75944510bf071d29.setContent(html_1f960a36e3b1dac1c04c4a6f89440b6a);
-            
-        
-
-        circle_marker_765c5c011db16ef4eab9803b0f89bcbf.bindPopup(popup_8d8058c447e9cdbc75944510bf071d29)
-        ;
-
-        
-    
-    
-            circle_marker_765c5c011db16ef4eab9803b0f89bcbf.bindTooltip(
-                `<div>
-                     🥾 Doi Inthanon 7/10
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_3a1a08a40e01db6accf0e90f3906f0b2 = L.marker(
-                [18.59, 98.49],
-                {
-}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-            var div_icon_99f00f29fcfd1c6cdfde2a5003d08865 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffdd66;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eDoi Inthanon\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_3a1a08a40e01db6accf0e90f3906f0b2.setIcon(div_icon_99f00f29fcfd1c6cdfde2a5003d08865);
-            
-    
-            var marker_f37690baef870a5fd7a276d938f25c72 = L.marker(
-                [37.5, 126.9],
-                {
-}
-            ).addTo(map_1597af69a22b5b06b8e187d01f0a165c);
-        
-    
-            var icon_968f824e00ea261fef3ef63557a25dcc = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "plane",
-  "prefix": "fa",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_0d3b0b19f591130470b9425231fdaf5a = L.popup({
-  "maxWidth": "100%",
-});
-
-        
-            
-                var html_0b4fe8bd221cfc585738986239382913 = $(`<div id="html_0b4fe8bd221cfc585738986239382913" style="width: 100.0%; height: 100.0%;">인천공항</div>`)[0];
-                popup_0d3b0b19f591130470b9425231fdaf5a.setContent(html_0b4fe8bd221cfc585738986239382913);
-            
-        
-
-        marker_f37690baef870a5fd7a276d938f25c72.bindPopup(popup_0d3b0b19f591130470b9425231fdaf5a)
-        ;
-
-        
-    
-    
-                marker_f37690baef870a5fd7a276d938f25c72.setIcon(icon_968f824e00ea261fef3ef63557a25dcc);
-            
-</script>
 </html>

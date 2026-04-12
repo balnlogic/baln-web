@@ -25,6 +25,7 @@ body { background:#0a0a0a; font-family:-apple-system,sans-serif; }
 .tab[data-id="scuba"].active { border-bottom-color:#00ffcc; }
 .tab[data-id="freedive"].active { border-bottom-color:#ff00ff; }
 .tab[data-id="trek"].active { border-bottom-color:#ff6600; }
+.tab[data-id="scenic"].active { border-bottom-color:#ff0044; }
 .brand { padding:12px 8px; margin-right:auto; flex-shrink:0; }
 .brand a { color:#555; text-decoration:none; font-size:11px; }
 iframe {
@@ -44,6 +45,7 @@ iframe {
   <a class="tab" data-id="scuba" onclick="switchTab('scuba')">🤿 Scuba</a>
   <a class="tab" data-id="freedive" onclick="switchTab('freedive')">🫧 Freedive</a>
   <a class="tab" data-id="trek" onclick="switchTab('trek')">🥾 Trekking</a>
+  <a class="tab" data-id="scenic" onclick="switchTab('scenic')">🏞️ Scenic</a>
 </div>
 
 <iframe id="frame-surf" src="/surfing/surf.html"></iframe>
@@ -51,6 +53,7 @@ iframe {
 <iframe id="frame-scuba" src="/surfing/scuba.html" class="hidden"></iframe>
 <iframe id="frame-freedive" src="/surfing/freedive.html" class="hidden"></iframe>
 <iframe id="frame-trek" src="/surfing/trek.html" class="hidden"></iframe>
+<iframe id="frame-scenic" src="/surfing/scenic.html" class="hidden"></iframe>
 
 <script>
 function switchTab(id) {

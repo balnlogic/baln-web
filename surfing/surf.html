@@ -17,7 +17,7 @@
             <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
             <style>
-                #map_51ff4269d1f13cf6f16b180d60ee43d7 {
+                #map_5d2b6315426505af6eef1ee71d3cdab4 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -53,47 +53,32 @@
 </head>
 <body>
     
-    <div style="position:fixed;bottom:30px;left:30px;z-index:999;
-background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size:12px;line-height:2">
-<b style="font-size:14px">🏄 전세계 롱보드 맵</b><br>
-<small>순한 파도 + 따뜻한 물 + 롱보드 + 롱라이딩</small><br>
-<span style="color:#ff00ff">👑 10점</span> 300m+ 롱라이딩 + 순한 + 따뜻<br>
-<span style="color:#00ff88">● 9점</span> 150m+ 롱라이딩<br>
-<span style="color:#ffcc00">● 8점</span> 매우 유사<br>
-<span style="color:#ff9900">● 7점</span> 유사<br>
-<b>━━</b> 직항 (17곳) | <b style="border-bottom:2px dashed white">- -</b> 경유 (25곳)</div>
+    <div style="position:fixed;bottom:30px;left:30px;z-index:999;background:rgba(0,0,0,0.9);padding:12px;border-radius:10px;color:white;font-size:12px;line-height:1.8">
+    <b style="font-size:14px">🏄 Surfing</b> <small>(42곳)</small><br>
+    <span style="color:#ff0055">● 10점</span> <span style="color:#00ff88">● 9점</span> <span style="color:#ffcc00">● 8점</span> <span style="color:#ff9900">● 7점</span></div>
     
-            <div class="folium-map" id="map_51ff4269d1f13cf6f16b180d60ee43d7" ></div>
+            <div class="folium-map" id="map_5d2b6315426505af6eef1ee71d3cdab4" ></div>
         
-<script>
-(function(){
-  var maps = document.querySelectorAll(".folium-map");
-  if(!maps.length) return;
-  setTimeout(function(){
-    for(var key in window){
-      if(window[key] instanceof L.Map){
-        var m = window[key];
-        m.setMaxBounds([[-85,-180],[85,180]]);
-        m.options.maxBoundsViscosity = 1.0;
-        m.options.worldCopyJump = false;
-        m.setMinZoom(2);
-        m.eachLayer(function(l){ if(l.options && l.setUrl){ l.options.noWrap = true; }});
-        break;
-      }
-    }
-  }, 500);
-})();
-</script>
 </body>
 <script>
     
     
-            var map_51ff4269d1f13cf6f16b180d60ee43d7 = L.map(
-                "map_51ff4269d1f13cf6f16b180d60ee43d7",
+            var map_5d2b6315426505af6eef1ee71d3cdab4 = L.map(
+                "map_5d2b6315426505af6eef1ee71d3cdab4",
                 {
                     center: [5.0, 90.0],
                     crs: L.CRS.EPSG3857,
                     ...{
+  "maxBounds": [
+[
+-90,
+-180,
+],
+[
+90,
+180,
+],
+],
   "zoom": 2,
   "zoomControl": true,
   "preferCanvas": false,
@@ -106,15 +91,15 @@ background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size
 
         
     
-            var tile_layer_f76ad8c337e17b7b3b1aec09cabb441e = L.tileLayer(
+            var tile_layer_95deaf6e46d2ef83e33d35df669ce062 = L.tileLayer(
                 "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
                 {
   "minZoom": 0,
-  "maxZoom": 20,
-  "maxNativeZoom": 20,
-  "noWrap": false,
-  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
-  "subdomains": "abcd",
+  "maxZoom": 18,
+  "maxNativeZoom": 18,
+  "noWrap": true,
+  "attribution": "CartoDB",
+  "subdomains": "abc",
   "detectRetina": false,
   "tms": false,
   "opacity": 1,
@@ -123,160 +108,42 @@ background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size
             );
         
     
-            tile_layer_f76ad8c337e17b7b3b1aec09cabb441e.addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            tile_layer_95deaf6e46d2ef83e33d35df669ce062.addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var marker_41c63d53db07278f0832a712ba337662 = L.marker(
-                [17.6361, -101.6194],
-                {
-}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
-        
-    
-            var div_icon_4bad8013a740e51f9a9c0904a24c3f71 = L.divIcon({
-  "html": "\u003cdiv style=\"\n                width:40px;height:40px;border:2.5px dashed #ff00ff;\n                border-radius:50%;background:rgba(0,0,0,0.3);\n                margin-left:-20px;margin-top:-20px;cursor:pointer;\n            \"\u003e\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-        var popup_dd74bb648efb4388cf22b426c1d67d97 = L.popup({
-  "maxWidth": 320,
-});
-
-        
-            
-                var html_8b9631fa93fbf5b720091e87d5d15a49 = $(`<div id="html_8b9631fa93fbf5b720091e87d5d15a49" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff00ff">La Saladita 👑</h3>     <b>Mexico</b> | 유사도 <b>10/10</b> | 🔄 경유<br><hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 27°C | 🏄 ~500m 🔥<br>     👥 low | 💰 $40/day | ✈️ ~18h<br>     📅 4월, 5월, 6월, 7월...<hr style="margin:3px 0">     <i>500m 롱라이딩 가능! 멕시칸 말리부. 매우 순한 좌측 포인트</i></div></div>`)[0];
-                popup_dd74bb648efb4388cf22b426c1d67d97.setContent(html_8b9631fa93fbf5b720091e87d5d15a49);
-            
-        
-
-        marker_41c63d53db07278f0832a712ba337662.bindPopup(popup_dd74bb648efb4388cf22b426c1d67d97)
-        ;
-
-        
-    
-    
-            marker_41c63d53db07278f0832a712ba337662.bindTooltip(
-                `<div>
-                     La Saladita 10/10 경유 ~500m
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-                marker_41c63d53db07278f0832a712ba337662.setIcon(div_icon_4bad8013a740e51f9a9c0904a24c3f71);
-            
-    
-            var marker_77f3c03272f6a3b4c34e3bcc46e40c23 = L.marker(
-                [17.6361, -101.6194],
-                {
-}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
-        
-    
-            var div_icon_6b6aed99bc956eba27e061d4e53ff250 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ff00ff;opacity:0.6;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eLa Saladita\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_77f3c03272f6a3b4c34e3bcc46e40c23.setIcon(div_icon_6b6aed99bc956eba27e061d4e53ff250);
-            
-    
-            var marker_35ab9337c2c3547877f9b96928e1f1ea = L.marker(
-                [30.84, -9.82],
-                {
-}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
-        
-    
-            var div_icon_1d7f18eec2f8e83eae6613c1488dbcb5 = L.divIcon({
-  "html": "\u003cdiv style=\"\n                width:40px;height:40px;border:2.5px dashed #ff00ff;\n                border-radius:50%;background:rgba(0,0,0,0.3);\n                margin-left:-20px;margin-top:-20px;cursor:pointer;\n            \"\u003e\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-        var popup_b864a65500cb8349d6f8ab0d3192274d = L.popup({
-  "maxWidth": 320,
-});
-
-        
-            
-                var html_402bc38f02fbfe24cb1e102c9cb8aca8 = $(`<div id="html_402bc38f02fbfe24cb1e102c9cb8aca8" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff00ff">Imsouane Bay 👑</h3>     <b>Morocco</b> | 유사도 <b>10/10</b> | 🔄 경유<br><hr style="margin:3px 0">     🌊 0.3~1.5m | 🌡️ 22°C | 🏄 ~700m 🔥<br>     👥 medium | 💰 $30/day | ✈️ ~14h<br>     📅 6월, 7월, 8월, 9월...<hr style="margin:3px 0">     <i>아프리카 최장 라이트 포인트! 600~800m 라이딩. La Saladita급</i></div></div>`)[0];
-                popup_b864a65500cb8349d6f8ab0d3192274d.setContent(html_402bc38f02fbfe24cb1e102c9cb8aca8);
-            
-        
-
-        marker_35ab9337c2c3547877f9b96928e1f1ea.bindPopup(popup_b864a65500cb8349d6f8ab0d3192274d)
-        ;
-
-        
-    
-    
-            marker_35ab9337c2c3547877f9b96928e1f1ea.bindTooltip(
-                `<div>
-                     Imsouane Bay 10/10 경유 ~700m
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-                marker_35ab9337c2c3547877f9b96928e1f1ea.setIcon(div_icon_1d7f18eec2f8e83eae6613c1488dbcb5);
-            
-    
-            var marker_59bb187d414093fd163ade63a0e77967 = L.marker(
-                [30.84, -9.82],
-                {
-}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
-        
-    
-            var div_icon_0ebe13e210860cb93ed610ee8570d078 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ff00ff;opacity:0.6;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eImsouane Bay\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_59bb187d414093fd163ade63a0e77967.setIcon(div_icon_0ebe13e210860cb93ed610ee8570d078);
-            
-    
-            var marker_b5e904156fb49912688b4b7af3c0c3ce = L.marker(
+            var marker_a616a6411a33fc01e6661c86c2f52eff = L.marker(
                 [-7.6833, 108.4833],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_af023a1922d256c6c485981fce236d3b = L.divIcon({
-  "html": "\u003cdiv style=\"\n                width:36px;height:36px;border:2.5px dashed #00ff88;\n                border-radius:50%;background:rgba(0,0,0,0.3);\n                margin-left:-18px;margin-top:-18px;cursor:pointer;\n            \"\u003e\u003c/div\u003e",
+            var div_icon_4f2041f981bf2be28e52fdedd3a647df = L.divIcon({
+  "html": "\u003cdiv style=\"width:36px;height:36px;border:2.5px dashed #00ff88;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-18px;margin-top:-18px;cursor:pointer\"\u003e\u003c/div\u003e",
   "className": "empty",
 });
         
     
-        var popup_9671e30086040bee485cd1a9904319fd = L.popup({
-  "maxWidth": 320,
+        var popup_de94bdca513ca02079259f73d6be02ec = L.popup({
+  "maxWidth": 340,
 });
 
         
             
-                var html_9ce24955b54732e11b79efd92b6285f7 = $(`<div id="html_9ce24955b54732e11b79efd92b6285f7" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#00ff88">Batu Karas </h3>     <b>Indonesia (Java)</b> | 유사도 <b>9/10</b> | 🔄 경유<br><hr style="margin:3px 0">     🌊 0.6~1.0m | 🌡️ 29°C | 🏄 ~200m<br>     👥 low | 💰 $25/day | ✈️ ~10h<br>     📅 5월, 6월, 7월, 8월...<hr style="margin:3px 0">     <i>인도네시아판 롱보드 성지. 1분+ 라이딩, 모래바닥, 매우 안전</i></div></div>`)[0];
-                popup_9671e30086040bee485cd1a9904319fd.setContent(html_9ce24955b54732e11b79efd92b6285f7);
+                var html_3215bf826750222dc863976e6a6b94e6 = $(`<div id="html_3215bf826750222dc863976e6a6b94e6" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#00ff88">Batu Karas </h3>     <b>Indonesia (Java)</b> | 9/10 | 🔄경유<hr style="margin:3px 0">     🌊 0.6~1.0m | 🌡️ 29°C | 🏄 ~200m<br>     💰 $25/day | ✈️ ~10h<hr style="margin:3px 0">     <i>인도네시아판 롱보드 성지. 1분+ 라이딩, 모래바닥, 매우 안전</i></div></div>`)[0];
+                popup_de94bdca513ca02079259f73d6be02ec.setContent(html_3215bf826750222dc863976e6a6b94e6);
             
         
 
-        marker_b5e904156fb49912688b4b7af3c0c3ce.bindPopup(popup_9671e30086040bee485cd1a9904319fd)
+        marker_a616a6411a33fc01e6661c86c2f52eff.bindPopup(popup_de94bdca513ca02079259f73d6be02ec)
         ;
 
         
     
     
-            marker_b5e904156fb49912688b4b7af3c0c3ce.bindTooltip(
+            marker_a616a6411a33fc01e6661c86c2f52eff.bindTooltip(
                 `<div>
-                     Batu Karas 9/10 경유 ~200m
+                     🏄 Batu Karas 9/10
                  </div>`,
                 {
   "sticky": true,
@@ -284,51 +151,110 @@ background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size
             );
         
     
-                marker_b5e904156fb49912688b4b7af3c0c3ce.setIcon(div_icon_af023a1922d256c6c485981fce236d3b);
+                marker_a616a6411a33fc01e6661c86c2f52eff.setIcon(div_icon_4f2041f981bf2be28e52fdedd3a647df);
             
     
-            var marker_8630cd8be6008cbc20a6eb8ed915a102 = L.marker(
+            var marker_ab62b728fa6c548f59940c18fd7cfdad = L.marker(
                 [-7.6833, 108.4833],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_00d84dd404a532f898efb2c575f373b0 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#00ff88;opacity:0.6;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eBatu Karas\u003c/div\u003e",
+            var div_icon_2c9523b40b9f75420d3394377f46f183 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eBatu Karas\u003c/div\u003e",
   "className": "empty",
 });
         
     
-                marker_8630cd8be6008cbc20a6eb8ed915a102.setIcon(div_icon_00d84dd404a532f898efb2c575f373b0);
+                marker_ab62b728fa6c548f59940c18fd7cfdad.setIcon(div_icon_2c9523b40b9f75420d3394377f46f183);
             
     
-            var circle_marker_453f3b1b426214d1c890e8fd0111b83d = L.circleMarker(
+            var marker_4b1a42fba1787e7455799cd754e7d605 = L.marker(
+                [17.6361, -101.6194],
+                {
+}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
+        
+    
+            var div_icon_7e6e9c97e5c436280d6ac805e3c11fe7 = L.divIcon({
+  "html": "\u003cdiv style=\"width:40px;height:40px;border:2.5px dashed #ff0055;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-20px;margin-top:-20px;cursor:pointer\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_ad4f5af4d33aa526e27156e3b293e87e = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_e63bf6ba605c9b7175aab3d09f8d9fcc = $(`<div id="html_e63bf6ba605c9b7175aab3d09f8d9fcc" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">La Saladita 👑</h3>     <b>Mexico</b> | 10/10 | 🔄경유<hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 27°C | 🏄 ~500m<br>     💰 $40/day | ✈️ ~18h<hr style="margin:3px 0">     <i>500m 롱라이딩 가능! 멕시칸 말리부. 매우 순한 좌측 포인트</i></div></div>`)[0];
+                popup_ad4f5af4d33aa526e27156e3b293e87e.setContent(html_e63bf6ba605c9b7175aab3d09f8d9fcc);
+            
+        
+
+        marker_4b1a42fba1787e7455799cd754e7d605.bindPopup(popup_ad4f5af4d33aa526e27156e3b293e87e)
+        ;
+
+        
+    
+    
+            marker_4b1a42fba1787e7455799cd754e7d605.bindTooltip(
+                `<div>
+                     🏄 La Saladita 10/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_4b1a42fba1787e7455799cd754e7d605.setIcon(div_icon_7e6e9c97e5c436280d6ac805e3c11fe7);
+            
+    
+            var marker_ad8c14f43202c5d77b36385f9eca0799 = L.marker(
+                [17.6361, -101.6194],
+                {
+}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
+        
+    
+            var div_icon_fe477400548b970a5f25f2db28e76010 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ff0055;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eLa Saladita\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_ad8c14f43202c5d77b36385f9eca0799.setIcon(div_icon_fe477400548b970a5f25f2db28e76010);
+            
+    
+            var circle_marker_8a3022155335e190cd1340e17d917fd4 = L.circleMarker(
                 [-8.6876, 115.2734],
-                {"bubblingMouseEvents": true, "color": "#00ff88", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#00ff88", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 18, "stroke": true, "weight": 2}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+                {"bubblingMouseEvents": true, "color": "#00ff88", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#00ff88", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.2, "stroke": true, "weight": 2}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-        var popup_d23dee934e140a2553b3059990949cdd = L.popup({
-  "maxWidth": 320,
+        var popup_ec6c84527eb49d98a63526872e5626e9 = L.popup({
+  "maxWidth": 340,
 });
 
         
             
-                var html_015e2e006b34e8f0af6478166f914ce4 = $(`<div id="html_015e2e006b34e8f0af6478166f914ce4" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#00ff88">Sanur Baby Reef </h3>     <b>Indonesia (Bali)</b> | 유사도 <b>9/10</b> | ✈️ 직항<br><hr style="margin:3px 0">     🌊 0.3~0.8m | 🌡️ 28°C | 🏄 ~150m<br>     👥 medium | 💰 $35/day | ✈️ ~7h<br>     📅 11월, 12월, 1월, 2월...<hr style="margin:3px 0">     <i>기준점. 보트 5분, 플랫 리프, 아주 순한 파도</i></div></div>`)[0];
-                popup_d23dee934e140a2553b3059990949cdd.setContent(html_015e2e006b34e8f0af6478166f914ce4);
+                var html_5fdff9895d929c596ad751bdfe269466 = $(`<div id="html_5fdff9895d929c596ad751bdfe269466" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#00ff88">Sanur Baby Reef </h3>     <b>Indonesia (Bali)</b> | 9/10 | ✈️직항<hr style="margin:3px 0">     🌊 0.3~0.8m | 🌡️ 28°C | 🏄 ~150m<br>     💰 $35/day | ✈️ ~7h<hr style="margin:3px 0">     <i>기준점. 보트 5분, 플랫 리프, 아주 순한 파도</i></div></div>`)[0];
+                popup_ec6c84527eb49d98a63526872e5626e9.setContent(html_5fdff9895d929c596ad751bdfe269466);
             
         
 
-        circle_marker_453f3b1b426214d1c890e8fd0111b83d.bindPopup(popup_d23dee934e140a2553b3059990949cdd)
+        circle_marker_8a3022155335e190cd1340e17d917fd4.bindPopup(popup_ec6c84527eb49d98a63526872e5626e9)
         ;
 
         
     
     
-            circle_marker_453f3b1b426214d1c890e8fd0111b83d.bindTooltip(
+            circle_marker_8a3022155335e190cd1340e17d917fd4.bindTooltip(
                 `<div>
-                     Sanur Baby Reef 9/10 직항 ~150m
+                     🏄 Sanur Baby Reef 9/10
                  </div>`,
                 {
   "sticky": true,
@@ -336,48 +262,48 @@ background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size
             );
         
     
-            var marker_088cd4526655881675f53a6ed2994983 = L.marker(
+            var marker_5efc99e5bad8b98b41cca6e44d5e0148 = L.marker(
                 [-8.6876, 115.2734],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_13d7dae0c2ebe7d6047dc1e67ef51233 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#00ff88;opacity:1;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eSanur Baby Reef\u003c/div\u003e",
+            var div_icon_f8017c46fcae243fe1ac55b794821ebc = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eSanur Baby Reef\u003c/div\u003e",
   "className": "empty",
 });
         
     
-                marker_088cd4526655881675f53a6ed2994983.setIcon(div_icon_13d7dae0c2ebe7d6047dc1e67ef51233);
+                marker_5efc99e5bad8b98b41cca6e44d5e0148.setIcon(div_icon_f8017c46fcae243fe1ac55b794821ebc);
             
     
-            var circle_marker_a875ca3c5befbf2a7915bd711268900a = L.circleMarker(
+            var circle_marker_ce708434f74e3209c944e08bfe02cc81 = L.circleMarker(
                 [-8.685, 115.27],
-                {"bubblingMouseEvents": true, "color": "#00ff88", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#00ff88", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 18, "stroke": true, "weight": 2}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+                {"bubblingMouseEvents": true, "color": "#00ff88", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#00ff88", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.2, "stroke": true, "weight": 2}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-        var popup_a4601d0442015587f9256bf224d7661b = L.popup({
-  "maxWidth": 320,
+        var popup_87ae2e86a655ba4150bc5b0f4aca94d8 = L.popup({
+  "maxWidth": 340,
 });
 
         
             
-                var html_f8eeccac2f5db9aa871785552957b29e = $(`<div id="html_f8eeccac2f5db9aa871785552957b29e" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#00ff88">Sanur Hyatt Reef </h3>     <b>Indonesia (Bali)</b> | 유사도 <b>9/10</b> | ✈️ 직항<br><hr style="margin:3px 0">     🌊 0.5~1.0m | 🌡️ 28°C | 🏄 ~150m<br>     👥 medium | 💰 $35/day | ✈️ ~7h<br>     📅 11월, 12월, 1월, 2월...<hr style="margin:3px 0">     <i>Baby보다 약간 큰 파도. 리조트 앞바다</i></div></div>`)[0];
-                popup_a4601d0442015587f9256bf224d7661b.setContent(html_f8eeccac2f5db9aa871785552957b29e);
+                var html_4f1c07e19bf54abc9db7b3cfc11175da = $(`<div id="html_4f1c07e19bf54abc9db7b3cfc11175da" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#00ff88">Sanur Hyatt Reef </h3>     <b>Indonesia (Bali)</b> | 9/10 | ✈️직항<hr style="margin:3px 0">     🌊 0.5~1.0m | 🌡️ 28°C | 🏄 ~150m<br>     💰 $35/day | ✈️ ~7h<hr style="margin:3px 0">     <i>Baby보다 약간 큰 파도. 리조트 앞바다</i></div></div>`)[0];
+                popup_87ae2e86a655ba4150bc5b0f4aca94d8.setContent(html_4f1c07e19bf54abc9db7b3cfc11175da);
             
         
 
-        circle_marker_a875ca3c5befbf2a7915bd711268900a.bindPopup(popup_a4601d0442015587f9256bf224d7661b)
+        circle_marker_ce708434f74e3209c944e08bfe02cc81.bindPopup(popup_87ae2e86a655ba4150bc5b0f4aca94d8)
         ;
 
         
     
     
-            circle_marker_a875ca3c5befbf2a7915bd711268900a.bindTooltip(
+            circle_marker_ce708434f74e3209c944e08bfe02cc81.bindTooltip(
                 `<div>
-                     Sanur Hyatt Reef 9/10 직항 ~150m
+                     🏄 Sanur Hyatt Reef 9/10
                  </div>`,
                 {
   "sticky": true,
@@ -385,97 +311,48 @@ background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size
             );
         
     
-            var marker_b39bf96cecc6939cd8efe5da9e1ab279 = L.marker(
+            var marker_2afa82d1ebc162d0587287a649e96604 = L.marker(
                 [-8.685, 115.27],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_29884fdd9c9b33b7a93c27b49c03e42c = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#00ff88;opacity:1;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eSanur Hyatt Reef\u003c/div\u003e",
+            var div_icon_245bee3e7a6895beb086d5b396c50247 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eSanur Hyatt Reef\u003c/div\u003e",
   "className": "empty",
 });
         
     
-                marker_b39bf96cecc6939cd8efe5da9e1ab279.setIcon(div_icon_29884fdd9c9b33b7a93c27b49c03e42c);
+                marker_2afa82d1ebc162d0587287a649e96604.setIcon(div_icon_245bee3e7a6895beb086d5b396c50247);
             
     
-            var circle_marker_39d3c9cf7610f754573d025929ed8f5b = L.circleMarker(
-                [-8.35, 114.83],
-                {"bubblingMouseEvents": true, "color": "#00ff88", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#00ff88", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 18, "stroke": true, "weight": 2}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
-        
-    
-        var popup_74c691afcd1ed0e4abe8cf420b21844c = L.popup({
-  "maxWidth": 320,
-});
-
-        
-            
-                var html_af0eb7da8f9a1e27f67bf39d6a0efdc1 = $(`<div id="html_af0eb7da8f9a1e27f67bf39d6a0efdc1" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#00ff88">Medewi </h3>     <b>Indonesia (Bali West)</b> | 유사도 <b>9/10</b> | ✈️ 직항<br><hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 28°C | 🏄 ~200m<br>     👥 low | 💰 $30/day | ✈️ ~7h<br>     📅 4월, 5월, 6월, 7월...<hr style="margin:3px 0">     <i>발리 서부. 사누르 다음 롱보드 성지. 둥근 자갈바닥 300m 레프트 포인트. 노즈라이딩의 교과서</i></div></div>`)[0];
-                popup_74c691afcd1ed0e4abe8cf420b21844c.setContent(html_af0eb7da8f9a1e27f67bf39d6a0efdc1);
-            
-        
-
-        circle_marker_39d3c9cf7610f754573d025929ed8f5b.bindPopup(popup_74c691afcd1ed0e4abe8cf420b21844c)
-        ;
-
-        
-    
-    
-            circle_marker_39d3c9cf7610f754573d025929ed8f5b.bindTooltip(
-                `<div>
-                     Medewi 9/10 직항 ~200m
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_b7825bf1a848bc15200d0db0845b8f3b = L.marker(
-                [-8.35, 114.83],
-                {
-}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
-        
-    
-            var div_icon_9da9065fcc8b6adc3b28cab3f00dd6e5 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#00ff88;opacity:1;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eMedewi\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_b7825bf1a848bc15200d0db0845b8f3b.setIcon(div_icon_9da9065fcc8b6adc3b28cab3f00dd6e5);
-            
-    
-            var circle_marker_498bfe4d64f0efba960034bbbf542a77 = L.circleMarker(
+            var circle_marker_3d8e4a316a50d95d0460bfce3609ecc8 = L.circleMarker(
                 [5.9724, 80.4298],
-                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16, "stroke": true, "weight": 2}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-        var popup_979bade619ffb1557e704d6e57e6d27a = L.popup({
-  "maxWidth": 320,
+        var popup_f3157fb7acc4e15450584eeaffb72a68 = L.popup({
+  "maxWidth": 340,
 });
 
         
             
-                var html_b13df46deb41f0e96a39157c2b68c628 = $(`<div id="html_b13df46deb41f0e96a39157c2b68c628" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ffcc00">Weligama </h3>     <b>Sri Lanka</b> | 유사도 <b>8/10</b> | ✈️ 직항<br><hr style="margin:3px 0">     🌊 0.5~1.2m | 🌡️ 28°C | 🏄 ~100m<br>     👥 medium | 💰 $20/day | ✈️ ~9h<br>     📅 11월, 12월, 1월, 2월...<hr style="margin:3px 0">     <i>2km 해변, 순한 비치+리프. 가성비 최고</i></div></div>`)[0];
-                popup_979bade619ffb1557e704d6e57e6d27a.setContent(html_b13df46deb41f0e96a39157c2b68c628);
+                var html_298f6c9c04581ec1aa60664105f12b0d = $(`<div id="html_298f6c9c04581ec1aa60664105f12b0d" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ffcc00">Weligama </h3>     <b>Sri Lanka</b> | 8/10 | ✈️직항<hr style="margin:3px 0">     🌊 0.5~1.2m | 🌡️ 28°C | 🏄 ~100m<br>     💰 $20/day | ✈️ ~9h<hr style="margin:3px 0">     <i>2km 해변, 순한 비치+리프. 가성비 최고</i></div></div>`)[0];
+                popup_f3157fb7acc4e15450584eeaffb72a68.setContent(html_298f6c9c04581ec1aa60664105f12b0d);
             
         
 
-        circle_marker_498bfe4d64f0efba960034bbbf542a77.bindPopup(popup_979bade619ffb1557e704d6e57e6d27a)
+        circle_marker_3d8e4a316a50d95d0460bfce3609ecc8.bindPopup(popup_f3157fb7acc4e15450584eeaffb72a68)
         ;
 
         
     
     
-            circle_marker_498bfe4d64f0efba960034bbbf542a77.bindTooltip(
+            circle_marker_3d8e4a316a50d95d0460bfce3609ecc8.bindTooltip(
                 `<div>
-                     Weligama 8/10 직항 ~100m
+                     🏄 Weligama 8/10
                  </div>`,
                 {
   "sticky": true,
@@ -483,55 +360,55 @@ background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size
             );
         
     
-            var marker_d796e038e7ae0393c287543e8a0825e1 = L.marker(
+            var marker_d41395a2629c606b881c27c645f84cbe = L.marker(
                 [5.9724, 80.4298],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_c3cb3845e87be53301b0a2922f234eb5 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;opacity:1;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eWeligama\u003c/div\u003e",
+            var div_icon_41285c23113b02bfac73c13b7fe179ef = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eWeligama\u003c/div\u003e",
   "className": "empty",
 });
         
     
-                marker_d796e038e7ae0393c287543e8a0825e1.setIcon(div_icon_c3cb3845e87be53301b0a2922f234eb5);
+                marker_d41395a2629c606b881c27c645f84cbe.setIcon(div_icon_41285c23113b02bfac73c13b7fe179ef);
             
     
-            var marker_91b4798a77b83af8b31eedae9ed56213 = L.marker(
+            var marker_5955b11caedf0edba2265e343c249f78 = L.marker(
                 [13.49, -89.385],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_bf0cfc939cba695a3053622cfc12b6e1 = L.divIcon({
-  "html": "\u003cdiv style=\"\n                width:32px;height:32px;border:2.5px dashed #ffcc00;\n                border-radius:50%;background:rgba(0,0,0,0.3);\n                margin-left:-16px;margin-top:-16px;cursor:pointer;\n            \"\u003e\u003c/div\u003e",
+            var div_icon_7498508a04209349cb532630e1c32ba2 = L.divIcon({
+  "html": "\u003cdiv style=\"width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer\"\u003e\u003c/div\u003e",
   "className": "empty",
 });
         
     
-        var popup_d42097c443fb92158a24360638f184ae = L.popup({
-  "maxWidth": 320,
+        var popup_82610597754d46fb0c0942dab6f49a62 = L.popup({
+  "maxWidth": 340,
 });
 
         
             
-                var html_2ce09b93d4b2524d669a758c7655a1f2 = $(`<div id="html_2ce09b93d4b2524d669a758c7655a1f2" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ffcc00">El Sunzal </h3>     <b>El Salvador</b> | 유사도 <b>8/10</b> | 🔄 경유<br><hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 27°C | 🏄 ~230m<br>     👥 low | 💰 $30/day | ✈️ ~20h<br>     📅 4월, 5월, 6월, 7월...<hr style="margin:3px 0">     <i>250야드 포인트 필링. 팻 섹션 많아 롱보드 최적</i></div></div>`)[0];
-                popup_d42097c443fb92158a24360638f184ae.setContent(html_2ce09b93d4b2524d669a758c7655a1f2);
+                var html_a1cae0491d5240d4fbb51977b030bbb4 = $(`<div id="html_a1cae0491d5240d4fbb51977b030bbb4" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ffcc00">El Sunzal </h3>     <b>El Salvador</b> | 8/10 | 🔄경유<hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 27°C | 🏄 ~230m<br>     💰 $30/day | ✈️ ~20h<hr style="margin:3px 0">     <i>250야드 포인트 필링. 팻 섹션 많아 롱보드 최적</i></div></div>`)[0];
+                popup_82610597754d46fb0c0942dab6f49a62.setContent(html_a1cae0491d5240d4fbb51977b030bbb4);
             
         
 
-        marker_91b4798a77b83af8b31eedae9ed56213.bindPopup(popup_d42097c443fb92158a24360638f184ae)
+        marker_5955b11caedf0edba2265e343c249f78.bindPopup(popup_82610597754d46fb0c0942dab6f49a62)
         ;
 
         
     
     
-            marker_91b4798a77b83af8b31eedae9ed56213.bindTooltip(
+            marker_5955b11caedf0edba2265e343c249f78.bindTooltip(
                 `<div>
-                     El Sunzal 8/10 경유 ~230m
+                     🏄 El Sunzal 8/10
                  </div>`,
                 {
   "sticky": true,
@@ -539,51 +416,51 @@ background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size
             );
         
     
-                marker_91b4798a77b83af8b31eedae9ed56213.setIcon(div_icon_bf0cfc939cba695a3053622cfc12b6e1);
+                marker_5955b11caedf0edba2265e343c249f78.setIcon(div_icon_7498508a04209349cb532630e1c32ba2);
             
     
-            var marker_787032ec6c2e99804d62b636d128f3fc = L.marker(
+            var marker_6acd298e9798f5563c3f40ef296657f3 = L.marker(
                 [13.49, -89.385],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_f02fc2a973d11f0101cafc6dab982c92 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;opacity:0.6;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eEl Sunzal\u003c/div\u003e",
+            var div_icon_ccdf7233fcf51aec16b595d72d5043db = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eEl Sunzal\u003c/div\u003e",
   "className": "empty",
 });
         
     
-                marker_787032ec6c2e99804d62b636d128f3fc.setIcon(div_icon_f02fc2a973d11f0101cafc6dab982c92);
+                marker_6acd298e9798f5563c3f40ef296657f3.setIcon(div_icon_ccdf7233fcf51aec16b595d72d5043db);
             
     
-            var circle_marker_7a37d5b76a0960865586afc6aab5064f = L.circleMarker(
+            var circle_marker_8a235391be16b2f0bf0e8ed4f59ce50a = L.circleMarker(
                 [3.8007, 73.339],
-                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16, "stroke": true, "weight": 2}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-        var popup_d89dbe64228a4707e6deac602e402034 = L.popup({
-  "maxWidth": 320,
+        var popup_d8c78d4d8df41d1456f2f568c3947925 = L.popup({
+  "maxWidth": 340,
 });
 
         
             
-                var html_8e818313fef449672ea3b3512366906f = $(`<div id="html_8e818313fef449672ea3b3512366906f" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ffcc00">Maldives Quarters </h3>     <b>Maldives</b> | 유사도 <b>8/10</b> | ✈️ 직항<br><hr style="margin:3px 0">     🌊 0.3~1.2m | 🌡️ 29°C | 🏄 ~100m<br>     👥 very_low | 💰 $100/day | ✈️ ~10h<br>     📅 3월, 4월, 5월, 6월...<hr style="margin:3px 0">     <i>혼잡도 제로, 럭셔리 리조트, 따뜻한 리프</i></div></div>`)[0];
-                popup_d89dbe64228a4707e6deac602e402034.setContent(html_8e818313fef449672ea3b3512366906f);
+                var html_02f60582f4c2fc276d87ab1c157f9450 = $(`<div id="html_02f60582f4c2fc276d87ab1c157f9450" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ffcc00">Maldives Quarters </h3>     <b>Maldives</b> | 8/10 | ✈️직항<hr style="margin:3px 0">     🌊 0.3~1.2m | 🌡️ 29°C | 🏄 ~100m<br>     💰 $100/day | ✈️ ~10h<hr style="margin:3px 0">     <i>혼잡도 제로, 럭셔리 리조트, 따뜻한 리프</i></div></div>`)[0];
+                popup_d8c78d4d8df41d1456f2f568c3947925.setContent(html_02f60582f4c2fc276d87ab1c157f9450);
             
         
 
-        circle_marker_7a37d5b76a0960865586afc6aab5064f.bindPopup(popup_d89dbe64228a4707e6deac602e402034)
+        circle_marker_8a235391be16b2f0bf0e8ed4f59ce50a.bindPopup(popup_d8c78d4d8df41d1456f2f568c3947925)
         ;
 
         
     
     
-            circle_marker_7a37d5b76a0960865586afc6aab5064f.bindTooltip(
+            circle_marker_8a235391be16b2f0bf0e8ed4f59ce50a.bindTooltip(
                 `<div>
-                     Maldives Quarters 8/10 직항 ~100m
+                     🏄 Maldives Quarters 8/10
                  </div>`,
                 {
   "sticky": true,
@@ -591,55 +468,55 @@ background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size
             );
         
     
-            var marker_ab5bcbcc4038e04de027b5329547ef0d = L.marker(
+            var marker_244bf1f5295e35bf65035eecbf8c6bb1 = L.marker(
                 [3.8007, 73.339],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_e75269c3c423b20363bcfd12e1e68d4c = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;opacity:1;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eMaldives Quarters\u003c/div\u003e",
+            var div_icon_fe50bd3e358f0863129585a2d0c1ef75 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eMaldives Quarters\u003c/div\u003e",
   "className": "empty",
 });
         
     
-                marker_ab5bcbcc4038e04de027b5329547ef0d.setIcon(div_icon_e75269c3c423b20363bcfd12e1e68d4c);
+                marker_244bf1f5295e35bf65035eecbf8c6bb1.setIcon(div_icon_fe50bd3e358f0863129585a2d0c1ef75);
             
     
-            var marker_ea45eaac38e41a5b48e6dd0abc295156 = L.marker(
+            var marker_d57967057a234244db2a16e6c5ca965d = L.marker(
                 [-17.8833, 177.2167],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_60986ee02b90224e5c290b3849988ac0 = L.divIcon({
-  "html": "\u003cdiv style=\"\n                width:32px;height:32px;border:2.5px dashed #ffcc00;\n                border-radius:50%;background:rgba(0,0,0,0.3);\n                margin-left:-16px;margin-top:-16px;cursor:pointer;\n            \"\u003e\u003c/div\u003e",
+            var div_icon_53e54f7cf79bd444ab5db1a03e7d3eb5 = L.divIcon({
+  "html": "\u003cdiv style=\"width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer\"\u003e\u003c/div\u003e",
   "className": "empty",
 });
         
     
-        var popup_fdf6f1d5103733d9f08b9a7b00855a49 = L.popup({
-  "maxWidth": 320,
+        var popup_476cd2ce31ff6760130b88f2993e1357 = L.popup({
+  "maxWidth": 340,
 });
 
         
             
-                var html_26f031e9b6585961abdf270e5cf5126c = $(`<div id="html_26f031e9b6585961abdf270e5cf5126c" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ffcc00">Namotu Left </h3>     <b>Fiji</b> | 유사도 <b>8/10</b> | 🔄 경유<br><hr style="margin:3px 0">     🌊 0.5~1.0m | 🌡️ 27°C | 🏄 ~150m<br>     👥 very_low | 💰 $120/day | ✈️ ~14h<br>     📅 4월, 5월, 6월, 7월...<hr style="margin:3px 0">     <i>작은 날 롱보드/SUP 파라다이스. 섬 리조트</i></div></div>`)[0];
-                popup_fdf6f1d5103733d9f08b9a7b00855a49.setContent(html_26f031e9b6585961abdf270e5cf5126c);
+                var html_18c261372b860ab8c8b94755dfc6d6ba = $(`<div id="html_18c261372b860ab8c8b94755dfc6d6ba" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ffcc00">Namotu Left </h3>     <b>Fiji</b> | 8/10 | 🔄경유<hr style="margin:3px 0">     🌊 0.5~1.0m | 🌡️ 27°C | 🏄 ~150m<br>     💰 $120/day | ✈️ ~14h<hr style="margin:3px 0">     <i>작은 날 롱보드/SUP 파라다이스. 섬 리조트</i></div></div>`)[0];
+                popup_476cd2ce31ff6760130b88f2993e1357.setContent(html_18c261372b860ab8c8b94755dfc6d6ba);
             
         
 
-        marker_ea45eaac38e41a5b48e6dd0abc295156.bindPopup(popup_fdf6f1d5103733d9f08b9a7b00855a49)
+        marker_d57967057a234244db2a16e6c5ca965d.bindPopup(popup_476cd2ce31ff6760130b88f2993e1357)
         ;
 
         
     
     
-            marker_ea45eaac38e41a5b48e6dd0abc295156.bindTooltip(
+            marker_d57967057a234244db2a16e6c5ca965d.bindTooltip(
                 `<div>
-                     Namotu Left 8/10 경유 ~150m
+                     🏄 Namotu Left 8/10
                  </div>`,
                 {
   "sticky": true,
@@ -647,58 +524,58 @@ background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size
             );
         
     
-                marker_ea45eaac38e41a5b48e6dd0abc295156.setIcon(div_icon_60986ee02b90224e5c290b3849988ac0);
+                marker_d57967057a234244db2a16e6c5ca965d.setIcon(div_icon_53e54f7cf79bd444ab5db1a03e7d3eb5);
             
     
-            var marker_d2ad30aaa53f0bd27ab1f995117f5442 = L.marker(
+            var marker_ecd678e4d859576f7d106bd4e68cf800 = L.marker(
                 [-17.8833, 177.2167],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_cf4324f0b12aceba7c2e2dd9cf53b7a2 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;opacity:0.6;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eNamotu Left\u003c/div\u003e",
+            var div_icon_9cdd33af8c2ec75401c386529d177432 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eNamotu Left\u003c/div\u003e",
   "className": "empty",
 });
         
     
-                marker_d2ad30aaa53f0bd27ab1f995117f5442.setIcon(div_icon_cf4324f0b12aceba7c2e2dd9cf53b7a2);
+                marker_ecd678e4d859576f7d106bd4e68cf800.setIcon(div_icon_9cdd33af8c2ec75401c386529d177432);
             
     
-            var marker_e89dbe2d62075b075294d84d221ba45f = L.marker(
+            var marker_e76c95730553dd1e0c5dfea92baa12de = L.marker(
                 [-2.5667, 150.8],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_87054f580335a3ff61eda9977bc108d6 = L.divIcon({
-  "html": "\u003cdiv style=\"\n                width:32px;height:32px;border:2.5px dashed #ffcc00;\n                border-radius:50%;background:rgba(0,0,0,0.3);\n                margin-left:-16px;margin-top:-16px;cursor:pointer;\n            \"\u003e\u003c/div\u003e",
+            var div_icon_e8a246b890644b87e8de85439c5c03df = L.divIcon({
+  "html": "\u003cdiv style=\"width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer\"\u003e\u003c/div\u003e",
   "className": "empty",
 });
         
     
-        var popup_82afc30ee567db073f432d01797328ea = L.popup({
-  "maxWidth": 320,
+        var popup_ea8f05289d8301f6086d8d731df4e22b = L.popup({
+  "maxWidth": 340,
 });
 
         
             
-                var html_7bbb9b6877e21173219b4aa5e4ef07d3 = $(`<div id="html_7bbb9b6877e21173219b4aa5e4ef07d3" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ffcc00">Nusa Island </h3>     <b>Papua New Guinea</b> | 유사도 <b>8/10</b> | 🔄 경유<br><hr style="margin:3px 0">     🌊 0.6~1.2m | 🌡️ 29°C | 🏄 ~200m<br>     👥 very_low | 💰 $80/day | ✈️ ~15h<br>     📅 11월, 12월, 1월, 2월...<hr style="margin:3px 0">     <i>Long Longs — 긴 우측 웨이브. 완전 한적. 어드벤처</i></div></div>`)[0];
-                popup_82afc30ee567db073f432d01797328ea.setContent(html_7bbb9b6877e21173219b4aa5e4ef07d3);
+                var html_74a5641961b42cab8b76c81d05ff30f4 = $(`<div id="html_74a5641961b42cab8b76c81d05ff30f4" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ffcc00">Nusa Island </h3>     <b>Papua New Guinea</b> | 8/10 | 🔄경유<hr style="margin:3px 0">     🌊 0.6~1.2m | 🌡️ 29°C | 🏄 ~200m<br>     💰 $80/day | ✈️ ~15h<hr style="margin:3px 0">     <i>Long Longs — 긴 우측 웨이브. 완전 한적. 어드벤처</i></div></div>`)[0];
+                popup_ea8f05289d8301f6086d8d731df4e22b.setContent(html_74a5641961b42cab8b76c81d05ff30f4);
             
         
 
-        marker_e89dbe2d62075b075294d84d221ba45f.bindPopup(popup_82afc30ee567db073f432d01797328ea)
+        marker_e76c95730553dd1e0c5dfea92baa12de.bindPopup(popup_ea8f05289d8301f6086d8d731df4e22b)
         ;
 
         
     
     
-            marker_e89dbe2d62075b075294d84d221ba45f.bindTooltip(
+            marker_e76c95730553dd1e0c5dfea92baa12de.bindTooltip(
                 `<div>
-                     Nusa Island 8/10 경유 ~200m
+                     🏄 Nusa Island 8/10
                  </div>`,
                 {
   "sticky": true,
@@ -706,621 +583,51 @@ background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size
             );
         
     
-                marker_e89dbe2d62075b075294d84d221ba45f.setIcon(div_icon_87054f580335a3ff61eda9977bc108d6);
+                marker_e76c95730553dd1e0c5dfea92baa12de.setIcon(div_icon_e8a246b890644b87e8de85439c5c03df);
             
     
-            var marker_85aef724b085bb41b565952b2dfac72c = L.marker(
+            var marker_0a72e6e64a3be43e0a69120bb3c6e634 = L.marker(
                 [-2.5667, 150.8],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_ee3318ca439923241562ce0a8a2e9a2e = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;opacity:0.6;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eNusa Island\u003c/div\u003e",
+            var div_icon_9774625fa1c0283df142b285167e254b = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eNusa Island\u003c/div\u003e",
   "className": "empty",
 });
         
     
-                marker_85aef724b085bb41b565952b2dfac72c.setIcon(div_icon_ee3318ca439923241562ce0a8a2e9a2e);
+                marker_0a72e6e64a3be43e0a69120bb3c6e634.setIcon(div_icon_9774625fa1c0283df142b285167e254b);
             
     
-            var marker_e725c5a0ff8d2fba17b024a67287b6f1 = L.marker(
-                [-20.3258, 57.3722],
-                {
-}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
-        
-    
-            var div_icon_50f18d9c915b8c20506a343dff339522 = L.divIcon({
-  "html": "\u003cdiv style=\"\n                width:32px;height:32px;border:2.5px dashed #ffcc00;\n                border-radius:50%;background:rgba(0,0,0,0.3);\n                margin-left:-16px;margin-top:-16px;cursor:pointer;\n            \"\u003e\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-        var popup_22a8fc343cb699a869562581e6757b90 = L.popup({
-  "maxWidth": 320,
-});
-
-        
-            
-                var html_12070f652ce63bea6979be5da28664dd = $(`<div id="html_12070f652ce63bea6979be5da28664dd" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ffcc00">Tamarin Bay </h3>     <b>Mauritius</b> | 유사도 <b>8/10</b> | 🔄 경유<br><hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 27°C | 🏄 ~150m<br>     👥 low | 💰 $80/day | ✈️ ~20h<br>     📅 5월, 6월, 7월, 8월...<hr style="margin:3px 0">     <i>100~200m 리프 레프트 포인트. 클래식 롱보드 웨이브. 인도양의 보석</i></div></div>`)[0];
-                popup_22a8fc343cb699a869562581e6757b90.setContent(html_12070f652ce63bea6979be5da28664dd);
-            
-        
-
-        marker_e725c5a0ff8d2fba17b024a67287b6f1.bindPopup(popup_22a8fc343cb699a869562581e6757b90)
-        ;
-
-        
-    
-    
-            marker_e725c5a0ff8d2fba17b024a67287b6f1.bindTooltip(
-                `<div>
-                     Tamarin Bay 8/10 경유 ~150m
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-                marker_e725c5a0ff8d2fba17b024a67287b6f1.setIcon(div_icon_50f18d9c915b8c20506a343dff339522);
-            
-    
-            var marker_82ee9b037fe73c6107b7e206af48e0cd = L.marker(
-                [-20.3258, 57.3722],
-                {
-}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
-        
-    
-            var div_icon_c6e1e258165bbc4a181792d17f545aa8 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;opacity:0.6;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eTamarin Bay\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_82ee9b037fe73c6107b7e206af48e0cd.setIcon(div_icon_c6e1e258165bbc4a181792d17f545aa8);
-            
-    
-            var marker_a4a830b6697d82e5136ab91ac8b760f3 = L.marker(
-                [13.0667, -59.5333],
-                {
-}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
-        
-    
-            var div_icon_0a65b5bebebeb289d72eb3fda5142213 = L.divIcon({
-  "html": "\u003cdiv style=\"\n                width:32px;height:32px;border:2.5px dashed #ffcc00;\n                border-radius:50%;background:rgba(0,0,0,0.3);\n                margin-left:-16px;margin-top:-16px;cursor:pointer;\n            \"\u003e\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-        var popup_e9f38a6ac7069642f658b016e55b11cd = L.popup({
-  "maxWidth": 320,
-});
-
-        
-            
-                var html_8604b315612588d78f8b2bf7ef07834b = $(`<div id="html_8604b315612588d78f8b2bf7ef07834b" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ffcc00">Freights Bay </h3>     <b>Barbados</b> | 유사도 <b>8/10</b> | 🔄 경유<br><hr style="margin:3px 0">     🌊 0.3~1.0m | 🌡️ 28°C | 🏄 ~120m<br>     👥 low | 💰 $100/day | ✈️ ~22h<br>     📅 11월, 12월, 1월, 2월...<hr style="margin:3px 0">     <i>카리브해의 사누르. 리프 포인트, 순한 파도 길게 이어짐</i></div></div>`)[0];
-                popup_e9f38a6ac7069642f658b016e55b11cd.setContent(html_8604b315612588d78f8b2bf7ef07834b);
-            
-        
-
-        marker_a4a830b6697d82e5136ab91ac8b760f3.bindPopup(popup_e9f38a6ac7069642f658b016e55b11cd)
-        ;
-
-        
-    
-    
-            marker_a4a830b6697d82e5136ab91ac8b760f3.bindTooltip(
-                `<div>
-                     Freights Bay 8/10 경유 ~120m
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-                marker_a4a830b6697d82e5136ab91ac8b760f3.setIcon(div_icon_0a65b5bebebeb289d72eb3fda5142213);
-            
-    
-            var marker_a334279ad7bb20379643a4d9842187f4 = L.marker(
-                [13.0667, -59.5333],
-                {
-}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
-        
-    
-            var div_icon_dc5d8b6f595057b22bcb2f41d0442314 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;opacity:0.6;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eFreights Bay\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_a334279ad7bb20379643a4d9842187f4.setIcon(div_icon_dc5d8b6f595057b22bcb2f41d0442314);
-            
-    
-            var marker_b123c84d1ff3765acd53324e6152fb79 = L.marker(
-                [-8.8956, 116.1536],
-                {
-}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
-        
-    
-            var div_icon_b9301c6d80160d0670a7a1da427a5707 = L.divIcon({
-  "html": "\u003cdiv style=\"\n                width:32px;height:32px;border:2.5px dashed #ffcc00;\n                border-radius:50%;background:rgba(0,0,0,0.3);\n                margin-left:-16px;margin-top:-16px;cursor:pointer;\n            \"\u003e\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-        var popup_2e3184cfa7f4817760473a09672a8548 = L.popup({
-  "maxWidth": 320,
-});
-
-        
-            
-                var html_ebdcb02612bbf2570ff34e62b1d41374 = $(`<div id="html_ebdcb02612bbf2570ff34e62b1d41374" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ffcc00">Selong Belanak </h3>     <b>Indonesia (Lombok)</b> | 유사도 <b>8/10</b> | 🔄 경유<br><hr style="margin:3px 0">     🌊 0.3~1.2m | 🌡️ 28°C | 🏄 ~120m<br>     👥 medium | 💰 $30/day | ✈️ ~8h<br>     📅 11월, 12월, 1월, 2월...<hr style="margin:3px 0">     <i>롬복 최고 롱보드 비치. 모래바닥, 리프 걱정 제로, 사누르급</i></div></div>`)[0];
-                popup_2e3184cfa7f4817760473a09672a8548.setContent(html_ebdcb02612bbf2570ff34e62b1d41374);
-            
-        
-
-        marker_b123c84d1ff3765acd53324e6152fb79.bindPopup(popup_2e3184cfa7f4817760473a09672a8548)
-        ;
-
-        
-    
-    
-            marker_b123c84d1ff3765acd53324e6152fb79.bindTooltip(
-                `<div>
-                     Selong Belanak 8/10 경유 ~120m
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-                marker_b123c84d1ff3765acd53324e6152fb79.setIcon(div_icon_b9301c6d80160d0670a7a1da427a5707);
-            
-    
-            var marker_ed2fec4c89fb97698b8a1e090714b8b9 = L.marker(
-                [-8.8956, 116.1536],
-                {
-}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
-        
-    
-            var div_icon_ce381c7afbef9605d3bfa3b628297f29 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;opacity:0.6;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eSelong Belanak\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_ed2fec4c89fb97698b8a1e090714b8b9.setIcon(div_icon_ce381c7afbef9605d3bfa3b628297f29);
-            
-    
-            var marker_7a8eaff1278e8af6ddfc80e94eb3f5d2 = L.marker(
-                [-8.905, 116.28],
-                {
-}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
-        
-    
-            var div_icon_b582faac4a42854ef76b7c8eec5d98c8 = L.divIcon({
-  "html": "\u003cdiv style=\"\n                width:32px;height:32px;border:2.5px dashed #ffcc00;\n                border-radius:50%;background:rgba(0,0,0,0.3);\n                margin-left:-16px;margin-top:-16px;cursor:pointer;\n            \"\u003e\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-        var popup_85255904235bbb7cffaab9e94ac9ac3a = L.popup({
-  "maxWidth": 320,
-});
-
-        
-            
-                var html_889218883acf90b2144b0e42f2bb0b29 = $(`<div id="html_889218883acf90b2144b0e42f2bb0b29" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ffcc00">Gerupuk Inside </h3>     <b>Indonesia (Lombok)</b> | 유사도 <b>8/10</b> | 🔄 경유<br><hr style="margin:3px 0">     🌊 0.3~1.2m | 🌡️ 28°C | 🏄 ~150m<br>     👥 low | 💰 $35/day | ✈️ ~8h<br>     📅 11월, 12월, 1월, 2월...<hr style="margin:3px 0">     <i>보트 진입 리프. 100~200m 라이트핸더. 사누르와 매우 유사</i></div></div>`)[0];
-                popup_85255904235bbb7cffaab9e94ac9ac3a.setContent(html_889218883acf90b2144b0e42f2bb0b29);
-            
-        
-
-        marker_7a8eaff1278e8af6ddfc80e94eb3f5d2.bindPopup(popup_85255904235bbb7cffaab9e94ac9ac3a)
-        ;
-
-        
-    
-    
-            marker_7a8eaff1278e8af6ddfc80e94eb3f5d2.bindTooltip(
-                `<div>
-                     Gerupuk Inside 8/10 경유 ~150m
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-                marker_7a8eaff1278e8af6ddfc80e94eb3f5d2.setIcon(div_icon_b582faac4a42854ef76b7c8eec5d98c8);
-            
-    
-            var marker_9dfeb8842aa22ceeee96bc07716ed24b = L.marker(
-                [-8.905, 116.28],
-                {
-}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
-        
-    
-            var div_icon_88059aa3768bfdf6f2485e653f363cc5 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;opacity:0.6;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eGerupuk Inside\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_9dfeb8842aa22ceeee96bc07716ed24b.setIcon(div_icon_88059aa3768bfdf6f2485e653f363cc5);
-            
-    
-            var marker_e8af2d941dbd2253c8795736fe3c7f0b = L.marker(
-                [-2.52, 99.97],
-                {
-}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
-        
-    
-            var div_icon_4336dc0fd3ae4d0becbd1b9c509a2fdc = L.divIcon({
-  "html": "\u003cdiv style=\"\n                width:32px;height:32px;border:2.5px dashed #ffcc00;\n                border-radius:50%;background:rgba(0,0,0,0.3);\n                margin-left:-16px;margin-top:-16px;cursor:pointer;\n            \"\u003e\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-        var popup_e4a71feb9296268d1b859751751abc63 = L.popup({
-  "maxWidth": 320,
-});
-
-        
-            
-                var html_c8066457a51b7bcd48ea34ae1d9760aa = $(`<div id="html_c8066457a51b7bcd48ea34ae1d9760aa" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ffcc00">Burgerworld </h3>     <b>Indonesia (Mentawai)</b> | 유사도 <b>8/10</b> | 🔄 경유<br><hr style="margin:3px 0">     🌊 0.5~1.2m | 🌡️ 29°C | 🏄 ~150m<br>     👥 very_low | 💰 $120/day | ✈️ ~12h<br>     📅 12월, 1월, 2월<hr style="margin:3px 0">     <i>멘타와이의 가족 친화 롱보드 파도. 200m 라이트핸더</i></div></div>`)[0];
-                popup_e4a71feb9296268d1b859751751abc63.setContent(html_c8066457a51b7bcd48ea34ae1d9760aa);
-            
-        
-
-        marker_e8af2d941dbd2253c8795736fe3c7f0b.bindPopup(popup_e4a71feb9296268d1b859751751abc63)
-        ;
-
-        
-    
-    
-            marker_e8af2d941dbd2253c8795736fe3c7f0b.bindTooltip(
-                `<div>
-                     Burgerworld 8/10 경유 ~150m
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-                marker_e8af2d941dbd2253c8795736fe3c7f0b.setIcon(div_icon_4336dc0fd3ae4d0becbd1b9c509a2fdc);
-            
-    
-            var marker_e9d8df4580f73bc874b3c7a609f20c19 = L.marker(
-                [-2.52, 99.97],
-                {
-}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
-        
-    
-            var div_icon_ca82842b488dc04d21776b8484ba9f64 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;opacity:0.6;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eBurgerworld\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_e9d8df4580f73bc874b3c7a609f20c19.setIcon(div_icon_ca82842b488dc04d21776b8484ba9f64);
-            
-    
-            var marker_c45ccaf022b7bd644b6b502b2a5d77c6 = L.marker(
-                [-5.38, 104.02],
-                {
-}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
-        
-    
-            var div_icon_57369c000fa8b89121deff12bfbbe7d7 = L.divIcon({
-  "html": "\u003cdiv style=\"\n                width:32px;height:32px;border:2.5px dashed #ffcc00;\n                border-radius:50%;background:rgba(0,0,0,0.3);\n                margin-left:-16px;margin-top:-16px;cursor:pointer;\n            \"\u003e\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-        var popup_5e12efc229e837dd8b3efb6892486259 = L.popup({
-  "maxWidth": 320,
-});
-
-        
-            
-                var html_155b5476b75b483828add7bd0186be4f = $(`<div id="html_155b5476b75b483828add7bd0186be4f" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ffcc00">Ujung Bocur </h3>     <b>Indonesia (Sumatra)</b> | 유사도 <b>8/10</b> | 🔄 경유<br><hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 27°C | 🏄 ~300m 🔥<br>     👥 low | 💰 $35/day | ✈️ ~10h<br>     📅 4월, 5월, 6월, 7월...<hr style="margin:3px 0">     <i>작은 스웰 날 400m 롱보드 라이드! 세계 최장급. 크루이 지역</i></div></div>`)[0];
-                popup_5e12efc229e837dd8b3efb6892486259.setContent(html_155b5476b75b483828add7bd0186be4f);
-            
-        
-
-        marker_c45ccaf022b7bd644b6b502b2a5d77c6.bindPopup(popup_5e12efc229e837dd8b3efb6892486259)
-        ;
-
-        
-    
-    
-            marker_c45ccaf022b7bd644b6b502b2a5d77c6.bindTooltip(
-                `<div>
-                     Ujung Bocur 8/10 경유 ~300m
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-                marker_c45ccaf022b7bd644b6b502b2a5d77c6.setIcon(div_icon_57369c000fa8b89121deff12bfbbe7d7);
-            
-    
-            var marker_101d3405cfed0216285d61eafcfd8a04 = L.marker(
-                [-5.38, 104.02],
-                {
-}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
-        
-    
-            var div_icon_6fcb6f806061e7465de14f21a465ea0d = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;opacity:0.6;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eUjung Bocur\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_101d3405cfed0216285d61eafcfd8a04.setIcon(div_icon_6fcb6f806061e7465de14f21a465ea0d);
-            
-    
-            var marker_236b8e63fc23a83790ec4a7535a9324d = L.marker(
-                [0.57, 97.8],
-                {
-}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
-        
-    
-            var div_icon_5f94633709821bd8a113726e11437832 = L.divIcon({
-  "html": "\u003cdiv style=\"\n                width:32px;height:32px;border:2.5px dashed #ffcc00;\n                border-radius:50%;background:rgba(0,0,0,0.3);\n                margin-left:-16px;margin-top:-16px;cursor:pointer;\n            \"\u003e\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-        var popup_95ee86a64e0ccdd30a9a730ae411e2de = L.popup({
-  "maxWidth": 320,
-});
-
-        
-            
-                var html_e64e7d45e041cbf03a3b89cf03753dfc = $(`<div id="html_e64e7d45e041cbf03a3b89cf03753dfc" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ffcc00">Lazy Left (Nias) </h3>     <b>Indonesia (Sumatra)</b> | 유사도 <b>8/10</b> | 🔄 경유<br><hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 28°C | 🏄 ~250m<br>     👥 very_low | 💰 $30/day | ✈️ ~11h<br>     📅 4월, 5월, 6월, 7월...<hr style="margin:3px 0">     <i>이름 그대로 '게으른 왼쪽 파도'. 150~300m 느린 레프트. 수마트라 비밀 스팟</i></div></div>`)[0];
-                popup_95ee86a64e0ccdd30a9a730ae411e2de.setContent(html_e64e7d45e041cbf03a3b89cf03753dfc);
-            
-        
-
-        marker_236b8e63fc23a83790ec4a7535a9324d.bindPopup(popup_95ee86a64e0ccdd30a9a730ae411e2de)
-        ;
-
-        
-    
-    
-            marker_236b8e63fc23a83790ec4a7535a9324d.bindTooltip(
-                `<div>
-                     Lazy Left (Nias) 8/10 경유 ~250m
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-                marker_236b8e63fc23a83790ec4a7535a9324d.setIcon(div_icon_5f94633709821bd8a113726e11437832);
-            
-    
-            var marker_e4ef70a4a43e4166dfdc352d77f776d4 = L.marker(
-                [0.57, 97.8],
-                {
-}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
-        
-    
-            var div_icon_fdbfc2e781fefaa7fd3ed02a7981b1f9 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;opacity:0.6;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eLazy Left (Nias)\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_e4ef70a4a43e4166dfdc352d77f776d4.setIcon(div_icon_fdbfc2e781fefaa7fd3ed02a7981b1f9);
-            
-    
-            var marker_f28425279c31d59dead383f42a71bb9b = L.marker(
-                [2.62, 96.08],
-                {
-}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
-        
-    
-            var div_icon_ff5cb6faded10df1d81c89829187d319 = L.divIcon({
-  "html": "\u003cdiv style=\"\n                width:32px;height:32px;border:2.5px dashed #ffcc00;\n                border-radius:50%;background:rgba(0,0,0,0.3);\n                margin-left:-16px;margin-top:-16px;cursor:pointer;\n            \"\u003e\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-        var popup_d33f4d7a4e5fb2c02e8dcec8c079c597 = L.popup({
-  "maxWidth": 320,
-});
-
-        
-            
-                var html_b7848b6e36faca5babcc6db6f7899ab2 = $(`<div id="html_b7848b6e36faca5babcc6db6f7899ab2" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ffcc00">Simeulue </h3>     <b>Indonesia (Sumatra)</b> | 유사도 <b>8/10</b> | 🔄 경유<br><hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 28°C | 🏄 ~150m<br>     👥 very_low | 💰 $25/day | ✈️ ~12h<br>     📅 4월, 5월, 6월, 7월...<hr style="margin:3px 0">     <i>일본 서퍼 커뮤니티 '숨겨진 보석'. 관광객 거의 없는 순한 리프</i></div></div>`)[0];
-                popup_d33f4d7a4e5fb2c02e8dcec8c079c597.setContent(html_b7848b6e36faca5babcc6db6f7899ab2);
-            
-        
-
-        marker_f28425279c31d59dead383f42a71bb9b.bindPopup(popup_d33f4d7a4e5fb2c02e8dcec8c079c597)
-        ;
-
-        
-    
-    
-            marker_f28425279c31d59dead383f42a71bb9b.bindTooltip(
-                `<div>
-                     Simeulue 8/10 경유 ~150m
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-                marker_f28425279c31d59dead383f42a71bb9b.setIcon(div_icon_ff5cb6faded10df1d81c89829187d319);
-            
-    
-            var marker_df68f7d2e133ae160374388dde738bfd = L.marker(
-                [2.62, 96.08],
-                {
-}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
-        
-    
-            var div_icon_c4df6c79c27f617ded2ce4271387cba3 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;opacity:0.6;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eSimeulue\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_df68f7d2e133ae160374388dde738bfd.setIcon(div_icon_c4df6c79c27f617ded2ce4271387cba3);
-            
-    
-            var circle_marker_9beafb1505e6374ca82f073d202b9228 = L.circleMarker(
-                [5.97, 80.37],
-                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16, "stroke": true, "weight": 2}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
-        
-    
-        var popup_6904ef4a74ca362d39c52a95f0ec46c7 = L.popup({
-  "maxWidth": 320,
-});
-
-        
-            
-                var html_893a65291587cec89d561721a473dbca = $(`<div id="html_893a65291587cec89d561721a473dbca" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ffcc00">Ahangama </h3>     <b>Sri Lanka</b> | 유사도 <b>8/10</b> | ✈️ 직항<br><hr style="margin:3px 0">     🌊 0.3~1.2m | 🌡️ 28°C | 🏄 ~120m<br>     👥 low | 💰 $20/day | ✈️ ~9h<br>     📅 11월, 12월, 1월, 2월...<hr style="margin:3px 0">     <i>일본 블로그 '스리랑카판 사누르'. The Rock 포인트에서 느린 롱라이드</i></div></div>`)[0];
-                popup_6904ef4a74ca362d39c52a95f0ec46c7.setContent(html_893a65291587cec89d561721a473dbca);
-            
-        
-
-        circle_marker_9beafb1505e6374ca82f073d202b9228.bindPopup(popup_6904ef4a74ca362d39c52a95f0ec46c7)
-        ;
-
-        
-    
-    
-            circle_marker_9beafb1505e6374ca82f073d202b9228.bindTooltip(
-                `<div>
-                     Ahangama 8/10 직항 ~120m
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_0c1744a11eb8bf90f0d4ec53b3d0a1f7 = L.marker(
-                [5.97, 80.37],
-                {
-}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
-        
-    
-            var div_icon_4cf9c2a0150889841b27670aeb1d4220 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;opacity:1;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eAhangama\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_0c1744a11eb8bf90f0d4ec53b3d0a1f7.setIcon(div_icon_4cf9c2a0150889841b27670aeb1d4220);
-            
-    
-            var circle_marker_810193a087364f32d48010dcc10cd9b0 = L.circleMarker(
-                [6.84, 81.84],
-                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16, "stroke": true, "weight": 2}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
-        
-    
-        var popup_e6b7d7f2e77b94d26f2063a73016efa5 = L.popup({
-  "maxWidth": 320,
-});
-
-        
-            
-                var html_371be5a9ffad8d8876343834d238cdc9 = $(`<div id="html_371be5a9ffad8d8876343834d238cdc9" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ffcc00">Arugam Pottuvil </h3>     <b>Sri Lanka</b> | 유사도 <b>8/10</b> | ✈️ 직항<br><hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 28°C | 🏄 ~200m<br>     👥 medium | 💰 $25/day | ✈️ ~10h<br>     📅 4월, 5월, 6월, 7월...<hr style="margin:3px 0">     <i>메인보다 순한 Pottuvil Point. 300m 라이트핸더. 동남아 최고 롱라이드</i></div></div>`)[0];
-                popup_e6b7d7f2e77b94d26f2063a73016efa5.setContent(html_371be5a9ffad8d8876343834d238cdc9);
-            
-        
-
-        circle_marker_810193a087364f32d48010dcc10cd9b0.bindPopup(popup_e6b7d7f2e77b94d26f2063a73016efa5)
-        ;
-
-        
-    
-    
-            circle_marker_810193a087364f32d48010dcc10cd9b0.bindTooltip(
-                `<div>
-                     Arugam Pottuvil 8/10 직항 ~200m
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_937296ef631b2d9ca12399ed7acc2d23 = L.marker(
-                [6.84, 81.84],
-                {
-}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
-        
-    
-            var div_icon_e28df41e9f38b0280a33236b9e8fc5f8 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;opacity:1;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eArugam Pottuvil\u003c/div\u003e",
-  "className": "empty",
-});
-        
-    
-                marker_937296ef631b2d9ca12399ed7acc2d23.setIcon(div_icon_e28df41e9f38b0280a33236b9e8fc5f8);
-            
-    
-            var circle_marker_56805cf5cd22d28a3ad3416f0d3e4274 = L.circleMarker(
+            var circle_marker_a3e1d861f658ea1eb16344b97df84a92 = L.circleMarker(
                 [9.8569, 126.0489],
-                {"bubblingMouseEvents": true, "color": "#ff9900", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff9900", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14, "stroke": true, "weight": 2}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+                {"bubblingMouseEvents": true, "color": "#ff9900", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff9900", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 12.6, "stroke": true, "weight": 2}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-        var popup_a4a860dd498fe5781d14d496974d5ce1 = L.popup({
-  "maxWidth": 320,
+        var popup_4408d45aac453b6b523cb3a13cfa1a72 = L.popup({
+  "maxWidth": 340,
 });
 
         
             
-                var html_1054d278b193e37197da365d2ef6365f = $(`<div id="html_1054d278b193e37197da365d2ef6365f" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Siargao Bamboo </h3>     <b>Philippines</b> | 유사도 <b>7/10</b> | ✈️ 직항<br><hr style="margin:3px 0">     🌊 0.5~1.0m | 🌡️ 29°C | 🏄 ~80m<br>     👥 low | 💰 $25/day | ✈️ ~6h<br>     📅 3월, 4월, 5월, 6월...<hr style="margin:3px 0">     <i>트로피컬 분위기 최고. Cloud9 반대편 순한 스팟</i></div></div>`)[0];
-                popup_a4a860dd498fe5781d14d496974d5ce1.setContent(html_1054d278b193e37197da365d2ef6365f);
+                var html_1dd11bf172a71f563e26ab7c15e147df = $(`<div id="html_1dd11bf172a71f563e26ab7c15e147df" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Siargao Bamboo </h3>     <b>Philippines</b> | 7/10 | ✈️직항<hr style="margin:3px 0">     🌊 0.5~1.0m | 🌡️ 29°C | 🏄 ~80m<br>     💰 $25/day | ✈️ ~6h<hr style="margin:3px 0">     <i>트로피컬 분위기 최고. Cloud9 반대편 순한 스팟</i></div></div>`)[0];
+                popup_4408d45aac453b6b523cb3a13cfa1a72.setContent(html_1dd11bf172a71f563e26ab7c15e147df);
             
         
 
-        circle_marker_56805cf5cd22d28a3ad3416f0d3e4274.bindPopup(popup_a4a860dd498fe5781d14d496974d5ce1)
+        circle_marker_a3e1d861f658ea1eb16344b97df84a92.bindPopup(popup_4408d45aac453b6b523cb3a13cfa1a72)
         ;
 
         
     
     
-            circle_marker_56805cf5cd22d28a3ad3416f0d3e4274.bindTooltip(
+            circle_marker_a3e1d861f658ea1eb16344b97df84a92.bindTooltip(
                 `<div>
-                     Siargao Bamboo 7/10 직항 ~80m
+                     🏄 Siargao Bamboo 7/10
                  </div>`,
                 {
   "sticky": true,
@@ -1328,55 +635,55 @@ background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size
             );
         
     
-            var marker_8e813510ee65b87b91d066c798b04c00 = L.marker(
+            var marker_d79f81a3556962fe8635b8ec289334fa = L.marker(
                 [9.8569, 126.0489],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_4c8ca86fd436eb7177c1dea8bd03aaa4 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;opacity:1;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eSiargao Bamboo\u003c/div\u003e",
+            var div_icon_5fa2ced2f5ad6f9303fb7255d84257c9 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eSiargao Bamboo\u003c/div\u003e",
   "className": "empty",
 });
         
     
-                marker_8e813510ee65b87b91d066c798b04c00.setIcon(div_icon_4c8ca86fd436eb7177c1dea8bd03aaa4);
+                marker_d79f81a3556962fe8635b8ec289334fa.setIcon(div_icon_5fa2ced2f5ad6f9303fb7255d84257c9);
             
     
-            var marker_5af713bd65d0b31b239503bb190df069 = L.marker(
+            var marker_7bbef1ae522a23f2a09091ff55bac028 = L.marker(
                 [9.9742, -85.6594],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_8bc76d179e21fdddf34c0971722f3ee8 = L.divIcon({
-  "html": "\u003cdiv style=\"\n                width:28px;height:28px;border:2.5px dashed #ff9900;\n                border-radius:50%;background:rgba(0,0,0,0.3);\n                margin-left:-14px;margin-top:-14px;cursor:pointer;\n            \"\u003e\u003c/div\u003e",
+            var div_icon_ac85ee613df2b2f97f72e05436f21d23 = L.divIcon({
+  "html": "\u003cdiv style=\"width:28px;height:28px;border:2.5px dashed #ff9900;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-14px;margin-top:-14px;cursor:pointer\"\u003e\u003c/div\u003e",
   "className": "empty",
 });
         
     
-        var popup_365f8ab9521e884eb1b358ac2222c3b1 = L.popup({
-  "maxWidth": 320,
+        var popup_16e8309e30497142a7fcab85e1a1c151 = L.popup({
+  "maxWidth": 340,
 });
 
         
             
-                var html_462384c0d71833d1e6298075ba618fee = $(`<div id="html_462384c0d71833d1e6298075ba618fee" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Nosara Guiones </h3>     <b>Costa Rica</b> | 유사도 <b>7/10</b> | 🔄 경유<br><hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 28°C | 🏄 ~200m<br>     👥 medium | 💰 $50/day | ✈️ ~20h<br>     📅 11월, 12월, 1월, 2월...<hr style="margin:3px 0">     <i>중미 최고 롱보드 비치. 200m 라이딩. 모래바닥</i></div></div>`)[0];
-                popup_365f8ab9521e884eb1b358ac2222c3b1.setContent(html_462384c0d71833d1e6298075ba618fee);
+                var html_8394911cc4f507cb674ffea6e8fc9423 = $(`<div id="html_8394911cc4f507cb674ffea6e8fc9423" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Nosara Guiones </h3>     <b>Costa Rica</b> | 7/10 | 🔄경유<hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 28°C | 🏄 ~200m<br>     💰 $50/day | ✈️ ~20h<hr style="margin:3px 0">     <i>중미 최고 롱보드 비치. 200m 라이딩. 모래바닥</i></div></div>`)[0];
+                popup_16e8309e30497142a7fcab85e1a1c151.setContent(html_8394911cc4f507cb674ffea6e8fc9423);
             
         
 
-        marker_5af713bd65d0b31b239503bb190df069.bindPopup(popup_365f8ab9521e884eb1b358ac2222c3b1)
+        marker_7bbef1ae522a23f2a09091ff55bac028.bindPopup(popup_16e8309e30497142a7fcab85e1a1c151)
         ;
 
         
     
     
-            marker_5af713bd65d0b31b239503bb190df069.bindTooltip(
+            marker_7bbef1ae522a23f2a09091ff55bac028.bindTooltip(
                 `<div>
-                     Nosara Guiones 7/10 경유 ~200m
+                     🏄 Nosara Guiones 7/10
                  </div>`,
                 {
   "sticky": true,
@@ -1384,51 +691,51 @@ background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size
             );
         
     
-                marker_5af713bd65d0b31b239503bb190df069.setIcon(div_icon_8bc76d179e21fdddf34c0971722f3ee8);
+                marker_7bbef1ae522a23f2a09091ff55bac028.setIcon(div_icon_ac85ee613df2b2f97f72e05436f21d23);
             
     
-            var marker_f79ea28b417ca506b5157e890dc9c36c = L.marker(
+            var marker_b2b3c1f442c9bd879fc2e7f15f54f551 = L.marker(
                 [9.9742, -85.6594],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_0d89a5925282eef60cb68990e35d82f6 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;opacity:0.6;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eNosara Guiones\u003c/div\u003e",
+            var div_icon_7aa2e63f8b354207aa49882b59d4b4dd = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eNosara Guiones\u003c/div\u003e",
   "className": "empty",
 });
         
     
-                marker_f79ea28b417ca506b5157e890dc9c36c.setIcon(div_icon_0d89a5925282eef60cb68990e35d82f6);
+                marker_b2b3c1f442c9bd879fc2e7f15f54f551.setIcon(div_icon_7aa2e63f8b354207aa49882b59d4b4dd);
             
     
-            var circle_marker_9bcd8aca5e00fd2878c4ec97cc7d24c9 = L.circleMarker(
+            var circle_marker_9f7ff503f0ef04f8fa71f0ae35eedc7e = L.circleMarker(
                 [21.2667, -157.8275],
-                {"bubblingMouseEvents": true, "color": "#ff9900", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff9900", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14, "stroke": true, "weight": 2}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+                {"bubblingMouseEvents": true, "color": "#ff9900", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff9900", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 12.6, "stroke": true, "weight": 2}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-        var popup_17020540be28e7b0e747e6bc8e781fab = L.popup({
-  "maxWidth": 320,
+        var popup_2473785fc9ea726fea1165f20cc48161 = L.popup({
+  "maxWidth": 340,
 });
 
         
             
-                var html_4de728d99d6d0a04c13c6f181cb118ea = $(`<div id="html_4de728d99d6d0a04c13c6f181cb118ea" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Waikiki Queens </h3>     <b>USA (Hawaii)</b> | 유사도 <b>7/10</b> | ✈️ 직항<br><hr style="margin:3px 0">     🌊 0.5~1.2m | 🌡️ 25°C | 🏄 ~150m<br>     👥 very_high | 💰 $80/day | ✈️ ~9h<br>     📅 5월, 6월, 7월, 8월...<hr style="margin:3px 0">     <i>클래식. 파도는 완벽하지만 혼잡도가 단점</i></div></div>`)[0];
-                popup_17020540be28e7b0e747e6bc8e781fab.setContent(html_4de728d99d6d0a04c13c6f181cb118ea);
+                var html_09fa900151f67542b6f544af078751c6 = $(`<div id="html_09fa900151f67542b6f544af078751c6" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Waikiki Queens </h3>     <b>USA (Hawaii)</b> | 7/10 | ✈️직항<hr style="margin:3px 0">     🌊 0.5~1.2m | 🌡️ 25°C | 🏄 ~150m<br>     💰 $80/day | ✈️ ~9h<hr style="margin:3px 0">     <i>클래식. 파도는 완벽하지만 혼잡도가 단점</i></div></div>`)[0];
+                popup_2473785fc9ea726fea1165f20cc48161.setContent(html_09fa900151f67542b6f544af078751c6);
             
         
 
-        circle_marker_9bcd8aca5e00fd2878c4ec97cc7d24c9.bindPopup(popup_17020540be28e7b0e747e6bc8e781fab)
+        circle_marker_9f7ff503f0ef04f8fa71f0ae35eedc7e.bindPopup(popup_2473785fc9ea726fea1165f20cc48161)
         ;
 
         
     
     
-            circle_marker_9bcd8aca5e00fd2878c4ec97cc7d24c9.bindTooltip(
+            circle_marker_9f7ff503f0ef04f8fa71f0ae35eedc7e.bindTooltip(
                 `<div>
-                     Waikiki Queens 7/10 직항 ~150m
+                     🏄 Waikiki Queens 7/10
                  </div>`,
                 {
   "sticky": true,
@@ -1436,48 +743,48 @@ background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size
             );
         
     
-            var marker_74634fb0b4e63d658f23cb481a5cb969 = L.marker(
+            var marker_0da07573d4de03cc458dbe309fb2ae4e = L.marker(
                 [21.2667, -157.8275],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_8c8ac9838be34d653cab797ba157ce37 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;opacity:1;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eWaikiki Queens\u003c/div\u003e",
+            var div_icon_6aad52027c0426c36e26aa2f09beba86 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eWaikiki Queens\u003c/div\u003e",
   "className": "empty",
 });
         
     
-                marker_74634fb0b4e63d658f23cb481a5cb969.setIcon(div_icon_8c8ac9838be34d653cab797ba157ce37);
+                marker_0da07573d4de03cc458dbe309fb2ae4e.setIcon(div_icon_6aad52027c0426c36e26aa2f09beba86);
             
     
-            var circle_marker_71d18057070719b0ce362d53a3f38c30 = L.circleMarker(
+            var circle_marker_7b60972b51443b8499fc0c82d56191d2 = L.circleMarker(
                 [5.95, 80.7333],
-                {"bubblingMouseEvents": true, "color": "#ff9900", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff9900", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14, "stroke": true, "weight": 2}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+                {"bubblingMouseEvents": true, "color": "#ff9900", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff9900", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 12.6, "stroke": true, "weight": 2}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-        var popup_5f8d3a905650d9b795be4babe6f43f17 = L.popup({
-  "maxWidth": 320,
+        var popup_1e2fef9466fe2351c9f9adf947822d97 = L.popup({
+  "maxWidth": 340,
 });
 
         
             
-                var html_1f8e2c098abf9ffedf8ea585efbcc6ec = $(`<div id="html_1f8e2c098abf9ffedf8ea585efbcc6ec" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Hiriketiya </h3>     <b>Sri Lanka</b> | 유사도 <b>7/10</b> | ✈️ 직항<br><hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 28°C | 🏄 ~100m<br>     👥 medium | 💰 $20/day | ✈️ ~9h<br>     📅 12월, 1월, 2월, 3월<hr style="margin:3px 0">     <i>만 안쪽 포인트. 웰리가마에서 30분</i></div></div>`)[0];
-                popup_5f8d3a905650d9b795be4babe6f43f17.setContent(html_1f8e2c098abf9ffedf8ea585efbcc6ec);
+                var html_c70f5bb38832f509da0efe87ab78eb21 = $(`<div id="html_c70f5bb38832f509da0efe87ab78eb21" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Hiriketiya </h3>     <b>Sri Lanka</b> | 7/10 | ✈️직항<hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 28°C | 🏄 ~100m<br>     💰 $20/day | ✈️ ~9h<hr style="margin:3px 0">     <i>만 안쪽 포인트. 웰리가마에서 30분</i></div></div>`)[0];
+                popup_1e2fef9466fe2351c9f9adf947822d97.setContent(html_c70f5bb38832f509da0efe87ab78eb21);
             
         
 
-        circle_marker_71d18057070719b0ce362d53a3f38c30.bindPopup(popup_5f8d3a905650d9b795be4babe6f43f17)
+        circle_marker_7b60972b51443b8499fc0c82d56191d2.bindPopup(popup_1e2fef9466fe2351c9f9adf947822d97)
         ;
 
         
     
     
-            circle_marker_71d18057070719b0ce362d53a3f38c30.bindTooltip(
+            circle_marker_7b60972b51443b8499fc0c82d56191d2.bindTooltip(
                 `<div>
-                     Hiriketiya 7/10 직항 ~100m
+                     🏄 Hiriketiya 7/10
                  </div>`,
                 {
   "sticky": true,
@@ -1485,55 +792,55 @@ background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size
             );
         
     
-            var marker_0f64e6e7fe2c6008bfbe9a9a70e9ba36 = L.marker(
+            var marker_c2c0a6f4c933320aaaa778ea2dee4f9f = L.marker(
                 [5.95, 80.7333],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_625d9280fa7e131150669b3e3c8db284 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;opacity:1;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eHiriketiya\u003c/div\u003e",
+            var div_icon_94e5a9ae4eaf6f635501c60f735fcd89 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eHiriketiya\u003c/div\u003e",
   "className": "empty",
 });
         
     
-                marker_0f64e6e7fe2c6008bfbe9a9a70e9ba36.setIcon(div_icon_625d9280fa7e131150669b3e3c8db284);
+                marker_c2c0a6f4c933320aaaa778ea2dee4f9f.setIcon(div_icon_94e5a9ae4eaf6f635501c60f735fcd89);
             
     
-            var marker_dd7f45b50baec6b11b3b7267adaef4f5 = L.marker(
+            var marker_a4124e7501bf471cfb40e100cb748f09 = L.marker(
                 [20.8683, -105.4406],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_c3c97ed491dcbb77fb1be03078e76e88 = L.divIcon({
-  "html": "\u003cdiv style=\"\n                width:28px;height:28px;border:2.5px dashed #ff9900;\n                border-radius:50%;background:rgba(0,0,0,0.3);\n                margin-left:-14px;margin-top:-14px;cursor:pointer;\n            \"\u003e\u003c/div\u003e",
+            var div_icon_68f94a0ad07f00f6fb1de018eaaeb805 = L.divIcon({
+  "html": "\u003cdiv style=\"width:28px;height:28px;border:2.5px dashed #ff9900;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-14px;margin-top:-14px;cursor:pointer\"\u003e\u003c/div\u003e",
   "className": "empty",
 });
         
     
-        var popup_f97f5df8d351976c6aa2a485fa94dac7 = L.popup({
-  "maxWidth": 320,
+        var popup_375e5ceba78a95659a96ddf5d567caeb = L.popup({
+  "maxWidth": 340,
 });
 
         
             
-                var html_060891f8368b015d11b0fc88f2bcf090 = $(`<div id="html_060891f8368b015d11b0fc88f2bcf090" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Sayulita </h3>     <b>Mexico</b> | 유사도 <b>7/10</b> | 🔄 경유<br><hr style="margin:3px 0">     🌊 0.5~1.0m | 🌡️ 28°C | 🏄 ~80m<br>     👥 medium_high | 💰 $45/day | ✈️ ~18h<br>     📅 3월, 4월, 5월, 6월...<hr style="margin:3px 0">     <i>마을 분위기 좋음. 비치 브레이크. 혼잡해지는 추세</i></div></div>`)[0];
-                popup_f97f5df8d351976c6aa2a485fa94dac7.setContent(html_060891f8368b015d11b0fc88f2bcf090);
+                var html_16de266d2d3815abd66655ee3abe8a6e = $(`<div id="html_16de266d2d3815abd66655ee3abe8a6e" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Sayulita </h3>     <b>Mexico</b> | 7/10 | 🔄경유<hr style="margin:3px 0">     🌊 0.5~1.0m | 🌡️ 28°C | 🏄 ~80m<br>     💰 $45/day | ✈️ ~18h<hr style="margin:3px 0">     <i>마을 분위기 좋음. 비치 브레이크. 혼잡해지는 추세</i></div></div>`)[0];
+                popup_375e5ceba78a95659a96ddf5d567caeb.setContent(html_16de266d2d3815abd66655ee3abe8a6e);
             
         
 
-        marker_dd7f45b50baec6b11b3b7267adaef4f5.bindPopup(popup_f97f5df8d351976c6aa2a485fa94dac7)
+        marker_a4124e7501bf471cfb40e100cb748f09.bindPopup(popup_375e5ceba78a95659a96ddf5d567caeb)
         ;
 
         
     
     
-            marker_dd7f45b50baec6b11b3b7267adaef4f5.bindTooltip(
+            marker_a4124e7501bf471cfb40e100cb748f09.bindTooltip(
                 `<div>
-                     Sayulita 7/10 경유 ~80m
+                     🏄 Sayulita 7/10
                  </div>`,
                 {
   "sticky": true,
@@ -1541,51 +848,51 @@ background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size
             );
         
     
-                marker_dd7f45b50baec6b11b3b7267adaef4f5.setIcon(div_icon_c3c97ed491dcbb77fb1be03078e76e88);
+                marker_a4124e7501bf471cfb40e100cb748f09.setIcon(div_icon_68f94a0ad07f00f6fb1de018eaaeb805);
             
     
-            var marker_eb8a1daf7091557501bd11815065fd11 = L.marker(
+            var marker_3a5fecd7f74f10d8ff9728584d9228e9 = L.marker(
                 [20.8683, -105.4406],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_ce3d44382c023fd9c61b264f77a32d0a = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;opacity:0.6;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eSayulita\u003c/div\u003e",
+            var div_icon_32e67c79489a3182e0dc0462f55101e8 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eSayulita\u003c/div\u003e",
   "className": "empty",
 });
         
     
-                marker_eb8a1daf7091557501bd11815065fd11.setIcon(div_icon_ce3d44382c023fd9c61b264f77a32d0a);
+                marker_3a5fecd7f74f10d8ff9728584d9228e9.setIcon(div_icon_32e67c79489a3182e0dc0462f55101e8);
             
     
-            var circle_marker_aca5706261a4500965943f11670cc537 = L.circleMarker(
+            var circle_marker_69fa4f765bae19bcc8dfbe85408db16c = L.circleMarker(
                 [35.05, 128.97],
-                {"bubblingMouseEvents": true, "color": "#ff9900", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff9900", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14, "stroke": true, "weight": 2}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+                {"bubblingMouseEvents": true, "color": "#ff9900", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff9900", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 12.6, "stroke": true, "weight": 2}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-        var popup_183de445cb956a514efee2ba5e47eebd = L.popup({
-  "maxWidth": 320,
+        var popup_7b1bd29022dbc4e396294859de7f878b = L.popup({
+  "maxWidth": 340,
 });
 
         
             
-                var html_6af1d14399521df6d8cc99ab25fb7f9c = $(`<div id="html_6af1d14399521df6d8cc99ab25fb7f9c" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Daedaepo </h3>     <b>South Korea</b> | 유사도 <b>7/10</b> | ✈️ 직항<br><hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 26°C | 🏄 ~50m<br>     👥 low | 💰 $30/day | ✈️ ~0h<br>     📅 7월, 8월<hr style="margin:3px 0">     <i>홈스팟. 8월 태풍 스웰 한정. 비치 브레이크</i></div></div>`)[0];
-                popup_183de445cb956a514efee2ba5e47eebd.setContent(html_6af1d14399521df6d8cc99ab25fb7f9c);
+                var html_f8cc5b57e85a89c8f95281026a8a9822 = $(`<div id="html_f8cc5b57e85a89c8f95281026a8a9822" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Daedaepo </h3>     <b>South Korea</b> | 7/10 | ✈️직항<hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 26°C | 🏄 ~50m<br>     💰 $30/day | ✈️ ~0h<hr style="margin:3px 0">     <i>홈스팟. 8월 태풍 스웰 한정. 비치 브레이크</i></div></div>`)[0];
+                popup_7b1bd29022dbc4e396294859de7f878b.setContent(html_f8cc5b57e85a89c8f95281026a8a9822);
             
         
 
-        circle_marker_aca5706261a4500965943f11670cc537.bindPopup(popup_183de445cb956a514efee2ba5e47eebd)
+        circle_marker_69fa4f765bae19bcc8dfbe85408db16c.bindPopup(popup_7b1bd29022dbc4e396294859de7f878b)
         ;
 
         
     
     
-            circle_marker_aca5706261a4500965943f11670cc537.bindTooltip(
+            circle_marker_69fa4f765bae19bcc8dfbe85408db16c.bindTooltip(
                 `<div>
-                     Daedaepo 7/10 직항 ~50m
+                     🏄 Daedaepo 7/10
                  </div>`,
                 {
   "sticky": true,
@@ -1593,55 +900,173 @@ background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size
             );
         
     
-            var marker_e86fe57ae4794a760355937cf49b15b7 = L.marker(
+            var marker_2aef11b7d3e49ddde98744b9785c8422 = L.marker(
                 [35.05, 128.97],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_a96d696731245de25e9a8133b604f826 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;opacity:1;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eDaedaepo\u003c/div\u003e",
+            var div_icon_a43315519fd765558d4c554fec917812 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eDaedaepo\u003c/div\u003e",
   "className": "empty",
 });
         
     
-                marker_e86fe57ae4794a760355937cf49b15b7.setIcon(div_icon_a96d696731245de25e9a8133b604f826);
+                marker_2aef11b7d3e49ddde98744b9785c8422.setIcon(div_icon_a43315519fd765558d4c554fec917812);
             
     
-            var marker_e896d936d64e110d6616397b4c7d2920 = L.marker(
+            var marker_3e44bd271ffc8a73856c433fca5dbd20 = L.marker(
+                [-20.3258, 57.3722],
+                {
+}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
+        
+    
+            var div_icon_6e5cbc6b466c2eed8867239e00c35a8d = L.divIcon({
+  "html": "\u003cdiv style=\"width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_a9f2801de0a1ca058974e39b505c8928 = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_78897d31d6e0d8aefd2e2b0d47e695f3 = $(`<div id="html_78897d31d6e0d8aefd2e2b0d47e695f3" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ffcc00">Tamarin Bay </h3>     <b>Mauritius</b> | 8/10 | 🔄경유<hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 27°C | 🏄 ~150m<br>     💰 $80/day | ✈️ ~20h<hr style="margin:3px 0">     <i>100~200m 리프 레프트 포인트. 클래식 롱보드 웨이브. 인도양의 보석</i></div></div>`)[0];
+                popup_a9f2801de0a1ca058974e39b505c8928.setContent(html_78897d31d6e0d8aefd2e2b0d47e695f3);
+            
+        
+
+        marker_3e44bd271ffc8a73856c433fca5dbd20.bindPopup(popup_a9f2801de0a1ca058974e39b505c8928)
+        ;
+
+        
+    
+    
+            marker_3e44bd271ffc8a73856c433fca5dbd20.bindTooltip(
+                `<div>
+                     🏄 Tamarin Bay 8/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_3e44bd271ffc8a73856c433fca5dbd20.setIcon(div_icon_6e5cbc6b466c2eed8867239e00c35a8d);
+            
+    
+            var marker_f7afc405bafc67431f3613663e0c4da4 = L.marker(
+                [-20.3258, 57.3722],
+                {
+}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
+        
+    
+            var div_icon_e0f4a802c2463bb4ea05201b865aa1c9 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eTamarin Bay\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_f7afc405bafc67431f3613663e0c4da4.setIcon(div_icon_e0f4a802c2463bb4ea05201b865aa1c9);
+            
+    
+            var marker_ca960a975041805fa56083e3a5baef80 = L.marker(
+                [13.0667, -59.5333],
+                {
+}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
+        
+    
+            var div_icon_b5cbb1bfa2db2a100238b8a7cf978e75 = L.divIcon({
+  "html": "\u003cdiv style=\"width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_04b74f2e9c67b2748f9f4f4db2b5dc6f = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_bd5007d6c8ed3fe8396757c8a35f796e = $(`<div id="html_bd5007d6c8ed3fe8396757c8a35f796e" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ffcc00">Freights Bay </h3>     <b>Barbados</b> | 8/10 | 🔄경유<hr style="margin:3px 0">     🌊 0.3~1.0m | 🌡️ 28°C | 🏄 ~120m<br>     💰 $100/day | ✈️ ~22h<hr style="margin:3px 0">     <i>카리브해의 사누르. 리프 포인트, 순한 파도 길게 이어짐</i></div></div>`)[0];
+                popup_04b74f2e9c67b2748f9f4f4db2b5dc6f.setContent(html_bd5007d6c8ed3fe8396757c8a35f796e);
+            
+        
+
+        marker_ca960a975041805fa56083e3a5baef80.bindPopup(popup_04b74f2e9c67b2748f9f4f4db2b5dc6f)
+        ;
+
+        
+    
+    
+            marker_ca960a975041805fa56083e3a5baef80.bindTooltip(
+                `<div>
+                     🏄 Freights Bay 8/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_ca960a975041805fa56083e3a5baef80.setIcon(div_icon_b5cbb1bfa2db2a100238b8a7cf978e75);
+            
+    
+            var marker_75fa20005fb3b21413fda6474cf22b27 = L.marker(
+                [13.0667, -59.5333],
+                {
+}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
+        
+    
+            var div_icon_e69df447b52577a4a065e82f0180c4f6 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eFreights Bay\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_75fa20005fb3b21413fda6474cf22b27.setIcon(div_icon_e69df447b52577a4a065e82f0180c4f6);
+            
+    
+            var marker_4776af61918eb3c54ccca7884075ada2 = L.marker(
                 [19.7811, -70.438],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_4986db81a351963aa796b736874a43fb = L.divIcon({
-  "html": "\u003cdiv style=\"\n                width:28px;height:28px;border:2.5px dashed #ff9900;\n                border-radius:50%;background:rgba(0,0,0,0.3);\n                margin-left:-14px;margin-top:-14px;cursor:pointer;\n            \"\u003e\u003c/div\u003e",
+            var div_icon_9be82c7269af04c0c9cc750d906ce6e4 = L.divIcon({
+  "html": "\u003cdiv style=\"width:28px;height:28px;border:2.5px dashed #ff9900;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-14px;margin-top:-14px;cursor:pointer\"\u003e\u003c/div\u003e",
   "className": "empty",
 });
         
     
-        var popup_e1c3162be5c51e5bb46571e92ae271df = L.popup({
-  "maxWidth": 320,
+        var popup_c8f11d50e1ea52c1b14230fd58334e5c = L.popup({
+  "maxWidth": 340,
 });
 
         
             
-                var html_cfdb12abb8e5332ad9da3d98928b3c77 = $(`<div id="html_cfdb12abb8e5332ad9da3d98928b3c77" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Playa Encuentro </h3>     <b>Dominican Republic</b> | 유사도 <b>7/10</b> | 🔄 경유<br><hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 27°C | 🏄 ~90m<br>     👥 medium | 💰 $70/day | ✈️ ~20h<br>     📅 11월, 12월, 1월, 2월...<hr style="margin:3px 0">     <i>다중 리프 피크. 서프캠프 인프라 좋음</i></div></div>`)[0];
-                popup_e1c3162be5c51e5bb46571e92ae271df.setContent(html_cfdb12abb8e5332ad9da3d98928b3c77);
+                var html_fe27f05eabb11ed281850677318e25f4 = $(`<div id="html_fe27f05eabb11ed281850677318e25f4" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Playa Encuentro </h3>     <b>Dominican Republic</b> | 7/10 | 🔄경유<hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 27°C | 🏄 ~90m<br>     💰 $70/day | ✈️ ~20h<hr style="margin:3px 0">     <i>다중 리프 피크. 서프캠프 인프라 좋음</i></div></div>`)[0];
+                popup_c8f11d50e1ea52c1b14230fd58334e5c.setContent(html_fe27f05eabb11ed281850677318e25f4);
             
         
 
-        marker_e896d936d64e110d6616397b4c7d2920.bindPopup(popup_e1c3162be5c51e5bb46571e92ae271df)
+        marker_4776af61918eb3c54ccca7884075ada2.bindPopup(popup_c8f11d50e1ea52c1b14230fd58334e5c)
         ;
 
         
     
     
-            marker_e896d936d64e110d6616397b4c7d2920.bindTooltip(
+            marker_4776af61918eb3c54ccca7884075ada2.bindTooltip(
                 `<div>
-                     Playa Encuentro 7/10 경유 ~90m
+                     🏄 Playa Encuentro 7/10
                  </div>`,
                 {
   "sticky": true,
@@ -1649,58 +1074,58 @@ background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size
             );
         
     
-                marker_e896d936d64e110d6616397b4c7d2920.setIcon(div_icon_4986db81a351963aa796b736874a43fb);
+                marker_4776af61918eb3c54ccca7884075ada2.setIcon(div_icon_9be82c7269af04c0c9cc750d906ce6e4);
             
     
-            var marker_2062a5754a4d1bf2fa7ee985ea62fb38 = L.marker(
+            var marker_57263b21241f6ee595706396232dfd14 = L.marker(
                 [19.7811, -70.438],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_1b7a007f3d4df3b003b55e4d9c73e88f = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;opacity:0.6;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003ePlaya Encuentro\u003c/div\u003e",
+            var div_icon_8cb14992f684ec4f31765c557654b708 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003ePlaya Encuentro\u003c/div\u003e",
   "className": "empty",
 });
         
     
-                marker_2062a5754a4d1bf2fa7ee985ea62fb38.setIcon(div_icon_1b7a007f3d4df3b003b55e4d9c73e88f);
+                marker_57263b21241f6ee595706396232dfd14.setIcon(div_icon_8cb14992f684ec4f31765c557654b708);
             
     
-            var marker_07b1d8919396aa3c2a5cef4045f058a9 = L.marker(
+            var marker_2a8fab6b4f8990c5ce3783939705851f = L.marker(
                 [-23.7833, 35.5167],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_4b368a37939e86baf69ba25eda2ac01f = L.divIcon({
-  "html": "\u003cdiv style=\"\n                width:28px;height:28px;border:2.5px dashed #ff9900;\n                border-radius:50%;background:rgba(0,0,0,0.3);\n                margin-left:-14px;margin-top:-14px;cursor:pointer;\n            \"\u003e\u003c/div\u003e",
+            var div_icon_e114356296abf19f1d20dd3a8b7290aa = L.divIcon({
+  "html": "\u003cdiv style=\"width:28px;height:28px;border:2.5px dashed #ff9900;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-14px;margin-top:-14px;cursor:pointer\"\u003e\u003c/div\u003e",
   "className": "empty",
 });
         
     
-        var popup_42b956b252c8a43cf29cd3ebb29c4cf9 = L.popup({
-  "maxWidth": 320,
+        var popup_ab44223edd3208adf3c5f8305a68b7a8 = L.popup({
+  "maxWidth": 340,
 });
 
         
             
-                var html_b9104bd54f24bc538a097cda031e1375 = $(`<div id="html_b9104bd54f24bc538a097cda031e1375" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Tofo Beach </h3>     <b>Mozambique</b> | 유사도 <b>7/10</b> | 🔄 경유<br><hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 26°C | 🏄 ~120m<br>     👥 very_low | 💰 $40/day | ✈️ ~22h<br>     📅 4월, 5월, 6월, 7월...<hr style="margin:3px 0">     <i>긴 포인트브레이크, 저렴, 미개척. 80~150m 라이드</i></div></div>`)[0];
-                popup_42b956b252c8a43cf29cd3ebb29c4cf9.setContent(html_b9104bd54f24bc538a097cda031e1375);
+                var html_bb69d2616af117d5572eca31330e044e = $(`<div id="html_bb69d2616af117d5572eca31330e044e" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Tofo Beach </h3>     <b>Mozambique</b> | 7/10 | 🔄경유<hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 26°C | 🏄 ~120m<br>     💰 $40/day | ✈️ ~22h<hr style="margin:3px 0">     <i>긴 포인트브레이크, 저렴, 미개척. 80~150m 라이드</i></div></div>`)[0];
+                popup_ab44223edd3208adf3c5f8305a68b7a8.setContent(html_bb69d2616af117d5572eca31330e044e);
             
         
 
-        marker_07b1d8919396aa3c2a5cef4045f058a9.bindPopup(popup_42b956b252c8a43cf29cd3ebb29c4cf9)
+        marker_2a8fab6b4f8990c5ce3783939705851f.bindPopup(popup_ab44223edd3208adf3c5f8305a68b7a8)
         ;
 
         
     
     
-            marker_07b1d8919396aa3c2a5cef4045f058a9.bindTooltip(
+            marker_2a8fab6b4f8990c5ce3783939705851f.bindTooltip(
                 `<div>
-                     Tofo Beach 7/10 경유 ~120m
+                     🏄 Tofo Beach 7/10
                  </div>`,
                 {
   "sticky": true,
@@ -1708,58 +1133,58 @@ background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size
             );
         
     
-                marker_07b1d8919396aa3c2a5cef4045f058a9.setIcon(div_icon_4b368a37939e86baf69ba25eda2ac01f);
+                marker_2a8fab6b4f8990c5ce3783939705851f.setIcon(div_icon_e114356296abf19f1d20dd3a8b7290aa);
             
     
-            var marker_535b5dd8fea2756bbd5b008c0ff05e17 = L.marker(
+            var marker_e0831e08fb3e1026701a8da7c74dd3cb = L.marker(
                 [-23.7833, 35.5167],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_69291a3563dadbc18e01b230a20fb3dc = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;opacity:0.6;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eTofo Beach\u003c/div\u003e",
+            var div_icon_9df93365e805bcc40ed2d5d5f0851ee7 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eTofo Beach\u003c/div\u003e",
   "className": "empty",
 });
         
     
-                marker_535b5dd8fea2756bbd5b008c0ff05e17.setIcon(div_icon_69291a3563dadbc18e01b230a20fb3dc);
+                marker_e0831e08fb3e1026701a8da7c74dd3cb.setIcon(div_icon_9df93365e805bcc40ed2d5d5f0851ee7);
             
     
-            var marker_231eb27098e478b45acc9e2706a5cb04 = L.marker(
+            var marker_24574a91d96272cc426e507453eec8b6 = L.marker(
                 [-23.6667, 43.65],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_a032804b631a8713a4219f86df42a45b = L.divIcon({
-  "html": "\u003cdiv style=\"\n                width:28px;height:28px;border:2.5px dashed #ff9900;\n                border-radius:50%;background:rgba(0,0,0,0.3);\n                margin-left:-14px;margin-top:-14px;cursor:pointer;\n            \"\u003e\u003c/div\u003e",
+            var div_icon_1b9e1f314be082f9e55cf7bb315b4273 = L.divIcon({
+  "html": "\u003cdiv style=\"width:28px;height:28px;border:2.5px dashed #ff9900;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-14px;margin-top:-14px;cursor:pointer\"\u003e\u003c/div\u003e",
   "className": "empty",
 });
         
     
-        var popup_753f6e21f60ba770d2bb3f635464ddf6 = L.popup({
-  "maxWidth": 320,
+        var popup_9ab77be91b8be2258ca3156f46914640 = L.popup({
+  "maxWidth": 340,
 });
 
         
             
-                var html_a9a9b51e2606000f55207f227e8798b1 = $(`<div id="html_a9a9b51e2606000f55207f227e8798b1" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Anakao </h3>     <b>Madagascar</b> | 유사도 <b>7/10</b> | 🔄 경유<br><hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 26°C | 🏄 ~120m<br>     👥 very_low | 💰 $30/day | ✈️ ~30h<br>     📅 4월, 5월, 6월, 7월...<hr style="margin:3px 0">     <i>리프 레프트 포인트. 완전 미개척 어드벤처</i></div></div>`)[0];
-                popup_753f6e21f60ba770d2bb3f635464ddf6.setContent(html_a9a9b51e2606000f55207f227e8798b1);
+                var html_cdb67cab3e1ef905f7fd6e453847aded = $(`<div id="html_cdb67cab3e1ef905f7fd6e453847aded" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Anakao </h3>     <b>Madagascar</b> | 7/10 | 🔄경유<hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 26°C | 🏄 ~120m<br>     💰 $30/day | ✈️ ~30h<hr style="margin:3px 0">     <i>리프 레프트 포인트. 완전 미개척 어드벤처</i></div></div>`)[0];
+                popup_9ab77be91b8be2258ca3156f46914640.setContent(html_cdb67cab3e1ef905f7fd6e453847aded);
             
         
 
-        marker_231eb27098e478b45acc9e2706a5cb04.bindPopup(popup_753f6e21f60ba770d2bb3f635464ddf6)
+        marker_24574a91d96272cc426e507453eec8b6.bindPopup(popup_9ab77be91b8be2258ca3156f46914640)
         ;
 
         
     
     
-            marker_231eb27098e478b45acc9e2706a5cb04.bindTooltip(
+            marker_24574a91d96272cc426e507453eec8b6.bindTooltip(
                 `<div>
-                     Anakao 7/10 경유 ~120m
+                     🏄 Anakao 7/10
                  </div>`,
                 {
   "sticky": true,
@@ -1767,51 +1192,51 @@ background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size
             );
         
     
-                marker_231eb27098e478b45acc9e2706a5cb04.setIcon(div_icon_a032804b631a8713a4219f86df42a45b);
+                marker_24574a91d96272cc426e507453eec8b6.setIcon(div_icon_1b9e1f314be082f9e55cf7bb315b4273);
             
     
-            var marker_79c08b9af46cd6af04caa2203ba7c570 = L.marker(
+            var marker_e63b78f68731d3df06c33d0cd17347c2 = L.marker(
                 [-23.6667, 43.65],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_3284bc061b2d0707a1cdc909e9610868 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;opacity:0.6;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eAnakao\u003c/div\u003e",
+            var div_icon_489ea8959e9beeab92649851b913c2da = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eAnakao\u003c/div\u003e",
   "className": "empty",
 });
         
     
-                marker_79c08b9af46cd6af04caa2203ba7c570.setIcon(div_icon_3284bc061b2d0707a1cdc909e9610868);
+                marker_e63b78f68731d3df06c33d0cd17347c2.setIcon(div_icon_489ea8959e9beeab92649851b913c2da);
             
     
-            var circle_marker_5cc0cb1fcc52d17ddf231e86e72d3e99 = L.circleMarker(
+            var circle_marker_76b8c6fb50d506e463e72eebe8731a40 = L.circleMarker(
                 [21.9914, 120.8428],
-                {"bubblingMouseEvents": true, "color": "#ff9900", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff9900", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14, "stroke": true, "weight": 2}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+                {"bubblingMouseEvents": true, "color": "#ff9900", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff9900", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 12.6, "stroke": true, "weight": 2}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-        var popup_330eaadc5f01751824cc37cb5072db96 = L.popup({
-  "maxWidth": 320,
+        var popup_4b53fed21d45fef75179cccced271973 = L.popup({
+  "maxWidth": 340,
 });
 
         
             
-                var html_e9fc87b3e6b8f385a4d5bb229755bb72 = $(`<div id="html_e9fc87b3e6b8f385a4d5bb229755bb72" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Jialeshuei </h3>     <b>Taiwan</b> | 유사도 <b>7/10</b> | ✈️ 직항<br><hr style="margin:3px 0">     🌊 0.3~1.5m | 🌡️ 27°C | 🏄 ~80m<br>     👥 medium | 💰 $60/day | ✈️ ~3h<br>     📅 5월, 6월, 7월, 8월...<hr style="margin:3px 0">     <i>한국서 2.5시간! 리프 섹션 롱보드 적합. 가성비 최고</i></div></div>`)[0];
-                popup_330eaadc5f01751824cc37cb5072db96.setContent(html_e9fc87b3e6b8f385a4d5bb229755bb72);
+                var html_a29acfa472ead7f41d6ab3f19607d71a = $(`<div id="html_a29acfa472ead7f41d6ab3f19607d71a" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Jialeshuei </h3>     <b>Taiwan</b> | 7/10 | ✈️직항<hr style="margin:3px 0">     🌊 0.3~1.5m | 🌡️ 27°C | 🏄 ~80m<br>     💰 $60/day | ✈️ ~3h<hr style="margin:3px 0">     <i>한국서 2.5시간! 리프 섹션 롱보드 적합. 가성비 최고</i></div></div>`)[0];
+                popup_4b53fed21d45fef75179cccced271973.setContent(html_a29acfa472ead7f41d6ab3f19607d71a);
             
         
 
-        circle_marker_5cc0cb1fcc52d17ddf231e86e72d3e99.bindPopup(popup_330eaadc5f01751824cc37cb5072db96)
+        circle_marker_76b8c6fb50d506e463e72eebe8731a40.bindPopup(popup_4b53fed21d45fef75179cccced271973)
         ;
 
         
     
     
-            circle_marker_5cc0cb1fcc52d17ddf231e86e72d3e99.bindTooltip(
+            circle_marker_76b8c6fb50d506e463e72eebe8731a40.bindTooltip(
                 `<div>
-                     Jialeshuei 7/10 직항 ~80m
+                     🏄 Jialeshuei 7/10
                  </div>`,
                 {
   "sticky": true,
@@ -1819,48 +1244,55 @@ background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size
             );
         
     
-            var marker_4ef6c383a01bfaa808d253d0c96e07a1 = L.marker(
+            var marker_abbb8f043efebcc276b8fd98a2f22120 = L.marker(
                 [21.9914, 120.8428],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_eab049c7fdef0e0ecd7c0719953f765a = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;opacity:1;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eJialeshuei\u003c/div\u003e",
+            var div_icon_f2364743e5f66268906c6d1ff0355094 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eJialeshuei\u003c/div\u003e",
   "className": "empty",
 });
         
     
-                marker_4ef6c383a01bfaa808d253d0c96e07a1.setIcon(div_icon_eab049c7fdef0e0ecd7c0719953f765a);
+                marker_abbb8f043efebcc276b8fd98a2f22120.setIcon(div_icon_f2364743e5f66268906c6d1ff0355094);
             
     
-            var circle_marker_dcd4d0f96cbfa5177169946f2dd46b3a = L.circleMarker(
-                [9.23, 126.01],
-                {"bubblingMouseEvents": true, "color": "#ff9900", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff9900", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14, "stroke": true, "weight": 2}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            var marker_4278e68b8be5400870b5721af883af6d = L.marker(
+                [-8.8956, 116.1536],
+                {
+}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-        var popup_ec4592de1f856bf71c7faac183751246 = L.popup({
-  "maxWidth": 320,
+            var div_icon_3dc7214f4d2c22f904a39290f808b7e8 = L.divIcon({
+  "html": "\u003cdiv style=\"width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_da0195e2681b0a8c0bd08774a99b86b8 = L.popup({
+  "maxWidth": 340,
 });
 
         
             
-                var html_c1d3eed63fdb52c102ffb7b7ebb40942 = $(`<div id="html_c1d3eed63fdb52c102ffb7b7ebb40942" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Lanuza </h3>     <b>Philippines</b> | 유사도 <b>7/10</b> | ✈️ 직항<br><hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 29°C | 🏄 ~150m<br>     👥 low | 💰 $25/day | ✈️ ~6h<br>     📅 11월, 12월, 1월, 2월...<hr style="margin:3px 0">     <i>국제 롱보드 대회 장소. 시아르가오 옆이지만 더 순한 파도</i></div></div>`)[0];
-                popup_ec4592de1f856bf71c7faac183751246.setContent(html_c1d3eed63fdb52c102ffb7b7ebb40942);
+                var html_84dce550f0d607b543361928ac62c241 = $(`<div id="html_84dce550f0d607b543361928ac62c241" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ffcc00">Selong Belanak </h3>     <b>Indonesia (Lombok)</b> | 8/10 | 🔄경유<hr style="margin:3px 0">     🌊 0.3~1.2m | 🌡️ 28°C | 🏄 ~120m<br>     💰 $30/day | ✈️ ~8h<hr style="margin:3px 0">     <i>롬복 최고 롱보드 비치. 모래바닥, 리프 걱정 제로, 사누르급</i></div></div>`)[0];
+                popup_da0195e2681b0a8c0bd08774a99b86b8.setContent(html_84dce550f0d607b543361928ac62c241);
             
         
 
-        circle_marker_dcd4d0f96cbfa5177169946f2dd46b3a.bindPopup(popup_ec4592de1f856bf71c7faac183751246)
+        marker_4278e68b8be5400870b5721af883af6d.bindPopup(popup_da0195e2681b0a8c0bd08774a99b86b8)
         ;
 
         
     
     
-            circle_marker_dcd4d0f96cbfa5177169946f2dd46b3a.bindTooltip(
+            marker_4278e68b8be5400870b5721af883af6d.bindTooltip(
                 `<div>
-                     Lanuza 7/10 직항 ~150m
+                     🏄 Selong Belanak 8/10
                  </div>`,
                 {
   "sticky": true,
@@ -1868,55 +1300,225 @@ background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size
             );
         
     
-            var marker_59021a4ae9805e155b535744424b7a09 = L.marker(
-                [9.23, 126.01],
+                marker_4278e68b8be5400870b5721af883af6d.setIcon(div_icon_3dc7214f4d2c22f904a39290f808b7e8);
+            
+    
+            var marker_c80927d017450bd6c2c16d3a648d0617 = L.marker(
+                [-8.8956, 116.1536],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_fe7f790769f568af75a39ab667ad8ddf = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;opacity:1;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eLanuza\u003c/div\u003e",
+            var div_icon_dd90168c1a4d8842ab9f164c3b3c4228 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eSelong Belanak\u003c/div\u003e",
   "className": "empty",
 });
         
     
-                marker_59021a4ae9805e155b535744424b7a09.setIcon(div_icon_fe7f790769f568af75a39ab667ad8ddf);
+                marker_c80927d017450bd6c2c16d3a648d0617.setIcon(div_icon_dd90168c1a4d8842ab9f164c3b3c4228);
             
     
-            var marker_bcf5474e2b588a47518ad7753e1819e8 = L.marker(
+            var marker_dad9d378d352e6a324605dc648469440 = L.marker(
+                [-8.905, 116.28],
+                {
+}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
+        
+    
+            var div_icon_fc8cb606f0b920a12825f2b7ca167007 = L.divIcon({
+  "html": "\u003cdiv style=\"width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_5e86dc9d79e032f1098c85820b51ef55 = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_f50acc3694ba93eadbcbe6b3712e6d06 = $(`<div id="html_f50acc3694ba93eadbcbe6b3712e6d06" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ffcc00">Gerupuk Inside </h3>     <b>Indonesia (Lombok)</b> | 8/10 | 🔄경유<hr style="margin:3px 0">     🌊 0.3~1.2m | 🌡️ 28°C | 🏄 ~150m<br>     💰 $35/day | ✈️ ~8h<hr style="margin:3px 0">     <i>보트 진입 리프. 100~200m 라이트핸더. 사누르와 매우 유사</i></div></div>`)[0];
+                popup_5e86dc9d79e032f1098c85820b51ef55.setContent(html_f50acc3694ba93eadbcbe6b3712e6d06);
+            
+        
+
+        marker_dad9d378d352e6a324605dc648469440.bindPopup(popup_5e86dc9d79e032f1098c85820b51ef55)
+        ;
+
+        
+    
+    
+            marker_dad9d378d352e6a324605dc648469440.bindTooltip(
+                `<div>
+                     🏄 Gerupuk Inside 8/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_dad9d378d352e6a324605dc648469440.setIcon(div_icon_fc8cb606f0b920a12825f2b7ca167007);
+            
+    
+            var marker_489386b0cfe7f4cf3f0e1fa613438463 = L.marker(
+                [-8.905, 116.28],
+                {
+}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
+        
+    
+            var div_icon_c465161ff4a70eaae679386ee0925277 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eGerupuk Inside\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_489386b0cfe7f4cf3f0e1fa613438463.setIcon(div_icon_c465161ff4a70eaae679386ee0925277);
+            
+    
+            var marker_cfeaa25919420107263f63b1cab28301 = L.marker(
+                [-2.52, 99.97],
+                {
+}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
+        
+    
+            var div_icon_f1bbc70aa3f84976b8b17c19101635c5 = L.divIcon({
+  "html": "\u003cdiv style=\"width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_2784ab119c37c829bcaae4c266efc496 = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_5b9dfb412f7d335b8c36654b9c540567 = $(`<div id="html_5b9dfb412f7d335b8c36654b9c540567" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ffcc00">Burgerworld </h3>     <b>Indonesia (Mentawai)</b> | 8/10 | 🔄경유<hr style="margin:3px 0">     🌊 0.5~1.2m | 🌡️ 29°C | 🏄 ~150m<br>     💰 $120/day | ✈️ ~12h<hr style="margin:3px 0">     <i>멘타와이의 가족 친화 롱보드 파도. 200m 라이트핸더</i></div></div>`)[0];
+                popup_2784ab119c37c829bcaae4c266efc496.setContent(html_5b9dfb412f7d335b8c36654b9c540567);
+            
+        
+
+        marker_cfeaa25919420107263f63b1cab28301.bindPopup(popup_2784ab119c37c829bcaae4c266efc496)
+        ;
+
+        
+    
+    
+            marker_cfeaa25919420107263f63b1cab28301.bindTooltip(
+                `<div>
+                     🏄 Burgerworld 8/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_cfeaa25919420107263f63b1cab28301.setIcon(div_icon_f1bbc70aa3f84976b8b17c19101635c5);
+            
+    
+            var marker_804f7ae0ce323d3082d18f611a446d0c = L.marker(
+                [-2.52, 99.97],
+                {
+}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
+        
+    
+            var div_icon_bc3aa233be2df7fdb9bbd1e428fdc0c2 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eBurgerworld\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_804f7ae0ce323d3082d18f611a446d0c.setIcon(div_icon_bc3aa233be2df7fdb9bbd1e428fdc0c2);
+            
+    
+            var circle_marker_5653c58bc36f5a7340a5f53a73fe89b8 = L.circleMarker(
+                [9.23, 126.01],
+                {"bubblingMouseEvents": true, "color": "#ff9900", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff9900", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 12.6, "stroke": true, "weight": 2}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
+        
+    
+        var popup_2d350ceaa859bda4984745ca81f20a68 = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_5915424e8de2033e114962d218572886 = $(`<div id="html_5915424e8de2033e114962d218572886" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Lanuza </h3>     <b>Philippines</b> | 7/10 | ✈️직항<hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 29°C | 🏄 ~150m<br>     💰 $25/day | ✈️ ~6h<hr style="margin:3px 0">     <i>국제 롱보드 대회 장소. 시아르가오 옆이지만 더 순한 파도</i></div></div>`)[0];
+                popup_2d350ceaa859bda4984745ca81f20a68.setContent(html_5915424e8de2033e114962d218572886);
+            
+        
+
+        circle_marker_5653c58bc36f5a7340a5f53a73fe89b8.bindPopup(popup_2d350ceaa859bda4984745ca81f20a68)
+        ;
+
+        
+    
+    
+            circle_marker_5653c58bc36f5a7340a5f53a73fe89b8.bindTooltip(
+                `<div>
+                     🏄 Lanuza 7/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_610d4011742a19f516d55d38e9e282b8 = L.marker(
+                [9.23, 126.01],
+                {
+}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
+        
+    
+            var div_icon_087bbae724642e4c1faa157103542a48 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eLanuza\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_610d4011742a19f516d55d38e9e282b8.setIcon(div_icon_087bbae724642e4c1faa157103542a48);
+            
+    
+            var marker_67da04aae524869c56644be6c75c8917 = L.marker(
                 [-7.95, 159.05],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_1d831a19706512fba658d222627716d0 = L.divIcon({
-  "html": "\u003cdiv style=\"\n                width:28px;height:28px;border:2.5px dashed #ff9900;\n                border-radius:50%;background:rgba(0,0,0,0.3);\n                margin-left:-14px;margin-top:-14px;cursor:pointer;\n            \"\u003e\u003c/div\u003e",
+            var div_icon_9ebb9f2ad8d7fe0cf702157df160d0fb = L.divIcon({
+  "html": "\u003cdiv style=\"width:28px;height:28px;border:2.5px dashed #ff9900;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-14px;margin-top:-14px;cursor:pointer\"\u003e\u003c/div\u003e",
   "className": "empty",
 });
         
     
-        var popup_7e8b029c17288269bf6386bf4251c031 = L.popup({
-  "maxWidth": 320,
+        var popup_4f376c27aa650b52ddb604b6d4c8e7cc = L.popup({
+  "maxWidth": 340,
 });
 
         
             
-                var html_755de2c675b8414846a35effc3a6c34c = $(`<div id="html_755de2c675b8414846a35effc3a6c34c" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Donuts </h3>     <b>Solomon Islands</b> | 유사도 <b>7/10</b> | 🔄 경유<br><hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 29°C | 🏄 ~250m<br>     👥 very_low | 💰 $130/day | ✈️ ~15h<br>     📅 11월, 12월, 1월, 2월...<hr style="margin:3px 0">     <i>300m+ 롱보드 포인트! 누사급. 완전 미개척</i></div></div>`)[0];
-                popup_7e8b029c17288269bf6386bf4251c031.setContent(html_755de2c675b8414846a35effc3a6c34c);
+                var html_b83bfe864a19e0333ef4bbec10846590 = $(`<div id="html_b83bfe864a19e0333ef4bbec10846590" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Donuts </h3>     <b>Solomon Islands</b> | 7/10 | 🔄경유<hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 29°C | 🏄 ~250m<br>     💰 $130/day | ✈️ ~15h<hr style="margin:3px 0">     <i>300m+ 롱보드 포인트! 누사급. 완전 미개척</i></div></div>`)[0];
+                popup_4f376c27aa650b52ddb604b6d4c8e7cc.setContent(html_b83bfe864a19e0333ef4bbec10846590);
             
         
 
-        marker_bcf5474e2b588a47518ad7753e1819e8.bindPopup(popup_7e8b029c17288269bf6386bf4251c031)
+        marker_67da04aae524869c56644be6c75c8917.bindPopup(popup_4f376c27aa650b52ddb604b6d4c8e7cc)
         ;
 
         
     
     
-            marker_bcf5474e2b588a47518ad7753e1819e8.bindTooltip(
+            marker_67da04aae524869c56644be6c75c8917.bindTooltip(
                 `<div>
-                     Donuts 7/10 경유 ~250m
+                     🏄 Donuts 7/10
                  </div>`,
                 {
   "sticky": true,
@@ -1924,58 +1526,58 @@ background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size
             );
         
     
-                marker_bcf5474e2b588a47518ad7753e1819e8.setIcon(div_icon_1d831a19706512fba658d222627716d0);
+                marker_67da04aae524869c56644be6c75c8917.setIcon(div_icon_9ebb9f2ad8d7fe0cf702157df160d0fb);
             
     
-            var marker_e8039166bf791438b9a0eae1eb443624 = L.marker(
+            var marker_10e17caf4e03c82fbb338baf90d39d52 = L.marker(
                 [-7.95, 159.05],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_7d23844aad0eb4ddfcd10b508e9e893b = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;opacity:0.6;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eDonuts\u003c/div\u003e",
+            var div_icon_d028685ebc4cd8cf8628863bc1105070 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eDonuts\u003c/div\u003e",
   "className": "empty",
 });
         
     
-                marker_e8039166bf791438b9a0eae1eb443624.setIcon(div_icon_7d23844aad0eb4ddfcd10b508e9e893b);
+                marker_10e17caf4e03c82fbb338baf90d39d52.setIcon(div_icon_d028685ebc4cd8cf8628863bc1105070);
             
     
-            var marker_3fc139ad7a0df444b4d32790e18ea823 = L.marker(
+            var marker_1089e52054247451521a4ebc4389c3e4 = L.marker(
                 [18.3406, -67.2509],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_1487187bb7d7ab718784ab66126b8727 = L.divIcon({
-  "html": "\u003cdiv style=\"\n                width:28px;height:28px;border:2.5px dashed #ff9900;\n                border-radius:50%;background:rgba(0,0,0,0.3);\n                margin-left:-14px;margin-top:-14px;cursor:pointer;\n            \"\u003e\u003c/div\u003e",
+            var div_icon_b215c914a7bbd2efc6ead96baa3059a3 = L.divIcon({
+  "html": "\u003cdiv style=\"width:28px;height:28px;border:2.5px dashed #ff9900;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-14px;margin-top:-14px;cursor:pointer\"\u003e\u003c/div\u003e",
   "className": "empty",
 });
         
     
-        var popup_c577c3b6eb09ead5c653e7090d89ebf6 = L.popup({
-  "maxWidth": 320,
+        var popup_4ea267c58e8aab487dc6502fb4f72fbb = L.popup({
+  "maxWidth": 340,
 });
 
         
             
-                var html_9ebb7b23faadfb34a03eb2d011799e0c = $(`<div id="html_9ebb7b23faadfb34a03eb2d011799e0c" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Rincon </h3>     <b>Puerto Rico</b> | 유사도 <b>7/10</b> | 🔄 경유<br><hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 27°C | 🏄 ~120m<br>     👥 medium | 💰 $70/day | ✈️ ~18h<br>     📅 11월, 12월, 1월, 2월...<hr style="margin:3px 0">     <i>미국 영토. 포인트 브레이크 다수. 입국 간편</i></div></div>`)[0];
-                popup_c577c3b6eb09ead5c653e7090d89ebf6.setContent(html_9ebb7b23faadfb34a03eb2d011799e0c);
+                var html_f7a3833deeae9e0883ae31ad17244b99 = $(`<div id="html_f7a3833deeae9e0883ae31ad17244b99" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Rincon </h3>     <b>Puerto Rico</b> | 7/10 | 🔄경유<hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 27°C | 🏄 ~120m<br>     💰 $70/day | ✈️ ~18h<hr style="margin:3px 0">     <i>미국 영토. 포인트 브레이크 다수. 입국 간편</i></div></div>`)[0];
+                popup_4ea267c58e8aab487dc6502fb4f72fbb.setContent(html_f7a3833deeae9e0883ae31ad17244b99);
             
         
 
-        marker_3fc139ad7a0df444b4d32790e18ea823.bindPopup(popup_c577c3b6eb09ead5c653e7090d89ebf6)
+        marker_1089e52054247451521a4ebc4389c3e4.bindPopup(popup_4ea267c58e8aab487dc6502fb4f72fbb)
         ;
 
         
     
     
-            marker_3fc139ad7a0df444b4d32790e18ea823.bindTooltip(
+            marker_1089e52054247451521a4ebc4389c3e4.bindTooltip(
                 `<div>
-                     Rincon 7/10 경유 ~120m
+                     🏄 Rincon 7/10
                  </div>`,
                 {
   "sticky": true,
@@ -1983,58 +1585,58 @@ background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size
             );
         
     
-                marker_3fc139ad7a0df444b4d32790e18ea823.setIcon(div_icon_1487187bb7d7ab718784ab66126b8727);
+                marker_1089e52054247451521a4ebc4389c3e4.setIcon(div_icon_b215c914a7bbd2efc6ead96baa3059a3);
             
     
-            var marker_4eab6da2bbac78df9ba05d1a132d4a81 = L.marker(
+            var marker_5ab6993aaffbe8e21c598e7029a43cba = L.marker(
                 [18.3406, -67.2509],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_cbbe9f22b1aa8931d9375d2169256ca4 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;opacity:0.6;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eRincon\u003c/div\u003e",
+            var div_icon_4f105df7967c780a2d16589cfa0ae014 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eRincon\u003c/div\u003e",
   "className": "empty",
 });
         
     
-                marker_4eab6da2bbac78df9ba05d1a132d4a81.setIcon(div_icon_cbbe9f22b1aa8931d9375d2169256ca4);
+                marker_5ab6993aaffbe8e21c598e7029a43cba.setIcon(div_icon_4f105df7967c780a2d16589cfa0ae014);
             
     
-            var marker_8427c126d971a7363e0285620aa6e645 = L.marker(
+            var marker_9354c40972ee500c69e3c4b10ffe8495 = L.marker(
                 [-4.1039, -81.0453],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_0f84e241a0129ba26c87d82c44ebd3be = L.divIcon({
-  "html": "\u003cdiv style=\"\n                width:28px;height:28px;border:2.5px dashed #ff9900;\n                border-radius:50%;background:rgba(0,0,0,0.3);\n                margin-left:-14px;margin-top:-14px;cursor:pointer;\n            \"\u003e\u003c/div\u003e",
+            var div_icon_bb9150a160b677ec61835b64e5117cee = L.divIcon({
+  "html": "\u003cdiv style=\"width:28px;height:28px;border:2.5px dashed #ff9900;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-14px;margin-top:-14px;cursor:pointer\"\u003e\u003c/div\u003e",
   "className": "empty",
 });
         
     
-        var popup_df013fcdd140c62279efca6e44e81d80 = L.popup({
-  "maxWidth": 320,
+        var popup_aa17285d6abb920df813e60249a75d68 = L.popup({
+  "maxWidth": 340,
 });
 
         
             
-                var html_9041c9d7015d3a20b90e1dece561a22a = $(`<div id="html_9041c9d7015d3a20b90e1dece561a22a" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Mancora </h3>     <b>Peru</b> | 유사도 <b>7/10</b> | 🔄 경유<br><hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 25°C | 🏄 ~150m<br>     👥 medium | 💰 $30/day | ✈️ ~22h<br>     📅 1월, 2월, 3월, 4월...<hr style="margin:3px 0">     <i>페루 북부 따뜻한 포인트. 치카마보다 순하고 따뜻</i></div></div>`)[0];
-                popup_df013fcdd140c62279efca6e44e81d80.setContent(html_9041c9d7015d3a20b90e1dece561a22a);
+                var html_bf19695f8f989c63b299ea8821845fc7 = $(`<div id="html_bf19695f8f989c63b299ea8821845fc7" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Mancora </h3>     <b>Peru</b> | 7/10 | 🔄경유<hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 25°C | 🏄 ~150m<br>     💰 $30/day | ✈️ ~22h<hr style="margin:3px 0">     <i>페루 북부 따뜻한 포인트. 치카마보다 순하고 따뜻</i></div></div>`)[0];
+                popup_aa17285d6abb920df813e60249a75d68.setContent(html_bf19695f8f989c63b299ea8821845fc7);
             
         
 
-        marker_8427c126d971a7363e0285620aa6e645.bindPopup(popup_df013fcdd140c62279efca6e44e81d80)
+        marker_9354c40972ee500c69e3c4b10ffe8495.bindPopup(popup_aa17285d6abb920df813e60249a75d68)
         ;
 
         
     
     
-            marker_8427c126d971a7363e0285620aa6e645.bindTooltip(
+            marker_9354c40972ee500c69e3c4b10ffe8495.bindTooltip(
                 `<div>
-                     Mancora 7/10 경유 ~150m
+                     🏄 Mancora 7/10
                  </div>`,
                 {
   "sticky": true,
@@ -2042,58 +1644,58 @@ background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size
             );
         
     
-                marker_8427c126d971a7363e0285620aa6e645.setIcon(div_icon_0f84e241a0129ba26c87d82c44ebd3be);
+                marker_9354c40972ee500c69e3c4b10ffe8495.setIcon(div_icon_bb9150a160b677ec61835b64e5117cee);
             
     
-            var marker_3e0780dab8e0f3dda9a8190da0569d72 = L.marker(
+            var marker_e33533efd5577bdb2c9f6191f88d0679 = L.marker(
                 [-4.1039, -81.0453],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_e7f9ff25c8c38d45565937630ff04891 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;opacity:0.6;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eMancora\u003c/div\u003e",
+            var div_icon_fff980535fd1f8ad72612a18140e62a8 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eMancora\u003c/div\u003e",
   "className": "empty",
 });
         
     
-                marker_3e0780dab8e0f3dda9a8190da0569d72.setIcon(div_icon_e7f9ff25c8c38d45565937630ff04891);
+                marker_e33533efd5577bdb2c9f6191f88d0679.setIcon(div_icon_fff980535fd1f8ad72612a18140e62a8);
             
     
-            var marker_dffae6c104baec761f95b2645b16b6cf = L.marker(
+            var marker_afcaf4dd0f0920eaad9592708579c038 = L.marker(
                 [5.7, -77.27],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_f8e71d8e55bd3ef6770969e52f35cefd = L.divIcon({
-  "html": "\u003cdiv style=\"\n                width:28px;height:28px;border:2.5px dashed #ff9900;\n                border-radius:50%;background:rgba(0,0,0,0.3);\n                margin-left:-14px;margin-top:-14px;cursor:pointer;\n            \"\u003e\u003c/div\u003e",
+            var div_icon_83737e34fc031be0283881e2aacb3cb9 = L.divIcon({
+  "html": "\u003cdiv style=\"width:28px;height:28px;border:2.5px dashed #ff9900;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-14px;margin-top:-14px;cursor:pointer\"\u003e\u003c/div\u003e",
   "className": "empty",
 });
         
     
-        var popup_8a5c4dc7f3f32ca7fe7b2330e3e61eb8 = L.popup({
-  "maxWidth": 320,
+        var popup_4c200fa7b1abd985f746b06d1c693534 = L.popup({
+  "maxWidth": 340,
 });
 
         
             
-                var html_422a3fcc6829dc50b1506d7ece8efe6e = $(`<div id="html_422a3fcc6829dc50b1506d7ece8efe6e" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Nuqui </h3>     <b>Colombia</b> | 유사도 <b>7/10</b> | 🔄 경유<br><hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 28°C | 🏄 ~100m<br>     👥 very_low | 💰 $40/day | ✈️ ~20h<br>     📅 4월, 5월, 6월, 7월...<hr style="margin:3px 0">     <i>열대우림 속 서핑. 비행기로만 접근. 고래 관찰 가능</i></div></div>`)[0];
-                popup_8a5c4dc7f3f32ca7fe7b2330e3e61eb8.setContent(html_422a3fcc6829dc50b1506d7ece8efe6e);
+                var html_570e30fbc54d119802d7174b8e5dd479 = $(`<div id="html_570e30fbc54d119802d7174b8e5dd479" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Nuqui </h3>     <b>Colombia</b> | 7/10 | 🔄경유<hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 28°C | 🏄 ~100m<br>     💰 $40/day | ✈️ ~20h<hr style="margin:3px 0">     <i>열대우림 속 서핑. 비행기로만 접근. 고래 관찰 가능</i></div></div>`)[0];
+                popup_4c200fa7b1abd985f746b06d1c693534.setContent(html_570e30fbc54d119802d7174b8e5dd479);
             
         
 
-        marker_dffae6c104baec761f95b2645b16b6cf.bindPopup(popup_8a5c4dc7f3f32ca7fe7b2330e3e61eb8)
+        marker_afcaf4dd0f0920eaad9592708579c038.bindPopup(popup_4c200fa7b1abd985f746b06d1c693534)
         ;
 
         
     
     
-            marker_dffae6c104baec761f95b2645b16b6cf.bindTooltip(
+            marker_afcaf4dd0f0920eaad9592708579c038.bindTooltip(
                 `<div>
-                     Nuqui 7/10 경유 ~100m
+                     🏄 Nuqui 7/10
                  </div>`,
                 {
   "sticky": true,
@@ -2101,58 +1703,58 @@ background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size
             );
         
     
-                marker_dffae6c104baec761f95b2645b16b6cf.setIcon(div_icon_f8e71d8e55bd3ef6770969e52f35cefd);
+                marker_afcaf4dd0f0920eaad9592708579c038.setIcon(div_icon_83737e34fc031be0283881e2aacb3cb9);
             
     
-            var marker_80a138facd44a4707b05c0fb6a7a2f78 = L.marker(
+            var marker_47a1a1b8182542d2d23496a25db44553 = L.marker(
                 [5.7, -77.27],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_f8acd42ec27e4095f494d5eb243714cb = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;opacity:0.6;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eNuqui\u003c/div\u003e",
+            var div_icon_8766504277de95126557a04761b6c041 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eNuqui\u003c/div\u003e",
   "className": "empty",
 });
         
     
-                marker_80a138facd44a4707b05c0fb6a7a2f78.setIcon(div_icon_f8acd42ec27e4095f494d5eb243714cb);
+                marker_47a1a1b8182542d2d23496a25db44553.setIcon(div_icon_8766504277de95126557a04761b6c041);
             
     
-            var marker_9c7971b50b58b340e913d1543686cdbc = L.marker(
+            var marker_d55b4e43e882cc809beeb7976a0102b4 = L.marker(
                 [14.745, -17.514],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_969bfeeba622903bb82ceb26a18aad9c = L.divIcon({
-  "html": "\u003cdiv style=\"\n                width:28px;height:28px;border:2.5px dashed #ff9900;\n                border-radius:50%;background:rgba(0,0,0,0.3);\n                margin-left:-14px;margin-top:-14px;cursor:pointer;\n            \"\u003e\u003c/div\u003e",
+            var div_icon_cd1ad301f51dfb6e1e2f062cfa951fba = L.divIcon({
+  "html": "\u003cdiv style=\"width:28px;height:28px;border:2.5px dashed #ff9900;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-14px;margin-top:-14px;cursor:pointer\"\u003e\u003c/div\u003e",
   "className": "empty",
 });
         
     
-        var popup_0b67df670130a06b054ed7c3f61c4ebe = L.popup({
-  "maxWidth": 320,
+        var popup_480d8b5da77f4518a538cfe30b257cf2 = L.popup({
+  "maxWidth": 340,
 });
 
         
             
-                var html_3bf44f8c366254820502ed398c6c1729 = $(`<div id="html_3bf44f8c366254820502ed398c6c1729" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">N'Gor Right </h3>     <b>Senegal</b> | 유사도 <b>7/10</b> | 🔄 경유<br><hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 25°C | 🏄 ~100m<br>     👥 low | 💰 $35/day | ✈️ ~16h<br>     📅 11월, 12월, 1월, 2월...<hr style="margin:3px 0">     <i>서아프리카 최고 롱보드 포인트. 깨끗한 라이트핸더</i></div></div>`)[0];
-                popup_0b67df670130a06b054ed7c3f61c4ebe.setContent(html_3bf44f8c366254820502ed398c6c1729);
+                var html_9c231e5abd6285bd807c02d5d53d33f9 = $(`<div id="html_9c231e5abd6285bd807c02d5d53d33f9" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">N'Gor Right </h3>     <b>Senegal</b> | 7/10 | 🔄경유<hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 25°C | 🏄 ~100m<br>     💰 $35/day | ✈️ ~16h<hr style="margin:3px 0">     <i>서아프리카 최고 롱보드 포인트. 깨끗한 라이트핸더</i></div></div>`)[0];
+                popup_480d8b5da77f4518a538cfe30b257cf2.setContent(html_9c231e5abd6285bd807c02d5d53d33f9);
             
         
 
-        marker_9c7971b50b58b340e913d1543686cdbc.bindPopup(popup_0b67df670130a06b054ed7c3f61c4ebe)
+        marker_d55b4e43e882cc809beeb7976a0102b4.bindPopup(popup_480d8b5da77f4518a538cfe30b257cf2)
         ;
 
         
     
     
-            marker_9c7971b50b58b340e913d1543686cdbc.bindTooltip(
+            marker_d55b4e43e882cc809beeb7976a0102b4.bindTooltip(
                 `<div>
-                     N'Gor Right 7/10 경유 ~100m
+                     🏄 N'Gor Right 7/10
                  </div>`,
                 {
   "sticky": true,
@@ -2160,58 +1762,117 @@ background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size
             );
         
     
-                marker_9c7971b50b58b340e913d1543686cdbc.setIcon(div_icon_969bfeeba622903bb82ceb26a18aad9c);
+                marker_d55b4e43e882cc809beeb7976a0102b4.setIcon(div_icon_cd1ad301f51dfb6e1e2f062cfa951fba);
             
     
-            var marker_be1f322332de3f5a2f3aef1e668c395c = L.marker(
+            var marker_ce0c4728a2ad640e5fe90c50ba902c5f = L.marker(
                 [14.745, -17.514],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_b81778e853e11181e30d71185f309cca = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;opacity:0.6;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eN\u0027Gor Right\u003c/div\u003e",
+            var div_icon_dae55bcb32bed5b5c87a97490942e8cd = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eN\u0027Gor Right\u003c/div\u003e",
   "className": "empty",
 });
         
     
-                marker_be1f322332de3f5a2f3aef1e668c395c.setIcon(div_icon_b81778e853e11181e30d71185f309cca);
+                marker_ce0c4728a2ad640e5fe90c50ba902c5f.setIcon(div_icon_dae55bcb32bed5b5c87a97490942e8cd);
             
     
-            var marker_41478017ad9dfbf1cde279ac94549a15 = L.marker(
+            var marker_cbb048f9ed4aa250a9b20ed7ec571cf3 = L.marker(
+                [30.84, -9.82],
+                {
+}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
+        
+    
+            var div_icon_4e9702f9fda4d814c8e8fe1eb0dda908 = L.divIcon({
+  "html": "\u003cdiv style=\"width:40px;height:40px;border:2.5px dashed #ff0055;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-20px;margin-top:-20px;cursor:pointer\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_b111ad6b9a6e94fa8dce1653dba76f4e = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_0c2f53d5478d133230893991d993de80 = $(`<div id="html_0c2f53d5478d133230893991d993de80" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff0055">Imsouane Bay 👑</h3>     <b>Morocco</b> | 10/10 | 🔄경유<hr style="margin:3px 0">     🌊 0.3~1.5m | 🌡️ 22°C | 🏄 ~700m<br>     💰 $30/day | ✈️ ~14h<hr style="margin:3px 0">     <i>아프리카 최장 라이트 포인트! 600~800m 라이딩. La Saladita급</i></div></div>`)[0];
+                popup_b111ad6b9a6e94fa8dce1653dba76f4e.setContent(html_0c2f53d5478d133230893991d993de80);
+            
+        
+
+        marker_cbb048f9ed4aa250a9b20ed7ec571cf3.bindPopup(popup_b111ad6b9a6e94fa8dce1653dba76f4e)
+        ;
+
+        
+    
+    
+            marker_cbb048f9ed4aa250a9b20ed7ec571cf3.bindTooltip(
+                `<div>
+                     🏄 Imsouane Bay 10/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_cbb048f9ed4aa250a9b20ed7ec571cf3.setIcon(div_icon_4e9702f9fda4d814c8e8fe1eb0dda908);
+            
+    
+            var marker_b21bf06a9219fe73590c668f23eba4dd = L.marker(
+                [30.84, -9.82],
+                {
+}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
+        
+    
+            var div_icon_5fc295adb90d9ff3c6a158983c244b15 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ff0055;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eImsouane Bay\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_b21bf06a9219fe73590c668f23eba4dd.setIcon(div_icon_5fc295adb90d9ff3c6a158983c244b15);
+            
+    
+            var marker_c3366621b75d712cffbb14b671eb6cd2 = L.marker(
                 [43.4791, -1.5686],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_120ff2e3c84ac344034ef772035a7512 = L.divIcon({
-  "html": "\u003cdiv style=\"\n                width:28px;height:28px;border:2.5px dashed #ff9900;\n                border-radius:50%;background:rgba(0,0,0,0.3);\n                margin-left:-14px;margin-top:-14px;cursor:pointer;\n            \"\u003e\u003c/div\u003e",
+            var div_icon_ac7b6f35bd9f66f90c4be372a4643b5d = L.divIcon({
+  "html": "\u003cdiv style=\"width:28px;height:28px;border:2.5px dashed #ff9900;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-14px;margin-top:-14px;cursor:pointer\"\u003e\u003c/div\u003e",
   "className": "empty",
 });
         
     
-        var popup_b31a15b855dfae9c2a9d7cf17c9d59b5 = L.popup({
-  "maxWidth": 320,
+        var popup_4e1eaaff8365059d220c7b845ef47979 = L.popup({
+  "maxWidth": 340,
 });
 
         
             
-                var html_339623ca5e12bb383984141fcb2c5cb4 = $(`<div id="html_339623ca5e12bb383984141fcb2c5cb4" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Cote des Basques </h3>     <b>France (Biarritz)</b> | 유사도 <b>7/10</b> | 🔄 경유<br><hr style="margin:3px 0">     🌊 0.3~1.2m | 🌡️ 22°C | 🏄 ~150m<br>     👥 medium | 💰 $80/day | ✈️ ~14h<br>     📅 6월, 7월, 8월, 9월<hr style="margin:3px 0">     <i>유럽 롱보드의 성지. 여름에 수백미터 크루징 가능</i></div></div>`)[0];
-                popup_b31a15b855dfae9c2a9d7cf17c9d59b5.setContent(html_339623ca5e12bb383984141fcb2c5cb4);
+                var html_50ed6a1bf6ff3ee98634586f3c850f8e = $(`<div id="html_50ed6a1bf6ff3ee98634586f3c850f8e" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Cote des Basques </h3>     <b>France (Biarritz)</b> | 7/10 | 🔄경유<hr style="margin:3px 0">     🌊 0.3~1.2m | 🌡️ 22°C | 🏄 ~150m<br>     💰 $80/day | ✈️ ~14h<hr style="margin:3px 0">     <i>유럽 롱보드의 성지. 여름에 수백미터 크루징 가능</i></div></div>`)[0];
+                popup_4e1eaaff8365059d220c7b845ef47979.setContent(html_50ed6a1bf6ff3ee98634586f3c850f8e);
             
         
 
-        marker_41478017ad9dfbf1cde279ac94549a15.bindPopup(popup_b31a15b855dfae9c2a9d7cf17c9d59b5)
+        marker_c3366621b75d712cffbb14b671eb6cd2.bindPopup(popup_4e1eaaff8365059d220c7b845ef47979)
         ;
 
         
     
     
-            marker_41478017ad9dfbf1cde279ac94549a15.bindTooltip(
+            marker_c3366621b75d712cffbb14b671eb6cd2.bindTooltip(
                 `<div>
-                     Cote des Basques 7/10 경유 ~150m
+                     🏄 Cote des Basques 7/10
                  </div>`,
                 {
   "sticky": true,
@@ -2219,51 +1880,375 @@ background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size
             );
         
     
-                marker_41478017ad9dfbf1cde279ac94549a15.setIcon(div_icon_120ff2e3c84ac344034ef772035a7512);
+                marker_c3366621b75d712cffbb14b671eb6cd2.setIcon(div_icon_ac7b6f35bd9f66f90c4be372a4643b5d);
             
     
-            var marker_969299f1e2a25d57f3469d590dd6327d = L.marker(
+            var marker_798596cf34dfbdd8c8dcd8edb9f2b216 = L.marker(
                 [43.4791, -1.5686],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_636d74425e0d21139092928db19f5ccf = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;opacity:0.6;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eCote des Basques\u003c/div\u003e",
+            var div_icon_a161df7b97a8ab1e08eb54498ce0cd0d = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eCote des Basques\u003c/div\u003e",
   "className": "empty",
 });
         
     
-                marker_969299f1e2a25d57f3469d590dd6327d.setIcon(div_icon_636d74425e0d21139092928db19f5ccf);
+                marker_798596cf34dfbdd8c8dcd8edb9f2b216.setIcon(div_icon_a161df7b97a8ab1e08eb54498ce0cd0d);
             
     
-            var circle_marker_da9f83372bb4e8333bfc21b506ab84d0 = L.circleMarker(
+            var circle_marker_64ee55d2a226f7b844b2e087bb969dd1 = L.circleMarker(
+                [-8.35, 114.83],
+                {"bubblingMouseEvents": true, "color": "#00ff88", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#00ff88", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.2, "stroke": true, "weight": 2}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
+        
+    
+        var popup_a6cbf45bfeb4884bc0eb254cb664fcb4 = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_051cc745682bf749e0652628902eb166 = $(`<div id="html_051cc745682bf749e0652628902eb166" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#00ff88">Medewi </h3>     <b>Indonesia (Bali West)</b> | 9/10 | ✈️직항<hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 28°C | 🏄 ~200m<br>     💰 $30/day | ✈️ ~7h<hr style="margin:3px 0">     <i>발리 서부. 사누르 다음 롱보드 성지. 둥근 자갈바닥 300m 레프트 포인트. 노즈라이딩의 교과서</i></div></div>`)[0];
+                popup_a6cbf45bfeb4884bc0eb254cb664fcb4.setContent(html_051cc745682bf749e0652628902eb166);
+            
+        
+
+        circle_marker_64ee55d2a226f7b844b2e087bb969dd1.bindPopup(popup_a6cbf45bfeb4884bc0eb254cb664fcb4)
+        ;
+
+        
+    
+    
+            circle_marker_64ee55d2a226f7b844b2e087bb969dd1.bindTooltip(
+                `<div>
+                     🏄 Medewi 9/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_896660b30a28023a73e66b68ecba506f = L.marker(
+                [-8.35, 114.83],
+                {
+}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
+        
+    
+            var div_icon_758985af32901580d89f336cf057476e = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#00ff88;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eMedewi\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_896660b30a28023a73e66b68ecba506f.setIcon(div_icon_758985af32901580d89f336cf057476e);
+            
+    
+            var marker_7be876efc60007dd8df0a8bbfe8fe508 = L.marker(
+                [-5.38, 104.02],
+                {
+}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
+        
+    
+            var div_icon_b1a3175bb175ce061218d7bc74e30c4a = L.divIcon({
+  "html": "\u003cdiv style=\"width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_4381244434379d0559b591f6f07ce850 = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_5bf92b6715372c03d035c7db376c7f98 = $(`<div id="html_5bf92b6715372c03d035c7db376c7f98" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ffcc00">Ujung Bocur </h3>     <b>Indonesia (Sumatra)</b> | 8/10 | 🔄경유<hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 27°C | 🏄 ~300m<br>     💰 $35/day | ✈️ ~10h<hr style="margin:3px 0">     <i>작은 스웰 날 400m 롱보드 라이드! 세계 최장급. 크루이 지역</i></div></div>`)[0];
+                popup_4381244434379d0559b591f6f07ce850.setContent(html_5bf92b6715372c03d035c7db376c7f98);
+            
+        
+
+        marker_7be876efc60007dd8df0a8bbfe8fe508.bindPopup(popup_4381244434379d0559b591f6f07ce850)
+        ;
+
+        
+    
+    
+            marker_7be876efc60007dd8df0a8bbfe8fe508.bindTooltip(
+                `<div>
+                     🏄 Ujung Bocur 8/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_7be876efc60007dd8df0a8bbfe8fe508.setIcon(div_icon_b1a3175bb175ce061218d7bc74e30c4a);
+            
+    
+            var marker_4b941a69eed16228a211eb80d8e31a60 = L.marker(
+                [-5.38, 104.02],
+                {
+}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
+        
+    
+            var div_icon_79c52dca3972875a26bddd82fa81f6ad = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eUjung Bocur\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_4b941a69eed16228a211eb80d8e31a60.setIcon(div_icon_79c52dca3972875a26bddd82fa81f6ad);
+            
+    
+            var marker_ccb9569abf815a72a5a2575b6c0dbd59 = L.marker(
+                [0.57, 97.8],
+                {
+}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
+        
+    
+            var div_icon_ffae8238b2466a393a14eb453c8617b1 = L.divIcon({
+  "html": "\u003cdiv style=\"width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_fb1fe841ec521131531d8a83de0c1607 = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_96e17006078171f56bfbd09b3da2097b = $(`<div id="html_96e17006078171f56bfbd09b3da2097b" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ffcc00">Lazy Left (Nias) </h3>     <b>Indonesia (Sumatra)</b> | 8/10 | 🔄경유<hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 28°C | 🏄 ~250m<br>     💰 $30/day | ✈️ ~11h<hr style="margin:3px 0">     <i>이름 그대로 '게으른 왼쪽 파도'. 150~300m 느린 레프트. 수마트라 비밀 스팟</i></div></div>`)[0];
+                popup_fb1fe841ec521131531d8a83de0c1607.setContent(html_96e17006078171f56bfbd09b3da2097b);
+            
+        
+
+        marker_ccb9569abf815a72a5a2575b6c0dbd59.bindPopup(popup_fb1fe841ec521131531d8a83de0c1607)
+        ;
+
+        
+    
+    
+            marker_ccb9569abf815a72a5a2575b6c0dbd59.bindTooltip(
+                `<div>
+                     🏄 Lazy Left (Nias) 8/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_ccb9569abf815a72a5a2575b6c0dbd59.setIcon(div_icon_ffae8238b2466a393a14eb453c8617b1);
+            
+    
+            var marker_f8c7db2bcd6adb4025c99c1c593b600d = L.marker(
+                [0.57, 97.8],
+                {
+}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
+        
+    
+            var div_icon_0eb97b871a07f271ea81fb65d29e4df6 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eLazy Left (Nias)\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_f8c7db2bcd6adb4025c99c1c593b600d.setIcon(div_icon_0eb97b871a07f271ea81fb65d29e4df6);
+            
+    
+            var marker_4549278f3e656bbb9ddaac3824e64c34 = L.marker(
+                [2.62, 96.08],
+                {
+}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
+        
+    
+            var div_icon_e4f30fd53d693ce725dbb3f83b0a35ef = L.divIcon({
+  "html": "\u003cdiv style=\"width:32px;height:32px;border:2.5px dashed #ffcc00;border-radius:50%;background:rgba(0,0,0,0.3);margin-left:-16px;margin-top:-16px;cursor:pointer\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_833dfce856f8ec45d1eaf941374f9aac = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_2cc77cf96e9814790cfc7e892954485e = $(`<div id="html_2cc77cf96e9814790cfc7e892954485e" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ffcc00">Simeulue </h3>     <b>Indonesia (Sumatra)</b> | 8/10 | 🔄경유<hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 28°C | 🏄 ~150m<br>     💰 $25/day | ✈️ ~12h<hr style="margin:3px 0">     <i>일본 서퍼 커뮤니티 '숨겨진 보석'. 관광객 거의 없는 순한 리프</i></div></div>`)[0];
+                popup_833dfce856f8ec45d1eaf941374f9aac.setContent(html_2cc77cf96e9814790cfc7e892954485e);
+            
+        
+
+        marker_4549278f3e656bbb9ddaac3824e64c34.bindPopup(popup_833dfce856f8ec45d1eaf941374f9aac)
+        ;
+
+        
+    
+    
+            marker_4549278f3e656bbb9ddaac3824e64c34.bindTooltip(
+                `<div>
+                     🏄 Simeulue 8/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_4549278f3e656bbb9ddaac3824e64c34.setIcon(div_icon_e4f30fd53d693ce725dbb3f83b0a35ef);
+            
+    
+            var marker_5534db65c15cfc4142a5ff973187c501 = L.marker(
+                [2.62, 96.08],
+                {
+}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
+        
+    
+            var div_icon_6ce89836346c7895d7a13e8336e10009 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eSimeulue\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_5534db65c15cfc4142a5ff973187c501.setIcon(div_icon_6ce89836346c7895d7a13e8336e10009);
+            
+    
+            var circle_marker_e9701cc15b52345f323e84083fcd2b67 = L.circleMarker(
+                [5.97, 80.37],
+                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
+        
+    
+        var popup_1becb59a711c8711249c1ecc082b28b9 = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_e68bdaee95e155dfcf0b24c7d572aaab = $(`<div id="html_e68bdaee95e155dfcf0b24c7d572aaab" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ffcc00">Ahangama </h3>     <b>Sri Lanka</b> | 8/10 | ✈️직항<hr style="margin:3px 0">     🌊 0.3~1.2m | 🌡️ 28°C | 🏄 ~120m<br>     💰 $20/day | ✈️ ~9h<hr style="margin:3px 0">     <i>일본 블로그 '스리랑카판 사누르'. The Rock 포인트에서 느린 롱라이드</i></div></div>`)[0];
+                popup_1becb59a711c8711249c1ecc082b28b9.setContent(html_e68bdaee95e155dfcf0b24c7d572aaab);
+            
+        
+
+        circle_marker_e9701cc15b52345f323e84083fcd2b67.bindPopup(popup_1becb59a711c8711249c1ecc082b28b9)
+        ;
+
+        
+    
+    
+            circle_marker_e9701cc15b52345f323e84083fcd2b67.bindTooltip(
+                `<div>
+                     🏄 Ahangama 8/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_478734c710bf3a33a12ea0c6c3c4db67 = L.marker(
+                [5.97, 80.37],
+                {
+}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
+        
+    
+            var div_icon_736ab1760bc6f15c1338a5556ecb61fc = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eAhangama\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_478734c710bf3a33a12ea0c6c3c4db67.setIcon(div_icon_736ab1760bc6f15c1338a5556ecb61fc);
+            
+    
+            var circle_marker_483b4da40c7869e3dd47eb751d6a78cc = L.circleMarker(
+                [6.84, 81.84],
+                {"bubblingMouseEvents": true, "color": "#ffcc00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffcc00", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.4, "stroke": true, "weight": 2}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
+        
+    
+        var popup_cf382c0a6d572f9deb81b525b7219653 = L.popup({
+  "maxWidth": 340,
+});
+
+        
+            
+                var html_3f13117adb878b5acdd5a58cc9369702 = $(`<div id="html_3f13117adb878b5acdd5a58cc9369702" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ffcc00">Arugam Pottuvil </h3>     <b>Sri Lanka</b> | 8/10 | ✈️직항<hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 28°C | 🏄 ~200m<br>     💰 $25/day | ✈️ ~10h<hr style="margin:3px 0">     <i>메인보다 순한 Pottuvil Point. 300m 라이트핸더. 동남아 최고 롱라이드</i></div></div>`)[0];
+                popup_cf382c0a6d572f9deb81b525b7219653.setContent(html_3f13117adb878b5acdd5a58cc9369702);
+            
+        
+
+        circle_marker_483b4da40c7869e3dd47eb751d6a78cc.bindPopup(popup_cf382c0a6d572f9deb81b525b7219653)
+        ;
+
+        
+    
+    
+            circle_marker_483b4da40c7869e3dd47eb751d6a78cc.bindTooltip(
+                `<div>
+                     🏄 Arugam Pottuvil 8/10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_df796a65660813ba64ff0f412dc5fee6 = L.marker(
+                [6.84, 81.84],
+                {
+}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
+        
+    
+            var div_icon_5a73f8172c926b5a11a277b46e87a01d = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ffcc00;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eArugam Pottuvil\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_df796a65660813ba64ff0f412dc5fee6.setIcon(div_icon_5a73f8172c926b5a11a277b46e87a01d);
+            
+    
+            var circle_marker_eb81c21f48b4a5888cd545382572561e = L.circleMarker(
                 [5.95, 80.45],
-                {"bubblingMouseEvents": true, "color": "#ff9900", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff9900", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14, "stroke": true, "weight": 2}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+                {"bubblingMouseEvents": true, "color": "#ff9900", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff9900", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 12.6, "stroke": true, "weight": 2}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-        var popup_2cced7c7f4df2a1c335bd38d858d09d9 = L.popup({
-  "maxWidth": 320,
+        var popup_05a32b45c44a7ec40f847a7eef5e9611 = L.popup({
+  "maxWidth": 340,
 });
 
         
             
-                var html_328900238d73798964cac15b50990ede = $(`<div id="html_328900238d73798964cac15b50990ede" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Mirissa </h3>     <b>Sri Lanka</b> | 유사도 <b>7/10</b> | ✈️ 직항<br><hr style="margin:3px 0">     🌊 0.3~1.0m | 🌡️ 28°C | 🏄 ~90m<br>     👥 low | 💰 $20/day | ✈️ ~9h<br>     📅 11월, 12월, 1월, 2월...<hr style="margin:3px 0">     <i>힐리케티야보다 더 순함. 만 안쪽 포인트. 고래 관광도 가능</i></div></div>`)[0];
-                popup_2cced7c7f4df2a1c335bd38d858d09d9.setContent(html_328900238d73798964cac15b50990ede);
+                var html_91025adb9deea2426a278793c7e64caa = $(`<div id="html_91025adb9deea2426a278793c7e64caa" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Mirissa </h3>     <b>Sri Lanka</b> | 7/10 | ✈️직항<hr style="margin:3px 0">     🌊 0.3~1.0m | 🌡️ 28°C | 🏄 ~90m<br>     💰 $20/day | ✈️ ~9h<hr style="margin:3px 0">     <i>힐리케티야보다 더 순함. 만 안쪽 포인트. 고래 관광도 가능</i></div></div>`)[0];
+                popup_05a32b45c44a7ec40f847a7eef5e9611.setContent(html_91025adb9deea2426a278793c7e64caa);
             
         
 
-        circle_marker_da9f83372bb4e8333bfc21b506ab84d0.bindPopup(popup_2cced7c7f4df2a1c335bd38d858d09d9)
+        circle_marker_eb81c21f48b4a5888cd545382572561e.bindPopup(popup_05a32b45c44a7ec40f847a7eef5e9611)
         ;
 
         
     
     
-            circle_marker_da9f83372bb4e8333bfc21b506ab84d0.bindTooltip(
+            circle_marker_eb81c21f48b4a5888cd545382572561e.bindTooltip(
                 `<div>
-                     Mirissa 7/10 직항 ~90m
+                     🏄 Mirissa 7/10
                  </div>`,
                 {
   "sticky": true,
@@ -2271,48 +2256,48 @@ background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size
             );
         
     
-            var marker_a14166f5e8378c1b70ebd82ac23fe6c6 = L.marker(
+            var marker_002c105a0e6e826d3659b2a6fb74cfeb = L.marker(
                 [5.95, 80.45],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_1a22f51ca6773295b52db8e0a9368b4a = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;opacity:1;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eMirissa\u003c/div\u003e",
+            var div_icon_e5ac78475f1eda05dd9ff9c58c8e2441 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eMirissa\u003c/div\u003e",
   "className": "empty",
 });
         
     
-                marker_a14166f5e8378c1b70ebd82ac23fe6c6.setIcon(div_icon_1a22f51ca6773295b52db8e0a9368b4a);
+                marker_002c105a0e6e826d3659b2a6fb74cfeb.setIcon(div_icon_e5ac78475f1eda05dd9ff9c58c8e2441);
             
     
-            var circle_marker_bc2224499418734777230d3518a2ce7f = L.circleMarker(
+            var circle_marker_1fec91d169c52a7b469a332f1071f064 = L.circleMarker(
                 [-8.79, 115.13],
-                {"bubblingMouseEvents": true, "color": "#ff9900", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff9900", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14, "stroke": true, "weight": 2}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+                {"bubblingMouseEvents": true, "color": "#ff9900", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff9900", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 12.6, "stroke": true, "weight": 2}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-        var popup_98b326e9d52309d73ed11071037ac84b = L.popup({
-  "maxWidth": 320,
+        var popup_2d61ceba0d8f21febc8d53f50cb2c6bc = L.popup({
+  "maxWidth": 340,
 });
 
         
             
-                var html_92d45859ac477a17c5d6814604f1646d = $(`<div id="html_92d45859ac477a17c5d6814604f1646d" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Balangan </h3>     <b>Indonesia (Bali)</b> | 유사도 <b>7/10</b> | ✈️ 직항<br><hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 28°C | 🏄 ~150m<br>     👥 medium | 💰 $35/day | ✈️ ~7h<br>     📅 4월, 5월, 6월, 7월...<hr style="margin:3px 0">     <i>작은 스웰 날 롱보드 천국으로 변신. 사누르 플랫일 때 대안</i></div></div>`)[0];
-                popup_98b326e9d52309d73ed11071037ac84b.setContent(html_92d45859ac477a17c5d6814604f1646d);
+                var html_5c60f71e919f35e2f9b2658063ea2511 = $(`<div id="html_5c60f71e919f35e2f9b2658063ea2511" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Balangan </h3>     <b>Indonesia (Bali)</b> | 7/10 | ✈️직항<hr style="margin:3px 0">     🌊 0.5~1.5m | 🌡️ 28°C | 🏄 ~150m<br>     💰 $35/day | ✈️ ~7h<hr style="margin:3px 0">     <i>작은 스웰 날 롱보드 천국으로 변신. 사누르 플랫일 때 대안</i></div></div>`)[0];
+                popup_2d61ceba0d8f21febc8d53f50cb2c6bc.setContent(html_5c60f71e919f35e2f9b2658063ea2511);
             
         
 
-        circle_marker_bc2224499418734777230d3518a2ce7f.bindPopup(popup_98b326e9d52309d73ed11071037ac84b)
+        circle_marker_1fec91d169c52a7b469a332f1071f064.bindPopup(popup_2d61ceba0d8f21febc8d53f50cb2c6bc)
         ;
 
         
     
     
-            circle_marker_bc2224499418734777230d3518a2ce7f.bindTooltip(
+            circle_marker_1fec91d169c52a7b469a332f1071f064.bindTooltip(
                 `<div>
-                     Balangan 7/10 직항 ~150m
+                     🏄 Balangan 7/10
                  </div>`,
                 {
   "sticky": true,
@@ -2320,48 +2305,48 @@ background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size
             );
         
     
-            var marker_c8db7addbec3c6b707062d3c7cf102db = L.marker(
+            var marker_640b9429ef8effa0d55b861ccddc251b = L.marker(
                 [-8.79, 115.13],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_9ded1aedbec2dd54d582b5264726d550 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;opacity:1;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eBalangan\u003c/div\u003e",
+            var div_icon_333ff39efa1a850f6ffe7ec3de02a2b9 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eBalangan\u003c/div\u003e",
   "className": "empty",
 });
         
     
-                marker_c8db7addbec3c6b707062d3c7cf102db.setIcon(div_icon_9ded1aedbec2dd54d582b5264726d550);
+                marker_640b9429ef8effa0d55b861ccddc251b.setIcon(div_icon_333ff39efa1a850f6ffe7ec3de02a2b9);
             
     
-            var circle_marker_591dc51cac6be7165108d3de873cf61b = L.circleMarker(
+            var circle_marker_a74dd6aeb83893bf6b7359bda67c08ed = L.circleMarker(
                 [26.33, 126.78],
-                {"bubblingMouseEvents": true, "color": "#ff9900", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff9900", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14, "stroke": true, "weight": 2}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+                {"bubblingMouseEvents": true, "color": "#ff9900", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff9900", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 12.6, "stroke": true, "weight": 2}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-        var popup_4664073c0b754e67b0f2d5505dde2e80 = L.popup({
-  "maxWidth": 320,
+        var popup_0b84c9bbbf963658213ae316355fd0bb = L.popup({
+  "maxWidth": 340,
 });
 
         
             
-                var html_e2473af0c4a1a59f2b5a2ea5d75e1394 = $(`<div id="html_e2473af0c4a1a59f2b5a2ea5d75e1394" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Kumejima </h3>     <b>Japan (Okinawa)</b> | 유사도 <b>7/10</b> | ✈️ 직항<br><hr style="margin:3px 0">     🌊 0.3~1.2m | 🌡️ 27°C | 🏄 ~90m<br>     👥 very_low | 💰 $70/day | ✈️ ~3h<br>     📅 6월, 7월, 8월, 9월...<hr style="margin:3px 0">     <i>일본 서퍼들의 '일본의 사누르'. 한국서 3시간. 여름 한정</i></div></div>`)[0];
-                popup_4664073c0b754e67b0f2d5505dde2e80.setContent(html_e2473af0c4a1a59f2b5a2ea5d75e1394);
+                var html_647f5cccd08fe2dbc0fff01891863774 = $(`<div id="html_647f5cccd08fe2dbc0fff01891863774" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Kumejima </h3>     <b>Japan (Okinawa)</b> | 7/10 | ✈️직항<hr style="margin:3px 0">     🌊 0.3~1.2m | 🌡️ 27°C | 🏄 ~90m<br>     💰 $70/day | ✈️ ~3h<hr style="margin:3px 0">     <i>일본 서퍼들의 '일본의 사누르'. 한국서 3시간. 여름 한정</i></div></div>`)[0];
+                popup_0b84c9bbbf963658213ae316355fd0bb.setContent(html_647f5cccd08fe2dbc0fff01891863774);
             
         
 
-        circle_marker_591dc51cac6be7165108d3de873cf61b.bindPopup(popup_4664073c0b754e67b0f2d5505dde2e80)
+        circle_marker_a74dd6aeb83893bf6b7359bda67c08ed.bindPopup(popup_0b84c9bbbf963658213ae316355fd0bb)
         ;
 
         
     
     
-            circle_marker_591dc51cac6be7165108d3de873cf61b.bindTooltip(
+            circle_marker_a74dd6aeb83893bf6b7359bda67c08ed.bindTooltip(
                 `<div>
-                     Kumejima 7/10 직항 ~90m
+                     🏄 Kumejima 7/10
                  </div>`,
                 {
   "sticky": true,
@@ -2369,48 +2354,48 @@ background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size
             );
         
     
-            var marker_ce7aaaaec0862c5401af4a4895737de8 = L.marker(
+            var marker_0a4859a6f7a8b6813c885421eb4addba = L.marker(
                 [26.33, 126.78],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_1f6e96f688f96c2e05f4edc1b7d6a798 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;opacity:1;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eKumejima\u003c/div\u003e",
+            var div_icon_df2244d148b69d44c29e30b78f015be6 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eKumejima\u003c/div\u003e",
   "className": "empty",
 });
         
     
-                marker_ce7aaaaec0862c5401af4a4895737de8.setIcon(div_icon_1f6e96f688f96c2e05f4edc1b7d6a798);
+                marker_0a4859a6f7a8b6813c885421eb4addba.setIcon(div_icon_df2244d148b69d44c29e30b78f015be6);
             
     
-            var circle_marker_f4d689bd9a9e1b60dbc6f7f90dcbf442 = L.circleMarker(
+            var circle_marker_d3987ae190978946c0b156a0df7bbfce = L.circleMarker(
                 [18.23, 109.75],
-                {"bubblingMouseEvents": true, "color": "#ff9900", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff9900", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14, "stroke": true, "weight": 2}
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+                {"bubblingMouseEvents": true, "color": "#ff9900", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff9900", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 12.6, "stroke": true, "weight": 2}
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-        var popup_3dbb4938db6f4f8e19c170d485fdcf82 = L.popup({
-  "maxWidth": 320,
+        var popup_b0fbd282aa6e0d855ffd36bbc886b753 = L.popup({
+  "maxWidth": 340,
 });
 
         
             
-                var html_2be6e09e7467784dcb9abc9702742d91 = $(`<div id="html_2be6e09e7467784dcb9abc9702742d91" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Taiping Bay </h3>     <b>China (Hainan)</b> | 유사도 <b>7/10</b> | ✈️ 직항<br><hr style="margin:3px 0">     🌊 0.3~1.2m | 🌡️ 27°C | 🏄 ~80m<br>     👥 low | 💰 $35/day | ✈️ ~4h<br>     📅 9월, 10월, 11월, 12월...<hr style="margin:3px 0">     <i>중국 서퍼 커뮤니티 '长板天堂(롱보드천국)'. 영어권 미공개 스팟</i></div></div>`)[0];
-                popup_3dbb4938db6f4f8e19c170d485fdcf82.setContent(html_2be6e09e7467784dcb9abc9702742d91);
+                var html_f339612b0e753491ca7a2dd5def285d1 = $(`<div id="html_f339612b0e753491ca7a2dd5def285d1" style="width: 100.0%; height: 100.0%;"><div style="width:300px;font-family:sans-serif;font-size:11px">     <h3 style="margin:0;color:#ff9900">Taiping Bay </h3>     <b>China (Hainan)</b> | 7/10 | ✈️직항<hr style="margin:3px 0">     🌊 0.3~1.2m | 🌡️ 27°C | 🏄 ~80m<br>     💰 $35/day | ✈️ ~4h<hr style="margin:3px 0">     <i>중국 서퍼 커뮤니티 '长板天堂(롱보드천국)'. 영어권 미공개 스팟</i></div></div>`)[0];
+                popup_b0fbd282aa6e0d855ffd36bbc886b753.setContent(html_f339612b0e753491ca7a2dd5def285d1);
             
         
 
-        circle_marker_f4d689bd9a9e1b60dbc6f7f90dcbf442.bindPopup(popup_3dbb4938db6f4f8e19c170d485fdcf82)
+        circle_marker_d3987ae190978946c0b156a0df7bbfce.bindPopup(popup_b0fbd282aa6e0d855ffd36bbc886b753)
         ;
 
         
     
     
-            circle_marker_f4d689bd9a9e1b60dbc6f7f90dcbf442.bindTooltip(
+            circle_marker_d3987ae190978946c0b156a0df7bbfce.bindTooltip(
                 `<div>
-                     Taiping Bay 7/10 직항 ~80m
+                     🏄 Taiping Bay 7/10
                  </div>`,
                 {
   "sticky": true,
@@ -2418,30 +2403,30 @@ background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size
             );
         
     
-            var marker_b63d5669b19f87012c70a09fa1ab0fce = L.marker(
+            var marker_ee748092e436fbf2229934932aff52ea = L.marker(
                 [18.23, 109.75],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var div_icon_96fa2dcbc30fe198e74923af6b6935bf = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;opacity:1;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:12px\"\u003eTaiping Bay\u003c/div\u003e",
+            var div_icon_4ac5b43614270d0d3bb5f0172a7b3b15 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:9px;color:#ff9900;font-weight:bold;text-shadow:1px 1px 2px black;white-space:nowrap;margin-top:10px\"\u003eTaiping Bay\u003c/div\u003e",
   "className": "empty",
 });
         
     
-                marker_b63d5669b19f87012c70a09fa1ab0fce.setIcon(div_icon_96fa2dcbc30fe198e74923af6b6935bf);
+                marker_ee748092e436fbf2229934932aff52ea.setIcon(div_icon_4ac5b43614270d0d3bb5f0172a7b3b15);
             
     
-            var marker_38831f072182db524da989d0da102e42 = L.marker(
+            var marker_398be98f955c7e27664d7a90eac98e7d = L.marker(
                 [37.5, 126.9],
                 {
 }
-            ).addTo(map_51ff4269d1f13cf6f16b180d60ee43d7);
+            ).addTo(map_5d2b6315426505af6eef1ee71d3cdab4);
         
     
-            var icon_a92e1b6f89ce40633e8277a439acaf77 = L.AwesomeMarkers.icon(
+            var icon_d6f366a4425e33248af75ef592eadfc2 = L.AwesomeMarkers.icon(
                 {
   "markerColor": "red",
   "iconColor": "white",
@@ -2452,24 +2437,24 @@ background:rgba(0,0,0,0.9);padding:15px;border-radius:10px;color:white;font-size
             );
         
     
-        var popup_bc5080aae86879f18d5caa58ee4fd17a = L.popup({
+        var popup_e9c0e1805d7c32f79d5895aab40e8f41 = L.popup({
   "maxWidth": "100%",
 });
 
         
             
-                var html_34946a43a677f15e3bbb95b0ccd1ac62 = $(`<div id="html_34946a43a677f15e3bbb95b0ccd1ac62" style="width: 100.0%; height: 100.0%;">인천공항</div>`)[0];
-                popup_bc5080aae86879f18d5caa58ee4fd17a.setContent(html_34946a43a677f15e3bbb95b0ccd1ac62);
+                var html_781b6602469c43a446b4dcaafa537b39 = $(`<div id="html_781b6602469c43a446b4dcaafa537b39" style="width: 100.0%; height: 100.0%;">인천공항</div>`)[0];
+                popup_e9c0e1805d7c32f79d5895aab40e8f41.setContent(html_781b6602469c43a446b4dcaafa537b39);
             
         
 
-        marker_38831f072182db524da989d0da102e42.bindPopup(popup_bc5080aae86879f18d5caa58ee4fd17a)
+        marker_398be98f955c7e27664d7a90eac98e7d.bindPopup(popup_e9c0e1805d7c32f79d5895aab40e8f41)
         ;
 
         
     
     
-                marker_38831f072182db524da989d0da102e42.setIcon(icon_a92e1b6f89ce40633e8277a439acaf77);
+                marker_398be98f955c7e27664d7a90eac98e7d.setIcon(icon_d6f366a4425e33248af75ef592eadfc2);
             
 </script>
 </html>

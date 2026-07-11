@@ -24,7 +24,8 @@
                     left: 0.0%;
                     top: 0.0%;
                 }
-                .leaflet-container { font-size: 1rem; }
+                .leaflet-container { font-size: 1rem; background: #111 !important; }
+                #map_5626e04d70f861fd4396a2910577412e { background: #111 !important; }
             </style>
 
             <style>html, body {
@@ -32,6 +33,7 @@
                 height: 100%;
                 margin: 0;
                 padding: 0;
+                background: #111;
             }
             </style>
 
@@ -81,12 +83,17 @@
 ],
 ],
   "zoom": 2,
+  "zoomSnap": 0.25,
   "zoomControl": true,
   "preferCanvas": false,
 }
 
                 }
             );
+
+            if (window.innerWidth < 600) {
+                map_5626e04d70f861fd4396a2910577412e.setView([5.0, 20.0], 1.25);
+            }
 
             
 

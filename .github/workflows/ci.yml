@@ -23,11 +23,5 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Setup Deno
-        uses: denoland/setup-deno@v2
-        with:
-          deno-version: "2.x"
-
       - name: Run validation
         run: ./scripts/validate-repo.sh
-

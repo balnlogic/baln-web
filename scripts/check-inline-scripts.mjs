@@ -1,7 +1,10 @@
 import { readFile } from "node:fs/promises";
 import vm from "node:vm";
 
-const htmlFiles = ["index.html", "admin/index.html", "meeting-report.html"];
+const htmlFiles = [
+  "index.html",
+  "surfing/index.html",
+];
 const scriptTagRegex = /<script\b([^>]*)>([\s\S]*?)<\/script>/gi;
 const srcAttrRegex = /\bsrc\s*=/i;
 const typeAttrRegex = /\btype\s*=\s*["']?([^"'\s>]+)/i;

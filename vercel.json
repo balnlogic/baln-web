@@ -1,21 +1,13 @@
 {
   "routes": [
-    { "handle": "filesystem" },
+    { "src": "/surfing/?", "dest": "/surfing/surf.html" },
+    { "src": "/surfing/(.*)", "dest": "/surfing/$1" },
+    { "src": "/robots.txt", "dest": "/robots.txt" },
+    { "src": "/sitemap.xml", "dest": "/sitemap.xml" },
     {
-      "src": "/briefing$",
-      "dest": "https://encar-briefing.vercel.app/"
-    },
-    {
-      "src": "/briefing/(.*)",
-      "dest": "https://encar-briefing.vercel.app/$1"
-    },
-    {
-      "src": "/_next/(.*)",
-      "dest": "https://encar-briefing.vercel.app/_next/$1"
-    },
-    {
-      "src": "/api/briefing/(.*)",
-      "dest": "https://encar-briefing.vercel.app/api/briefing/$1"
+      "src": "/(.*)",
+      "status": 307,
+      "headers": { "Location": "https://app.baln.app/app/today" }
     }
   ]
 }

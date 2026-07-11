@@ -1,7 +1,0 @@
-project_id = "baln-web"
-
-[functions.landing-events]
-verify_jwt = false
-
-[functions.waitlist-signup]
-verify_jwt = false

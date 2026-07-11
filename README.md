@@ -1,30 +1,12 @@
 # baln-web
 
-BALN landing/admin web project with Supabase edge functions and growth data pipeline.
+`baln.app`의 공개 정적 배포 저장소입니다.
 
-## Repository Layout
-- `index.html`, `meeting-report.html`, `privacy.html`, `terms.html`: public pages
-- `admin/`: admin dashboard assets and docs
-- `supabase/functions/`: edge function source code
-- `supabase/migrations/`: database migration history
-- `scripts/`: local and CI validation scripts
-- `docs/ops/`: operational governance and runbooks
+- `/` 및 기존 서비스 경로: 개인 앱 `https://app.baln.app/app/today`로 이동
+- `/surfing/`: 유일한 공개 콘텐츠인 Surf Trip Planner
 
-## Local Validation
-Run before commit and before deploy:
+검증:
 
 ```bash
 ./scripts/validate-repo.sh
 ```
-
-## Operating Rules
-- Database changes must be committed as migration files.
-- Secrets and service keys must never be committed.
-- Use feature branches (`codex/<task-name>`) and merge by PR.
-
-## References
-- Growth setup: `GROWTH_SETUP.md`
-- Master plan: `docs/ops/MASTER_PLAN.md`
-- Git governance: `docs/ops/GIT_GOVERNANCE.md`
-- Supabase governance: `docs/ops/SUPABASE_GOVERNANCE.md`
-- Release checklist: `docs/ops/RELEASE_CHECKLIST.md`

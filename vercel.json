@@ -7,7 +7,7 @@
     {
       "src": "/(.*)",
       "status": 307,
-      "headers": { "Location": "https://app.baln.app/app/today" }
+      "headers": { "Location": "https://app.baln.app/login" }
     }
   ]
 }

@@ -29,5 +29,12 @@ supabase/.env
 .vercel
 .claude/
 
+# 하네스 평가 결과물
+.harness/logs/*
+!.harness/logs/.gitkeep
+.harness/playwright/node_modules/
+.harness/playwright/test-results/
+.harness/playwright/logs/
+
 .env
 .env.*
